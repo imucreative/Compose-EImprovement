@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">EImprovement</string>
+
+    <string name="message_snackbar">Message Snackbar</string>
+    <string name="sign_up">SIGN UP FOR AN ACCOUNT?</string>
+    <string name="signin">S I G N I N</string>
+    <string name="password">PASSWORD</string>
+    <string name="username">USERNAME</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="welcome">Welcome in Fastrata Buana</string>
+    <string name="next">Next</string>
+    <string name="getStarted">Get Started</string>
 </resources>
