@@ -34,7 +34,7 @@ class SplashScreenActivity : AppCompatActivity() {
         preferenceUtils = PreferenceUtils(this)
         welcomeMessageModel = preferenceUtils.getWelcomeMessage()
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement)
+        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
     }
 
@@ -103,7 +103,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 requestPermissions(permission, _permissionCode)
             } else {
                 //permission already granted
-                SnackBarCustom.snackBarIconInfo(parentView!!, layoutInflater, resources, "Permission granted", R.drawable.ic_error_outline, R.color.blue_500)
+                SnackBarCustom.snackBarIconInfo(parentView!!, layoutInflater, resources, this, "Permission granted", R.drawable.ic_error_outline, R.color.blue_500)
                 SnackBarCustom
                 processSplashScreen()
             }
@@ -126,7 +126,7 @@ class SplashScreenActivity : AppCompatActivity() {
                     processSplashScreen()
                 } else {
                     //permission from popup was denied
-                    SnackBarCustom.snackBarIconInfo(parentView!!, layoutInflater, resources, "Permission denied", R.drawable.ic_close, R.color.red_500)
+                    SnackBarCustom.snackBarIconInfo(parentView!!, layoutInflater, resources, this, "Permission denied", R.drawable.ic_close, R.color.red_500)
                 }
             }
         }

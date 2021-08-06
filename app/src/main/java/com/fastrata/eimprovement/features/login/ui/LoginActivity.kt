@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement)
+        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
     }
 }

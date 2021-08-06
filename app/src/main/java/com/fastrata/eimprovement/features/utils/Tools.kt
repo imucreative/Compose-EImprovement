@@ -52,16 +52,16 @@ object Tools {
             val window = act.window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = act.resources.getColor(R.color.colorPrimaryDark)
+            window.statusBarColor = ContextCompat.getColor(context, R.color.colorPrimaryDark)
         }
     }
 
-    fun setSystemBarColor(act: Activity, @ColorRes color: Int) {
+    fun setSystemBarColor(act: Activity, @ColorRes color: Int, context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = act.window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = act.resources.getColor(color)
+            window.statusBarColor = ContextCompat.getColor(context, color)
         }
     }
 

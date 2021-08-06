@@ -1,11 +1,13 @@
 package com.fastrata.eimprovement.features.utils
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.fastrata.eimprovement.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -15,6 +17,7 @@ class SnackBarCustom {
             parentView: View,
             layoutInflater: LayoutInflater,
             ctx: Resources,
+            context: Context,
             message: String,
             icon: Int,
             color: Int
@@ -28,7 +31,7 @@ class SnackBarCustom {
             (customView.findViewById<View>(R.id.message) as TextView).text = message
             (customView.findViewById<View>(R.id.icon) as ImageView).setImageResource(icon)
             customView.findViewById<View>(R.id.parent_view)
-                .setBackgroundColor(ctx.getColor(color))
+                .setBackgroundColor(ContextCompat.getColor(context, color))
             snackBarView.addView(customView, 0)
             snackBar.show()
         }

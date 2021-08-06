@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.fastrata.eimprovement.R
@@ -85,7 +86,7 @@ class WelcomeMessageActivity : AppCompatActivity() {
             }
         }
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement)
+        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
     }
 
@@ -116,14 +117,14 @@ class WelcomeMessageActivity : AppCompatActivity() {
             params.setMargins(10, 10, 10, 10)
             dots[i]!!.layoutParams = params
             dots[i]!!.setImageResource(R.drawable.shape_circle)
-            dots[i]!!.setColorFilter(resources.getColor(R.color.grey_20), PorterDuff.Mode.SRC_IN)
+            dots[i]!!.setColorFilter(ContextCompat.getColor(this, R.color.grey_20), PorterDuff.Mode.SRC_IN)
             dotsLayout.addView(dots[i])
         }
 
         if (dots.isNotEmpty()) {
             dots[current_index]!!.setImageResource(R.drawable.shape_circle)
             dots[current_index]!!.setColorFilter(
-                resources.getColor(R.color.colorPrimaryDark),
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
                 PorterDuff.Mode.SRC_IN
             )
         }
