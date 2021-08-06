@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker
@@ -13,6 +14,7 @@ import com.fastrata.eimprovement.features.utils.PreferenceUtils
 import com.fastrata.eimprovement.features.utils.SnackBarCustom
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
+import com.fastrata.eimprovement.features.utils.Tools
 import timber.log.Timber
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -31,10 +33,13 @@ class SplashScreenActivity : AppCompatActivity() {
         requestAllPermissions()
         preferenceUtils = PreferenceUtils(this)
         welcomeMessageModel = preferenceUtils.getWelcomeMessage()
+
+        Tools.setSystemBarColor(this, R.color.colorMainEImprovement)
+        Tools.setSystemBarLight(this)
     }
 
     private fun processSplashScreen() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 
             if (!welcomeMessageModel.isDisplay) {

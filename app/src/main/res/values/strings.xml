@@ -7,7 +7,12 @@
     <string name="password">PASSWORD</string>
     <string name="username">USERNAME</string>
     <string name="sign_in_to_continue">Sign in to continue</string>
-    <string name="welcome">Welcome in Fastrata Buana</string>
+    <string name="welcome">Welcome E-Improvement</string>
     <string name="next">Next</string>
     <string name="getStarted">Get Started</string>
+
+    <string name="app_version">App Version</string>
+    <string name="version_unknown">Version Unknown</string>
+
+
 </resources>

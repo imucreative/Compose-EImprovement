@@ -14,6 +14,7 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityWelcomeMessageBinding
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
 import com.fastrata.eimprovement.features.utils.PreferenceUtils
+import com.fastrata.eimprovement.features.utils.Tools
 
 class WelcomeMessageActivity : AppCompatActivity() {
 
@@ -83,6 +84,9 @@ class WelcomeMessageActivity : AppCompatActivity() {
                 welcomeMessageIsDisplay(true)
             }
         }
+
+        Tools.setSystemBarColor(this, R.color.colorMainEImprovement)
+        Tools.setSystemBarLight(this)
     }
 
     private fun welcomeMessageIsDisplay(isDisplayWelcomeMessage: Boolean) {
