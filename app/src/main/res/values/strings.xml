@@ -13,6 +13,16 @@
 
     <string name="app_version">App Version</string>
     <string name="version_unknown">Version Unknown</string>
+    <string name="change_password">Change Password</string>
+    <string name="configuration">CONFIGURATION</string>
+    <string name="position">Position</string>
+    <string name="department">Department</string>
+    <string name="sub_branch">Sub Branch</string>
+    <string name="branch">Branch</string>
+    <string name="nik">NIK</string>
+    <string name="name">Name</string>
+    <string name="profile_information">PROFILE INFORMATION</string>
+    <string name="poin">POIN</string>
 
 
 </resources>
