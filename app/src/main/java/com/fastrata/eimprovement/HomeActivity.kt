@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
@@ -47,7 +50,67 @@ class HomeActivity : AppCompatActivity() {
                     themeDark = false, minDateIsCurrentDate = true
                 )
             }
+
+            // action menu
+            menuApproval.setOnClickListener {
+                Toast.makeText(
+                    this@HomeActivity,
+                    "Approval Selected",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            menuSuggestionSystem.setOnClickListener {
+                Toast.makeText(
+                    this@HomeActivity,
+                    "Suggestion System Selected",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            menuProjectImprovement.setOnClickListener {
+                Toast.makeText(
+                    this@HomeActivity,
+                    "Project Improvement Selected",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            menuPointExchange.setOnClickListener {
+                Toast.makeText(
+                    this@HomeActivity,
+                    "Menu penukaran poin Selected",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+
         }
+    }
+
+    private fun initNavigationMenu() {
+        val drawer = binding.drawerLayout
+
+        val toggle = object : ActionBarDrawerToggle(
+            this@HomeActivity,
+            drawer,
+            toolbarBinding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        ) {
+            override fun onDrawerOpened(drawerView: View) {
+                super.onDrawerOpened(drawerView)
+            }
+        }
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+
+        // open drawer at start
+        drawer.openDrawer(GravityCompat.START)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -58,7 +121,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                Toast.makeText(applicationContext, "Testing", Toast.LENGTH_LONG).show()
+                initNavigationMenu()
             }
             R.id.setting_menu -> {
                 Intent(this, SettingsActivity::class.java).also {

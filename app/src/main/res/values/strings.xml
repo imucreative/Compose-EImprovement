@@ -22,7 +22,9 @@
     <string name="nik">NIK</string>
     <string name="name">Name</string>
     <string name="profile_information">PROFILE INFORMATION</string>
-    <string name="poin">POIN</string>
+    <string name="point">POINT</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
 </resources>
