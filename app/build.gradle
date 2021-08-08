@@ -16,8 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_URL", "\"https://localhost.com\""
-        buildConfigField "String", "API_KEY", "\"xxxxxxxxx\""
+        buildConfigField 'String', 'API_DEVELOPER_TOKEN', "\"${api_developer_token}\""
     }
 
     buildTypes {
@@ -36,6 +35,19 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        local {
+            resValue "string", "app_name", "E-Improvement - Local"
+            buildConfigField "String", "BASE_URL", "\"${base_url_local}\""
+        }
+
+        publics {
+            resValue "string", "app_name", "E-Improvement"
+            buildConfigField "String", "BASE_URL", "\"${base_url_public}\""
+        }
+    }
 }
 
 dependencies {
@@ -52,6 +64,12 @@ dependencies {
     def retrofit = '2.9.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    def okhttp = '4.9.1'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    def stetho = '1.5.1'
+    implementation "com.facebook.stetho:stetho:$stetho"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
 
     // tools
     implementation "androidx.recyclerview:recyclerview:1.2.1"
@@ -62,7 +80,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0'             // image loader
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'          // date & time picker
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'           // circle image view
+    implementation "com.mikhaellopez:circularimageview:4.3.0"           // circle image view
 
     // navigation
     def navigation = '2.3.5'
@@ -71,4 +89,28 @@ dependencies {
 
     // lifecycle ViewModel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    // Dagger
+    def daggerVersion = '2.23.2'
+    def daggerAndroidVersion = '2.35.1'
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation "com.google.dagger:dagger:$daggerAndroidVersion"
+    implementation "com.google.dagger:dagger-android:$daggerAndroidVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    // coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
+
+    // database room -----------------------------------------------------------------------------
+    def roomVersion = '2.2.5'
+    def roomRuntime = '2.3.0'
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomRuntime"
+    implementation "androidx.room:room-ktx:$roomRuntime"
+
+    // work
+    def workVersion = '2.5.0'
+    implementation "androidx.work:work-runtime-ktx:$workVersion"
 }

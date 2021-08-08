@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">EImprovement</string>
 
     <string name="message_snackbar">Message Snackbar</string>
     <string name="sign_up">SIGN UP FOR AN ACCOUNT?</string>

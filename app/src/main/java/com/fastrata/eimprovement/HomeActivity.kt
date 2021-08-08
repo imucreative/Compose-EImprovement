@@ -12,9 +12,10 @@ import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
-import com.fastrata.eimprovement.features.utils.Tools
+import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemActivity
+import com.fastrata.eimprovement.utils.Tools
 import java.util.*
-import com.fastrata.eimprovement.features.utils.DatePickerCustom.Companion.dialogDatePicker
+import com.fastrata.eimprovement.utils.DatePickerCustom.Companion.dialogDatePicker
 
 class HomeActivity : AppCompatActivity() {
 

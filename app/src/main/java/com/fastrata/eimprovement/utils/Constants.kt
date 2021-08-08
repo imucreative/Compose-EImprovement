@@ -1,11 +1,11 @@
-package com.fastrata.eimprovement.features.utils
+package com.fastrata.eimprovement.utils
 
 /**
  * Constants used throughout the app.
  */
 const val DATA_FILENAME = "survey.json"
 const val DATA_SURVEY_HEADER_FILENAME = "survey_header.json"
-const val DATABASE_NAME = "surveyemr-db.db"
+const val DATABASE_NAME = "e-improvement-db.db"
 const val DEFAULT_REQUEST = "json"
 
 /**

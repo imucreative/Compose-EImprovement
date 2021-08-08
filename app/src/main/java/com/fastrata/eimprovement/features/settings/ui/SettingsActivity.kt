@@ -7,7 +7,7 @@ import android.view.MenuItem
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivitySettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
-import com.fastrata.eimprovement.features.utils.Tools
+import com.fastrata.eimprovement.utils.Tools
 
 class SettingsActivity : AppCompatActivity() {
 

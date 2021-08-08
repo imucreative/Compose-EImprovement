@@ -10,11 +10,11 @@ import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker
-import com.fastrata.eimprovement.features.utils.PreferenceUtils
-import com.fastrata.eimprovement.features.utils.SnackBarCustom
+import com.fastrata.eimprovement.utils.PreferenceUtils
+import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
-import com.fastrata.eimprovement.features.utils.Tools
+import com.fastrata.eimprovement.utils.Tools
 import timber.log.Timber
 
 class SplashScreenActivity : AppCompatActivity() {

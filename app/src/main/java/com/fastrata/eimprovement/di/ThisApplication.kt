@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.data
+package com.fastrata.eimprovement.di
 
 import android.app.Application
 import android.content.Context

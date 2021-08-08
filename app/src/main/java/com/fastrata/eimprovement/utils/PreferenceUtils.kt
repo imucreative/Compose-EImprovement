@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.utils
+package com.fastrata.eimprovement.utils
 
 import android.content.Context
 import com.fastrata.eimprovement.features.splashscreen.WelcomeMessageModel

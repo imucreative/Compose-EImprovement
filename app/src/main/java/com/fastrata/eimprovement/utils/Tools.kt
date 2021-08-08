@@ -1,24 +1,20 @@
-package com.fastrata.eimprovement.features.utils
+package com.fastrata.eimprovement.utils
 
 import android.app.Activity
 import android.app.Dialog
 import android.content.*
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
 import android.view.View
 import android.view.WindowManager
-import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.ColorInt
@@ -26,7 +22,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.widget.NestedScrollView
 import com.bumptech.glide.Glide
@@ -36,7 +31,6 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.model.DeviceInfo
 import com.google.android.material.bottomappbar.BottomAppBar
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.net.URI

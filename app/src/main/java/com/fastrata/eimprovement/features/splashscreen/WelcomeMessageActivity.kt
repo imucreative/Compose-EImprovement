@@ -14,8 +14,8 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityWelcomeMessageBinding
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
-import com.fastrata.eimprovement.features.utils.PreferenceUtils
-import com.fastrata.eimprovement.features.utils.Tools
+import com.fastrata.eimprovement.utils.PreferenceUtils
+import com.fastrata.eimprovement.utils.Tools
 
 class WelcomeMessageActivity : AppCompatActivity() {
 

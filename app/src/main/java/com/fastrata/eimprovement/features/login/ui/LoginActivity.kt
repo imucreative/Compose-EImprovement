@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityLoginBinding
-import com.fastrata.eimprovement.features.utils.Tools
+import com.fastrata.eimprovement.utils.Tools
 
 class LoginActivity : AppCompatActivity() {
 
