@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.MaterialComponents.Light"
+    tools:context=".features.suggestionsystem.ui.create.SuggestionSystemStep2Fragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:scrollingCache="true">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/spacing_medium"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="A. Identifikasi dan Analisa Akar Masalah"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_large"
+                    android:layout_marginRight="@dimen/spacing_large"
+                    android:text="Ceritakan masalah yg akan anda selesaikan dan tuliskan analisa akar masalahnya."
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_40" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:lines="5"
+                        android:scrollbars="vertical|horizontal"
+                        android:textColor="@color/colorPrimary"
+                        tools:text="Perlunya arsitektur untuk setiap aplikasi / system" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:layout_marginHorizontal="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="B. Saran dan Ide Saya"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_large"
+                    android:layout_marginRight="@dimen/spacing_large"
+                    android:text="Ceritakan apa yang anda lakukan."
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_40" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:lines="5"
+                        android:scrollbars="vertical|horizontal"
+                        android:textColor="@color/colorPrimary"
+                        tools:text="Perlunya arsitektur untuk setiap aplikasi / system" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:background="@color/grey_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:layout_marginHorizontal="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="Status Implementasi Improvement"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+                <RadioGroup
+                    android:id="@+id/group_basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rb_status_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/spacing_medium"
+                        android:paddingVertical="@dimen/spacing_middle"
+                        android:text="Sudah pernah diimplementasi. Pada periode :"
+                        app:buttonTint="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="150dp"
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/dari_status_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:singleLine="true"
+                                android:textColor="@color/colorPrimary"
+                                android:hint="Dari"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="@dimen/spacing_small"
+                            android:layout_height="@dimen/spacing_small" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="s.d"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/grey_80" />
+
+                        <View
+                            android:layout_width="@dimen/spacing_small"
+                            android:layout_height="@dimen/spacing_small" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="150dp"
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/sampai_status_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:padding="0dp"
+                                android:hint="Sampai"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <RadioButton
+                        android:id="@+id/rb_status_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/spacing_medium"
+                        android:paddingVertical="@dimen/spacing_middle"
+                        android:text="Akan diimplementasi. Pada periode : "
+                        app:buttonTint="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="150dp"
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/dari_status_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:singleLine="true"
+                                android:textColor="@color/colorPrimary"
+                                android:hint="Dari"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="@dimen/spacing_small"
+                            android:layout_height="@dimen/spacing_small" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="s.d"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/grey_80" />
+
+                        <View
+                            android:layout_width="@dimen/spacing_small"
+                            android:layout_height="@dimen/spacing_small" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="150dp"
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/sampai_status_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:padding="0dp"
+                                android:hint="Sampai"
+                                android:textColor="@color/colorPrimary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
