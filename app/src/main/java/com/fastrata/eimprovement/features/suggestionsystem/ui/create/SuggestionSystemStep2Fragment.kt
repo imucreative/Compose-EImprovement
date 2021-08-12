@@ -62,6 +62,12 @@ class SuggestionSystemStep2Fragment : Fragment() {
                 }
             }
 
+            // init false condition
+            dariStatus1.isEnabled = false
+            sampaiStatus1.isEnabled = false
+            dariStatus2.isEnabled = false
+            sampaiStatus2.isEnabled = false
+
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     dariStatus1.isEnabled = true

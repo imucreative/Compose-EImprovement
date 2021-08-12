@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalActivity
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemActivity
 import com.fastrata.eimprovement.utils.DatePickerCustom
@@ -54,11 +55,9 @@ class HomeActivity : AppCompatActivity() {
 
             // action menu
             menuApproval.setOnClickListener {
-                Toast.makeText(
-                    this@HomeActivity,
-                    "Approval Selected",
-                    Toast.LENGTH_LONG
-                ).show()
+                Intent(this@HomeActivity, ListApprovalActivity::class.java).also {
+                    startActivity(it)
+                }
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }

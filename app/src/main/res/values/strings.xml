@@ -29,6 +29,14 @@
     <string name="max_file_2mb"><![CDATA[Max file 2MB &]]></string>
     <string name="file_type_attachment">File type xls/xlsx/doc/docx/pdf/jpg/png</string>
     <string name="attachment">Attachment</string>
+    <string name="ss_no">Suggestion System No</string>
+    <string name="select">Select</string>
+    <string name="title">Title</string>
+    <string name="branch_amp_sub_branch"><![CDATA[Branch & Sub Branch]]></string>
+    <string name="created_date">Created Date</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="apply">APPLY</string>
 
 
 </resources>
