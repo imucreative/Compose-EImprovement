@@ -9,7 +9,7 @@ import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep1Bindin
 
 class SuggestionSystemStep1Fragment: Fragment() {
 
-    private lateinit var _binding: FragmentSuggestionSystemStep1Binding
+    private lateinit var _binding:FragmentSuggestionSystemStep1Binding
     private val binding get() = _binding
 
     override fun onCreateView(

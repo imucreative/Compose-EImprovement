@@ -5,20 +5,39 @@
       <map>
         <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable-v24/shape_circle.xml" value="0.17291666666666666" />
         <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/btn_rect_green.xml" value="0.17291666666666666" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/btn_rect_primary.xml" value="0.3104166666666667" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/btn_rect_teal.xml" value="0.3104166666666667" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/ic_menu.xml" value="0.3104166666666667" />
         <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/ic_money_white.xml" value="0.17291666666666666" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/ic_person.xml" value="0.3104166666666667" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/drawable/ic_setting_black.xml" value="0.3104166666666667" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_home.xml" value="0.28974358974358977" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_login.xml" value="0.2942708333333333" />
+        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_home.xml" value="0.15677083333333333" />
         <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_main.xml" value="0.30625" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_settings.xml" value="0.2942708333333333" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_splash_screen.xml" value="0.2942708333333333" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/activity_welcome_message.xml" value="0.2942708333333333" />
-        <entry key="..\:/FB/handle/eimprovement/app/src/main/res/layout/toolbar.xml" value="0.2942708333333333" />
         <entry key="..\:/FB/handle/eimprovement/app/src/main/res/menu/settings_menu.xml" value="0.15677083333333333" />
+        <entry key="app/src/main/res/layout/activity_pi.xml" value="0.259963768115942" />
+        <entry key="app/src/main/res/layout/activity_project_improvement.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_project_improvement_wizard.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/activity_project_improvment.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/activity_project_improvment_wizard.xml" value="0.20153985507246377" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.2572463768115942" />
+        <entry key="app/src/main/res/layout/activity_suggestion_system.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/activity_suggestion_system_create_wizard.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/fragment_pi.xml" value="0.2545289855072464" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_1.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_2.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_3.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_4.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_5.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_6.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_7.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvement_step_8.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_project_improvment.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_suggestion_system_step_1.xml" value="0.23492716349076626" />
+        <entry key="app/src/main/res/layout/fragment_suggestion_system_step_2.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_suggestion_system_step_3.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_suggestion_system_step_4.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/item_card_pi.xml" value="0.2545289855072464" />
+        <entry key="app/src/main/res/layout/item_card_wizard.xml" value="0.2545289855072464" />
+        <entry key="app/src/main/res/layout/item_project_improvment.xml" value="0.14170499085002508" />
+        <entry key="app/src/main/res/layout/item_suggestion_system.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/project_improvment_wizard.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/menu/pi_menu.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/menu/settings_menu.xml" value="0.3098958333333333" />
       </map>
     </option>
   </component>

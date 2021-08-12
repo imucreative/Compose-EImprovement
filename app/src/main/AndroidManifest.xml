@@ -26,6 +26,12 @@
         android:roundIcon="@mipmap/ic_logo_eimprovement_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".features.projectimprovement.ui.ProjectImprovementActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".features.projectimprovement.ui.create.ProjectImprovementCreateWizard"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".features.suggestionsystem.ui.create.SuggestionSystemCreateWizard"
             android:exported="true"
