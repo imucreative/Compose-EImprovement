@@ -13,9 +13,9 @@ import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemActivity
+import com.fastrata.eimprovement.utils.DatePickerCustom
 import com.fastrata.eimprovement.utils.Tools
 import java.util.*
-import com.fastrata.eimprovement.utils.DatePickerCustom.Companion.dialogDatePicker
 
 class HomeActivity : AppCompatActivity() {
 
@@ -46,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initComponent() {
         binding.apply {
             filterActivityDate.setOnClickListener {
-                dialogDatePicker(
+                DatePickerCustom.dialogDatePicker(
                     context = this@HomeActivity, fragmentManager = supportFragmentManager,
                     themeDark = false, minDateIsCurrentDate = true
                 )
@@ -63,11 +63,9 @@ class HomeActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuSuggestionSystem.setOnClickListener {
-                Toast.makeText(
-                    this@HomeActivity,
-                    "Suggestion System Selected",
-                    Toast.LENGTH_LONG
-                ).show()
+                Intent(this@HomeActivity, SuggestionSystemActivity::class.java).also {
+                    startActivity(it)
+                }
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }

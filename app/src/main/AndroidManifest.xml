@@ -27,19 +27,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".features.suggestionsystem.ui.create.SuggestionSystemCreateWizard"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.suggestionsystem.ui.SuggestionSystemActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".features.settings.ui.SettingsActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.login.ui.LoginActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.splashscreen.WelcomeMessageActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.splashscreen.SplashScreenActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
