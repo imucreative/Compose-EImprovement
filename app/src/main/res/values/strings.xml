@@ -38,5 +38,22 @@
     <string name="end">End</string>
     <string name="apply">APPLY</string>
 
+    <string name="suggestion_system_no">Suggestion System No.</string>
+    <string name="please_fill_the_form_to_create_suggestion">Please fill the form to create suggestion.</string>
+    <string name="form_suggestion_system">Form Suggestion System</string>
+    <string name="direct_manager">Direct Supervisor/ Manager</string>
+    <string name="category_suggestion">Category Suggestion</string>
+    <string name="identifikasi_dan_analisa_akar_masalah">A. Identifikasi dan Analisa Akar Masalah</string>
+    <string name="ceritakan_masalah_yg_akan_anda_selesaikan_dan_tuliskan_analisa_akar_masalahnya">Ceritakan masalah yg akan anda selesaikan dan tuliskan analisa akar masalahnya.</string>
+    <string name="saran_dan_ide_saya">B. Saran dan Ide Saya</string>
+    <string name="ceritakan_apa_yang_anda_lakukan">Ceritakan apa yang anda lakukan.</string>
+    <string name="status_implementasi_improvement">Status Implementasi Improvement</string>
+    <string name="sudah_pernah_diimplementasi_pada_periode">Sudah pernah diimplementasi. Pada periode :</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="akan_diimplementasi_pada_periode">Akan diimplementasi. Pada periode :</string>
+    <string name="dash">-</string>
+    <string name="team_member">Team Member</string>
+    <string name="task">Task</string>
 
 </resources>

@@ -9,35 +9,10 @@ const val DATABASE_NAME = "e-improvement-db.db"
 const val DEFAULT_REQUEST = "json"
 
 /**
-* Shared Preferences Variable
+* Hawk Key
 * */
-// SURVEY OI ---------------------------------------------------------------------------------------
-const val PREF_SURVEYOR_CODE = "surveyor_code"
-const val PREF_SURVEYOR_NAME = "surveyor_name"
-const val PREF_SURVEYOR_ID = "surveyor_id"
-const val PREF_SURVEYOR_ORG_ID = "surveyor_org_id"
-const val PREF_SURVEYOR_WAREHOUSE_ID = "surveyor_warehouse_id"
-const val PREF_CHECKOUT_DATE = "checkout_date"
-const val PREF_SURVEY_UM = "survey_um"
-const val PREF_SURVEY_OM = "survey_om"
-const val PREF_SURVEY_AV = "survey_av"
-
-// SURVEY EMR ---------------------------------------------------------------------------------------
-const val PREF_USER_ID = "user_id"
-const val PREF_USER_NAME = "user_name"
-const val PREF_PASSWORD = "password"
-const val PREF_PASSWORD_LOGIN = "password_login"
-const val PREF_EMPLOYEE_NIK = "employee_nik"
-const val PREF_EMPLOYEE_NAME = "employee_name"
-const val PREF_TOKEN_EMR = "token_emr"
-const val PREF_API_KEY_EMR = "api_key_emr"
-const val PREF_INITIAL_LOGIN = "initial_login"
-const val PREF_SURVEYOR_PHOTO = "surveyor_photo"
-const val PREF_LAST_ITEM_SURVEY = "last_item_survey"
-const val PREF_DIVISION_ID = "division_id"
-const val PREF_DIVISION = "division"
-const val PREF_IS_OPERATOR = "is_operator"
-const val PREF_PING_PERIOD = "ping"
+// SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------
+const val SS_CREATE = "suggestion_system"
 
 /**
  * working timing survey

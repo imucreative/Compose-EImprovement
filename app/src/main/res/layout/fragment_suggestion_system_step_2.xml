@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="A. Identifikasi dan Analisa Akar Masalah"
+                    android:text="@string/identifikasi_dan_analisa_akar_masalah"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="Ceritakan masalah yg akan anda selesaikan dan tuliskan analisa akar masalahnya."
+                    android:text="@string/ceritakan_masalah_yg_akan_anda_selesaikan_dan_tuliskan_analisa_akar_masalahnya"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -56,6 +56,7 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/problem"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="start"
@@ -72,7 +73,7 @@
                     android:layout_marginTop="@dimen/spacing_middle"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="B. Saran dan Ide Saya"
+                    android:text="@string/saran_dan_ide_saya"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -81,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="Ceritakan apa yang anda lakukan."
+                    android:text="@string/ceritakan_apa_yang_anda_lakukan"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -93,6 +94,7 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/suggestion"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="start"
@@ -115,7 +117,7 @@
                     android:layout_marginTop="@dimen/spacing_middle"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="Status Implementasi Improvement"
+                    android:text="@string/status_implementasi_improvement"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -131,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="@dimen/spacing_medium"
                         android:paddingVertical="@dimen/spacing_middle"
-                        android:text="Sudah pernah diimplementasi. Pada periode :"
+                        android:text="@string/sudah_pernah_diimplementasi_pada_periode"
                         app:buttonTint="@color/colorPrimary" />
 
                     <LinearLayout
@@ -147,7 +149,7 @@
                             app:boxStrokeColor="@color/colorPrimary">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/dari_status_1"
+                                android:id="@+id/et_from_status_1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:drawableEnd="@drawable/ic_calendar"
@@ -157,7 +159,7 @@
                                 android:padding="0dp"
                                 android:singleLine="true"
                                 android:textColor="@color/colorPrimary"
-                                android:hint="Dari"/>
+                                android:hint="@string/from"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -170,7 +172,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="s.d"
+                            android:text="@string/dash"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -186,7 +188,7 @@
                             app:boxStrokeColor="@color/colorPrimary">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/sampai_status_1"
+                                android:id="@+id/et_to_status_1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:drawableEnd="@drawable/ic_calendar"
@@ -195,7 +197,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:padding="0dp"
-                                android:hint="Sampai"
+                                android:hint="@string/to"
                                 android:textColor="@color/colorPrimary" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -208,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="@dimen/spacing_medium"
                         android:paddingVertical="@dimen/spacing_middle"
-                        android:text="Akan diimplementasi. Pada periode : "
+                        android:text="@string/akan_diimplementasi_pada_periode"
                         app:buttonTint="@color/colorPrimary" />
 
                     <LinearLayout
@@ -224,7 +226,7 @@
                             app:boxStrokeColor="@color/colorPrimary">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/dari_status_2"
+                                android:id="@+id/et_from_status_2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:drawableEnd="@drawable/ic_calendar"
@@ -234,7 +236,7 @@
                                 android:padding="0dp"
                                 android:singleLine="true"
                                 android:textColor="@color/colorPrimary"
-                                android:hint="Dari"/>
+                                android:hint="@string/from"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -247,7 +249,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="s.d"
+                            android:text="@string/dash"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -263,7 +265,7 @@
                             app:boxStrokeColor="@color/colorPrimary">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/sampai_status_2"
+                                android:id="@+id/et_to_status_2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:drawableEnd="@drawable/ic_calendar"
@@ -272,7 +274,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:padding="0dp"
-                                android:hint="Sampai"
+                                android:hint="@string/to"
                                 android:textColor="@color/colorPrimary" />
 
                         </com.google.android.material.textfield.TextInputLayout>
