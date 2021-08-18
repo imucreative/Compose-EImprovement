@@ -84,36 +84,36 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
         when (currentStep) {
             1 -> {
                 println("### step 1 = $currentStep")
-                val mCategoryFragment = SuggestionSystemStep1Fragment()
+                val fragment = SuggestionSystemStep1Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment, SuggestionSystemStep1Fragment::class.java.simpleName)
+                    replace(R.id.frame_container, fragment, SuggestionSystemStep1Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
             }
             2 -> {
                 println("### step 2 = $currentStep")
-                val mCategoryFragment = SuggestionSystemStep2Fragment()
+                val fragment = SuggestionSystemStep2Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment, SuggestionSystemStep2Fragment::class.java.simpleName)
+                    replace(R.id.frame_container, fragment, SuggestionSystemStep2Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
             }
             3 -> {
                 println("### step 3 = $currentStep")
-                val mCategoryFragment = SuggestionSystemStep3Fragment()
+                val fragment = SuggestionSystemStep3Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment, SuggestionSystemStep3Fragment::class.java.simpleName)
+                    replace(R.id.frame_container, fragment, SuggestionSystemStep3Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
             }
             4 -> {
                 println("### step 4 = $currentStep")
-                val mCategoryFragment = SuggestionSystemStep4Fragment()
+                val fragment = SuggestionSystemStep4Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment, SuggestionSystemStep4Fragment::class.java.simpleName)
+                    replace(R.id.frame_container, fragment, SuggestionSystemStep4Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -121,8 +121,16 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
         }
     }
 
+    private lateinit var ssCreateCallback: SuggestionSystemCreateCallback
+    fun setSsCreateCallback(ssCreateCallback: SuggestionSystemCreateCallback) {
+        this.ssCreateCallback = ssCreateCallback
+    }
+
     private fun nextStep(progress: Int) {
         if (progress < maxStep) {
+
+            ssCreateCallback.onDataPass()
+
             currentStep = progress+1
             currentStepCondition(currentStep)
 
@@ -147,7 +155,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
 
     private fun backStep(progress: Int) {
         if (progress > 1) {
-            currentStep = progress-1;
+            currentStep = progress-1
             currentStepCondition(currentStep)
 
             binding.apply {
