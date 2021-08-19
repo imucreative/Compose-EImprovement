@@ -1,16 +1,16 @@
-package com.fastrata.eimprovement.features.projectimprovement.ui.create
+package com.fastrata.eimprovement.features.ChangesPoint.ui.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep7Binding
+import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 
-class ProjectImprovStep7Fragment : Fragment () {
 
-    private lateinit var _binding: FragmentProjectImprovementStep7Binding
+class ChangesPointStep1Fragment: Fragment() {
+
+    private lateinit var _binding:FragmentChangesPointStep1Binding
     private val binding get() = _binding
 
     override fun onCreateView(
@@ -18,18 +18,18 @@ class ProjectImprovStep7Fragment : Fragment () {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProjectImprovementStep7Binding.inflate(layoutInflater, container, false)
+        _binding = FragmentChangesPointStep1Binding.inflate(layoutInflater, container, false)
         return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentProjectImprovementStep7Binding.bind(view)
+        _binding = FragmentChangesPointStep1Binding.bind(view)
 
         binding.apply {
 
-
         }
     }
+
 }

@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.features.ChangesPoint.ui.ChangesPointActivity
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementActivity
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemActivity
@@ -77,11 +78,10 @@ class HomeActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuPointExchange.setOnClickListener {
-                Toast.makeText(
-                    this@HomeActivity,
-                    "Menu penukaran poin Selected",
-                    Toast.LENGTH_LONG
-                ).show()
+                Intent(this@HomeActivity,ChangesPointActivity::class.java).also {
+                    startActivity(it)
+                }
+                drawerLayout.closeDrawer(GravityCompat.START)
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }

@@ -20,7 +20,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
 
     private lateinit var binding: ActivityProjectImprovementWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private val maxStep = 4
+    private val maxStep = 8
     private var currentStep = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +62,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
             if(fragment !is ProjectImprovStep1Fragment){
                 mFragmentManager
                     .beginTransaction()
-                    .add(R.id.frame_container, mHomeFragment, ProjectImprovStep1Fragment::class.java.simpleName)
+                    .add(R.id.frame_container_pi, mHomeFragment, ProjectImprovStep1Fragment::class.java.simpleName)
                     .commit()
             }
 
@@ -103,7 +103,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 1 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep1Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep1Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep1Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -112,7 +112,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 2 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep2Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep2Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep2Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -121,7 +121,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 3 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep3Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep3Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep3Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -130,7 +130,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 4 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep4Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep4Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep4Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -139,7 +139,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 5 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep5Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep5Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep5Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -148,7 +148,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 6 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep6Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep6Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep6Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -157,7 +157,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 7 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep7Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep7Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep7Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -166,7 +166,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 println("### step 8 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep8Fragment()
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }

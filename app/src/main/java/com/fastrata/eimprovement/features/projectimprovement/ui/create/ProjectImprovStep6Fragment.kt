@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep6Binding
 
 class ProjectImprovStep6Fragment : Fragment() {
@@ -16,9 +17,9 @@ class ProjectImprovStep6Fragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentProjectImprovementStep6Binding.inflate(layoutInflater,container,false)
-        return super.onCreateView(inflater, container, savedInstanceState)
+    ): View {
+        _binding = FragmentProjectImprovementStep6Binding.inflate(layoutInflater, container, false)
+        return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,7 +29,7 @@ class ProjectImprovStep6Fragment : Fragment() {
 
         binding.apply {
 
-        }
 
+        }
     }
 }

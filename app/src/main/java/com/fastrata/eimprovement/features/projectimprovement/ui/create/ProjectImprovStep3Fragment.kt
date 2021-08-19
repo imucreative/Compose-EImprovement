@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
+import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+import com.fastrata.eimprovement.utils.DatePickerCustom
 
 class ProjectImprovStep3Fragment : Fragment() {
 
@@ -16,9 +18,9 @@ class ProjectImprovStep3Fragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentProjectImprovementStep3Binding.inflate(layoutInflater,container,false)
-        return super.onCreateView(inflater, container, savedInstanceState)
+    ): View {
+        _binding = FragmentProjectImprovementStep3Binding.inflate(layoutInflater, container, false)
+        return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,7 +30,7 @@ class ProjectImprovStep3Fragment : Fragment() {
 
         binding.apply {
 
-        }
 
+        }
     }
 }

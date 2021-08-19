@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep2Binding
+import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+import com.fastrata.eimprovement.utils.DatePickerCustom
 
 class ProjectImprovStep2Fragment : Fragment () {
 
@@ -16,9 +18,9 @@ class ProjectImprovStep2Fragment : Fragment () {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentProjectImprovementStep2Binding.inflate(layoutInflater,container,false)
-        return super.onCreateView(inflater, container, savedInstanceState)
+    ): View {
+        _binding = FragmentProjectImprovementStep2Binding.inflate(layoutInflater, container, false)
+        return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,9 +29,27 @@ class ProjectImprovStep2Fragment : Fragment () {
         _binding = FragmentProjectImprovementStep2Binding.bind(view)
 
         binding.apply {
+
+            dariStatus1PI.setOnClickListener {
+                activity?.let {
+                    DatePickerCustom.dialogDatePicker(
+                        context = view.context, fragmentManager = it.supportFragmentManager,
+                        themeDark = false, minDateIsCurrentDate = true
+                    )
+                }
+            }
+
+            sampaiStatus1PI.setOnClickListener {
+                activity?.let {
+                    DatePickerCustom.dialogDatePicker(
+                        context = view.context, fragmentManager = it.supportFragmentManager,
+                        themeDark = false, minDateIsCurrentDate = true
+                    )
+                }
+            }
+
             rbStatus2.setOnCheckedChangeListener { compoundButton, ischecked ->
                 println(ischecked)
-
                 if (ischecked){
                     linearImplement.visibility = View.VISIBLE
                 }else{
@@ -37,7 +57,7 @@ class ProjectImprovStep2Fragment : Fragment () {
                 }
             }
         }
-
     }
-
 }
+
+
