@@ -2,6 +2,8 @@ package com.fastrata.eimprovement.utils
 
 import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRewardModel
 import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
@@ -92,153 +94,62 @@ object DataDummySs {
         return suggestionSystem
     }
 
-    fun generateDummyProjectImprovementList() : ArrayList<ProjectImprovementModel> {
-        val suggestionSystem = ArrayList<ProjectImprovementModel>()
+    fun generateDummyApproval(): ArrayList<ApprovalModel> {
 
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
+        val approval = ArrayList<ApprovalModel>()
+
+        approval.add(ApprovalModel(
+            "SS-0000/08/2021/0001",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "Laporan Akhir Di Submit",
+            "SS",
+            "User Development",
+            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
-
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
+            "2021-08-06 17:19:22",))
+        approval.add(ApprovalModel(
+            "SS-0000/08/2021/0002",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "Laporan Akhir Di Submit",
+            "SS",
+            "User Development",
+            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
-
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
+            "2021-08-06 17:19:22"))
+        approval.add(ApprovalModel(
+            "SS-0000/08/2021/0003",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "Laporan Akhir Di Submit",
+            "SS",
+            "User Development",
+            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
-
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
+            "2021-08-06 17:19:22"))
+        approval.add(ApprovalModel(
+            "SS-0000/08/2021/0004",
+            "PEMBUATAN SISTEM SARN FASTRATA BUANA",
+            "Laporan Akhir Di Submit",
+            "SS",
+            "User Development",
+            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
-
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
+            "2021-08-06 17:19:22"))
+        approval.add(ApprovalModel(
+            "SS-0000/08/2021/0005",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "Laporan Akhir Di Submit",
+            "SS",
+            "User Development",
+            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
+            "2021-08-06 17:19:22"))
 
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
-
-        suggestionSystem.add(ProjectImprovementModel(
-            "PI-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "John"
-        ))
-
-        return suggestionSystem
-    }
-
-    fun generateDummyChangePointList() : ArrayList<ChangePointSystemModel>{
-        val suggestionSystem = ArrayList<ChangePointSystemModel>()
-
-        suggestionSystem.add(ChangePointSystemModel(
-            "CP-0000/08/2021/0042",
-            "Aktif",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "testing",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "1"
-        ))
-
-        suggestionSystem.add(ChangePointSystemModel(
-            "CP-0001/08/2021/0042",
-            "Aktif",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "testing",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "1"
-        ))
-
-        suggestionSystem.add(ChangePointSystemModel(
-            "CP-0002/08/2021/0042",
-            "Aktif",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "testing",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "1"
-        ))
-
-        suggestionSystem.add(ChangePointSystemModel(
-            "CP-0003/08/2021/0042",
-            "Aktif",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "testing",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "1"
-        ))
-
-        suggestionSystem.add(ChangePointSystemModel(
-            "CP-0004/08/2021/0042",
-            "Aktif",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "testing",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "1"
-        ))
-
-        suggestionSystem.add(ChangePointSystemModel(
-            "CP-0005/08/2021/0042",
-            "Aktif",
-            "Wed, 20 Jan 19, 05:08 PM",
-            "testing",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "1"
-        ))
-
-       return suggestionSystem
+        return approval
     }
 
     fun generaterewardmodel() : ArrayList<ChangePointRewardModel>{
@@ -300,6 +211,238 @@ object DataDummySs {
                 "Pulsa",
             ))
         return suggestionSystem
+    }
+
+    fun generateDummyChangePointList(): ArrayList<ChangePointSystemModel>{
+        val changepoint = ArrayList<ChangePointSystemModel>()
+
+        changepoint.add(
+            ChangePointSystemModel(
+            "CP-0001/08/2021/0005",
+            "AKTIF",
+            "2021-08-06 17:19:22",
+        "Reward",
+            "PUSAT",
+            "FDTB",
+            "0"
+        ))
+        changepoint.add(
+            ChangePointSystemModel(
+                "CP-0001/08/2021/0005",
+                "AKTIF",
+                "2021-08-06 17:19:22",
+                "Reward",
+                "PUSAT",
+                "FDTB",
+                "0"
+            ))
+        changepoint.add(
+            ChangePointSystemModel(
+                "CP-0001/08/2021/0005",
+                "AKTIF",
+                "2021-08-06 17:19:22",
+                "Reward",
+                "PUSAT",
+                "FDTB",
+                "0"
+            ))
+        changepoint.add(
+            ChangePointSystemModel(
+                "CP-0001/08/2021/0005",
+                "AKTIF",
+                "2021-08-06 17:19:22",
+                "Reward",
+                "PUSAT",
+                "FDTB",
+                "0"
+            ))
+        changepoint.add(
+            ChangePointSystemModel(
+                "CP-0001/08/2021/0005",
+                "AKTIF",
+                "2021-08-06 17:19:22",
+                "Reward",
+                "PUSAT",
+                "FDTB",
+                "0"
+            ))
+        changepoint.add(
+            ChangePointSystemModel(
+                "CP-0001/08/2021/0005",
+                "AKTIF",
+                "2021-08-06 17:19:22",
+                "Reward",
+                "PUSAT",
+                "FDTB",
+                "0"
+            ))
+        changepoint.add(
+            ChangePointSystemModel(
+                "CP-0001/08/2021/0005",
+                "AKTIF",
+                "2021-08-06 17:19:22",
+                "Reward",
+                "PUSAT",
+                "FDTB",
+                "0"
+            ))
+
+        return changepoint
+    }
+
+    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementModel>{
+        val projectimprov = ArrayList<ProjectImprovementModel>()
+
+        projectimprov.add(
+            ProjectImprovementModel(
+            "PI-0001/08/2021/0005",
+            "Improvement",
+            "Aktif",
+            "Perbaikan",
+            "Pusat",
+            "FDTB",
+            "2021-08-06 17:19:22",
+            "John"
+        ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        projectimprov.add(
+            ProjectImprovementModel(
+                "PI-0001/08/2021/0005",
+                "Improvement",
+                "Aktif",
+                "Perbaikan",
+                "Pusat",
+                "FDTB",
+                "2021-08-06 17:19:22",
+                "John"
+            ))
+        return projectimprov
+    }
+
+    fun generateAkarMasalah(): ArrayList<AkarMasalahModel> {
+        val akarmslh = ArrayList<AkarMasalahModel>()
+
+        akarmslh.add(
+            AkarMasalahModel(
+            "satu",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "test"
+        ))
+
+        akarmslh.add(
+            AkarMasalahModel(
+                "satu",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "test"
+            ))
+
+        akarmslh.add(
+            AkarMasalahModel(
+                "satu",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "test"
+            ))
+
+
+        akarmslh.add(
+            AkarMasalahModel(
+                "satu",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "test"
+            ))
+
+        akarmslh.add(
+            AkarMasalahModel(
+                "satu",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "test"
+            ))
+        return akarmslh
     }
 
 

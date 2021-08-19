@@ -14,8 +14,9 @@ import kotlinx.coroutines.launch
 
 class SuggestionSystemStep1Fragment: Fragment() {
 
-    private lateinit var _binding:FragmentSuggestionSystemStep1Binding
-    private val binding get() = _binding
+    private var _binding: FragmentSuggestionSystemStep1Binding? = null
+    private val binding get() = _binding!!
+    private var data: SuggestionSystemCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

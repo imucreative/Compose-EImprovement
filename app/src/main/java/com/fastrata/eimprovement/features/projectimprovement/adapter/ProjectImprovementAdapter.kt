@@ -1,10 +1,11 @@
-package com.fastrata.eimprovement.features.projectimprovement.ui
+package com.fastrata.eimprovement.features.projectimprovement.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemProjectImprovmentBinding
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import java.util.ArrayList
 
 class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter.ProjectImprovementViewHolder>() {

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
@@ -16,6 +15,7 @@ import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImproveme
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemActivity
 import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.utils.Tools
 import java.util.*
 
@@ -23,6 +23,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var toolbarBinding: ToolbarBinding
+    private lateinit var notification: HelperNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         setContentView(binding.root)
-
+        notification = HelperNotification()
         initToolbar()
         initComponent()
 
@@ -56,9 +57,10 @@ class HomeActivity : AppCompatActivity() {
 
             // action menu
             menuApproval.setOnClickListener {
-                Intent(this@HomeActivity, ListApprovalActivity::class.java).also {
-                    startActivity(it)
-                }
+//                Intent(this@HomeActivity, ListApprovalActivity::class.java).also {
+//                    startActivity(it)
+//                }
+                notification.showErrorDialog(this@HomeActivity,"Peringatan","berhasil ga")
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }

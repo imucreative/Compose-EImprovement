@@ -30,7 +30,7 @@ class SuggestionSystemStep3Fragment: Fragment() {
     ): View {
         _binding = FragmentSuggestionSystemStep3Binding.inflate(layoutInflater, container, false)
         data = HawkUtils().getTempDataCreateSs()
-        dataTeamMember = HawkUtils().getTempTeamMember()
+//        dataTeamMember = HawkUtils().getTempTeamMember()
         return binding.root
     }
 

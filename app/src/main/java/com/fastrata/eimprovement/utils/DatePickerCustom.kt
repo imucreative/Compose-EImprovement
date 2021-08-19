@@ -10,17 +10,27 @@ import java.util.*
 
 class DatePickerCustom {
     companion object {
-        fun dialogDatePicker(context: Context, fragmentManager: FragmentManager, themeDark: Boolean, minDateIsCurrentDate: Boolean) {
+        fun dialogDatePicker(
+            context: Context,
+            fragmentManager: FragmentManager,
+            themeDark: Boolean,
+            minDateIsCurrentDate: Boolean
+        ) {
             val curCalender = Calendar.getInstance()
-            val datePicker: DatePickerDialog = DatePickerDialog.newInstance({ _, year, monthOfYear, dayOfMonth ->
-                val calendar = Calendar.getInstance()
-                calendar[Calendar.YEAR] = year
-                calendar[Calendar.MONTH] = monthOfYear
-                calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-                val dateShipMillis = calendar.timeInMillis
+            val datePicker: DatePickerDialog = DatePickerDialog.newInstance(
+                { _, year, monthOfYear, dayOfMonth ->
+                    val calendar = Calendar.getInstance()
+                    calendar[Calendar.YEAR] = year
+                    calendar[Calendar.MONTH] = monthOfYear
+                    calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    val dateShipMillis = calendar.timeInMillis
 
-                Toast.makeText(context, Tools.getFormattedDateSimple(dateShipMillis), Toast.LENGTH_LONG).show()
-            },
+                    Toast.makeText(
+                        context,
+                        Tools.getFormattedDateSimple(dateShipMillis),
+                        Toast.LENGTH_LONG
+                    ).show()
+                },
                 curCalender[Calendar.YEAR],
                 curCalender[Calendar.MONTH],
                 curCalender[Calendar.DAY_OF_MONTH]
@@ -31,6 +41,7 @@ class DatePickerCustom {
             if (minDateIsCurrentDate) datePicker.minDate = curCalender
             datePicker.show(fragmentManager, "DatePickerDialog")
         }
+
     }
 }
 
