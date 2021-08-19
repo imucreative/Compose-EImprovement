@@ -56,11 +56,9 @@ class HomeActivity : AppCompatActivity() {
 
             // action menu
             menuApproval.setOnClickListener {
-                Toast.makeText(
-                    this@HomeActivity,
-                    "Approval Selected",
-                    Toast.LENGTH_LONG
-                ).show()
+                Intent(this@HomeActivity, ListApprovalActivity::class.java).also {
+                    startActivity(it)
+                }
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }

@@ -42,6 +42,10 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".features.approval.ui.ListApprovalActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".features.suggestionsystem.ui.create.SuggestionSystemCreateWizard"
             android:exported="true"
             android:screenOrientation="portrait" />

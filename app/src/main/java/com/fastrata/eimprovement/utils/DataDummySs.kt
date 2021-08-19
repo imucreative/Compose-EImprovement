@@ -4,7 +4,7 @@ import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRew
 import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemTeamMemberModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 
 object DataDummySs {
     fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
@@ -13,6 +13,7 @@ object DataDummySs {
 
         suggestionSystem.add(SuggestionSystemModel(
             "SS-0000/08/2021/0041",
+            "17-08-2021",
             "Membuat ide baru",
             "Implementasi Project",
             "test",
@@ -20,48 +21,39 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
             "SS-0000/08/2021/0042",
+            "17-08-2021",
             "Membuat ide baru new",
             "Implementasi Project",
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
-            "SS-0000/08/2021/0042",
+            "SS-0000/08/2021/0043",
+            "17-08-2021",
             "Membuat ide baru new",
             "Implementasi Project",
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
-            "SS-0000/08/2021/0042",
+            "SS-0000/08/2021/0044",
+            "17-08-2021",
             "Membuat ide baru new",
             "Implementasi Project",
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
-            "SS-0000/08/2021/0042",
+            "SS-0000/08/2021/0045",
+            "17-08-2021",
             "Membuat ide baru new",
             "Implementasi Project",
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
-            "SS-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            "SS-0000/08/2021/0042",
-            "Membuat ide baru new",
-            "Implementasi Project",
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            "SS-0000/08/2021/0042",
+            "SS-0000/08/2021/0046",
+            "17-08-2021",
             "Membuat ide baru new",
             "Implementasi Project",
             "test",
@@ -71,28 +63,28 @@ object DataDummySs {
         return suggestionSystem
     }
 
-    fun generateDummyTeamMember(): ArrayList<SuggestionSystemTeamMemberModel> {
+    fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
 
-        val suggestionSystem = ArrayList<SuggestionSystemTeamMemberModel>()
+        val suggestionSystem = ArrayList<TeamMemberItem>()
 
-        suggestionSystem.add(SuggestionSystemTeamMemberModel(
+        suggestionSystem.add(TeamMemberItem(
             "Jery",
             "ICT",
             "Membuat dokumentasi"))
-        suggestionSystem.add(SuggestionSystemTeamMemberModel(
+        suggestionSystem.add(TeamMemberItem(
             "Tom",
             "ICT",
             "Implementasi Project"))
-        suggestionSystem.add(SuggestionSystemTeamMemberModel(
+        suggestionSystem.add(TeamMemberItem(
             "Budi",
             "ICT",
             "Menyiapkan peralatan"))
-        suggestionSystem.add(SuggestionSystemTeamMemberModel(
-            "Budi",
+        suggestionSystem.add(TeamMemberItem(
+            "Anto",
             "ICT",
             "Menyiapkan peralatan"))
-        suggestionSystem.add(SuggestionSystemTeamMemberModel(
-            "Budi",
+        suggestionSystem.add(TeamMemberItem(
+            "User",
             "ICT",
             "Menyiapkan peralatan"))
 

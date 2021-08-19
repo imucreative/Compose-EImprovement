@@ -26,7 +26,7 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Name"
+                android:text="@string/name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/grey_80"
                 android:gravity="center_vertical" />
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Department :"
+                android:text="@string/department"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/grey_40" />
 
@@ -76,7 +76,7 @@
                 android:id="@+id/department"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ICT"
+                tools:text="ICT"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/grey_40" />
 
@@ -94,7 +94,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Task : "
+                android:text="@string/task"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/grey_40" />
 
@@ -107,11 +107,12 @@
                 android:id="@+id/task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Membuat dokumentasi project"
+                tools:text="Membuat dokumentasi project"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/grey_40" />
 
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="Form Suggestion System"
+                    android:text="@string/form_suggestion_system"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="Please fill the form to create suggestion."
+                    android:text="@string/please_fill_the_form_to_create_suggestion"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -64,12 +64,13 @@
                     app:boxStrokeColor="@color/grey_80">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ssNo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Suggestion System No."
+                        android:hint="@string/suggestion_system_no"
                         android:padding="0dp"
                         android:text="SS-0000/08/2021/0041"
                         android:textColor="@color/grey_80" />
@@ -92,12 +93,13 @@
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Name"
+                            android:hint="@string/name"
                             android:padding="0dp"
                             android:text="User Development"
                             android:textColor="@color/grey_80" />
@@ -118,12 +120,13 @@
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nik"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="NIK"
+                            android:hint="@string/nik"
                             android:padding="0dp"
                             android:text="11210012"
                             android:textColor="@color/grey_80"/>
@@ -148,12 +151,13 @@
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/branch"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Branch"
+                            android:hint="@string/branch"
                             android:padding="0dp"
                             android:text="PUSAT"
                             android:textColor="@color/grey_80" />
@@ -174,12 +178,13 @@
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/department"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Department"
+                            android:hint="@string/department"
                             android:padding="0dp"
                             android:text="ICT"
                             android:textColor="@color/grey_80"/>
@@ -198,12 +203,13 @@
                     app:boxStrokeColor="@color/grey_80">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/directMgr"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Direct Supervisor/ Manager"
+                        android:hint="@string/direct_manager"
                         android:padding="0dp"
                         android:text="User Manager"
                         android:textColor="@color/grey_80" />
@@ -219,14 +225,15 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/title_suggestion"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:maxLines="1"
-                        android:singleLine="true"
                         android:hint="Title Suggestion"
+                        android:maxLines="1"
                         android:padding="0dp"
-                        tools:text="Perlunya arsitektur untuk setiap aplikasi / system"
-                        android:textColor="@color/colorPrimary" />
+                        android:singleLine="true"
+                        android:textColor="@color/colorPrimary"
+                        tools:text="Perlunya arsitektur untuk setiap aplikasi / system" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,7 +249,7 @@
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="Category Suggestion"
+                    android:text="@string/category_suggestion"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -260,6 +267,7 @@
                         android:orientation="horizontal">
 
                         <CheckBox
+                            android:id="@+id/chkbx_meningkatkan_penjualan"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -268,6 +276,7 @@
                             app:buttonTint="@color/colorPrimary" />
 
                         <CheckBox
+                            android:id="@+id/chkbx_menurunkan_biaya"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -283,6 +292,7 @@
                         android:orientation="horizontal">
 
                         <CheckBox
+                            android:id="@+id/chkbx_mencegah_pelanggaran"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -298,6 +308,7 @@
                         android:orientation="horizontal">
 
                         <CheckBox
+                            android:id="@+id/chkbx_menyederhanakan_proses_kerja"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -332,6 +343,7 @@
                             android:visibility="invisible">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_lain_lain"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:maxLines="1"
