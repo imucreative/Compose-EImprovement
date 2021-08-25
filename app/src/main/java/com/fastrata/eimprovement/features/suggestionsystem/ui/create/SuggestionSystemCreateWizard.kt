@@ -14,7 +14,10 @@ import androidx.core.content.ContextCompat
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
+import com.google.gson.Gson
+import timber.log.Timber
 
 class SuggestionSystemCreateWizard : AppCompatActivity() {
 
@@ -53,8 +56,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
                 lytBack.visibility = View.INVISIBLE
             }
 
-            //val strProgress: String = String.format(getString(R.string.step_of), currentStep, maxStep)
-            //binding.status.text = strProgress
             bottomProgressDots(currentStep)
 
             val mFragmentManager = supportFragmentManager
@@ -83,7 +84,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
         val mFragmentManager = supportFragmentManager
         when (currentStep) {
             1 -> {
-                println("### step 1 = $currentStep")
+                Timber.e("### step 1 = $currentStep")
                 val fragment = SuggestionSystemStep1Fragment()
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep1Fragment::class.java.simpleName)
@@ -92,7 +93,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
                 }
             }
             2 -> {
-                println("### step 2 = $currentStep")
+                Timber.e("### step 2 = $currentStep")
                 val fragment = SuggestionSystemStep2Fragment()
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep2Fragment::class.java.simpleName)
@@ -101,7 +102,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
                 }
             }
             3 -> {
-                println("### step 3 = $currentStep")
+                Timber.e("### step 3 = $currentStep")
                 val fragment = SuggestionSystemStep3Fragment()
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep3Fragment::class.java.simpleName)
@@ -110,7 +111,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
                 }
             }
             4 -> {
-                println("### step 4 = $currentStep")
+                Timber.e("### step 4 = $currentStep")
                 val fragment = SuggestionSystemStep4Fragment()
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep4Fragment::class.java.simpleName)
@@ -142,6 +143,9 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
                     lytNext.visibility = View.GONE
                     lytSave.visibility = View.VISIBLE
                     lytSave.setOnClickListener {
+                        val gson = Gson()
+                        val data = gson.toJson(HawkUtils().getTempDataCreateSs())
+                        println("### Data form input : $data")
                         Toast.makeText(this@SuggestionSystemCreateWizard, "Save suggestion system", Toast.LENGTH_LONG).show()
                     }
                 }

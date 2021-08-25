@@ -72,7 +72,7 @@
                         android:focusable="false"
                         android:hint="@string/suggestion_system_no"
                         android:padding="0dp"
-                        android:text="SS-0000/08/2021/0041"
+                        tools:text="SS-0000/08/2021/0041"
                         android:textColor="@color/grey_80" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -228,10 +228,11 @@
                         android:id="@+id/title_suggestion"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Title Suggestion"
+                        android:hint="@string/title_suggestion"
                         android:maxLines="1"
                         android:padding="0dp"
                         android:singleLine="true"
+                        android:scrollbars="vertical|horizontal"
                         android:textColor="@color/colorPrimary"
                         tools:text="Perlunya arsitektur untuk setiap aplikasi / system" />
 

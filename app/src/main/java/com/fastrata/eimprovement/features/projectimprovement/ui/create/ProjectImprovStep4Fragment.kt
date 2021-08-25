@@ -8,14 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep4Binding
 import com.fastrata.eimprovement.features.projectimprovement.adapter.AkarMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateViewModel
 
 class ProjectImprovStep4Fragment : Fragment() {
 

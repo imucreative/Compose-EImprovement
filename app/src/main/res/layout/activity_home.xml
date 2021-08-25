@@ -58,6 +58,9 @@
                         android:layout_marginRight="@dimen/spacing_xsmall"
                         android:layout_marginTop="@dimen/spacing_xsmall"
                         android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:visibility="visible"
                         app:cardCornerRadius="2dp"
                         app:cardElevation="2dp">
