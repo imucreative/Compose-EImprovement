@@ -14,6 +14,7 @@ import com.fastrata.eimprovement.utils.PreferenceUtils
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
+import com.fastrata.eimprovement.utils.PREF_WELCOME
 import com.fastrata.eimprovement.utils.Tools
 import timber.log.Timber
 
@@ -22,7 +23,6 @@ class SplashScreenActivity : AppCompatActivity() {
     private val _permissionCode = 1000
     private var parentView: View? = null
 
-    private lateinit var preferenceUtils: PreferenceUtils
     private lateinit var welcomeMessageModel: WelcomeMessageModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +31,7 @@ class SplashScreenActivity : AppCompatActivity() {
         parentView = findViewById(android.R.id.content)
 
         requestAllPermissions()
-        preferenceUtils = PreferenceUtils(this)
-        welcomeMessageModel = preferenceUtils.getWelcomeMessage()
+        welcomeMessageModel = PreferenceUtils(this).getWelcomeMessage(PREF_WELCOME)
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)

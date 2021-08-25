@@ -14,6 +14,8 @@ const val DEFAULT_REQUEST = "json"
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------
 const val SS_CREATE = "suggestion_system"
 
+const val PREF_WELCOME = "isDisplay"
+
 /**
  * working timing survey
  * **/

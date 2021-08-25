@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityWelcomeMessageBinding
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
+import com.fastrata.eimprovement.utils.PREF_WELCOME
 import com.fastrata.eimprovement.utils.PreferenceUtils
 import com.fastrata.eimprovement.utils.Tools
 
@@ -91,9 +92,8 @@ class WelcomeMessageActivity : AppCompatActivity() {
     }
 
     private fun welcomeMessageIsDisplay(isDisplayWelcomeMessage: Boolean) {
-        val preferenceUtils = PreferenceUtils(this)
         welcomeMessageModel.isDisplay = isDisplayWelcomeMessage
-        preferenceUtils.setWelcomeMessage(welcomeMessageModel)
+        PreferenceUtils(this).setWelcomeMessage(PREF_WELCOME, welcomeMessageModel)
     }
 
     // viewpager change listener
