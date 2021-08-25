@@ -5,8 +5,7 @@ import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSys
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
     fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
@@ -445,5 +444,31 @@ object DataDummySs {
         return akarmslh
     }
 
+    fun generateDummyNameMember(): ArrayList<MemberNameItem> {
+        val data = ArrayList<MemberNameItem>()
+        data.add(MemberNameItem(name = "budi"))
+        data.add(MemberNameItem(name = "Jerry"))
+        data.add(MemberNameItem(name = "Tom"))
+        data.add(MemberNameItem(name = "Ali"))
+        data.add(MemberNameItem(name = "Ahmad"))
+        return data
+    }
 
+    fun generateDummyDepartmentMember(): ArrayList<MemberDepartmentItem> {
+        val data = ArrayList<MemberDepartmentItem>()
+        data.add(MemberDepartmentItem(department = "ICT"))
+        data.add(MemberDepartmentItem(department = "Accounting"))
+        data.add(MemberDepartmentItem(department = "HR"))
+        data.add(MemberDepartmentItem(department = "Tax"))
+        data.add(MemberDepartmentItem(department = "Marketing"))
+        return data
+    }
+
+    fun generateDummyTaskMember(): ArrayList<MemberTaskItem> {
+        val data = ArrayList<MemberTaskItem>()
+        data.add(MemberTaskItem(task = "Ketua"))
+        data.add(MemberTaskItem(task = "Dokumentasi"))
+        data.add(MemberTaskItem(task = "Anggota"))
+        return data
+    }
 }

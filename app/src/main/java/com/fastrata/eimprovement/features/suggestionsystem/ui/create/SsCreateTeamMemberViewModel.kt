@@ -5,34 +5,38 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 
-class SsCreateViewModel : ViewModel() {
+class SsCreateTeamMemberViewModel : ViewModel() {
     private val list = MutableLiveData<ArrayList<TeamMemberItem?>?>()
-    private val addData: ArrayList<TeamMemberItem?> = arrayListOf()
 
     fun setSuggestionSystemTeamMember() {
-        // koneksi ke DB
+        // koneksi ke hawk
         val data = HawkUtils().getTempDataCreateSs()?.teamMember
+        Timber.d("### team member : $data")
 
         list.postValue(data)
     }
 
     fun getSuggestionSystemTeamMember(): LiveData<ArrayList<TeamMemberItem?>?> {
-        println("##### getSuggestionSystemTeamMember $list")
         return list
     }
 
-    fun addTeamMember(add: TeamMemberItem) {
-        val currentTeamMember = HawkUtils().getTempDataCreateSs()
-        /*currentTeamMember?.teamMember?.let {
-            addData.addAll(it)
-        }*/
-        addData.add(add)
+    fun addTeamMember(add: TeamMemberItem, current: ArrayList<TeamMemberItem?>?) {
+        current?.add(add)
 
-        list.postValue(addData)
+        list.postValue(current)
 
         HawkUtils().setTempDataCreateSs(
-            teamMember = addData
+            teamMember = current
+        )
+    }
+
+    fun updateTeamMember(add: ArrayList<TeamMemberItem?>?) {
+        list.postValue(add)
+
+        HawkUtils().setTempDataCreateSs(
+            teamMember = add
         )
     }
 }

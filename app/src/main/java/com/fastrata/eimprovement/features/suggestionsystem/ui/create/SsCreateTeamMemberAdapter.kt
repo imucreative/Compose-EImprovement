@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemSuggestionSystemTeamMemberBinding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 
-class SsCreateAdapter : RecyclerView.Adapter<SsCreateAdapter.TeamMemberViewHolder>() {
+class SsCreateTeamMemberAdapter : RecyclerView.Adapter<SsCreateTeamMemberAdapter.TeamMemberViewHolder>() {
 
-    private var listTeamMember = ArrayList<TeamMemberItem?>()
+    private var list = ArrayList<TeamMemberItem?>()
     fun setListTeamMember(data: ArrayList<TeamMemberItem?>?) {
-        listTeamMember.clear()
+        list.clear()
         if (data != null) {
-            listTeamMember.addAll(data)
+            list.addAll(data)
         }
         notifyDataSetChanged()
     }
 
     private lateinit var callback: SuggestionSystemCreateTeamMemberCallback
-    fun suggestionSystemCreateCallback(callback: SuggestionSystemCreateTeamMemberCallback) {
+    fun ssCreateCallback(callback: SuggestionSystemCreateTeamMemberCallback) {
         this.callback = callback
     }
 
@@ -43,11 +43,11 @@ class SsCreateAdapter : RecyclerView.Adapter<SsCreateAdapter.TeamMemberViewHolde
     }
 
     override fun onBindViewHolder(holder: TeamMemberViewHolder, position: Int) {
-        listTeamMember[position]?.let { holder.bind(it) }
+        list[position]?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int {
-        return listTeamMember.size
+        return list.size
     }
 
 }

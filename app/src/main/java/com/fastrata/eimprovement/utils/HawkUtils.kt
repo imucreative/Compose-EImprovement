@@ -5,11 +5,14 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImpl
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 import com.orhanobut.hawk.Hawk
+import timber.log.Timber
 
 internal class HawkUtils() {
 
+    // init create object
     private val getDataCreateSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_CREATE)) Hawk.get(SS_CREATE) else null
 
+    // Create Suggestion System
     fun setTempDataCreateSs(
         ssNo: String? = null,
         date: String? = null,
@@ -24,8 +27,8 @@ internal class HawkUtils() {
         suggestion: String? = null,
         problem: String? = null,
         statusImplementation: StatusImplementation? = null,
-        teamMember: ArrayList<TeamMemberItem?>? = null,
-        attachment: List<AttachmentItem?>? = null,
+        teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreateSs?.teamMember == null) arrayListOf() else null,
+        attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null
     ) {
         val data = SuggestionSystemCreateModel(
             ssNo = ssNo ?: getDataCreateSs?.ssNo,
@@ -42,17 +45,15 @@ internal class HawkUtils() {
             problem = problem ?: getDataCreateSs?.problem,
             statusImplementation = statusImplementation ?: getDataCreateSs?.statusImplementation,
             teamMember = teamMember ?: getDataCreateSs?.teamMember,
-            attachment = attachment ?: getDataCreateSs?.attachment,
+            attachment = attachment ?: getDataCreateSs?.attachment
         )
 
         Hawk.put(SS_CREATE, data)
-        println("### Hawk : $getDataCreateSs")
+        Timber.w("### Hawk : $data")
     }
 
     fun getTempDataCreateSs(): SuggestionSystemCreateModel? {
         return getDataCreateSs
     }
-
-
 
 }

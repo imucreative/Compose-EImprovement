@@ -9,3 +9,18 @@ data class TeamMemberItem(
     var department: String?,
     var task: String?
 ) : Parcelable
+
+@Parcelize
+data class MemberNameItem(
+    var name: String
+) : Parcelable
+
+@Parcelize
+data class MemberDepartmentItem(
+    var department: String
+) : Parcelable
+
+@Parcelize
+data class MemberTaskItem(
+    var task: String
+) : Parcelable

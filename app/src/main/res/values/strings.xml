@@ -55,5 +55,6 @@
     <string name="dash">-</string>
     <string name="team_member">Team Member</string>
     <string name="task">Task</string>
+    <string name="title_suggestion">Title Suggestion</string>
 
 </resources>

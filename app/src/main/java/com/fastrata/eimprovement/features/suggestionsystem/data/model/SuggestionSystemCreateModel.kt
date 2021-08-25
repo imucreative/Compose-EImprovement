@@ -16,8 +16,8 @@ data class SuggestionSystemCreateModel(
 	var directMgr: String?,
 	var problem: String?,
 	var suggestion: String?,
-	var attachment: List<AttachmentItem?>?,
+	var attachment: ArrayList<AttachmentItem?>?,
 	var categorySuggestion: ArrayList<String?>?,
 	var department: String?,
-	var teamMember: ArrayList<TeamMemberItem?>?,
+	var teamMember: ArrayList<TeamMemberItem?>?
 ) : Parcelable
