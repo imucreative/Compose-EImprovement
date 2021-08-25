@@ -1,81 +1,148 @@
 package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 
+import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep4Binding
-import com.fastrata.eimprovement.R
-import com.google.android.material.button.MaterialButton
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.utils.FileInformation
+import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 
 class SuggestionSystemStep4Fragment: Fragment() {
 
-    private lateinit var fragment: FragmentSuggestionSystemStep4Binding
-    var URI: Uri? = null
-    private val PICK_FROM_GALLERY = 101
+    private var _binding: FragmentSuggestionSystemStep4Binding? = null
+    private val binding get() = _binding!!
+    private val pickFromGallery = 101
+    private var data: SuggestionSystemCreateModel? = null
+    private lateinit var viewModel: SsCreateAttachmentViewModel
+    private lateinit var adapter: SsCreateAttachmentAdapter
+    private lateinit var uri: Uri
+    private lateinit var initFileSize: String
+    private lateinit var initFileName: String
+    private lateinit var initFilePath: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragment = FragmentSuggestionSystemStep4Binding.inflate(layoutInflater, container, false)
-        return fragment.root
+        _binding = FragmentSuggestionSystemStep4Binding.inflate(layoutInflater, container, false)
+        data = HawkUtils().getTempDataCreateSs()
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        _binding = FragmentSuggestionSystemStep4Binding.bind(view)
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
+
         initComponent()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun initComponent() {
-        fragment.apply {
-            var counter = 1
-            var layoutAttachment: View? = null
+        viewModel.setSuggestionSystemAttachment()
+        adapter = SsCreateAttachmentAdapter()
+        adapter.notifyDataSetChanged()
 
-            addAttachment.setOnClickListener {
-                layoutAttachment = layoutInflater.inflate(R.layout.item_suggestion_system_attachment, linearLayoutAttachment, false)
-                val fileName = layoutAttachment?.findViewById<TextView>(R.id.file_name)
+        binding.apply {
+            rvSsAttachment.setHasFixedSize(true)
+            rvSsAttachment.layoutManager = LinearLayoutManager(context)
+            rvSsAttachment.adapter = adapter
 
-                fileName?.text = "File Lampiran $counter"
-                linearLayoutAttachment.addView(layoutAttachment)
-                counter += 1
-            }
-
-            val remove = layoutAttachment?.findViewById<MaterialButton>(R.id.remove_attachment)
-            remove?.setOnClickListener {
-                println("tes")
+            getAttachment.setOnClickListener {
+                openFolder()
             }
         }
+
+        adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
+            override fun removeClicked(data: AttachmentItem) {
+                Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
+
+                this@SuggestionSystemStep4Fragment.data?.attachment?.remove(data)
+
+                viewModel.updateAttachment(this@SuggestionSystemStep4Fragment.data?.attachment)
+                viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+                    if (it != null) {
+                        adapter.setList(it)
+                        Timber.i("### ambil dari getSuggestionSystemAttachment $it")
+                    }
+                })
+            }
+
+            override fun showAttachment(data: AttachmentItem) {
+                println("### Testing show attachment : ${data.name}")
+            }
+        })
+
+        viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+            if (it != null) {
+                adapter.setList(it)
+                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
+            }
+        })
+
+        setData()
     }
 
-    fun onDelete(view: View){
-        //mLinearLayout.removeViewAt(1)
-        fragment.linearLayoutAttachment.removeView(view)
-    }
-
-    fun openFolder() {
+    private fun openFolder() {
         val intent = Intent()
         intent.type = "*/*"
-        //        intent.setType("file/*");
         intent.action = Intent.ACTION_GET_CONTENT
         intent.putExtra("return-data", true)
         startActivityForResult(
             Intent.createChooser(intent, "Complete action using"),
-            PICK_FROM_GALLERY
+            pickFromGallery
         )
     }
 
-    //@SuppressLint("MissingSuperCall")
-    /*fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == PICK_FROM_GALLERY && resultCode == RESULT_OK) {
-            URI = data.data
-            Tecket_Attach.setText(URI.getLastPathSegment())
-        }
-    }*/
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == pickFromGallery && resultCode == RESULT_OK) {
+            if (data != null) {
+                uri = data.data!!
+                initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
+                initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
+                initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
+                binding.fileName.text = initFileName
 
+                Timber.e("### path uri : $uri")
+                Timber.e("### file size : $initFileSize")
+                Timber.e("### path : $initFilePath")
+            }
+        }
+    }
+
+    private fun setData() {
+        binding.apply {
+            addAttachment.setOnClickListener {
+                val addData = AttachmentItem(
+                    name = initFileName,
+                    uri = uri.toString(),
+                    size = initFileSize
+                )
+
+                viewModel.addAttachment(addData, data?.attachment)
+
+                fileName.text = resources.getString(R.string.attachment)
+            }
+        }
+    }
 }
