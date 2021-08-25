@@ -4,7 +4,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.Attachment
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 
 interface SuggestionSystemCreateCallback {
-    fun onDataPass()
+    fun onDataPass(): Boolean
 }
 
 interface SuggestionSystemCreateTeamMemberCallback {

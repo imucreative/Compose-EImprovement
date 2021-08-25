@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.utils.DatePickerCustom
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.SnackBarCustom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -158,37 +160,63 @@ class SuggestionSystemStep2Fragment : Fragment() {
 
     private fun setData(binding: FragmentSuggestionSystemStep2Binding) {
         (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object : SuggestionSystemCreateCallback {
-            override fun onDataPass() {
-                CoroutineScope(Dispatchers.Default).launch {
-                    binding.apply {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+                binding.apply {
+                    lateinit var tempStatus: String
+                    lateinit var tempFrom: String
+                    lateinit var tempTo: String
 
-                        lateinit var tempStatus: String
-                        lateinit var tempFrom: String
-                        lateinit var tempTo: String
+                    if (rbStatus1.isChecked) {
+                        tempStatus = rbStatus1.text.toString()
+                        tempFrom = etFromStatus1.text.toString()
+                        tempTo = etToStatus1.text.toString()
+                    } else {
+                        tempStatus = rbStatus2.text.toString()
+                        tempFrom = etFromStatus2.text.toString()
+                        tempTo = etToStatus2.text.toString()
+                    }
 
-                        if (rbStatus1.isChecked) {
-                            tempStatus = rbStatus1.text.toString()
-                            tempFrom = etFromStatus1.text.toString()
-                            tempTo = etToStatus1.text.toString()
-                        } else {
-                            tempStatus = rbStatus2.text.toString()
-                            tempFrom = etFromStatus2.text.toString()
-                            tempTo = etToStatus2.text.toString()
-                        }
+                    val status = StatusImplementation(
+                        status = tempStatus,
+                        from = tempFrom,
+                        to = tempTo
+                    )
 
-                        val status = StatusImplementation(
-                            status = tempStatus,
-                            from = tempFrom,
-                            to = tempTo
-                        )
+                    if (problem.text.isNullOrEmpty()) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Problem must be fill before next",
+                            R.drawable.ic_close, R.color.red_500)
+                        problem.requestFocus()
+                        stat = false
 
+                    } else if (suggestion.text.isNullOrEmpty()) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Suggestion must be fill before next",
+                            R.drawable.ic_close, R.color.red_500)
+                        suggestion.requestFocus()
+                        stat = false
+
+                    } else  if (!rbStatus1.isChecked && !rbStatus2.isChecked) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Status Implementation must be fill before next",
+                            R.drawable.ic_close, R.color.red_500)
+                        stat = false
+
+                    } else {
                         HawkUtils().setTempDataCreateSs(
                             suggestion = suggestion.text.toString(),
                             problem = problem.text.toString(),
                             statusImplementation = status
                         )
+                        stat = true
+
                     }
                 }
+                return stat
             }
         })
     }

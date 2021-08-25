@@ -15,6 +15,9 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import android.widget.AdapterView.OnItemClickListener
+import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
 
 class SuggestionSystemStep3Fragment: Fragment() {
@@ -128,6 +131,7 @@ class SuggestionSystemStep3Fragment: Fragment() {
         })
 
         setData()
+        setValidation()
     }
 
     private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
@@ -137,18 +141,72 @@ class SuggestionSystemStep3Fragment: Fragment() {
     private fun setData() {
         binding.apply {
             addTeamMember.setOnClickListener {
-                val addData = TeamMemberItem(
-                    name = memberName.text.toString(),
-                    department = memberDepartment.text.toString(),
-                    task = memberTask.text.toString()
-                )
 
-                viewModel.addTeamMember(addData, data?.teamMember)
+                val name = memberName.text.toString()
+                val department = memberDepartment.text.toString()
+                val task = memberTask.text.toString()
 
-                memberName.setText("")
-                memberDepartment.setText("")
-                memberTask.setText("")
+                when {
+                    name.isEmpty() -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Name must be fill before added",
+                            R.drawable.ic_close, R.color.red_500)
+                        memberName.requestFocus()
+
+                    }
+                    department.isEmpty() -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Department must be fill before added",
+                            R.drawable.ic_close, R.color.red_500)
+                        memberDepartment.requestFocus()
+                    }
+                    task.isEmpty() -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Task must be fill before added",
+                            R.drawable.ic_close, R.color.red_500)
+                        memberTask.requestFocus()
+                    }
+                    else -> {
+                        val addData = TeamMemberItem(
+                            name = name,
+                            department = department,
+                            task = task
+                        )
+
+                        viewModel.addTeamMember(addData, data?.teamMember)
+
+                        memberName.requestFocus()
+                        memberName.setText("")
+                        memberDepartment.setText("")
+                        memberTask.setText("")
+                    }
+                }
             }
         }
+    }
+
+    private fun setValidation() {
+        (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object : SuggestionSystemCreateCallback {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+
+                binding.apply {
+                    stat = if (data?.teamMember?.size == 0) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            "Team Member must be fill before next",
+                            R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
+                        true
+                    }
+                }
+
+                return stat
+            }
+        })
     }
 }

@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep1Binding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.SnackBarCustom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -82,39 +84,57 @@ class SuggestionSystemStep1Fragment: Fragment() {
 
     private fun setData() {
         (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object : SuggestionSystemCreateCallback {
-            override fun onDataPass() {
-                CoroutineScope(Dispatchers.Default).launch {
-                    binding.apply {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+                binding.apply {
+                    val listCategory = ArrayList<String?>()
+                    if (chkbxMeningkatkanPenjualan.isChecked) {
+                        listCategory.add(chkbxMeningkatkanPenjualan.text.toString())
+                    }
+                    if (chkbxMenurunkanBiaya.isChecked) {
+                        listCategory.add(chkbxMenurunkanBiaya.text.toString())
+                    }
+                    if (chkbxMencegahPelanggaran.isChecked) {
+                        listCategory.add(chkbxMencegahPelanggaran.text.toString())
+                    }
+                    if (chkbxMenyederhanakanProsesKerja.isChecked) {
+                        listCategory.add(chkbxMenyederhanakanProsesKerja.text.toString())
+                    }
+                    if (chkbxOther.isChecked) {
+                        listCategory.add(edtLainLain.text.toString())
+                    }
 
-                        val listCategory = ArrayList<String?>()
-                        if (chkbxMeningkatkanPenjualan.isChecked) {
-                            listCategory.add(chkbxMeningkatkanPenjualan.text.toString())
+                    when {
+                        titleSuggestion.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root.rootView, layoutInflater, resources, root.rootView.context,
+                                "Title must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            stat = false
                         }
-                        if (chkbxMenurunkanBiaya.isChecked) {
-                            listCategory.add(chkbxMenurunkanBiaya.text.toString())
+                        listCategory.isEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root.rootView, layoutInflater, resources, root.rootView.context,
+                                "Category must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            stat = false
                         }
-                        if (chkbxMencegahPelanggaran.isChecked) {
-                            listCategory.add(chkbxMencegahPelanggaran.text.toString())
+                        else -> {
+                            HawkUtils().setTempDataCreateSs(
+                                ssNo = ssNo.text.toString(),
+                                title = titleSuggestion.text.toString(),
+                                listCategory = listCategory,
+                                name = name.text.toString(),
+                                nik = nik.text.toString(),
+                                branch = branch.text.toString(),
+                                department = department.text.toString(),
+                                directMgr = directMgr.text.toString(),
+                            )
+                            stat = true
                         }
-                        if (chkbxMenyederhanakanProsesKerja.isChecked) {
-                            listCategory.add(chkbxMenyederhanakanProsesKerja.text.toString())
-                        }
-                        if (chkbxOther.isChecked) {
-                            listCategory.add(edtLainLain.text.toString())
-                        }
-
-                        HawkUtils().setTempDataCreateSs(
-                            ssNo = ssNo.text.toString(),
-                            title = titleSuggestion.text.toString(),
-                            listCategory = listCategory,
-                            name = name.text.toString(),
-                            nik = nik.text.toString(),
-                            branch = branch.text.toString(),
-                            department = department.text.toString(),
-                            directMgr = directMgr.text.toString(),
-                        )
                     }
                 }
+                return stat
             }
         })
     }

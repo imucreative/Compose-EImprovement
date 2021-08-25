@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.FileInformation
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -88,6 +88,7 @@ class SuggestionSystemStep4Fragment: Fragment() {
             }
 
             override fun showAttachment(data: AttachmentItem) {
+                //File(URI(uri.toString()))
                 println("### Testing show attachment : ${data.name}")
             }
         })
@@ -121,11 +122,19 @@ class SuggestionSystemStep4Fragment: Fragment() {
                 initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
                 initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
                 initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
-                binding.fileName.text = initFileName
 
-                Timber.e("### path uri : $uri")
-                Timber.e("### file size : $initFileSize")
-                Timber.e("### path : $initFilePath")
+                //if (initFileSize.toInt() <= 2048) {
+                    binding.fileName.text = initFileName
+
+                    Timber.e("### path uri : $uri")
+                    Timber.e("### file size : $initFileSize")
+                    Timber.e("### path : $initFilePath")
+                /*} else {
+                    SnackBarCustom.snackBarIconInfo(
+                        binding.root.rootView, layoutInflater, resources, binding.root.rootView.context,
+                        "Attachment must be under 2Mb",
+                        R.drawable.ic_close, R.color.red_500)
+                }*/
             }
         }
     }
@@ -133,15 +142,23 @@ class SuggestionSystemStep4Fragment: Fragment() {
     private fun setData() {
         binding.apply {
             addAttachment.setOnClickListener {
-                val addData = AttachmentItem(
-                    name = initFileName,
-                    uri = uri.toString(),
-                    size = initFileSize
-                )
+                if (fileName.text.isEmpty()) {
+                    SnackBarCustom.snackBarIconInfo(
+                        root.rootView, layoutInflater, resources, root.rootView.context,
+                        "Attachment must be fill before added",
+                        R.drawable.ic_close, R.color.red_500)
+                } else {
 
-                viewModel.addAttachment(addData, data?.attachment)
+                    val addData = AttachmentItem(
+                        name = initFileName,
+                        uri = uri.toString(),
+                        size = initFileSize
+                    )
 
-                fileName.text = resources.getString(R.string.attachment)
+                    viewModel.addAttachment(addData, data?.attachment)
+
+                    fileName.text = ""
+                }
             }
         }
     }

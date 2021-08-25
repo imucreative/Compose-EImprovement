@@ -129,26 +129,32 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
 
     private fun nextStep(progress: Int) {
         if (progress < maxStep) {
+            val status =  ssCreateCallback.onDataPass()
+            if (status) {
+                currentStep = progress + 1
+                currentStepCondition(currentStep)
 
-            ssCreateCallback.onDataPass()
-
-            currentStep = progress+1
-            currentStepCondition(currentStep)
-
-            binding.apply {
-                lytBack.visibility = View.VISIBLE
-                lytNext.visibility = View.VISIBLE
-                lytSave.visibility = View.GONE
-                if (currentStep == maxStep) {
-                    lytNext.visibility = View.GONE
-                    lytSave.visibility = View.VISIBLE
-                    lytSave.setOnClickListener {
-                        val gson = Gson()
-                        val data = gson.toJson(HawkUtils().getTempDataCreateSs())
-                        println("### Data form input : $data")
-                        Toast.makeText(this@SuggestionSystemCreateWizard, "Save suggestion system", Toast.LENGTH_LONG).show()
+                //CoroutineScope(Dispatchers.Default).launch {
+                    binding.apply {
+                        lytBack.visibility = View.VISIBLE
+                        lytNext.visibility = View.VISIBLE
+                        lytSave.visibility = View.GONE
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.GONE
+                            lytSave.visibility = View.VISIBLE
+                            lytSave.setOnClickListener {
+                                val gson = Gson()
+                                val data = gson.toJson(HawkUtils().getTempDataCreateSs())
+                                println("### Data form input : $data")
+                                Toast.makeText(
+                                    this@SuggestionSystemCreateWizard,
+                                    "Save suggestion system",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
                     }
-                }
+                // }
             }
         }
     }

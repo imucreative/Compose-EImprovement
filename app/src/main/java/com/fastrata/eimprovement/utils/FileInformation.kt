@@ -18,11 +18,14 @@ class FileInformation {
     /**
      * resource : https://gist.github.com/VassilisPallas/b88fb701c55cdace0c420356ee7c1464
      *
+     * Method for return file path of Gallery image/ Document / Video / Audio
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and
      * other file-based ContentProviders.
      *
      * @param context The context.
+     * @param uri
+     * @return path of the selected image file from gallery
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     fun getPath(context: Context?, uri: Uri): String? {
@@ -38,15 +41,17 @@ class FileInformation {
                 if ("primary".equals(type, ignoreCase = true)) {
                     return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
                 }
-
-                // TODO handle non-primary volumes
-            } else if (isDownloadsDocument(uri)) {
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
                 val id = DocumentsContract.getDocumentId(uri)
                 val contentUri = ContentUris.withAppendedId(
                     Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id)
                 )
                 return getDataColumn(context!!, contentUri, null, null)
-            } else if (isMediaDocument(uri)) {
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
                 val docId = DocumentsContract.getDocumentId(uri)
                 val split = docId.split(":").toTypedArray()
                 val type = split[0]
@@ -68,9 +73,17 @@ class FileInformation {
                 )
                 return getDataColumn(context!!, contentUri, selection, selectionArgs)
             }
-        } else if ("content".equals(uri.scheme, ignoreCase = true)) {
+        }
+        // MediaStore (and general)
+        else if ("content".equals(uri.scheme, ignoreCase = true)) {
+            // Return the remote address
+            if (isGooglePhotosUri(uri))
+                return uri.lastPathSegment
+
             return getDataColumn(context!!, uri, null, null)
-        } else if ("file".equals(uri.scheme, ignoreCase = true)) {
+        }
+        // File
+        else if ("file".equals(uri.scheme, ignoreCase = true)) {
             return uri.path
         }
         return "unknown"
@@ -115,7 +128,7 @@ class FileInformation {
                 }
             }
         }
-        return fileSize?.toLong()?.let { humanReadableByteCountBin(it) }
+        return fileSize
     }
 
     // https://stackoverflow.com/a/3758880
@@ -193,5 +206,14 @@ class FileInformation {
      */
     private fun isMediaDocument(uri: Uri): Boolean {
         return "com.android.providers.media.documents" == uri.authority
+    }
+
+    /**
+     * @param uri
+     * The Uri to check.
+     * @return Whether the Uri authority is Google Photos.
+     */
+    private fun isGooglePhotosUri(uri: Uri): Boolean {
+        return "com.google.android.apps.photos.content" == uri.authority
     }
 }
