@@ -49,10 +49,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-
-        notification.showNotification(this,"SALOD ANDA",HawkUtils().getSaldo())
-
         binding.apply {
+            linearSaldo.setOnClickListener {
+                notification.showNotification(this@HomeActivity,"SALOD ANDA",HawkUtils().getSaldo())
+            }
             (saldoTxt as TextView).text = HawkUtils().getSaldo()
             filterActivityDate.setOnClickListener {
                 DatePickerCustom.dialogDatePicker(
