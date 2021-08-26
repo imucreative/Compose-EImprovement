@@ -11,6 +11,17 @@ const val DEFAULT_REQUEST = "json"
 /**
 * Hawk Key
 * */
+
+//LOGIN
+const val USER_NAME = "user_name"
+const val USER_ID = "user_id"
+const val TOKEN = "token"
+const val API_KEY = "api_key"
+const val DEVICE_UID = "device_uid"
+const val DEVICE_NAME = "device_name"
+const val SUCCES_LOGIN= "succes"
+
+
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------
 const val SS_CREATE = "suggestion_system"
 

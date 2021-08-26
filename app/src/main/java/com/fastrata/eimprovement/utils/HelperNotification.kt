@@ -2,7 +2,6 @@ package com.fastrata.eimprovement.utils
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -13,13 +12,6 @@ import androidx.appcompat.widget.AppCompatButton
 import com.fastrata.eimprovement.R
 
 class HelperNotification {
-
-//     fun showNotification(context: Context,header :String): MaterialDialog? {
-//          return MaterialDialog(context).show {
-//               setTitle(header)
-//               message(R.string.app_name)
-//          }
-//     }
 
     fun showErrorDialog(activity: Activity, header :String, content : String) {
         val dialog = Dialog(activity)

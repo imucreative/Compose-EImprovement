@@ -56,4 +56,8 @@ internal class HawkUtils() {
         return getDataCreateSs
     }
 
+    fun setLoginBoolean(value: Boolean): Boolean {
+        return Hawk.put(SUCCES_LOGIN,value)
+    }
+
 }

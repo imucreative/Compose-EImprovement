@@ -10,12 +10,13 @@ import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker
-import com.fastrata.eimprovement.utils.PreferenceUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
-import com.fastrata.eimprovement.utils.PREF_WELCOME
-import com.fastrata.eimprovement.utils.Tools
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.PreferenceUtils
+import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -41,11 +42,11 @@ class SplashScreenActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
 
-            if (!welcomeMessageModel.isDisplay) {
-                goToWelcomeMessage()
-            } else {
-                goToLoginPage()
-            }
+//            if (!welcomeMessageModel.isDisplay) {
+//                goToWelcomeMessage()
+//            } else {
+//                goToLoginPage()
+//            }
             /*
             val savedLogin = PreferenceUtil(this).get(PREF_USER_NAME, "", true) ?: ""
             if (savedLogin.isNotEmpty()) {
@@ -57,6 +58,16 @@ class SplashScreenActivity : AppCompatActivity() {
                 goToLoginPage()
             }
              */
+            val bool = Hawk.get<Boolean>(SUCCES_LOGIN)
+            if (bool == true){
+                goToHome()
+            }else{
+                if (!welcomeMessageModel.isDisplay) {
+                    goToWelcomeMessage()
+                } else {
+                    goToLoginPage()
+                }
+            }
         }, 2000) //in millisecond
     }
 
@@ -67,6 +78,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun goToLoginPage() {
         startActivity(Intent(applicationContext, LoginActivity::class.java))
+        this.finish()
+    }
+
+    private fun goToHome(){
+        startActivity(Intent(applicationContext, HomeActivity::class.java))
         this.finish()
     }
 

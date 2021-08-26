@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.features.settings.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +8,9 @@ import android.view.MenuItem
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivitySettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
+import com.fastrata.eimprovement.features.splashscreen.WelcomeMessageActivity
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
 
 class SettingsActivity : AppCompatActivity() {
@@ -22,9 +26,19 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initToolbar()
+        initComponent()
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
+    }
+
+    private fun initComponent() {
+        binding.apply {
+            btnLogout.setOnClickListener {
+                HawkUtils().setLoginBoolean(false)
+                startActivity(Intent(this@SettingsActivity, SplashScreenActivity::class.java))
+            }
+        }
     }
 
     private fun initToolbar() {
