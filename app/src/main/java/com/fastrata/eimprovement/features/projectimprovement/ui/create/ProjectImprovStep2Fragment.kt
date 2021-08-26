@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep2Binding
-import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
 import com.fastrata.eimprovement.utils.DatePickerCustom
 
 class ProjectImprovStep2Fragment : Fragment () {

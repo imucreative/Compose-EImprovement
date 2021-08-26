@@ -52,8 +52,8 @@ class LoginActivity : AppCompatActivity() {
         val req = HashMap<String, String>()
         req["user_name"] = UserName
         req["user_password"] = Password
-        req["device_uid"] = ""
-        req["device_name"] = ""
+        req["device_uid"] = Tools.getDeviceID(this)
+        req["device_name"] = Tools.deviceName
         Log.i("datanya yg dikirim", Gson().toJson(req))
         GoToHome()
     }

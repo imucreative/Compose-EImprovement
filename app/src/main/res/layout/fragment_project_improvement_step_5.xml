@@ -48,5 +48,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_view"
-        tools:listitem="@layout/item_suggestion_system_team_member" />
+        tools:listitem="@layout/item_akar_masalah_pi" />
 </androidx.constraintlayout.widget.ConstraintLayout>

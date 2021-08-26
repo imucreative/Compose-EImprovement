@@ -4,6 +4,7 @@ import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRew
 import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
@@ -383,11 +384,11 @@ object DataDummySs {
         return projectimprov
     }
 
-    fun generateAkarMasalah(): ArrayList<AkarMasalahModel> {
-        val akarmslh = ArrayList<AkarMasalahModel>()
+    fun generateSebabMasalah(): ArrayList<SebabMasalahModel> {
+        val akarmslh = ArrayList<SebabMasalahModel>()
 
         akarmslh.add(
-            AkarMasalahModel(
+            SebabMasalahModel(
             "satu",
             "1",
             "2",
@@ -398,7 +399,7 @@ object DataDummySs {
         ))
 
         akarmslh.add(
-            AkarMasalahModel(
+            SebabMasalahModel(
                 "satu",
                 "1",
                 "2",
@@ -409,7 +410,7 @@ object DataDummySs {
             ))
 
         akarmslh.add(
-            AkarMasalahModel(
+            SebabMasalahModel(
                 "satu",
                 "1",
                 "2",
@@ -421,7 +422,7 @@ object DataDummySs {
 
 
         akarmslh.add(
-            AkarMasalahModel(
+            SebabMasalahModel(
                 "satu",
                 "1",
                 "2",
@@ -432,7 +433,7 @@ object DataDummySs {
             ))
 
         akarmslh.add(
-            AkarMasalahModel(
+            SebabMasalahModel(
                 "satu",
                 "1",
                 "2",
@@ -442,6 +443,23 @@ object DataDummySs {
                 "test"
             ))
         return akarmslh
+    }
+
+    fun generateDummyAkarMasalah(): ArrayList<AkarMasalahModel>{
+        val data = ArrayList<AkarMasalahModel>()
+        data.add(
+            AkarMasalahModel(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+        )
+        data.add(
+            AkarMasalahModel(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+        )
+        return data
     }
 
     fun generateDummyNameMember(): ArrayList<MemberNameItem> {

@@ -457,4 +457,14 @@ object Tools {
             url
         }
     }
+
+    //mathematics
+
+    fun sumValues(value1 :String,value2 : String): String{
+        val int1 : Int? = value1.toInt()
+        val int2: Int? = value2.toInt()
+        val nums = listOf(int1, int2)
+        var num : String = nums.toString()
+        return num
+    }
 }

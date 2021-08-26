@@ -13,6 +13,8 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityProjectImprovementWizardBinding
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep1Binding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCallback
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep1Fragment
 import com.fastrata.eimprovement.utils.Tools
 
@@ -215,6 +217,11 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
             dots[currentIndex]!!.setImageResource(R.drawable.shape_circle)
             dots[currentIndex]!!.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
         }
+    }
+
+    private lateinit var picreateCallback: ProjecImprovementSystemCreateCallback
+    fun setpiCreateCallback(piCreateCallback: ProjecImprovementSystemCreateCallback) {
+        this.picreateCallback = piCreateCallback
     }
 
 

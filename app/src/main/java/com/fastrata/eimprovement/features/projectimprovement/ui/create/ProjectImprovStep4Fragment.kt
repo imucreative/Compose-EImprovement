@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep4Binding
-import com.fastrata.eimprovement.features.projectimprovement.adapter.AkarMasalahAdapter
-import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.adapter.SebabMasalahAdapter
+import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 
 class ProjectImprovStep4Fragment : Fragment() {
@@ -19,7 +19,7 @@ class ProjectImprovStep4Fragment : Fragment() {
     private lateinit var _binding: FragmentProjectImprovementStep4Binding
     private val binding get() = _binding
     private lateinit var viewModel : ProjectImprovementViewModel
-    private lateinit var adapter : AkarMasalahAdapter
+    private lateinit var adapter : SebabMasalahAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,27 +40,27 @@ class ProjectImprovStep4Fragment : Fragment() {
     }
 
     private fun initComponent() {
-        viewModel.setAkarMasalah()
-        adapter = AkarMasalahAdapter()
+        viewModel.setSebabMasalah()
+        adapter = SebabMasalahAdapter()
         adapter.notifyDataSetChanged()
 
         binding.apply {
-            rvAkarMasalah.setHasFixedSize(true)
-            rvAkarMasalah.layoutManager = LinearLayoutManager(context)
-            rvAkarMasalah.adapter = adapter
+            rvSebabMasalah.setHasFixedSize(true)
+            rvSebabMasalah.layoutManager = LinearLayoutManager(context)
+            rvSebabMasalah.adapter = adapter
 
             addAkar.setOnClickListener {
                 Toast.makeText(context,"Menambahkan Data",Toast.LENGTH_SHORT).show()
             }
         }
 
-        adapter.setAkarMslhCallback(object : AkarMasalahCallback{
-            override fun onItemClicked(data: AkarMasalahModel) {
+        adapter.setSebabMslhCallback(object : SebabMasalahCallback{
+            override fun onItemClicked(data: SebabMasalahModel) {
                Toast.makeText(context,data.pnybmslh,Toast.LENGTH_SHORT).show()
             }
         })
 
-        viewModel.getAkarMasalah().observe(viewLifecycleOwner,{
+        viewModel.getSebabMasalah().observe(viewLifecycleOwner,{
             if(it != null){
                 adapter.setList(it)
             }

@@ -18,39 +18,36 @@ class AkarMasalahAdapter : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahVi
     }
 
     private lateinit var akarmslhcallback : AkarMasalahCallback
-    fun setAkarMslhCallback(akarMasalahCallback: AkarMasalahCallback){
-        this.akarmslhcallback = akarMasalahCallback
+    fun setAkarMslhCallback(AkarMasalahCallback: AkarMasalahCallback){
+        this.akarmslhcallback = AkarMasalahCallback
     }
 
-    inner class AkarMasalahViewHolder(private val binding: ItemAkarMasalahPiBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(Data : AkarMasalahModel) {
-
+    inner class AkarMasalahViewHolder(private  val binding: ItemAkarMasalahPiBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(data : AkarMasalahModel){
             binding.root.setOnClickListener {
-                akarmslhcallback.onItemClicked(Data)
+                akarmslhcallback.onItemClicked(data)
             }
 
             binding.apply {
-                penyebabMasalah.text = Data.pnybmslh
-                w1Pi.text = Data.w1
-                w2Pi.text = Data.w2
-                w3Pi.text = Data.w3
-                w4Pi.text = Data.w4
-                w5Pi.text = Data.w5
-                akarPrioritas.text = Data.akarmslsh
+                whyTerakhir.text = data.akarmslsh
+                imprvementDilakukan.text = data.improvement
+                detilLangkah.text = data.detail
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AkarMasalahViewHolder {
-        val items = ItemAkarMasalahPiBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AkarMasalahViewHolder{
+        val items = ItemAkarMasalahPiBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return AkarMasalahViewHolder(items)
     }
 
-    override fun onBindViewHolder(holder: AkarMasalahAdapter.AkarMasalahViewHolder, position: Int) {
-        holder.bind(list[position])
+    override fun onBindViewHolder(holder: AkarMasalahAdapter.AkarMasalahViewHolder, positon: Int){
+        holder.bind(list[positon])
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
+
+
 }
