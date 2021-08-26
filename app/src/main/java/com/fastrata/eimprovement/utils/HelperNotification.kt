@@ -54,6 +54,35 @@ class HelperNotification {
 //        dialog.window!!.attributes = lp
     }
 
+    interface CallBackNotificationYesNo {
+        fun onNotificationYes()
+        fun onNotificationNo()
+    }
+
+
+    fun shownotificationyesno(activity: Activity,header: String,content: String,listener : CallBackNotificationYesNo){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_yesno)
+        (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
+        (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationYes()
+        }
+        (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
 }
 
 

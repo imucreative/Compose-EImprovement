@@ -12,12 +12,15 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
 import com.fastrata.eimprovement.features.splashscreen.WelcomeMessageActivity
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.HelperNotification
+import com.fastrata.eimprovement.utils.HelperNotification.CallBackNotificationYesNo
 import com.fastrata.eimprovement.utils.Tools
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var toolbarBinding: ToolbarBinding
+    private lateinit var notification: HelperNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +37,27 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
+        notification = HelperNotification()
+
         binding.apply {
             saldoTxt.text = HawkUtils().getSaldo()
-
             btnLogout.setOnClickListener {
-                HawkUtils().setLoginBoolean(false)
-                startActivity(Intent(this@SettingsActivity, SplashScreenActivity::class.java))
+                notification.shownotificationyesno(this@SettingsActivity,"Setting","Apakah anda yakin keluar",
+                object  :CallBackNotificationYesNo {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes() {
+                        HawkUtils().setLoginBoolean(false)
+                    startActivity(Intent(this@SettingsActivity, SplashScreenActivity::class.java))
+                    }
+                })
             }
         }
     }
+
+
 
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
@@ -62,6 +77,7 @@ class SettingsActivity : AppCompatActivity() {
                 finish()
             }
         }
+
         return super.onOptionsItemSelected(item)
     }
 
