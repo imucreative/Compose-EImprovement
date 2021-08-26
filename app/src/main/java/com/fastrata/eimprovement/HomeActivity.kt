@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
@@ -15,6 +16,7 @@ import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImproveme
 import com.fastrata.eimprovement.features.settings.ui.SettingsActivity
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemActivity
 import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.utils.Tools
 import java.util.*
@@ -47,7 +49,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
+
+        notification.showNotification(this,"SALOD ANDA",HawkUtils().getSaldo())
+
         binding.apply {
+            (saldoTxt as TextView).text = HawkUtils().getSaldo()
             filterActivityDate.setOnClickListener {
                 DatePickerCustom.dialogDatePicker(
                     context = this@HomeActivity, fragmentManager = supportFragmentManager,

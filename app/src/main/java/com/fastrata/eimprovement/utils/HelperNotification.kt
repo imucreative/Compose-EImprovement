@@ -16,7 +16,7 @@ class HelperNotification {
     fun showErrorDialog(activity: Activity, header :String, content : String) {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
-        dialog.setContentView(R.layout.dialog_warning)
+        dialog.setContentView(R.layout.dialog_error)
         (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
         dialog.setCancelable(true)
@@ -40,6 +40,18 @@ class HelperNotification {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_notification)
+        (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
+        (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
+        dialog.setCancelable(true)
+//        val lp = WindowManager.LayoutParams()
+//        lp.copyFrom(dialog.window!!.attributes)
+//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        (dialog.findViewById<View>(R.id.btn_dismiss) as TextView).setOnClickListener { v ->
+            dialog.dismiss()
+        }
+        dialog.show()
+//        dialog.window!!.attributes = lp
     }
 
 }

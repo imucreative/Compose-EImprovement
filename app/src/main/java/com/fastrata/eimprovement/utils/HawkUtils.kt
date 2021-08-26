@@ -60,4 +60,11 @@ internal class HawkUtils() {
         return Hawk.put(SUCCES_LOGIN,value)
     }
 
+    fun setSaldo(saldo: String) {
+        Hawk.put<Any>(point, saldo)
+    }
+
+    fun getSaldo():String {
+        return Hawk.get(point)
+    }
 }

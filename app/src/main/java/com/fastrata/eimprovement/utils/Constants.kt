@@ -20,6 +20,7 @@ const val API_KEY = "api_key"
 const val DEVICE_UID = "device_uid"
 const val DEVICE_NAME = "device_name"
 const val SUCCES_LOGIN= "succes"
+const val point= "point"
 
 
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------

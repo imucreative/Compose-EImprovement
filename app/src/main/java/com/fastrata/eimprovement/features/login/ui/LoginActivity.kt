@@ -59,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun GoToHome(){
+        HawkUtils().setSaldo("50000")
         HawkUtils().setLoginBoolean(true)
         Intent(this@LoginActivity, HomeActivity::class.java).also {
                     startActivity(it)

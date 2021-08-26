@@ -1,41 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@android:color/white"
     android:layout_height="match_parent">
-
-    <LinearLayout
+    <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_rectangle"
-        android:backgroundTint="@color/amber_500"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="@dimen/spacing_large"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:gravity="center_horizontal"
-                android:text="Warning"
-                android:textStyle="bold"></TextView>
-        </LinearLayout>
-
+        app:mrl_rippleDelayClick="false"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
             android:orientation="vertical">
-
-
+            <TextView
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/blue_400"
+                android:text="INFO"
+                android:id="@+id/txt_title"
+                android:textColor="@android:color/white"
+                android:padding="10dp"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:id="@+id/txt_1"
+                    android:paddingTop="5dp"
+                    android:text=""
+                    android:textColor="@color/grey_1000"
+                    android:paddingBottom="5dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/grey_1000"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="5dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:id="@+id/txt_2"
+                    android:text=""
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/grey_1000"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/txt_3"
+                    android:text=""
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+            <TextView
+                android:id="@+id/btn_dismiss"
+                android:layout_width="match_parent"
+                android:textColor="@color/grey_1000"
+                android:padding="15dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:gravity="center_horizontal"
+                android:text="Tap to dismiss!"
+                android:textSize="10sp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+    </com.balysv.materialripple.MaterialRippleLayout>
+</androidx.cardview.widget.CardView>

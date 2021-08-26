@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivitySettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
@@ -34,6 +35,8 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun initComponent() {
         binding.apply {
+            saldoTxt.text = HawkUtils().getSaldo()
+
             btnLogout.setOnClickListener {
                 HawkUtils().setLoginBoolean(false)
                 startActivity(Intent(this@SettingsActivity, SplashScreenActivity::class.java))
