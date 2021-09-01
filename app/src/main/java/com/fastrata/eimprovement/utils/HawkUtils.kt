@@ -1,9 +1,6 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
@@ -17,7 +14,7 @@ internal class HawkUtils() {
         ssNo: String? = null,
         date: String? = null,
         title: String? = null,
-        listCategory: ArrayList<String?>? = null,
+        listCategory: ArrayList<CategorySuggestionItem?>? = if (getDataCreateSs?.categorySuggestion == null) arrayListOf() else null,
         name: String? = null,
         nik: String? = null,
         branch: String? = null,

@@ -5,11 +5,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemBinding
 import com.fastrata.eimprovement.databinding.SnackbarIconTextBinding
 import com.google.android.material.snackbar.Snackbar
 

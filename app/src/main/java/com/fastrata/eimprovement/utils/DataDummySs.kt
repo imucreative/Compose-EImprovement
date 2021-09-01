@@ -489,4 +489,24 @@ object DataDummySs {
         data.add(MemberTaskItem(task = "Anggota"))
         return data
     }
+
+    fun generateDummyCategorySuggestion(): ArrayList<CategorySuggestionItem?> {
+        val data = ArrayList<CategorySuggestionItem?>()
+        data.add(CategorySuggestionItem(
+            id = 1, category = "Meningkatkan Penjualan", false
+        ))
+        data.add(CategorySuggestionItem(
+            id = 2, category = "Menurunkan Biaya", false
+        ))
+        data.add(CategorySuggestionItem(
+            id = 3, category = "Mencegah Pelanggaran atau Kecurangan", false
+        ))
+        data.add(CategorySuggestionItem(
+            id = 4, category = "Menyederhanakan Proses Kerja", false
+        ))
+        data.add(CategorySuggestionItem(
+            id = 5, category = "Lain-lain", false
+        ))
+        return data
+    }
 }

@@ -229,10 +229,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/title_suggestion"
+                        android:imeOptions="actionDone"
                         android:maxLines="1"
                         android:padding="0dp"
-                        android:singleLine="true"
                         android:scrollbars="vertical|horizontal"
+                        android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         tools:text="Perlunya arsitektur untuk setiap aplikasi / system" />
 
@@ -254,7 +255,38 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_category_suggestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_medium"
+                    android:clickable="true"
+                    tools:listitem="@layout/item_category_suggestion"
+                    android:focusable="true" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_other"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spacing_xxlarge"
+                    android:textColorHint="@color/colorPrimary"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_lain_lain"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:hint="Lain - lain"
+                        android:padding="0dp"
+                        tools:text="Other"
+                        android:textColor="@color/colorPrimary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -358,7 +390,7 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </LinearLayout>-->
 
             </LinearLayout>
 
