@@ -15,12 +15,15 @@ import com.fastrata.eimprovement.utils.SnackBarCustom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SuggestionSystemStep2Fragment : Fragment() {
 
     private var _binding: FragmentSuggestionSystemStep2Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +40,13 @@ class SuggestionSystemStep2Fragment : Fragment() {
 
         _binding = FragmentSuggestionSystemStep2Binding.bind(view)
 
+        datePicker = activity?.let {
+            DatePickerCustom(
+                context = binding.root.context, themeDark = true,
+                minDateIsCurrentDate = true, it.supportFragmentManager
+            )
+        }!!
+
         initComponent(binding)
     }
 
@@ -49,44 +59,44 @@ class SuggestionSystemStep2Fragment : Fragment() {
 
         binding.apply {
             etFromStatus1.setOnClickListener {
-                activity?.let { activity ->
-                    view?.let { view ->
-                        DatePickerCustom.dialogDatePicker(
-                            context = view.context, fragmentManager = activity.supportFragmentManager,
-                            themeDark = false, minDateIsCurrentDate = true
-                        )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        etFromStatus1.setText("$dayStr-$monthStr-$year")
                     }
-                }
+                })
             }
             etToStatus1.setOnClickListener {
-                activity?.let { activity ->
-                    view?.let { view ->
-                        DatePickerCustom.dialogDatePicker(
-                            context = view.context, fragmentManager = activity.supportFragmentManager,
-                            themeDark = false, minDateIsCurrentDate = true
-                        )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        etToStatus1.setText("$dayStr-$monthStr-$year")
                     }
-                }
+                })
             }
             etFromStatus2.setOnClickListener {
-                activity?.let { activity ->
-                    view?.let { view ->
-                        DatePickerCustom.dialogDatePicker(
-                            context = view.context, fragmentManager = activity.supportFragmentManager,
-                            themeDark = false, minDateIsCurrentDate = true
-                        )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        etFromStatus2.setText("$dayStr-$monthStr-$year")
                     }
-                }
+                })
             }
             etToStatus2.setOnClickListener {
-                activity?.let { activity ->
-                    view?.let { view ->
-                        DatePickerCustom.dialogDatePicker(
-                            context = view.context, fragmentManager = activity.supportFragmentManager,
-                            themeDark = false, minDateIsCurrentDate = true
-                        )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        etToStatus2.setText("$dayStr-$monthStr-$year")
                     }
-                }
+                })
             }
 
             // init false condition
@@ -114,6 +124,9 @@ class SuggestionSystemStep2Fragment : Fragment() {
 
                     etFromStatus2.isEnabled = false
                     etToStatus2.isEnabled = false
+                    etFromStatus2.setText("")
+                    etToStatus2.setText("")
+
                 }
             }
 
@@ -121,6 +134,8 @@ class SuggestionSystemStep2Fragment : Fragment() {
                 if (isChecked) {
                     etFromStatus1.isEnabled = false
                     etToStatus1.isEnabled = false
+                    etFromStatus1.setText("")
+                    etToStatus1.setText("")
 
                     etFromStatus2.isEnabled = true
                     etToStatus2.isEnabled = true
@@ -203,7 +218,8 @@ class SuggestionSystemStep2Fragment : Fragment() {
                         SnackBarCustom.snackBarIconInfo(
                             root.rootView, layoutInflater, resources, root.rootView.context,
                             "Status Implementation must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
+                            R.drawable.ic_close, R.color.red_500
+                        )
                         stat = false
 
                     } else {

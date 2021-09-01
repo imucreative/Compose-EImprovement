@@ -1,47 +1,43 @@
 package com.fastrata.eimprovement.utils
 
 import android.content.Context
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.fastrata.eimprovement.R
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import java.util.*
 
-class DatePickerCustom {
-    companion object {
-        fun dialogDatePicker(
-            context: Context,
-            fragmentManager: FragmentManager,
-            themeDark: Boolean,
-            minDateIsCurrentDate: Boolean
-        ) {
-            val curCalender = Calendar.getInstance()
-            val datePicker: DatePickerDialog = DatePickerDialog.newInstance(
-                { _, year, monthOfYear, dayOfMonth ->
-                    val calendar = Calendar.getInstance()
-                    calendar[Calendar.YEAR] = year
-                    calendar[Calendar.MONTH] = monthOfYear
-                    calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-                    val dateShipMillis = calendar.timeInMillis
+// https://thesimplycoder.com/226/android-date-picker-kotlin-tutorial/
+class DatePickerCustom(
+    context: Context,
+    themeDark: Boolean = false,
+    minDateIsCurrentDate: Boolean,
+    fragmentManager: FragmentManager
+) {
+    private var datePicker: DatePickerDialog
+    private var callback: Callback? = null
+    private var fragmentMgr: FragmentManager = fragmentManager
 
-                    Toast.makeText(
-                        context,
-                        Tools.getFormattedDateSimple(dateShipMillis),
-                        Toast.LENGTH_LONG
-                    ).show()
-                },
-                curCalender[Calendar.YEAR],
-                curCalender[Calendar.MONTH],
-                curCalender[Calendar.DAY_OF_MONTH]
-            )
-            //set dark light
-            datePicker.isThemeDark = themeDark
-            datePicker.accentColor = ContextCompat.getColor(context, R.color.colorPrimary)
-            if (minDateIsCurrentDate) datePicker.minDate = curCalender
-            datePicker.show(fragmentManager, "DatePickerDialog")
-        }
+    private val listener = DatePickerDialog.OnDateSetListener { datePicker, year, monthOfYear, dayOfMonth ->
+        callback?.onDateSelected(dayOfMonth, monthOfYear, year)
+    }
 
+    init {
+        val cal = Calendar.getInstance()
+        datePicker = DatePickerDialog.newInstance(
+            listener, cal[Calendar.YEAR], cal[Calendar.MONTH], cal[Calendar.DAY_OF_MONTH]
+        )
+        datePicker.accentColor = ContextCompat.getColor(context, R.color.colorPrimary)
+        datePicker.isThemeDark = themeDark
+        if (minDateIsCurrentDate) datePicker.minDate = cal
+    }
+
+    fun showDialog(callback: Callback?) {
+        this.callback = callback
+        datePicker.show(fragmentMgr, "DatePickerDialog")
+    }
+
+    interface Callback {
+        fun onDateSelected(dayOfMonth: Int, month: Int, year: Int)
     }
 }
-

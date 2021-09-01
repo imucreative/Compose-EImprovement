@@ -31,19 +31,19 @@ class ProjectImprovStep2Fragment : Fragment () {
 
             dariStatus1PI.setOnClickListener {
                 activity?.let {
-                    DatePickerCustom.dialogDatePicker(
+                    /*DatePickerCustom.dialogDatePicker(
                         context = view.context, fragmentManager = it.supportFragmentManager,
                         themeDark = false, minDateIsCurrentDate = true
-                    )
+                    )*/
                 }
             }
 
             sampaiStatus1PI.setOnClickListener {
                 activity?.let {
-                    DatePickerCustom.dialogDatePicker(
+                    /*DatePickerCustom.dialogDatePicker(
                         context = view.context, fragmentManager = it.supportFragmentManager,
                         themeDark = false, minDateIsCurrentDate = true
-                    )
+                    )*/
                 }
             }
 

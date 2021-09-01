@@ -21,6 +21,7 @@ class ListApprovalActivity : AppCompatActivity() {
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var viewModelList: ListApprovalViewModel
     private lateinit var adapterList: ListApprovalAdapter
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,11 @@ class ListApprovalActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModelList = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ListApprovalViewModel::class.java)
+
+        datePicker = DatePickerCustom(
+            context = binding.root.context, themeDark = true,
+            minDateIsCurrentDate = true, supportFragmentManager
+        )
 
         initToolbar()
         initComponent()
@@ -82,17 +88,25 @@ class ListApprovalActivity : AppCompatActivity() {
             drawer.openDrawer(GravityCompat.END)
 
             filterStartDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
-                    context = this@ListApprovalActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        edtStartDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             filterEndDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
-                    context = this@ListApprovalActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        edtEndDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             btnCloseFilter.setOnClickListener {

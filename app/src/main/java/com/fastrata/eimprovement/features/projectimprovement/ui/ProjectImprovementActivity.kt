@@ -108,17 +108,17 @@ class ProjectImprovementActivity : AppCompatActivity (){
             drawer.openDrawer(GravityCompat.END)
 
             filterStartDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
+                /*DatePickerCustom.dialogDatePicker(
                     context = this@ProjectImprovementActivity, fragmentManager = supportFragmentManager,
                     themeDark = false, minDateIsCurrentDate = true
-                )
+                )*/
             }
 
             filterEndDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
+                /*DatePickerCustom.dialogDatePicker(
                     context = this@ProjectImprovementActivity, fragmentManager = supportFragmentManager,
                     themeDark = false, minDateIsCurrentDate = true
-                )
+                )*/
             }
 
             btnCloseFilter.setOnClickListener {

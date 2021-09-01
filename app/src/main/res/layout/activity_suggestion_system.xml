@@ -372,6 +372,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/edt_start_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_large"
@@ -407,6 +408,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/edt_end_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_large"

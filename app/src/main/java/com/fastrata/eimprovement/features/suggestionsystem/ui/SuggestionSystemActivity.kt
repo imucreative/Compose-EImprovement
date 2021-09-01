@@ -23,6 +23,7 @@ class SuggestionSystemActivity : AppCompatActivity() {
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var viewModel: SuggestionSystemViewModel
     private lateinit var adapter: SuggestionSystemAdapter
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,11 @@ class SuggestionSystemActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SuggestionSystemViewModel::class.java)
+
+        datePicker = DatePickerCustom(
+            context = binding.root.context, themeDark = true,
+            minDateIsCurrentDate = true, supportFragmentManager
+        )
 
         initToolbar()
         initComponent()
@@ -88,17 +94,25 @@ class SuggestionSystemActivity : AppCompatActivity() {
             drawer.openDrawer(GravityCompat.END)
 
             filterStartDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
-                    context = this@SuggestionSystemActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        binding.edtStartDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             filterEndDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
-                    context = this@SuggestionSystemActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        binding.edtEndDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             btnCloseFilter.setOnClickListener {

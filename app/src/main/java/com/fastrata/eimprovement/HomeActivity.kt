@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
@@ -26,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var notification: HelperNotification
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,12 @@ class HomeActivity : AppCompatActivity() {
         toolbarBinding = ToolbarBinding.bind(binding.root)
         setContentView(binding.root)
         notification = HelperNotification()
+
+        datePicker = DatePickerCustom(
+            context = binding.root.context, themeDark = true,
+            minDateIsCurrentDate = true, supportFragmentManager
+        )
+
         initToolbar()
         initComponent()
 
@@ -55,10 +63,15 @@ class HomeActivity : AppCompatActivity() {
             }
             (saldoTxt as TextView).text = HawkUtils().getSaldo()
             filterActivityDate.setOnClickListener {
-                DatePickerCustom.dialogDatePicker(
-                    context = this@HomeActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+
+                        Toast.makeText(this@HomeActivity, "$dayStr-$monthStr-$year", Toast.LENGTH_LONG).show()
+                    }
+                })
             }
 
             // action menu
