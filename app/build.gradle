@@ -33,6 +33,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        dataBinding = true
         viewBinding = true
     }
 
@@ -92,7 +93,10 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
 
     // lifecycle ViewModel
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    def lifecycle = '2.3.1'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
     // Dagger
     def daggerVersion = '2.23.2'
@@ -104,8 +108,9 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
     // coroutine
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
+    def coroutine = '1.5.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
 
     // database room -----------------------------------------------------------------------------
     def roomVersion = '2.2.5'
