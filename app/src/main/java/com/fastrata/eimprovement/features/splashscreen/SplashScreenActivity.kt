@@ -119,7 +119,7 @@ class SplashScreenActivity : AppCompatActivity() {
             } else {
                 //permission already granted
                 SnackBarCustom.snackBarIconInfo(parentView!!, layoutInflater, resources, this, "Permission granted", R.drawable.ic_error_outline, R.color.blue_500)
-                SnackBarCustom
+                // SnackBarCustom
                 processSplashScreen()
             }
         }

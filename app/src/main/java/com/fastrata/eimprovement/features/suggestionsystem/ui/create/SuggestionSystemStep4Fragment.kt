@@ -49,7 +49,7 @@ class SuggestionSystemStep4Fragment: Fragment() {
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
 
-        initComponent()
+        initComponent(data?.attachment)
     }
 
     override fun onDestroyView() {
@@ -57,7 +57,7 @@ class SuggestionSystemStep4Fragment: Fragment() {
         _binding = null
     }
 
-    private fun initComponent() {
+    private fun initComponent(attachment: ArrayList<AttachmentItem?>?) {
         viewModel.setSuggestionSystemAttachment()
         adapter = SsCreateAttachmentAdapter()
         adapter.notifyDataSetChanged()
@@ -76,9 +76,9 @@ class SuggestionSystemStep4Fragment: Fragment() {
             override fun removeClicked(data: AttachmentItem) {
                 Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
-                this@SuggestionSystemStep4Fragment.data?.attachment?.remove(data)
+                attachment?.remove(data)
 
-                viewModel.updateAttachment(this@SuggestionSystemStep4Fragment.data?.attachment)
+                viewModel.updateAttachment(attachment)
                 viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
                     if (it != null) {
                         adapter.setList(it)

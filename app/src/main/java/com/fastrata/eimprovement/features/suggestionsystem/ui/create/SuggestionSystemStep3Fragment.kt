@@ -44,7 +44,7 @@ class SuggestionSystemStep3Fragment: Fragment() {
         _binding = FragmentSuggestionSystemStep3Binding.bind(view)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateTeamMemberViewModel::class.java)
 
-        initComponent()
+        initComponent(data?.teamMember)
     }
 
     override fun onDestroyView() {
@@ -52,7 +52,7 @@ class SuggestionSystemStep3Fragment: Fragment() {
         _binding = null
     }
 
-    private fun initComponent() {
+    private fun initComponent(teamMember: ArrayList<TeamMemberItem?>?) {
         viewModel.setSuggestionSystemTeamMember()
         adapter = SsCreateTeamMemberAdapter()
         adapter.notifyDataSetChanged()
@@ -111,9 +111,9 @@ class SuggestionSystemStep3Fragment: Fragment() {
             override fun removeClicked(data: TeamMemberItem) {
                 Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
-                this@SuggestionSystemStep3Fragment.data?.teamMember?.remove(data)
+                teamMember?.remove(data)
 
-                viewModel.updateTeamMember(this@SuggestionSystemStep3Fragment.data?.teamMember)
+                viewModel.updateTeamMember(teamMember)
                 viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
                     if (it != null) {
                         adapter.setListTeamMember(it)
