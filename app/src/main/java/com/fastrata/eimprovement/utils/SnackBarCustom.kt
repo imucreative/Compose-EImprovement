@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemBinding
+import com.fastrata.eimprovement.databinding.SnackbarIconTextBinding
 import com.google.android.material.snackbar.Snackbar
 
 class SnackBarCustom {
@@ -23,15 +25,21 @@ class SnackBarCustom {
             color: Int
         ) {
             val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_SHORT)
-            //inflate view
-            val customView: View = layoutInflater.inflate(R.layout.snackbar_icon_text, null)
-            snackBar.view.setBackgroundColor(Color.TRANSPARENT)
             val snackBarView = snackBar.view as Snackbar.SnackbarLayout
+            //inflate view
+            val binding = SnackbarIconTextBinding.inflate(layoutInflater)
+            val customView = binding.root
+
+            snackBar.view.setBackgroundColor(Color.TRANSPARENT)
+
+            binding.parentView.setBackgroundColor(ContextCompat.getColor(context, color))
+            binding.message.text = message
+            binding.icon.setImageResource(icon)
+            binding.icon.setOnClickListener {
+                snackBar.dismiss()
+            }
+
             snackBarView.setPadding(0, 0, 0, 0)
-            (customView.findViewById<View>(R.id.message) as TextView).text = message
-            (customView.findViewById<View>(R.id.icon) as ImageView).setImageResource(icon)
-            customView.findViewById<View>(R.id.parent_view)
-                .setBackgroundColor(ContextCompat.getColor(context, color))
             snackBarView.addView(customView, 0)
             snackBar.show()
         }
