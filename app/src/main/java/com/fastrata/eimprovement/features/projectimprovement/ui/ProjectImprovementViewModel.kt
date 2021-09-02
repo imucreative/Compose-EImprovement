@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
@@ -16,6 +18,8 @@ class ProjectImprovementViewModel : ViewModel(){
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahModel>>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahModel>>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
+    private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
+    private val listCategory = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
 
     fun setProjectImprovement () {
         val data = DataDummySs.generateDummyProjectImprovementList()
@@ -77,6 +81,47 @@ class ProjectImprovementViewModel : ViewModel(){
         )
     }
 
+    fun setpiattachment(){
+        val data = HawkUtils().getTempDataCreateSs()?.attachment
+        Timber.d("### attachment : $data")
+
+        listAttachment.postValue(data)
+    }
+
+    fun getpiattachment():LiveData<ArrayList<AttachmentItem?>?>{
+        return listAttachment
+    }
+
+    fun addAttachment(add: AttachmentItem, current: ArrayList<AttachmentItem?>?) {
+        current?.add(add)
+
+        listAttachment.postValue(current)
+
+        HawkUtils().setTempDataCreateSs(
+            attachment = current
+        )
+    }
+
+    fun updateAttachment(add: ArrayList<AttachmentItem?>?) {
+        listAttachment.postValue(add)
+
+        HawkUtils().setTempDataCreateSs(
+            attachment = add
+        )
+    }
+
+    fun setCategorySuggestion() {
+        // koneksi ke hawk
+        val data = DataDummySs.generateDummyCategorySuggestion()
+
+        println("### category suggestion : $data")
+
+        listCategory.postValue(data)
+    }
+
+    fun getCategorySuggestion(): LiveData<ArrayList<CategorySuggestionItem?>?> {
+        return listCategory
+    }
 
 
 

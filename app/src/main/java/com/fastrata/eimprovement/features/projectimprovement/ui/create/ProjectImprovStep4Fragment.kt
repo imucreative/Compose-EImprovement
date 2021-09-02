@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep4Binding
+import com.fastrata.eimprovement.features.ChangesPoint.ui.create.add.AddChangeRewardActivity
 import com.fastrata.eimprovement.features.projectimprovement.adapter.SebabMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
@@ -51,6 +53,9 @@ class ProjectImprovStep4Fragment : Fragment() {
 
             addAkar.setOnClickListener {
                 Toast.makeText(context,"Menambahkan Data",Toast.LENGTH_SHORT).show()
+//                Intent(context, ProjectImprovementAddAkarMasalah::class.java).also {
+//                    startActivity(it)
+//                }
             }
         }
 

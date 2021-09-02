@@ -42,8 +42,8 @@ class SuggestionSystemStep2Fragment : Fragment() {
 
         datePicker = activity?.let {
             DatePickerCustom(
-                context = binding.root.context, themeDark = true,
-                minDateIsCurrentDate = true, it.supportFragmentManager
+            context = binding.root.context,themeDark = true,
+                minDateIsCurrentDate = true,it.supportFragmentManager
             )
         }!!
 
@@ -64,7 +64,7 @@ class SuggestionSystemStep2Fragment : Fragment() {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etFromStatus1.setText("$dayStr-$monthStr-$year")
+                        binding.etFromStatus1.setText("$dayStr-$monthStr-$year")
                     }
                 })
             }
@@ -74,7 +74,7 @@ class SuggestionSystemStep2Fragment : Fragment() {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etToStatus1.setText("$dayStr-$monthStr-$year")
+                        binding.etToStatus1.setText("$dayStr-$monthStr-$year")
                     }
                 })
             }
@@ -84,7 +84,7 @@ class SuggestionSystemStep2Fragment : Fragment() {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etFromStatus2.setText("$dayStr-$monthStr-$year")
+                        binding.etFromStatus2.setText("$dayStr-$monthStr-$year")
                     }
                 })
             }
@@ -94,7 +94,7 @@ class SuggestionSystemStep2Fragment : Fragment() {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etToStatus2.setText("$dayStr-$monthStr-$year")
+                        binding.etToStatus2.setText("$dayStr-$monthStr-$year")
                     }
                 })
             }

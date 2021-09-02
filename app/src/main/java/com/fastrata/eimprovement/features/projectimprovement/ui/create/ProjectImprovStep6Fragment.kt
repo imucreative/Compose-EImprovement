@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep6Binding
 import com.fastrata.eimprovement.utils.Tools
-import com.google.android.material.textfield.TextInputEditText
-import kotlin.math.cos
 
 class ProjectImprovStep6Fragment : Fragment() {
 
@@ -34,7 +32,8 @@ class ProjectImprovStep6Fragment : Fragment() {
         binding.apply {
             benefit.addTextChangedListener(object : TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
-                    if (cost.text.toString() == "" || cost.text.toString() == null){
+                    if (cost.text.toString().isEmpty() || cost.text.toString() == null){
+                        println("txt1:"+p0.toString())
                         nqi.setText(p0.toString())
                     }else{
                         var sums : String? = Tools.sumValues(p0.toString(),cost.text.toString())
@@ -52,7 +51,8 @@ class ProjectImprovStep6Fragment : Fragment() {
 
             cost.addTextChangedListener(object : TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
-                    if (benefit.text.toString() == "" || benefit.text.toString() == null) {
+                    if (benefit.text.toString().isEmpty() || benefit.text.toString() == null) {
+                        println("txt2:"+p0.toString())
                         nqi.setText(p0.toString())
                     }else{
                         var sums :String? = Tools.sumValues(p0.toString(),benefit.text.toString())

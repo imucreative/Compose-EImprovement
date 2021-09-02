@@ -22,7 +22,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
 
     private lateinit var binding: ActivityProjectImprovementWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private val maxStep = 8
+    private val maxStep = 9
     private var currentStep = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -167,6 +167,15 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
             8 -> {
                 println("### step 8 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep8Fragment()
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            9 -> {
+                println("### step 8 = $currentStep")
+                val mCategoryFragment = ProjectImprovStep9Fragment()
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
                     addToBackStack(null)

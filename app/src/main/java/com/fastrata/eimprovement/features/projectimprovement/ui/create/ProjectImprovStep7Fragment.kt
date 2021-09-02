@@ -92,19 +92,6 @@ class ProjectImprovStep7Fragment : Fragment () {
             memberTask.setAdapter(adapterMemberTask)
             memberTask.onItemClickListener = onItemClickListener
 
-            /*val adapt = context?.let {
-                ListAdapterCustom(it, R.layout.item_auto_complete_text_view, DataDummySs.generateDummyNameMember())
-            }
-            memberName.threshold = 1
-            memberName.setAdapter(adapt)
-            memberName.setOnItemClickListener { adapterView, view, position, id ->
-                hideKeyboard()
-                val data = adapterView.getItemAtPosition(position)
-                if (data is MemberNameItem){
-                    Toast.makeText(context, "Clicked " + data.name, Toast.LENGTH_SHORT).show()
-                }
-            }*/
-
         }
 
         adapter.piCreateCallback(object : ProjecImprovementCreateTeamMemberCallback {

@@ -12,6 +12,7 @@ class ProjectImprovStep2Fragment : Fragment () {
 
     private lateinit var _binding: FragmentProjectImprovementStep2Binding
     private val binding get() = _binding
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,23 +28,35 @@ class ProjectImprovStep2Fragment : Fragment () {
 
         _binding = FragmentProjectImprovementStep2Binding.bind(view)
 
+        datePicker = activity?.let {
+            DatePickerCustom(
+                context = binding.root.context,themeDark = true,
+                minDateIsCurrentDate = true,it.supportFragmentManager
+            )
+        }!!
+
         binding.apply {
 
-            dariStatus1PI.setOnClickListener {
-                activity?.let {
-                    /*DatePickerCustom.dialogDatePicker(
-                        context = view.context, fragmentManager = it.supportFragmentManager,
-                        themeDark = false, minDateIsCurrentDate = true
-                    )*/
+            dariStatus1PI.setOnClickListener {datePicker.showDialog(object : DatePickerCustom.Callback {
+                override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                    val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                    val mon = month + 1
+                    val monthStr = if (mon < 10) "0$mon" else "$mon"
+                    binding.dariStatus1PI.setText("$dayStr-$monthStr-$year")
                 }
+            })
             }
 
             sampaiStatus1PI.setOnClickListener {
                 activity?.let {
-                    /*DatePickerCustom.dialogDatePicker(
-                        context = view.context, fragmentManager = it.supportFragmentManager,
-                        themeDark = false, minDateIsCurrentDate = true
-                    )*/
+                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                        override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                            val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                            val mon = month + 1
+                            val monthStr = if (mon < 10) "0$mon" else "$mon"
+                            binding.sampaiStatus1PI.setText("$dayStr-$monthStr-$year")
+                        }
+                    })
                 }
             }
 

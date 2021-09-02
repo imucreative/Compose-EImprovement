@@ -69,12 +69,17 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_medium"
                     app:cardUseCompatPadding="true"
                     app:cardCornerRadius="6dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="2dp"
+                    android:visibility="gone">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,20 +101,33 @@
                             android:layout_height="1dp"
                             android:layout_marginHorizontal="@dimen/spacing_large"
                             android:background="@color/grey_10" />
-
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="2">
+                              <TextView
+                                  android:layout_width="0dp"
+                                  android:layout_height="wrap_content"
+                                  android:layout_weight="1"
+                                  android:text="Benefit"
+                                  android:textStyle="bold"
+                                  android:gravity="center"
+                                  android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Keterangan"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="2"
                             android:layout_marginTop="@dimen/spacing_medium">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Benefit"
-                                android:textStyle="bold"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -123,11 +141,26 @@
                                     android:id="@+id/benefit"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:clickable="false"
-                                    android:enabled="false"
-                                    android:focusable="false"
                                     android:hint="Rp."
                                     android:padding="0dp"
+                                    android:textColor="@color/grey_80"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/Keterangan_benefit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="0dp"
+                                    android:maxLines="2"
+                                    android:lines="2"
                                     android:textColor="@color/grey_80"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -135,16 +168,30 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2"
-                            android:layout_marginTop="@dimen/spacing_medium">
+                            android:weightSum="2">
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Cost"
                                 android:textStyle="bold"
+                                android:gravity="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Keterangan"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:layout_marginTop="@dimen/spacing_medium">
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -158,21 +205,38 @@
                                     android:id="@+id/cost"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:clickable="false"
-                                    android:enabled="false"
-                                    android:focusable="false"
                                     android:hint="Rp."
                                     android:padding="0dp"
+                                    android:textColor="@color/grey_80"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/cost_keterangan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="0dp"
+                                    android:maxLines="2"
+                                    android:lines="2"
                                     android:textColor="@color/grey_80"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                         <LinearLayout
+                            android:layout_marginStart="@dimen/spacing_medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="2"
-                            android:layout_marginTop="@dimen/spacing_medium">
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:layout_marginBottom="@dimen/spacing_medium">
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -193,9 +257,200 @@
                                     android:id="@+id/nqi"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:clickable="false"
-                                    android:enabled="false"
-                                    android:focusable="false"
+                                    android:hint="Rp."
+                                    android:padding="0dp"
+                                    android:textColor="@color/grey_80"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="2dp"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="Aktual"
+                            android:layout_gravity="center_horizontal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/grey_80" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:background="@color/grey_10" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="2">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Benefit"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Keterangan"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:layout_marginTop="@dimen/spacing_medium">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/benefit_aktual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:hint="Rp."
+                                    android:padding="0dp"
+                                    android:textColor="@color/grey_80"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/Keterangan_benefit_aktual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="0dp"
+                                    android:maxLines="2"
+                                    android:lines="2"
+                                    android:textColor="@color/grey_80"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="2">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Cost"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Keterangan"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:layout_marginTop="@dimen/spacing_medium">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/cost__aktual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:hint="Rp."
+                                    android:padding="0dp"
+                                    android:textColor="@color/grey_80"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/cost_keterangan__aktual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="0dp"
+                                    android:maxLines="2"
+                                    android:lines="2"
+                                    android:textColor="@color/grey_80"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginStart="@dimen/spacing_medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:layout_marginBottom="@dimen/spacing_medium">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="NQI"
+                                android:textStyle="bold"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"></TextView>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:textColorHint="@color/grey_80"
+                                android:background="@color/grey_10"
+                                app:boxStrokeColor="@color/grey_80">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/nqi_aktual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
                                     android:hint="Rp."
                                     android:padding="0dp"
                                     android:textColor="@color/grey_80"/>
