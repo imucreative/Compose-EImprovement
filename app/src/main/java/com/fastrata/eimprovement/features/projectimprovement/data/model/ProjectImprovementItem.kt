@@ -1,6 +1,10 @@
 package com.fastrata.eimprovement.features.projectimprovement.data.model
 
-data class ProjectImprovementModel(
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class ProjectImprovementItem(
     val piNo: String,
     val title: String,
     val status: String,
@@ -9,4 +13,4 @@ data class ProjectImprovementModel(
     val subBranch: String,
     val date : String,
     val createby : String
-)
+): Parcelable

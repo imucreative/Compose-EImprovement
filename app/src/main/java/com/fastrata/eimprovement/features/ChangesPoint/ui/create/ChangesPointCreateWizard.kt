@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.features.ChangesPoint.ui.create
 
+import android.content.Intent
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ChangesPointSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
@@ -116,6 +118,7 @@ class ChangesPointCreateWizard : AppCompatActivity() {
                     lytSave.visibility = View.VISIBLE
                     lytSave.setOnClickListener {
                         Toast.makeText(this@ChangesPointCreateWizard, "Save Change Point", Toast.LENGTH_LONG).show()
+                        backtodashboard()
                     }
                 }
             }
@@ -124,6 +127,12 @@ class ChangesPointCreateWizard : AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    private fun backtodashboard() {
+        Intent(this, HomeActivity::class.java).also {
+            startActivity(it)
+        }
     }
 
     private fun backStep(progress: Int) {

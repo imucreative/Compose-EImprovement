@@ -1,7 +1,11 @@
 package com.fastrata.eimprovement.features.projectimprovement.data.model
 
-data class AkarMasalahModel(
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class AkarMasalahItem(
     val akarmslsh:String,
     val improvement: String,
     val detail : String
-)
+): Parcelable

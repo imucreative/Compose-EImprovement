@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemSebabMasalahPiBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 
 class SebabMasalahAdapter : RecyclerView.Adapter<SebabMasalahAdapter.SebabMasalahViewHolder>() {
 
-    private var list = ArrayList<SebabMasalahModel>()
+    private var list = ArrayList<SebabMasalahItem>()
 
-    fun setList(data : ArrayList<SebabMasalahModel>){
+    fun setList(data : ArrayList<SebabMasalahItem>){
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -23,7 +23,7 @@ class SebabMasalahAdapter : RecyclerView.Adapter<SebabMasalahAdapter.SebabMasala
     }
 
     inner class SebabMasalahViewHolder(private val binding: ItemSebabMasalahPiBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(data : SebabMasalahModel) {
+        fun bind(data : SebabMasalahItem) {
 
             binding.root.setOnClickListener {
                 sebabmslhcallback.onItemClicked(data)

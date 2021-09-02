@@ -3,9 +3,9 @@ package com.fastrata.eimprovement.features.projectimprovement.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
@@ -14,9 +14,9 @@ import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
 
 class ProjectImprovementViewModel : ViewModel(){
-    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
-    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahModel>>()
-    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahModel>>()
+    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementItem>>()
+    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem>>()
+    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem>>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
     private val listCategory = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
@@ -26,7 +26,7 @@ class ProjectImprovementViewModel : ViewModel(){
         listProjectImprovement.postValue(data)
     }
 
-    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementModel>> {
+    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementItem>> {
         println("##### getProjectSystem $listProjectImprovement")
         return listProjectImprovement
     }
@@ -36,7 +36,7 @@ class ProjectImprovementViewModel : ViewModel(){
         listSebabMasalah.postValue(data)
     }
 
-    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahModel>>{
+    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem>>{
         println("#### getAkarMsalah $listSebabMasalah ")
         return listSebabMasalah
     }
@@ -46,7 +46,7 @@ class ProjectImprovementViewModel : ViewModel(){
         listAkarMasalah.postValue(data)
     }
 
-    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahModel>>{
+    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahItem>>{
         return listAkarMasalah
     }
 

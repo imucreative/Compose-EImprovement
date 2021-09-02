@@ -8,14 +8,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep5Binding
 import com.fastrata.eimprovement.features.projectimprovement.adapter.AkarMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.utils.HawkUtils
 
 class ProjectImprovStep5Fragment : Fragment() {
 
@@ -23,6 +22,7 @@ class ProjectImprovStep5Fragment : Fragment() {
     private val binding get() = _binding
     private lateinit var viewModel : ProjectImprovementViewModel
     private lateinit var adapter : AkarMasalahAdapter
+    private var data : ProjectImprovementCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +30,7 @@ class ProjectImprovStep5Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep5Binding.inflate(layoutInflater, container, false)
+        data = HawkUtils().getTempDataCreatePi()
         return _binding.root
     }
 
@@ -54,7 +55,7 @@ class ProjectImprovStep5Fragment : Fragment() {
         }
 
         adapter.setAkarMslhCallback(object : AkarMasalahCallback {
-            override fun onItemClicked(data: AkarMasalahModel) {
+            override fun onItemClicked(data: AkarMasalahItem) {
                 Toast.makeText(context,data.akarmslsh, Toast.LENGTH_SHORT).show()
             }
         })

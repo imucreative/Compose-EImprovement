@@ -30,6 +30,10 @@ const val SS_CATEGORY_OTHER_VALUE = 6
 
 const val PREF_WELCOME = "isDisplay"
 
+
+// Project Improvement (SS) --------------------------------------------------------------------------
+const val PI_CREATE = "project_improvement"
+
 /**
  * Shared Preferences Variable
  * */

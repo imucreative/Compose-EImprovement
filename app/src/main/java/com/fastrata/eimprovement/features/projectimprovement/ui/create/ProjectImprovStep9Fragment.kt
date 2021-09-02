@@ -14,8 +14,10 @@ import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep8Bind
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep9Binding
 import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateAttachmentAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateAttachmentCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
 
@@ -27,6 +29,7 @@ class ProjectImprovStep9Fragment : Fragment() {
     private lateinit var viewModel: ProjectImprovementViewModel
     private lateinit var adapter: PiCreateAttachmentAdapter
     private lateinit var uri: Uri
+    private var data : ProjectImprovementCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +37,7 @@ class ProjectImprovStep9Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep9Binding.inflate(layoutInflater, container, false)
+        data = HawkUtils().getTempDataCreatePi()
         return _binding.root
     }
 

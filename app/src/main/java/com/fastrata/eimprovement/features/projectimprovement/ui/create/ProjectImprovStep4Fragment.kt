@@ -1,6 +1,5 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep4Binding
-import com.fastrata.eimprovement.features.ChangesPoint.ui.create.add.AddChangeRewardActivity
 import com.fastrata.eimprovement.features.projectimprovement.adapter.SebabMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.utils.HawkUtils
 
 class ProjectImprovStep4Fragment : Fragment() {
 
@@ -22,6 +22,7 @@ class ProjectImprovStep4Fragment : Fragment() {
     private val binding get() = _binding
     private lateinit var viewModel : ProjectImprovementViewModel
     private lateinit var adapter : SebabMasalahAdapter
+    private var data : ProjectImprovementCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +30,7 @@ class ProjectImprovStep4Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep4Binding.inflate(layoutInflater, container, false)
+        data = HawkUtils().getTempDataCreatePi()
         return _binding.root
     }
 
@@ -60,7 +62,7 @@ class ProjectImprovStep4Fragment : Fragment() {
         }
 
         adapter.setSebabMslhCallback(object : SebabMasalahCallback{
-            override fun onItemClicked(data: SebabMasalahModel) {
+            override fun onItemClicked(data: SebabMasalahItem) {
                Toast.makeText(context,data.pnybmslh,Toast.LENGTH_SHORT).show()
             }
         })

@@ -14,9 +14,8 @@ import com.fastrata.eimprovement.databinding.ActivityProjectImprovementBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImprovementAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
 import com.fastrata.eimprovement.features.projectimprovement.ui.create.ProjectImprovementCreateWizard
-import com.fastrata.eimprovement.utils.DatePickerCustom
 import com.fastrata.eimprovement.utils.Tools
 
 class ProjectImprovementActivity : AppCompatActivity (){
@@ -61,7 +60,7 @@ class ProjectImprovementActivity : AppCompatActivity (){
         }
 
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
-            override fun onItemClicked(data: ProjectImprovementModel) {
+            override fun onItemClicked(data: ProjectImprovementItem) {
                 Toast.makeText(this@ProjectImprovementActivity, data.piNo, Toast.LENGTH_LONG).show()
             }
         })

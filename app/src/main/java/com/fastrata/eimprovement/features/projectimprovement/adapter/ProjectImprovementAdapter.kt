@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemProjectImprovmentBinding
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import java.util.ArrayList
 
 class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter.ProjectImprovementViewHolder>() {
 
-    private var list = ArrayList<ProjectImprovementModel>()
+    private var list = ArrayList<ProjectImprovementItem>()
 
-    fun setList(data: ArrayList<ProjectImprovementModel>) {
+    fun setList(data: ArrayList<ProjectImprovementItem>) {
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -26,7 +26,7 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
     }
 
     inner class ProjectImprovementViewHolder(private val binding: ItemProjectImprovmentBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ProjectImprovementModel) {
+        fun bind(data: ProjectImprovementItem) {
 
             binding.root.setOnClickListener {
                 projectSystemCallback.onItemClicked(data)

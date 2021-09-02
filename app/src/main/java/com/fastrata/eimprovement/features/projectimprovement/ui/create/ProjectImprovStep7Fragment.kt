@@ -32,6 +32,7 @@ class ProjectImprovStep7Fragment : Fragment () {
     private lateinit var viewModel: ProjectImprovementViewModel
     private lateinit var adapter: PiCreateTeamMemberAdapter
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

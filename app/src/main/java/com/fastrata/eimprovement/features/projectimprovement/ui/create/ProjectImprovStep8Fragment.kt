@@ -15,6 +15,7 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep8Binding
 import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateAttachmentAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateAttachmentCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
@@ -22,6 +23,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateCat
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateCategorySuggestionViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateAttachmentCallback
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCategorySuggestionCallback
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER
 import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER_VALUE
 import com.fastrata.eimprovement.utils.SnackBarCustom
@@ -35,6 +37,7 @@ class ProjectImprovStep8Fragment : Fragment () {
     private lateinit var categoryAdapter: SsCreateCategorySuggestionAdapter
     private val listCategory = ArrayList<CategorySuggestionItem?>()
     private lateinit var categoryViewModel: ProjectImprovementViewModel
+    private var data : ProjectImprovementCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +49,7 @@ class ProjectImprovStep8Fragment : Fragment () {
         categoryViewModel.setCategorySuggestion()
         categoryAdapter = SsCreateCategorySuggestionAdapter()
         categoryAdapter.notifyDataSetChanged()
+        data = HawkUtils().getTempDataCreatePi()
         return _binding.root
     }
 

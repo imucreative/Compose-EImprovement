@@ -1,7 +1,10 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,14 +12,15 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityProjectImprovementWizardBinding
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep1Binding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.features.ChangesPoint.ui.create.add.AddChangeRewardActivity
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep1Fragment
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
+import com.google.gson.Gson
 
 class ProjectImprovementCreateWizard : AppCompatActivity() {
 
@@ -24,6 +28,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
     private lateinit var toolbarBinding: ToolbarBinding
     private val maxStep = 9
     private var currentStep = 1
+    private lateinit var piCreateCallback : ProjecImprovementSystemCreateCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +84,10 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    fun setpiCreateCallback(picreateCallback: ProjecImprovementSystemCreateCallback){
+        this.piCreateCallback = picreateCallback
+    }
+
     override fun onBackPressed() {
         finish()
     }
@@ -97,6 +106,11 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
             }
         }
     }
+
+//    private lateinit var picreateCallback: ProjecImprovementSystemCreateCallback
+//    fun setpiCreateCallback(piCreateCallback: ProjecImprovementSystemCreateCallback) {
+//        this.picreateCallback = piCreateCallback
+//    }
 
     private fun currentStepCondition(currentStep: Int) {
         val mFragmentManager = supportFragmentManager
@@ -174,7 +188,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
                 }
             }
             9 -> {
-                println("### step 8 = $currentStep")
+                println("### step 9 = $currentStep")
                 val mCategoryFragment = ProjectImprovStep9Fragment()
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
@@ -187,22 +201,56 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
     }
 
     private fun nextStep(progress: Int) {
-        if (progress < maxStep) {
-            currentStep = progress+1
-            currentStepCondition(currentStep)
+//        if (progress < maxStep) {
+//            currentStep = progress+1
+//            currentStepCondition(currentStep)
+//
+//            binding.apply {
+//                lytBack.visibility = View.VISIBLE
+//                lytNext.visibility = View.VISIBLE
+//                lytSave.visibility = View.GONE
+//                if (currentStep == maxStep) {
+//                    lytNext.visibility = View.GONE
+//                    lytSave.visibility = View.VISIBLE
+//                    lytSave.setOnClickListener {
+//                        Toast.makeText(this@ProjectImprovementCreateWizard, "Save suggestion system", Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//            }
+//        }
+        if(progress <maxStep) {
+//            val status = piCreateCallback.onDataPass()
+//            if(status){
+                currentStep = progress +1
+                currentStepCondition(currentStep)
 
-            binding.apply {
-                lytBack.visibility = View.VISIBLE
-                lytNext.visibility = View.VISIBLE
-                lytSave.visibility = View.GONE
-                if (currentStep == maxStep) {
-                    lytNext.visibility = View.GONE
-                    lytSave.visibility = View.VISIBLE
-                    lytSave.setOnClickListener {
-                        Toast.makeText(this@ProjectImprovementCreateWizard, "Save suggestion system", Toast.LENGTH_LONG).show()
+                binding.apply {
+                    lytBack.visibility = View.VISIBLE
+                    lytNext.visibility = View.VISIBLE
+                    lytSave.visibility = View.GONE
+                    if (currentStep == maxStep) {
+                        lytNext.visibility = View.GONE
+                        lytSave.visibility = View.VISIBLE
+                        lytSave.setOnClickListener {
+                            val gson = Gson()
+                            val data = gson.toJson(HawkUtils().getTempDataCreatePi())
+                            println("### Data form input : $data")
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                "Save Project Improvement",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            backtodashboard()
+                        }
                     }
                 }
-            }
+
+        }
+    }
+
+    private fun backtodashboard() {
+        Intent(this, HomeActivity::class.java).also {
+            startActivity(it)
         }
     }
 
@@ -228,9 +276,19 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
         }
     }
 
-    private lateinit var picreateCallback: ProjecImprovementSystemCreateCallback
-    fun setpiCreateCallback(piCreateCallback: ProjecImprovementSystemCreateCallback) {
-        this.picreateCallback = piCreateCallback
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

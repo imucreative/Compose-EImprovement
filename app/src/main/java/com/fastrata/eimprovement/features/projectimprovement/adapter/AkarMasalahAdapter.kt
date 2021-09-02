@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemAkarMasalahPiBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 
 class AkarMasalahAdapter : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
 
-    private var list = ArrayList<AkarMasalahModel>()
+    private var list = ArrayList<AkarMasalahItem>()
 
-    fun setList(data : ArrayList<AkarMasalahModel>){
+    fun setList(data : ArrayList<AkarMasalahItem>){
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -23,7 +23,7 @@ class AkarMasalahAdapter : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahVi
     }
 
     inner class AkarMasalahViewHolder(private  val binding: ItemAkarMasalahPiBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data : AkarMasalahModel){
+        fun bind(data : AkarMasalahItem){
             binding.root.setOnClickListener {
                 akarmslhcallback.onItemClicked(data)
             }

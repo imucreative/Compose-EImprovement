@@ -1,8 +1,8 @@
 package com.fastrata.eimprovement.features.projectimprovement.callback
 
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 
 interface SebabMasalahCallback {
-    fun onItemClicked(data: SebabMasalahModel )
+    fun onItemClicked(data: SebabMasalahItem )
 }
 

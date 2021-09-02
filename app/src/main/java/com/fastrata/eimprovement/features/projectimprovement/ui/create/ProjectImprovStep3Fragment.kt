@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.HawkUtils
 
 class ProjectImprovStep3Fragment : Fragment() {
 
     private lateinit var _binding: FragmentProjectImprovementStep3Binding
     private val binding get() = _binding
+    private var data : ProjectImprovementCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,6 +23,7 @@ class ProjectImprovStep3Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep3Binding.inflate(layoutInflater, container, false)
+        data = HawkUtils().getTempDataCreatePi()
         return _binding.root
     }
 

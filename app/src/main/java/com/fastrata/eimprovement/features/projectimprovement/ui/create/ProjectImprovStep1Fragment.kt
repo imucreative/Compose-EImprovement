@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep1Binding
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
+import com.fastrata.eimprovement.utils.HawkUtils
 
 class ProjectImprovStep1Fragment: Fragment() {
 
     private lateinit var _binding : FragmentProjectImprovementStep1Binding
     private val binding get() = _binding
+    private var data : ProjectImprovementCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,6 +21,7 @@ class ProjectImprovStep1Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProjectImprovementStep1Binding.inflate(layoutInflater,container,false)
+        data = HawkUtils().getTempDataCreatePi()
         return _binding.root
     }
 

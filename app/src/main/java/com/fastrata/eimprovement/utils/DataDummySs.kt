@@ -3,9 +3,9 @@ package com.fastrata.eimprovement.utils
 import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRewardModel
 import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
@@ -290,11 +290,11 @@ object DataDummySs {
         return changepoint
     }
 
-    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementModel>{
-        val projectimprov = ArrayList<ProjectImprovementModel>()
+    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementItem>{
+        val projectimprov = ArrayList<ProjectImprovementItem>()
 
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
             "PI-0001/08/2021/0005",
             "Improvement",
             "Aktif",
@@ -305,7 +305,7 @@ object DataDummySs {
             "John"
         ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -316,7 +316,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -327,7 +327,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -338,7 +338,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -349,7 +349,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -360,7 +360,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -371,7 +371,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementModel(
+            ProjectImprovementItem(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -384,11 +384,11 @@ object DataDummySs {
         return projectimprov
     }
 
-    fun generateSebabMasalah(): ArrayList<SebabMasalahModel> {
-        val akarmslh = ArrayList<SebabMasalahModel>()
+    fun generateSebabMasalah(): ArrayList<SebabMasalahItem> {
+        val akarmslh = ArrayList<SebabMasalahItem>()
 
         akarmslh.add(
-            SebabMasalahModel(
+            SebabMasalahItem(
             "satu",
             "1",
             "2",
@@ -399,7 +399,7 @@ object DataDummySs {
         ))
 
         akarmslh.add(
-            SebabMasalahModel(
+            SebabMasalahItem(
                 "satu",
                 "1",
                 "2",
@@ -410,7 +410,7 @@ object DataDummySs {
             ))
 
         akarmslh.add(
-            SebabMasalahModel(
+            SebabMasalahItem(
                 "satu",
                 "1",
                 "2",
@@ -422,7 +422,7 @@ object DataDummySs {
 
 
         akarmslh.add(
-            SebabMasalahModel(
+            SebabMasalahItem(
                 "satu",
                 "1",
                 "2",
@@ -433,7 +433,7 @@ object DataDummySs {
             ))
 
         akarmslh.add(
-            SebabMasalahModel(
+            SebabMasalahItem(
                 "satu",
                 "1",
                 "2",
@@ -445,16 +445,16 @@ object DataDummySs {
         return akarmslh
     }
 
-    fun generateDummyAkarMasalah(): ArrayList<AkarMasalahModel>{
-        val data = ArrayList<AkarMasalahModel>()
+    fun generateDummyAkarMasalah(): ArrayList<AkarMasalahItem>{
+        val data = ArrayList<AkarMasalahItem>()
         data.add(
-            AkarMasalahModel(
+            AkarMasalahItem(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
         )
         data.add(
-            AkarMasalahModel(
+            AkarMasalahItem(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")

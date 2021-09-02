@@ -1,5 +1,8 @@
 package com.fastrata.eimprovement.utils
 
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
@@ -8,6 +11,7 @@ internal class HawkUtils() {
 
     // init create object
     private val getDataCreateSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_CREATE)) Hawk.get(SS_CREATE) else null
+    private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
 
     // Create Suggestion System
     fun setTempDataCreateSs(
@@ -63,5 +67,47 @@ internal class HawkUtils() {
 
     fun getSaldo():String {
         return Hawk.get(point)
+    }
+
+    fun setTempDataCreatePi(
+        piNo : String? = null,
+        date: String? = null,
+        title: String? = null,
+        listCategory: ArrayList<CategorySuggestionItem?>? = if (getDataCreateSs?.categorySuggestion == null) arrayListOf() else null,
+        branch: String? = null,
+        subBranch: String? = null,
+        department: String? = null,
+        year: String? = null,
+        statusImplementation: StatusImplementation? = null,
+        indenmasalah: String? = null,
+        settarget: String? = null,
+        akarmasalah: ArrayList<AkarMasalahItem?>? = if (getDataCreatePi?.akarmasalah == null) arrayListOf() else null,
+        sebabmasalah: ArrayList<SebabMasalahItem?>? = if(getDataCreatePi?.sebabmasalah == null) arrayListOf() else null,
+        teammember: ArrayList<TeamMemberItem?>? = if (getDataCreatePi?.teammember == null) arrayListOf() else null,
+        attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null
+    ){
+        val data = ProjectImprovementCreateModel(
+            piNo = piNo ?: getDataCreatePi?.piNo,
+            date = date ?: getDataCreatePi?.date,
+            title = title ?: getDataCreatePi?.title,
+            categorySuggestion = listCategory ?: getDataCreateSs?.categorySuggestion,
+            branch = branch ?: getDataCreatePi?.branch,
+            subBranch = subBranch?: getDataCreatePi?.subBranch,
+            department = department?: getDataCreatePi?.department,
+            year = year?: getDataCreatePi?.year,
+            statusImplementation = statusImplementation ?: getDataCreateSs?.statusImplementation,
+            indenmasalah = indenmasalah ?: getDataCreatePi?.indenmasalah,
+            settarget = settarget ?: getDataCreatePi?.settarget,
+            akarmasalah = akarmasalah ?:getDataCreatePi?.akarmasalah,
+            sebabmasalah = sebabmasalah ?: getDataCreatePi?.sebabmasalah,
+            attachment = attachment ?: getDataCreatePi?.attachment,
+            teammember = teammember ?: getDataCreateSs?.teamMember,
+        )
+        Hawk.put(PI_CREATE,data)
+        Timber.w("### Hawk : $data")
+    }
+
+    fun getTempDataCreatePi(): ProjectImprovementCreateModel? {
+        return getDataCreatePi
     }
 }
