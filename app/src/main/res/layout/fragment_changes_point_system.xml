@@ -8,8 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:theme="@style/AppTheme.Material"
-    tools:openDrawer="end"
-    tools:context=".features.ChangesPoint.ui.ChangesPointActivity">
+    tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/grey_10"

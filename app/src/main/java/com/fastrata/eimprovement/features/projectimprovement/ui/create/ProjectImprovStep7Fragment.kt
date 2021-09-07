@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep7Binding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateTeamMemberAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateTeamMemberCallback
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
@@ -23,9 +25,11 @@ import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovStep7Fragment : Fragment () {
-
+class ProjectImprovStep7Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding: FragmentProjectImprovementStep7Binding
     private val binding get() = _binding
     private var data: SuggestionSystemCreateModel? = null
@@ -47,8 +51,8 @@ class ProjectImprovStep7Fragment : Fragment () {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentProjectImprovementStep7Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            ProjectImprovementViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
         initComponent()
     }
 

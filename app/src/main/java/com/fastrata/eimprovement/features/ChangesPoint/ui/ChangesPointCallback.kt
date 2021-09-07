@@ -1,6 +1,6 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui
+package com.fastrata.eimprovement.features.changesPoint.ui
 
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
 
 
 interface ChangesPointCallback {

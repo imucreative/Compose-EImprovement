@@ -57,4 +57,7 @@
     <string name="task">Task</string>
     <string name="title_suggestion">Title Suggestion</string>
 
+    <!-- Navigation -->
+    <string name="dashboard">Dashboard</string>
+
 </resources>

@@ -8,7 +8,7 @@
     android:background="@color/grey_10"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context=".features.ChangesPoint.ui.create.ChangesPointCreateWizard">
+    tools:context=".features.changesPoint.ui.create.ChangesPointCreateWizard">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

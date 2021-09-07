@@ -12,8 +12,9 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMember
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovementViewModel : ViewModel(){
+class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementItem>>()
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem>>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem>>()

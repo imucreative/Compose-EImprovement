@@ -11,20 +11,31 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
 import com.google.gson.Gson
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
+import javax.inject.Inject
 
-class SuggestionSystemCreateWizard : AppCompatActivity() {
-
+class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInjector {
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     private lateinit var binding: ActivitySuggestionSystemCreateWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private val maxStep = 4
     private var currentStep = 1
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
+
+    private val args: SuggestionSystemCreateWizardArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +46,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
 
         initToolbar()
         initComponent()
+
+        args.code.let {
+            Timber.e("##### $it")
+        }
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
@@ -75,9 +90,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Create Suggestion System (SS)"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        setToolbar(this, toolbar, "Create Suggestion System (SS)")
     }
 
     private fun currentStepCondition(currentStep: Int) {
@@ -151,6 +165,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity() {
                                     "Save suggestion system",
                                     Toast.LENGTH_LONG
                                 ).show()
+                                finish()
                             }
                         }
                     }

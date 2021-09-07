@@ -1,12 +1,13 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui
+package com.fastrata.eimprovement.features.changesPoint.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
 import com.fastrata.eimprovement.utils.DataDummySs
+import javax.inject.Inject
 
-class ChangesPointViewModel : ViewModel() {
+class ChangesPointViewModel @Inject constructor() : ViewModel() {
 
     private val listSuggestionSystem = MutableLiveData<ArrayList<ChangePointSystemModel>>()
 

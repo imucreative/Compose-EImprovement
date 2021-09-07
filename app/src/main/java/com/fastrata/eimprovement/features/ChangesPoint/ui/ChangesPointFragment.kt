@@ -1,70 +1,78 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui
+package com.fastrata.eimprovement.features.changesPoint.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.ActivityChangesPointSystemBinding
+import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
-import com.fastrata.eimprovement.features.ChangesPoint.ui.create.ChangesPointCreateWizard
-import com.fastrata.eimprovement.utils.DatePickerCustom
-import com.fastrata.eimprovement.utils.Tools
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.ui.setToolbar
+import javax.inject.Inject
 
-class ChangesPointActivity :AppCompatActivity() {
-
-    private lateinit var binding: ActivityChangesPointSystemBinding
+class ChangesPointFragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var binding: FragmentChangesPointSystemBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var viewModel: ChangesPointViewModel
-    private lateinit var adapter: changesPointAdapter
+    private lateinit var adapter: ChangesPointAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityChangesPointSystemBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentChangesPointSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
-        setContentView(binding.root)
+        context ?: return binding.root
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            ChangesPointViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ChangesPointViewModel::class.java)
+
+        setHasOptionsMenu(true);
 
         initToolbar()
-        initComponent()
+        initComponent(requireActivity())
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
-        Tools.setSystemBarLight(this)
+        return binding.root
     }
 
-    private fun initComponent() {
+    private fun initComponent(activity: FragmentActivity) {
         viewModel.setSuggestionSystem()
-        adapter = changesPointAdapter()
+        adapter = ChangesPointAdapter()
         adapter.notifyDataSetChanged()
 
         binding.apply {
             rvSs.setHasFixedSize(true)
-            rvSs.layoutManager = LinearLayoutManager(this@ChangesPointActivity)
+            rvSs.layoutManager = LinearLayoutManager(activity)
             rvSs.adapter = adapter
 
             createSs.setOnClickListener {
-                Intent(this@ChangesPointActivity, ChangesPointCreateWizard::class.java).also {
+                /*Intent(activity, ChangesPointCreateWizard::class.java).also {
                     startActivity(it)
-                }
+                }*/
+                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard("Create Changes Point")
+                it.findNavController().navigate(direction)
             }
         }
 
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointSystemModel) {
-                Toast.makeText(this@ChangesPointActivity, data.nocp, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, data.nocp, Toast.LENGTH_LONG).show()
             }
         })
 
-        viewModel.getSuggestionSystem().observe(this, {
+        viewModel.getSuggestionSystem().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
             }
@@ -74,9 +82,8 @@ class ChangesPointActivity :AppCompatActivity() {
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Change Point"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        setToolbar(toolbar, "Change Point")
     }
 
     private fun initNavigationMenu() {
@@ -107,21 +114,21 @@ class ChangesPointActivity :AppCompatActivity() {
             }
 
             btnApply.setOnClickListener {
-                Toast.makeText(this@ChangesPointActivity,  "Apply filter", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
                 drawer.closeDrawer(GravityCompat.END)
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.filter_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.filter_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                finish()
+                if (!findNavController().popBackStack()) activity?.finish()
             }
             R.id.filter_menu -> {
                 initNavigationMenu()

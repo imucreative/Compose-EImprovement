@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import javax.inject.Inject
 
-class SsCreateTeamMemberViewModel : ViewModel() {
+class SsCreateTeamMemberViewModel @Inject constructor(): ViewModel() {
     private val list = MutableLiveData<ArrayList<TeamMemberItem?>?>()
 
     fun setSuggestionSystemTeamMember() {

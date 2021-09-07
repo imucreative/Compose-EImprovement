@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import javax.inject.Inject
 
-class SsCreateAttachmentViewModel : ViewModel() {
+class SsCreateAttachmentViewModel @Inject constructor(): ViewModel() {
     private val list = MutableLiveData<ArrayList<AttachmentItem?>?>()
 
     fun setSuggestionSystemAttachment() {

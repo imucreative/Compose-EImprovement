@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Binding
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.utils.DatePickerCustom
 import com.fastrata.eimprovement.utils.HawkUtils
+import javax.inject.Inject
 
-class ProjectImprovStep3Fragment : Fragment() {
-
+class ProjectImprovStep3Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding: FragmentProjectImprovementStep3Binding
     private val binding get() = _binding
     private var data : ProjectImprovementCreateModel? = null

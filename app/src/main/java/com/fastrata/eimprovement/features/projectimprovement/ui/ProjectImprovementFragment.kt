@@ -1,71 +1,79 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.ActivityProjectImprovementBinding
+import com.fastrata.eimprovement.databinding.FragmentProjectImprovementBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImprovementAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
-import com.fastrata.eimprovement.features.projectimprovement.ui.create.ProjectImprovementCreateWizard
-import com.fastrata.eimprovement.utils.Tools
+import com.fastrata.eimprovement.ui.setToolbar
+import javax.inject.Inject
 
-class ProjectImprovementActivity : AppCompatActivity (){
-
-    private lateinit var binding: ActivityProjectImprovementBinding
+class ProjectImprovementFragment : Fragment(), Injectable{
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var binding: FragmentProjectImprovementBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private lateinit var ViewModel : ProjectImprovementViewModel
+    private lateinit var viewModel : ProjectImprovementViewModel
     private lateinit var adapter : ProjectImprovementAdapter
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_project_improvement)
-        binding = ActivityProjectImprovementBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentProjectImprovementBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
-        setContentView(binding.root)
+        context ?: return binding.root
 
-        ViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+
+        setHasOptionsMenu(true);
 
         initToolbar()
-        initComponent()
+        initComponent(requireActivity())
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
-        Tools.setSystemBarLight(this)
+        return binding.root
     }
 
-    private fun initComponent() {
-        ViewModel.setProjectImprovement()
+    private fun initComponent(activity: FragmentActivity) {
+        viewModel.setProjectImprovement()
         adapter = ProjectImprovementAdapter()
         adapter.notifyDataSetChanged()
 
         binding.apply {
             rvSs.setHasFixedSize(true)
-            rvSs.layoutManager = LinearLayoutManager(this@ProjectImprovementActivity)
+            rvSs.layoutManager = LinearLayoutManager(activity)
             rvSs.adapter = adapter
 
             createPi.setOnClickListener {
-                Intent(this@ProjectImprovementActivity,ProjectImprovementCreateWizard::class.java).also {
+                /*Intent(activity,ProjectImprovementCreateWizard::class.java).also {
                     startActivity(it)
-                }
+                }*/
+                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard("Create PI")
+                it.findNavController().navigate(direction)
             }
         }
 
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementItem) {
-                Toast.makeText(this@ProjectImprovementActivity, data.piNo, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, data.piNo, Toast.LENGTH_LONG).show()
             }
         })
 
-        ViewModel.getProjectImprovement().observe(this, {
+        viewModel.getProjectImprovement().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
             }
@@ -75,20 +83,19 @@ class ProjectImprovementActivity : AppCompatActivity (){
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Project Improvement (PI)"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        setToolbar(toolbar, "Project Improvement (PI)")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.filter_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.filter_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                finish()
+                if (!findNavController().popBackStack()) activity?.finish()
             }
             R.id.filter_menu -> {
                 initNavigationMenu()
@@ -125,7 +132,7 @@ class ProjectImprovementActivity : AppCompatActivity (){
             }
 
             btnApply.setOnClickListener {
-                Toast.makeText(this@ProjectImprovementActivity,  "Apply filter", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
                 drawer.closeDrawer(GravityCompat.END)
             }
         }

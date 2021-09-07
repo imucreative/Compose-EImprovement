@@ -9,15 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep4Binding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.SebabMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.utils.HawkUtils
+import javax.inject.Inject
 
-class ProjectImprovStep4Fragment : Fragment() {
-
+class ProjectImprovStep4Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding: FragmentProjectImprovementStep4Binding
     private val binding get() = _binding
     private lateinit var viewModel : ProjectImprovementViewModel
@@ -38,7 +42,8 @@ class ProjectImprovStep4Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentProjectImprovementStep4Binding.bind(view)
-        viewModel = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+        //viewModel = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
 
         initComponent()
     }

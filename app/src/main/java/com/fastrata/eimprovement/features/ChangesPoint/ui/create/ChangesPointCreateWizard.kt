@@ -1,6 +1,5 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui.create
+package com.fastrata.eimprovement.features.changesPoint.ui.create
 
-import android.content.Intent
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,23 +11,29 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.fastrata.eimprovement.HomeActivity
+import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.ChangesPointSystemCreateWizardBinding
+import com.fastrata.eimprovement.databinding.ActivityChangesPointSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.utils.Tools
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class ChangesPointCreateWizard : AppCompatActivity() {
-
-    private lateinit var binding: ChangesPointSystemCreateWizardBinding
+class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector {
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    private lateinit var binding: ActivityChangesPointSystemCreateWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private val maxStep = 2
     private var currentStep = 1
 
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ChangesPointSystemCreateWizardBinding.inflate(layoutInflater)
+        binding = ActivityChangesPointSystemCreateWizardBinding.inflate(layoutInflater)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         setContentView(binding.root)
 
@@ -130,9 +135,9 @@ class ChangesPointCreateWizard : AppCompatActivity() {
     }
 
     private fun backtodashboard() {
-        Intent(this, HomeActivity::class.java).also {
+        /*Intent(this, HomeActivity::class.java).also {
             startActivity(it)
-        }
+        }*/
     }
 
     private fun backStep(progress: Int) {

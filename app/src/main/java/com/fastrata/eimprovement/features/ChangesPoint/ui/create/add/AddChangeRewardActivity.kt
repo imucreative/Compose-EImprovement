@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui.create.add
+package com.fastrata.eimprovement.features.changesPoint.ui.create.add
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityChangeRewardBinding
-import com.fastrata.eimprovement.databinding.ToolbarBinding
-import com.fastrata.eimprovement.features.ChangesPoint.ui.create.ChangesPointStep2Fragment
 import com.fastrata.eimprovement.utils.Tools
 
 class AddChangeRewardActivity : AppCompatActivity() {

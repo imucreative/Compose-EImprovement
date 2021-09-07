@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRewardModel
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem

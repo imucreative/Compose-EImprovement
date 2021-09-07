@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.utils.DataDummySs
+import javax.inject.Inject
 
-class ListApprovalViewModel: ViewModel() {
+class ListApprovalViewModel @Inject constructor(): ViewModel() {
     private val listApproval = MutableLiveData<ArrayList<ApprovalModel>>()
 
     fun setApproval() {

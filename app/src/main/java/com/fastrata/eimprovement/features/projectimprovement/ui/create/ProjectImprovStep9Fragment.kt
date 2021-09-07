@@ -10,19 +10,21 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep8Binding
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep9Binding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateAttachmentAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateAttachmentCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovStep9Fragment : Fragment() {
-
+class ProjectImprovStep9Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private  lateinit var _binding : FragmentProjectImprovementStep9Binding
     private val binding get() = _binding!!
     private val pickFromGallery = 101
@@ -45,8 +47,8 @@ class ProjectImprovStep9Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentProjectImprovementStep9Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            ProjectImprovementViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
 
         initComponent()
     }

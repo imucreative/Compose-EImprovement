@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.utils.DataDummySs
+import javax.inject.Inject
 
-class SsCreateCategorySuggestionViewModel : ViewModel() {
+class SsCreateCategorySuggestionViewModel @Inject constructor(): ViewModel() {
     private val list = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
 
     fun setCategorySuggestion() {

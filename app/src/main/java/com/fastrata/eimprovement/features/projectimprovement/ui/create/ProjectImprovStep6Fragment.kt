@@ -7,13 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep6Binding
+import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
+import javax.inject.Inject
 
-class ProjectImprovStep6Fragment : Fragment() {
-
+class ProjectImprovStep6Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding: FragmentProjectImprovementStep6Binding
     private val binding get() = _binding
     private var data : ProjectImprovementCreateModel? = null

@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui.create
+package com.fastrata.eimprovement.features.changesPoint.ui.create
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,13 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep2Binding
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRewardModel
-import com.fastrata.eimprovement.features.ChangesPoint.ui.create.add.AddChangeRewardActivity
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardModel
+import com.fastrata.eimprovement.features.changesPoint.ui.create.add.AddChangeRewardActivity
+import javax.inject.Inject
 
-class ChangesPointStep2Fragment: Fragment() {
-
+class ChangesPointStep2Fragment: Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding:FragmentChangesPointStep2Binding
-    private lateinit var viewModel:ChangePointRewardModelView
+    private lateinit var viewModel:ChangesPointRewardViewModel
     private lateinit var adapter:ChangesRewardAdapter
 
     override fun onCreateView(
@@ -25,8 +29,8 @@ class ChangesPointStep2Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChangesPointStep2Binding.inflate(layoutInflater, container, false)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            ChangePointRewardModelView::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ChangesPointRewardModelView::class.java)
         return _binding.root
     }
 

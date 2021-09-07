@@ -1,12 +1,13 @@
-package com.fastrata.eimprovement.features.ChangesPoint.ui.create
+package com.fastrata.eimprovement.features.changesPoint.ui.create
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRewardModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardModel
 import com.fastrata.eimprovement.utils.DataDummySs
+import javax.inject.Inject
 
-class ChangePointRewardModelView : ViewModel() {
+class ChangesPointRewardViewModel @Inject constructor() : ViewModel() {
     private val list = MutableLiveData<ArrayList<ChangePointRewardModel>>()
 
     fun setChangeRewardPoint() {

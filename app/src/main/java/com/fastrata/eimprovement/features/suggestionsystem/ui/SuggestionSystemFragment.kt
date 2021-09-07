@@ -1,75 +1,87 @@
 package com.fastrata.eimprovement.features.suggestionsystem.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemBinding
+import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateWizard
+import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.DatePickerCustom
-import com.fastrata.eimprovement.utils.Tools
+import javax.inject.Inject
 
-class SuggestionSystemActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySuggestionSystemBinding
+class SuggestionSystemFragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var binding: FragmentSuggestionSystemBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var viewModel: SuggestionSystemViewModel
     private lateinit var adapter: SuggestionSystemAdapter
     private lateinit var datePicker: DatePickerCustom
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivitySuggestionSystemBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSuggestionSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
-        setContentView(binding.root)
+        context ?: return binding.root
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SuggestionSystemViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
-            minDateIsCurrentDate = true, supportFragmentManager
+            minDateIsCurrentDate = true, parentFragmentManager
         )
 
-        initToolbar()
-        initComponent()
+        setHasOptionsMenu(true);
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
-        Tools.setSystemBarLight(this)
+        initToolbar()
+        initComponent(requireActivity())
+
+        return binding.root
     }
 
-    private fun initComponent() {
+    private fun initComponent(activity: FragmentActivity) {
         viewModel.setSuggestionSystem()
         adapter = SuggestionSystemAdapter()
         adapter.notifyDataSetChanged()
 
         binding.apply {
             rvSs.setHasFixedSize(true)
-            rvSs.layoutManager = LinearLayoutManager(this@SuggestionSystemActivity)
+            rvSs.layoutManager = LinearLayoutManager(activity)
             rvSs.adapter = adapter
 
             createSs.setOnClickListener {
-                Intent(this@SuggestionSystemActivity, SuggestionSystemCreateWizard::class.java).also {
+                /*Intent(activity, SuggestionSystemCreateWizardFragment::class.java).also {
                     startActivity(it)
-                }
+                }*/
+                val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                    "Create SS",
+                    "Testing kirim code string ke SS Create wizard activity"
+                )
+                it.findNavController().navigate(direction)
             }
         }
 
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
-                Toast.makeText(this@SuggestionSystemActivity, data.ssNo, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, data.ssNo, Toast.LENGTH_LONG).show()
             }
         })
 
-        viewModel.getSuggestionSystem().observe(this, {
+        viewModel.getSuggestionSystem().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
             }
@@ -79,9 +91,8 @@ class SuggestionSystemActivity : AppCompatActivity() {
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Suggestion System (SS)"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        setToolbar(toolbar, "Suggestion System (SS)")
     }
 
     private fun initNavigationMenu() {
@@ -120,21 +131,21 @@ class SuggestionSystemActivity : AppCompatActivity() {
             }
 
             btnApply.setOnClickListener {
-                Toast.makeText(this@SuggestionSystemActivity,  "Apply filter", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
                 drawer.closeDrawer(GravityCompat.END)
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.filter_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.filter_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                finish()
+                if (!findNavController().popBackStack()) activity?.finish()
             }
             R.id.filter_menu -> {
                 initNavigationMenu()

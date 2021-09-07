@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.ChangesPoint.data.model
+package com.fastrata.eimprovement.features.changesPoint.data.model
 
 data class ChangePointRewardModel(
     val hadiah: String,

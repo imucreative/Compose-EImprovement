@@ -13,15 +13,19 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.FileInformation
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import javax.inject.Inject
 
-class SuggestionSystemStep4Fragment: Fragment() {
-
+class SuggestionSystemStep4Fragment: Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentSuggestionSystemStep4Binding? = null
     private val binding get() = _binding!!
     private val pickFromGallery = 101
@@ -47,7 +51,8 @@ class SuggestionSystemStep4Fragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
 
         initComponent(data?.attachment)
     }

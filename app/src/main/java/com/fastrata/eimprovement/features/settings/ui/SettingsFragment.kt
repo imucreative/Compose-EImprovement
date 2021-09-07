@@ -1,48 +1,53 @@
 package com.fastrata.eimprovement.features.settings.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.TextView
+import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.ActivitySettingsBinding
+import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
-import com.fastrata.eimprovement.features.splashscreen.WelcomeMessageActivity
+import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.utils.HelperNotification.CallBackNotificationYesNo
-import com.fastrata.eimprovement.utils.Tools
+import javax.inject.Inject
 
-class SettingsActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySettingsBinding
+class SettingsFragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var binding: FragmentSettingsBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var notification: HelperNotification
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSettingsBinding.inflate(layoutInflater)
         toolbarBinding = ToolbarBinding.bind(binding.root)
-        setContentView(binding.root)
+
+        setHasOptionsMenu(true);
 
         initToolbar()
-        initComponent()
+        initComponent(requireActivity())
 
-        Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
-        Tools.setSystemBarLight(this)
+        return binding.root
     }
 
-    private fun initComponent() {
+    private fun initComponent(activity: FragmentActivity) {
         notification = HelperNotification()
 
         binding.apply {
             saldoTxt.text = HawkUtils().getSaldo()
             btnLogout.setOnClickListener {
-                notification.shownotificationyesno(this@SettingsActivity,"Setting","Apakah anda yakin keluar",
+                notification.shownotificationyesno(activity,"Setting","Apakah anda yakin keluar",
                 object  :CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 
@@ -50,31 +55,24 @@ class SettingsActivity : AppCompatActivity() {
 
                     override fun onNotificationYes() {
                         HawkUtils().setLoginBoolean(false)
-                    startActivity(Intent(this@SettingsActivity, SplashScreenActivity::class.java))
+                    startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })
             }
         }
     }
 
-
-
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Setting"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
+        setToolbar(toolbar, "Setting")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                finish()
+                if (!findNavController().popBackStack()) activity?.finish()
             }
         }
 

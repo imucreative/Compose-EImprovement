@@ -16,12 +16,15 @@ import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import android.widget.AdapterView.OnItemClickListener
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
+import javax.inject.Inject
 
-class SuggestionSystemStep3Fragment: Fragment() {
-
+class SuggestionSystemStep3Fragment: Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentSuggestionSystemStep3Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
@@ -42,7 +45,8 @@ class SuggestionSystemStep3Fragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentSuggestionSystemStep3Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateTeamMemberViewModel::class.java)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateTeamMemberViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
 
         initComponent(data?.teamMember)
     }

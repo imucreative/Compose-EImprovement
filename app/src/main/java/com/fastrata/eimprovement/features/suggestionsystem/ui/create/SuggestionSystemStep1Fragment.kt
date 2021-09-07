@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep1Binding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.utils.HawkUtils
@@ -18,9 +20,11 @@ import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER
 import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER_VALUE
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
+import javax.inject.Inject
 
-class SuggestionSystemStep1Fragment: Fragment() {
-
+class SuggestionSystemStep1Fragment: Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentSuggestionSystemStep1Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
@@ -35,7 +39,8 @@ class SuggestionSystemStep1Fragment: Fragment() {
     ): View {
         _binding = FragmentSuggestionSystemStep1Binding.inflate(inflater, container, false)
 
-        categoryViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateCategorySuggestionViewModel::class.java)
+        categoryViewModel = injectViewModel(viewModelFactory)
+        //categoryViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateCategorySuggestionViewModel::class.java)
         categoryViewModel.setCategorySuggestion()
         categoryAdapter = SsCreateCategorySuggestionAdapter()
         categoryAdapter.notifyDataSetChanged()
