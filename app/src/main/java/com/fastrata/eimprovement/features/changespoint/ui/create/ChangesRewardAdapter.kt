@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesRewardBinding
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
 
 class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRewardAdapterViewHolder>() {
 
-    private var list = ArrayList<ChangePointRewardModel>()
+    private var list = ArrayList<ChangePointRewardItem>()
 
-    fun setList(data: ArrayList<ChangePointRewardModel>) {
+    fun setList(data: ArrayList<ChangePointRewardItem>) {
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -22,7 +22,7 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
     }
 
     inner class ChangesRewardAdapterViewHolder(private val binding: ItemChangesRewardBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ChangePointRewardModel) {
+        fun bind(data: ChangePointRewardItem) {
 
 
             binding.removeTeamMember.setOnClickListener {
@@ -32,7 +32,7 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
             binding.apply {
                 reward.text = data.hadiah
                 Point.text = data.nilai
-                desc.text = data.desc
+                desc.text = data.keterangan
             }
         }
     }
@@ -53,5 +53,5 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
 }
 
 interface ChangeRewardCallback {
-    fun removeClicked(data: ChangePointRewardModel)
+    fun removeClicked(data: ChangePointRewardItem)
 }

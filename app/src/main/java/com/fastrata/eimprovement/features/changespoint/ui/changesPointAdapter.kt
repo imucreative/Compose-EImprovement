@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesPointBinding
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
 
 class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPointViewHolder>() {
 
-    private var list = ArrayList<ChangePointSystemModel>()
+    private var list = ArrayList<ChangePointModel>()
 
-    fun setList(data: ArrayList<ChangePointSystemModel>) {
+    fun setList(data: ArrayList<ChangePointModel>) {
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -22,19 +22,19 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
     }
 
     inner class ChangesPointViewHolder(private val binding: ItemChangesPointBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ChangePointSystemModel) {
+        fun bind(data: ChangePointModel) {
 
             binding.root.setOnClickListener {
                 changesPointCallback.onItemClicked(data)
             }
 
             binding.apply {
-                nopenukaran.text = data.nocp
+                nopenukaran.text = data.no_penukaran
                 statusCp.text = data.status
-                descCp.text = data.desc
-                branch.text = data.branch
-                subBranch.text = data.branch
-                date.text = data.date
+                descCp.text = data.deskripsi
+                branch.text = data.cabang
+                subBranch.text = data.cabang
+                date.text = data.tgl_input
                 Total.text = data.total
             }
         }

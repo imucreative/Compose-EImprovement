@@ -29,9 +29,9 @@ class AkarMasalahAdapter : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahVi
             }
 
             binding.apply {
-                whyTerakhir.text = data.akarmslsh
-                imprvementDilakukan.text = data.improvement
-                detilLangkah.text = data.detail
+                whyTerakhir.text = data.kenapa
+                imprvementDilakukan.text = data.aksi
+                detilLangkah.text = data.detail_langkah
             }
         }
     }

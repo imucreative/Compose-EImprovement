@@ -30,13 +30,13 @@ class SebabMasalahAdapter : RecyclerView.Adapter<SebabMasalahAdapter.SebabMasala
             }
 
             binding.apply {
-                penyebabMasalah.text = data.pnybmslh
+                penyebabMasalah.text = data.penyebab
                 w1Pi.text = data.w1
                 w2Pi.text = data.w2
                 w3Pi.text = data.w3
                 w4Pi.text = data.w4
                 w5Pi.text = data.w5
-                akarPrioritas.text = data.akarmslsh
+                akarPrioritas.text = data.prioritas
             }
         }
     }

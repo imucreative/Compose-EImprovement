@@ -1,11 +1,12 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardModel
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.hadiahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
@@ -152,60 +153,68 @@ object DataDummySs {
         return approval
     }
 
-    fun generaterewardmodel() : ArrayList<ChangePointRewardModel>{
+    fun generaterewardmodel() : ArrayList<ChangePointRewardItem>{
 
-        val suggestionSystem = ArrayList<ChangePointRewardModel>()
+        val suggestionSystem = ArrayList<ChangePointRewardItem>()
 
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                1,
             "PULSA 10K",
             "1",
             "Pulsa",
 
         ))
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                2,
                 "PULSA 20K",
                 "1",
                 "Pulsa",
             ))
 
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                3,
                 "PULSA 10K",
                 "1",
                 "Pulsa",
 
                 ))
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                4,
                 "PULSA 20K",
                 "1",
                 "Pulsa",
             ))
 
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                5,
                 "PULSA 10K",
                 "1",
                 "Pulsa",
 
                 ))
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                6,
                 "PULSA 20K",
                 "1",
                 "Pulsa",
             ))
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                7,
                 "PULSA 10K",
                 "1",
                 "Pulsa",
 
                 ))
         suggestionSystem.add(
-            ChangePointRewardModel(
+            ChangePointRewardItem(
+                8,
                 "PULSA 20K",
                 "1",
                 "Pulsa",
@@ -213,11 +222,11 @@ object DataDummySs {
         return suggestionSystem
     }
 
-    fun generateDummyChangePointList(): ArrayList<ChangePointSystemModel>{
-        val changepoint = ArrayList<ChangePointSystemModel>()
+    fun generateDummyChangePointList(): ArrayList<ChangePointModel>{
+        val changepoint = ArrayList<ChangePointModel>()
 
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
             "CP-0001/08/2021/0005",
             "AKTIF",
             "2021-08-06 17:19:22",
@@ -227,7 +236,7 @@ object DataDummySs {
             "0"
         ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -237,7 +246,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -247,7 +256,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -257,7 +266,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -267,7 +276,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -277,7 +286,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -290,11 +299,11 @@ object DataDummySs {
         return changepoint
     }
 
-    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementItem>{
-        val projectimprov = ArrayList<ProjectImprovementItem>()
+    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementModel>{
+        val projectimprov = ArrayList<ProjectImprovementModel>()
 
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
             "PI-0001/08/2021/0005",
             "Improvement",
             "Aktif",
@@ -305,7 +314,7 @@ object DataDummySs {
             "John"
         ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -316,7 +325,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -327,7 +336,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -338,7 +347,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -349,7 +358,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -360,7 +369,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -371,7 +380,7 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
                 "Improvement",
                 "Aktif",
@@ -389,58 +398,61 @@ object DataDummySs {
 
         akarmslh.add(
             SebabMasalahItem(
-            "satu",
+            1,
             "1",
             "2",
             "3",
             "4",
             "5",
-            "test"
+            "test",
+                "Penting"
         ))
 
         akarmslh.add(
             SebabMasalahItem(
-                "satu",
+                2,
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "test"
+                "test","Penting"
             ))
 
         akarmslh.add(
             SebabMasalahItem(
-                "satu",
+                3,
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "test"
+                "test","Penting"
             ))
 
 
         akarmslh.add(
             SebabMasalahItem(
-                "satu",
+                4,
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "test"
+                "test",
+                "Penting"
             ))
 
         akarmslh.add(
             SebabMasalahItem(
-                "satu",
+                5,
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "test"
+                "test",
+                "Penting"
             ))
         return akarmslh
     }
@@ -449,12 +461,14 @@ object DataDummySs {
         val data = ArrayList<AkarMasalahItem>()
         data.add(
             AkarMasalahItem(
+                1,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
         )
         data.add(
             AkarMasalahItem(
+                2,
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
@@ -507,6 +521,16 @@ object DataDummySs {
         data.add(CategorySuggestionItem(
             id = 5, category = "Lain-lain", false
         ))
+        return data
+    }
+
+    fun generateDummyReward(): ArrayList<hadiahItem> {
+        val data = ArrayList<hadiahItem>()
+        data.add(hadiahItem(hadiah = "PULSA 10K"))
+        data.add(hadiahItem(hadiah = "PULSA 20K"))
+        data.add(hadiahItem(hadiah = "PULSA 50K"))
+        data.add(hadiahItem(hadiah = "PULSA 100K"))
+        data.add(hadiahItem(hadiah = "PULSA 500K"))
         return data
     }
 }

@@ -15,7 +15,7 @@ import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.ui.setToolbar
 import javax.inject.Inject
 
@@ -67,8 +67,8 @@ class ChangesPointFragment : Fragment(), Injectable {
         }
 
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
-            override fun onItemClicked(data: ChangePointSystemModel) {
-                Toast.makeText(activity, data.nocp, Toast.LENGTH_LONG).show()
+            override fun onItemClicked(data: ChangePointModel) {
+                Toast.makeText(activity, data.no_penukaran, Toast.LENGTH_LONG).show()
             }
         })
 

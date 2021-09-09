@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
@@ -15,7 +15,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
-    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementItem>>()
+    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem>>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem>>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
@@ -27,7 +27,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         listProjectImprovement.postValue(data)
     }
 
-    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementItem>> {
+    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementModel>> {
         println("##### getProjectSystem $listProjectImprovement")
         return listProjectImprovement
     }

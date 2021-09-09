@@ -2,27 +2,49 @@ package com.fastrata.eimprovement.features.projectimprovement.data.model
 
 import android.os.Parcelable
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.google.gson.annotations.SerializedName
 
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProjectImprovementCreateModel(
+    @SerializedName("id")
+    var id : Int?,
+    @SerializedName("pi_no")
     var piNo: String?,
-    var date: String?,
-    var title: String?,
-    var categorySuggestion: ArrayList<CategorySuggestionItem?>?,
-    var branch: String?,
-    var subBranch: String?,
+    @SerializedName("department")
     var department: String?,
-    var year: String?,
-    var statusImplementation: StatusImplementation? = null,
-    var indenmasalah: String?,
-    var settarget: String?,
-    var akarmasalah: ArrayList<AkarMasalahItem?>?,
-    var sebabmasalah: ArrayList<SebabMasalahItem?>?,
-    var attachment: ArrayList<AttachmentItem?>?,
-    var teammember: ArrayList<TeamMemberItem?>?
+    @SerializedName("tahun")
+    var years: String?,
+    @SerializedName("tgl_pengajuan")
+    var createdDate: String?,
+    @SerializedName("cabang")
+    var branch: String?,
+    @SerializedName("subcabang")
+    var subBranch: String?,
+    @SerializedName("judul")
+    var title: String?,
+    @SerializedName("status_implementasi")
+    var statusImplementation: StatusImplementationPi? = null,
+    @SerializedName("identifikasi")
+    var indentification: String?,
+    @SerializedName("penetapan_target")
+    var setTarget: String?,
+    @SerializedName("sebab_akar_masalah")
+    var problem: ArrayList<SebabMasalahItem?>?,
+    @SerializedName("saran_akar_masalah")
+    var suggestProblem: ArrayList<AkarMasalahItem?>?,
+    @SerializedName("nilai_output_diharapkan")
+    var outputValue : String?,
+    @SerializedName("perhitungan_nqi")
+    var nqiTotal : NQIModel? = null,
+    @SerializedName("anggota_tim")
+    var teamMember: ArrayList<TeamMemberItem?>?,
+    @SerializedName("kategori_perbaikan")
+    var categoryFixing : ArrayList<categoryFixingItem?>?,
+    @SerializedName("hasil_implementasi")
+    var implementationResult : String?,
+    @SerializedName("lampiran_pi")
+    var attachment: ArrayList<AttachmentItem?>?
 ) : Parcelable

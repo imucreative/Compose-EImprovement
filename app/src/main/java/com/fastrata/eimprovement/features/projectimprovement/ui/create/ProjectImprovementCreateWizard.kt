@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityProjectImprovementWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
@@ -31,7 +31,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     private lateinit var toolbarBinding: ToolbarBinding
     private val maxStep = 9
     private var currentStep = 1
-    private lateinit var piCreateCallback : ProjecImprovementSystemCreateCallback
+    private lateinit var piCreateCallback : ProjectImprovementSystemCreateCallback
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -88,7 +88,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         setToolbar(this, toolbar, "Create Project Improvement (PI)")
     }
 
-    fun setpiCreateCallback(picreateCallback: ProjecImprovementSystemCreateCallback){
+    fun setpiCreateCallback(picreateCallback: ProjectImprovementSystemCreateCallback){
         this.piCreateCallback = picreateCallback
     }
 
@@ -205,27 +205,10 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun nextStep(progress: Int) {
-//        if (progress < maxStep) {
-//            currentStep = progress+1
-//            currentStepCondition(currentStep)
-//
-//            binding.apply {
-//                lytBack.visibility = View.VISIBLE
-//                lytNext.visibility = View.VISIBLE
-//                lytSave.visibility = View.GONE
-//                if (currentStep == maxStep) {
-//                    lytNext.visibility = View.GONE
-//                    lytSave.visibility = View.VISIBLE
-//                    lytSave.setOnClickListener {
-//                        Toast.makeText(this@ProjectImprovementCreateWizard, "Save suggestion system", Toast.LENGTH_LONG).show()
-//                    }
-//                }
-//            }
-//        }
         if(progress <maxStep) {
-//            val status = piCreateCallback.onDataPass()
-//            if(status){
-                currentStep = progress +1
+            val status = piCreateCallback.onDataPass()
+            if(status) {
+                currentStep = progress + 1
                 currentStepCondition(currentStep)
 
                 binding.apply {
@@ -244,18 +227,12 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 "Save Project Improvement",
                                 Toast.LENGTH_LONG
                             ).show()
-                            backtodashboard()
+                            finish()
                         }
                     }
                 }
-
+            }
         }
-    }
-
-    private fun backtodashboard() {
-        /*Intent(this, HomeActivity::class.java).also {
-            startActivity(it)
-        }*/
     }
 
     private fun bottomProgressDots(current_index: Int) {

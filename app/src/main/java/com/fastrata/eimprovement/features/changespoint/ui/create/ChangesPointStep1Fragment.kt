@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
+
+import com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointCreateCallback
+import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject
 
 class ChangesPointStep1Fragment: Fragment(), Injectable {
@@ -15,6 +19,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding:FragmentChangesPointStep1Binding
     private val binding get() = _binding
+    private var data : ChangePointCreateModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,6 +27,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChangesPointStep1Binding.inflate(layoutInflater, container, false)
+        data = HawkUtils().getTempDataCreateCP()
         return _binding.root
     }
 
@@ -31,8 +37,21 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
         _binding = FragmentChangesPointStep1Binding.bind(view)
 
         binding.apply {
-
+            setData()
         }
+    }
+
+    private fun setData() {
+        (activity as ChangesPointCreateWizard).setcpCreateCallback(object  :
+            ChangesPointCreateCallback{
+            override fun OnDataPass(): Boolean {
+                var stat : Boolean
+                _binding.apply {
+                    stat = true
+                }
+                return stat
+            }
+            })
     }
 
 }

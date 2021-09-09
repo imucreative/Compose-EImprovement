@@ -16,39 +16,20 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_dashboardFragment_to_listApprovalFragment"
-            app:destination="@id/listApprovalFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/listApprovalFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_suggestionSystemFragment"
-            app:destination="@id/suggestionSystemFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/suggestionSystemFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_projectImprovementFragment"
             app:destination="@id/projectImprovementFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+             />
         <action
             android:id="@+id/action_dashboardFragment_to_changesPointFragment"
-            app:destination="@id/changesPointFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/changesPointFragment" />
     </fragment>
 
     <fragment
@@ -80,11 +61,7 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_suggestionSystemFragment_to_suggestionSystemCreateWizard"
-            app:destination="@id/suggestionSystemCreateWizard"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/suggestionSystemCreateWizard" />
     </fragment>
 
     <fragment
@@ -112,10 +89,7 @@
         <action
             android:id="@+id/action_projectImprovementFragment_to_projectImprovementCreateWizard"
             app:destination="@id/projectImprovementCreateWizard"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            />
     </fragment>
 
     <fragment
@@ -131,10 +105,7 @@
         <action
             android:id="@+id/action_changesPointFragment_to_changesPointCreateWizard"
             app:destination="@id/changesPointCreateWizard"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            />
     </fragment>
 
     <activity
@@ -176,5 +147,9 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="cpNo"
+            android:defaultValue="null"
+            app:nullable="true"></argument>
     </activity>
 </navigation>

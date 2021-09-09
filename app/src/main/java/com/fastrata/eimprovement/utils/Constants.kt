@@ -34,6 +34,9 @@ const val PREF_WELCOME = "isDisplay"
 // Project Improvement (SS) --------------------------------------------------------------------------
 const val PI_CREATE = "project_improvement"
 
+// Change point (CP) --------------------------------------------------------------------------
+const val CP_CREATE = "change_point"
+
 /**
  * Shared Preferences Variable
  * */

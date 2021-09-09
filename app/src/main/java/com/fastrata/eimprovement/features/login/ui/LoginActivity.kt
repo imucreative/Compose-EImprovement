@@ -103,12 +103,14 @@ class LoginActivity : AppCompatActivity(), Injectable {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             Timber.d("###-- LOADING")
-                            binding.progressbar.progressbar.visibility = View.VISIBLE
+//                            binding.progressbar.progressbar.visibility = View.VISIBLE
+                            HelperLoading.displayLoadingWithText(this@LoginActivity,"",false)
                         }
 
                         Result.Status.SUCCESS -> {
                             Timber.d("###-- SUCCESS")
-                            binding.progressbar.progressbar.visibility = View.GONE
+//                            binding.progressbar.progressbar.visibility = View.GONE
+                            HelperLoading.hideLoading()
 
                             if (result.data?.code == HttpStatus.HTTP_OK) {
                                 //saved into shared pref
@@ -129,7 +131,8 @@ class LoginActivity : AppCompatActivity(), Injectable {
 
                         Result.Status.ERROR -> {
                             Timber.d("###-- ERROR")
-                            binding.progressbar.progressbar.visibility = View.GONE
+//                            binding.progressbar.progressbar.visibility = View.GONE
+                            HelperLoading.hideLoading()
                             notification.showErrorDialog(this@LoginActivity,"Error", result.message.toString())
                         }
                     }

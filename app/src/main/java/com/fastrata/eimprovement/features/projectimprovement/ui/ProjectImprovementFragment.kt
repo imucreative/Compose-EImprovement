@@ -17,7 +17,7 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImprovementAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.ui.setToolbar
 import javax.inject.Inject
 
@@ -59,16 +59,13 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             rvSs.adapter = adapter
 
             createPi.setOnClickListener {
-                /*Intent(activity,ProjectImprovementCreateWizard::class.java).also {
-                    startActivity(it)
-                }*/
                 val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard("Create PI")
                 it.findNavController().navigate(direction)
             }
         }
 
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
-            override fun onItemClicked(data: ProjectImprovementItem) {
+            override fun onItemClicked(data: ProjectImprovementModel) {
                 Toast.makeText(activity, data.piNo, Toast.LENGTH_LONG).show()
             }
         })

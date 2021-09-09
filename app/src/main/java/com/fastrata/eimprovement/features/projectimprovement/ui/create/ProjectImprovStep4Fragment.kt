@@ -68,7 +68,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
         adapter.setSebabMslhCallback(object : SebabMasalahCallback{
             override fun onItemClicked(data: SebabMasalahItem) {
-               Toast.makeText(context,data.pnybmslh,Toast.LENGTH_SHORT).show()
+               Toast.makeText(context,data.penyebab,Toast.LENGTH_SHORT).show()
             }
         })
 

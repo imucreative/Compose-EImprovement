@@ -16,7 +16,7 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateTeamMemberAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateTeamMemberCallback
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.*
@@ -182,7 +182,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
     private fun setValidation() {
         (activity as ProjectImprovementCreateWizard).setpiCreateCallback(object  :
-            ProjecImprovementSystemCreateCallback{
+            ProjectImprovementSystemCreateCallback{
             override fun onDataPass(): Boolean {
                 binding.apply {
                 var stat = if (data?.teamMember?.size == 0) {

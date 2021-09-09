@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep1Binding
 import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject
@@ -32,6 +33,22 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProjectImprovementStep1Binding.bind(view)
+        _binding.apply {
+            setData()
+        }
 
+    }
+
+    private fun setData() {
+        (activity as ProjectImprovementCreateWizard).setpiCreateCallback(object  :
+            ProjectImprovementSystemCreateCallback{
+            override fun onDataPass(): Boolean {
+                var stat : Boolean
+                _binding.apply {
+                    stat = true
+                }
+                return stat
+            }
+            })
     }
 }

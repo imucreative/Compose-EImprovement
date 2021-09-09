@@ -12,12 +12,15 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityChangesPointSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.utils.Tools
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector {
@@ -30,6 +33,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
+    private val args :ChangesPointCreateWizardArgs by navArgs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,6 +44,10 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
         initToolbar()
         initComponent()
+
+        args.cpNo.let {
+            Timber.e("##### $it")
+        }
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
@@ -77,6 +86,12 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         }
     }
 
+    private  lateinit var cpCreateCallbac : ChangesPointCreateCallback
+    fun setcpCreateCallback(cpCallback: ChangesPointCreateCallback){
+        cpCreateCallbac = cpCallback
+    }
+
+
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
@@ -111,9 +126,26 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
     private fun nextStep(progress: Int) {
         if (progress < maxStep) {
-            currentStep = progress+1
+//            currentStep = progress+1
+//            currentStepCondition(currentStep)
+//
+//            binding.apply {
+//                lytBack.visibility = View.VISIBLE
+//                lytNext.visibility = View.VISIBLE
+//                lytSave.visibility = View.GONE
+//                if (currentStep == maxStep) {
+//                    lytNext.visibility = View.GONE
+//                    lytSave.visibility = View.VISIBLE
+//                    lytSave.setOnClickListener {
+//                        Toast.makeText(this@ChangesPointCreateWizard, "Save Change Point", Toast.LENGTH_LONG).show()
+//                       finish()
+//                    }
+//                }
+//            }
+            val status =cpCreateCallbac.OnDataPass()
+            if (status){
+                currentStep = progress+1
             currentStepCondition(currentStep)
-
             binding.apply {
                 lytBack.visibility = View.VISIBLE
                 lytNext.visibility = View.VISIBLE
@@ -123,21 +155,16 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     lytSave.visibility = View.VISIBLE
                     lytSave.setOnClickListener {
                         Toast.makeText(this@ChangesPointCreateWizard, "Save Change Point", Toast.LENGTH_LONG).show()
-                        backtodashboard()
+                       finish()
                     }
                 }
+            }
             }
         }
     }
 
     override fun onBackPressed() {
         finish()
-    }
-
-    private fun backtodashboard() {
-        /*Intent(this, HomeActivity::class.java).also {
-            startActivity(it)
-        }*/
     }
 
     private fun backStep(progress: Int) {

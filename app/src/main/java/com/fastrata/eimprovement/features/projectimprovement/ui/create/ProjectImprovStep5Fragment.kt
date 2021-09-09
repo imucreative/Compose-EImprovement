@@ -61,7 +61,7 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
 
         adapter.setAkarMslhCallback(object : AkarMasalahCallback {
             override fun onItemClicked(data: AkarMasalahItem) {
-                Toast.makeText(context,data.akarmslsh, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,data.kenapa, Toast.LENGTH_SHORT).show()
             }
         })
 

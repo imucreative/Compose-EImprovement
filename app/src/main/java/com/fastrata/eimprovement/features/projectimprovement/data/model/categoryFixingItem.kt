@@ -4,9 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AkarMasalahItem(
-    val no : Int,
-    val kenapa:String,
-    val aksi: String,
-    val detail_langkah : String
-): Parcelable
+data class categoryFixingItem (
+        val peningkatan_profit_checked : Int,
+        val efisiensi_biaya : Int
+        ):Parcelable
