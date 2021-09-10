@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.di
 
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalFragment
-import com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointFragment
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragment
 import com.fastrata.eimprovement.features.dashboard.ui.DashboardFragment
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementFragment
 import com.fastrata.eimprovement.features.settings.ui.SettingsFragment

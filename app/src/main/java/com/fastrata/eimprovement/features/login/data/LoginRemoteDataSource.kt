@@ -2,6 +2,7 @@ package com.fastrata.eimprovement.features.login.data
 
 import com.fastrata.eimprovement.api.AppService
 import com.fastrata.eimprovement.api.BaseDataSource
+import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import javax.inject.Inject
 
 class LoginRemoteDataSource @Inject constructor(private val service: AppService) : BaseDataSource() {

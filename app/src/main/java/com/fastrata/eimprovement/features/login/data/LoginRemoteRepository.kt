@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.features.login.data
 
-import com.fastrata.eimprovement.data.resultLiveDataFetchInsert
 import com.fastrata.eimprovement.data.resultMutableLiveDataRemote
+import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 

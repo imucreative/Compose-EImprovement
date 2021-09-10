@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.login.data
+package com.fastrata.eimprovement.features.login.data.model
 
 import com.google.gson.annotations.SerializedName
 

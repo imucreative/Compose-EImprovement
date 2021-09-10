@@ -3,8 +3,8 @@ package com.fastrata.eimprovement.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalViewModel
-import com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointViewModel
-import com.fastrata.eimprovement.features.changesPoint.ui.create.ChangesPointRewardViewModel
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointViewModel
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointRewardViewModel
 import com.fastrata.eimprovement.features.login.ui.LoginViewModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel

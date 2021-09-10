@@ -1,9 +1,9 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
-import com.fastrata.eimprovement.features.changesPoint.data.model.hadiahItem
+import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
@@ -64,6 +64,41 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang"))
 
         return suggestionSystem
+    }
+
+    fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
+        val categorySuggestionItem = ArrayList<CategorySuggestionItem?>()
+        categorySuggestionItem.add(CategorySuggestionItem(id = 1, category = "Meningkatkan penjualan", checked = true))
+        categorySuggestionItem.add(CategorySuggestionItem(id = 2, category = "Menurunkan biaya", checked = true))
+
+        val teamMemberItem = ArrayList<TeamMemberItem?>()
+        teamMemberItem.add(TeamMemberItem(name = "budi", department = "ICT", task = "Dokumentasi"))
+
+        val attachmentItem = ArrayList<AttachmentItem?>()
+        attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
+
+        return SuggestionSystemCreateModel(
+            ssNo = "SS-0000/08/2021/0041",
+            date = "17-08-2021",
+            name = "Maman",
+            nik = "11210012",
+            statusImplementation = StatusImplementation(
+                status = "Implement",
+                from = "20-10-2021",
+                to = "11-11-2021"
+            ),
+            title = "Implementasi system dengan robust dan S.O.L.I.D",
+            branch = "PUSAT",
+            subBranch = "FBPST - Gd Barang Dagang",
+            department = "ICT",
+            directMgr = "Pak Agung",
+            problem = "Code yg terlalu banyak dan berantakan",
+            suggestion = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
+            categorySuggestion = categorySuggestionItem,
+            teamMember = teamMemberItem,
+            attachment = attachmentItem
+
+        )
     }
 
     fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {

@@ -1,6 +1,6 @@
 package com.fastrata.eimprovement.di
 
-import com.fastrata.eimprovement.features.changesPoint.ui.create.ChangesPointCreateWizard
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointCreateWizard
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

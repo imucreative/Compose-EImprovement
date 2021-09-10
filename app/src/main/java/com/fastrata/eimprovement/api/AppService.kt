@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.api
 
-import com.fastrata.eimprovement.features.login.data.LoginEntity
-import com.fastrata.eimprovement.features.login.data.LoginRemoteRequest
+import com.fastrata.eimprovement.features.login.data.model.LoginEntity
+import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import retrofit2.Response
 import retrofit2.http.*
 

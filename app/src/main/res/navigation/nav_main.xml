@@ -94,7 +94,7 @@
 
     <fragment
         android:id="@+id/changesPointFragment"
-        android:name="com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointFragment"
+        android:name="com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragment"
         android:label="ChangesPointFragment"
         tools:layout="@layout/fragment_changes_point_system">
         <argument
@@ -120,9 +120,15 @@
             app:nullable="true" />
 
         <argument
-            android:name="code"
-            android:defaultValue="default code"
+            android:name="action"
+            android:defaultValue="add"
             app:argType="string" />
+
+        <argument
+            android:name="data"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel" />
     </activity>
 
     <activity
@@ -139,7 +145,7 @@
 
     <activity
         android:id="@+id/changesPointCreateWizard"
-        android:name="com.fastrata.eimprovement.features.changesPoint.ui.create.ChangesPointCreateWizard"
+        android:name="com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointCreateWizard"
         android:label="changes_point_system_create_wizard"
         tools:layout="@layout/activity_changes_point_system_create_wizard" >
         <argument
@@ -150,6 +156,6 @@
         <argument
             android:name="cpNo"
             android:defaultValue="null"
-            app:nullable="true"></argument>
+            app:nullable="true"/>
     </activity>
 </navigation>

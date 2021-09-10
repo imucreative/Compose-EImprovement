@@ -1,11 +1,6 @@
 package com.fastrata.eimprovement.utils
 
-
-
-
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
-import com.fastrata.eimprovement.features.changespoint.data.model.RiwayatItem
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.orhanobut.hawk.Hawk

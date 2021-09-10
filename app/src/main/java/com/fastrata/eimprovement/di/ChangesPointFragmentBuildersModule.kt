@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.di
 
-import com.fastrata.eimprovement.features.changesPoint.ui.create.ChangesPointStep1Fragment
-import com.fastrata.eimprovement.features.changesPoint.ui.create.ChangesPointStep2Fragment
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointStep1Fragment
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointStep2Fragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
