@@ -1,10 +1,10 @@
-package com.fastrata.eimprovement.features.changesPoint.ui
+package com.fastrata.eimprovement.features.changespoint.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesPointBinding
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 
 class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPointViewHolder>() {
 

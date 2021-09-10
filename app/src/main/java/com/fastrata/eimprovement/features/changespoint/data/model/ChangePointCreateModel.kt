@@ -1,7 +1,6 @@
 package com.fastrata.eimprovement.features.changespoint.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

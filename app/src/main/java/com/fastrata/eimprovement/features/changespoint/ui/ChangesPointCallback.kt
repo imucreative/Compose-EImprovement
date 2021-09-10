@@ -1,6 +1,6 @@
-package com.fastrata.eimprovement.features.changesPoint.ui
+package com.fastrata.eimprovement.features.changespoint.ui
 
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 
 interface ChangesPointCallback {
     fun onItemClicked(data: ChangePointModel)

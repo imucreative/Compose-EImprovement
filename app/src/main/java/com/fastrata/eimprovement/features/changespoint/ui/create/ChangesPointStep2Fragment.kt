@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.ui.create
+package com.fastrata.eimprovement.features.changespoint.ui.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +15,8 @@ import com.fastrata.eimprovement.databinding.FragmentChangesPointStep2Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
-import com.fastrata.eimprovement.features.changesPoint.data.model.hadiahItem
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.SnackBarCustom
@@ -28,7 +28,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var _binding:FragmentChangesPointStep2Binding
     private lateinit var viewModel:ChangesPointRewardViewModel
-    private lateinit var adapter:ChangesRewardAdapter
+    private lateinit var adapter: ChangesRewardAdapter
     private var data : ChangePointCreateModel? = null
 
     override fun onCreateView(

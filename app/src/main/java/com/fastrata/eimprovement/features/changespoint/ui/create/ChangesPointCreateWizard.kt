@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.ui.create
+package com.fastrata.eimprovement.features.changespoint.ui.create
 
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +16,8 @@ import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityChangesPointSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
-import com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointCreateCallback
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
+import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.Tools
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -95,9 +96,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Changes Point"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        setToolbar(this, toolbar, "Changes Point")
     }
 
     private fun currentStepCondition(currentStep: Int) {
@@ -169,7 +169,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
     private fun backStep(progress: Int) {
         if (progress > 1) {
-            currentStep = progress-1;
+            currentStep = progress-1
             currentStepCondition(currentStep)
 
             binding.apply {

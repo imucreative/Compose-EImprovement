@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.data.model
+package com.fastrata.eimprovement.features.changespoint.data.model
 
 data class ChangePointModel(
     val no_penukaran: String,

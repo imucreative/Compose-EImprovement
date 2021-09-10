@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.ui
+package com.fastrata.eimprovement.features.changespoint.ui
 
 import android.os.Bundle
 import android.view.*
@@ -15,7 +15,7 @@ import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.ui.setToolbar
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.ui.create
+package com.fastrata.eimprovement.features.changespoint.ui.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 
-import com.fastrata.eimprovement.features.changesPoint.ui.ChangesPointCreateCallback
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject
 

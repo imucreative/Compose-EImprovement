@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.ui.create.add
+package com.fastrata.eimprovement.features.changespoint.ui.create.add
 
 import android.content.Intent
 import android.os.Bundle

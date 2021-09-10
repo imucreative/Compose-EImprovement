@@ -1,10 +1,10 @@
-package com.fastrata.eimprovement.features.changesPoint.ui
+package com.fastrata.eimprovement.features.changespoint.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject

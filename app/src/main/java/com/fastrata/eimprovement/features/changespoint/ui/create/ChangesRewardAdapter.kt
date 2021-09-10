@@ -1,10 +1,10 @@
-package com.fastrata.eimprovement.features.changesPoint.ui.create
+package com.fastrata.eimprovement.features.changespoint.ui.create
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesRewardBinding
-import com.fastrata.eimprovement.features.changesPoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
 
 class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRewardAdapterViewHolder>() {
 

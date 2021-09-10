@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.changesPoint.data.model
+package com.fastrata.eimprovement.features.changespoint.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
