@@ -68,8 +68,9 @@ object DataDummySs {
 
     fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
         val categorySuggestionItem = ArrayList<CategorySuggestionItem?>()
-        categorySuggestionItem.add(CategorySuggestionItem(id = 1, category = "Meningkatkan penjualan", checked = true))
-        categorySuggestionItem.add(CategorySuggestionItem(id = 2, category = "Menurunkan biaya", checked = true))
+        categorySuggestionItem.add(CategorySuggestionItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategorySuggestionItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategorySuggestionItem(id = 0, category = "Efisiensi", checked = true))
 
         val teamMemberItem = ArrayList<TeamMemberItem?>()
         teamMemberItem.add(TeamMemberItem(name = "budi", department = "ICT", task = "Dokumentasi"))
@@ -83,7 +84,7 @@ object DataDummySs {
             name = "Maman",
             nik = "11210012",
             statusImplementation = StatusImplementation(
-                status = "Implement",
+                status = "1",
                 from = "20-10-2021",
                 to = "11-11-2021"
             ),
@@ -552,9 +553,6 @@ object DataDummySs {
         ))
         data.add(CategorySuggestionItem(
             id = 4, category = "Menyederhanakan Proses Kerja", false
-        ))
-        data.add(CategorySuggestionItem(
-            id = 5, category = "Lain-lain", false
         ))
         return data
     }

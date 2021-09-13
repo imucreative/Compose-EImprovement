@@ -64,12 +64,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             rvSs.adapter = adapter
 
             createSs.setOnClickListener {
-                /*Intent(activity, SuggestionSystemCreateWizardFragment::class.java).also {
-                    startActivity(it)
-                }*/
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    "Create SS",
-                    "Testing kirim code string ke SS Create wizard activity"
+                    toolbarTitle = "Create SS", action = "add", data = null
                 )
                 it.findNavController().navigate(direction)
             }
@@ -77,7 +73,10 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
-                Toast.makeText(activity, data.ssNo, Toast.LENGTH_LONG).show()
+                val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                    toolbarTitle = "Create SS", action = "edit", data = data
+                )
+                requireView().findNavController().navigate(direction)
             }
         })
 

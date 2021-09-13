@@ -11,9 +11,9 @@ import javax.inject.Inject
 class SsCreateTeamMemberViewModel @Inject constructor(): ViewModel() {
     private val list = MutableLiveData<ArrayList<TeamMemberItem?>?>()
 
-    fun setSuggestionSystemTeamMember() {
+    fun setSuggestionSystemTeamMember(source: String) {
         // koneksi ke hawk
-        val data = HawkUtils().getTempDataCreateSs()?.teamMember
+        val data = HawkUtils().getTempDataCreateSs(source)?.teamMember
         Timber.d("### team member : $data")
 
         list.postValue(data)

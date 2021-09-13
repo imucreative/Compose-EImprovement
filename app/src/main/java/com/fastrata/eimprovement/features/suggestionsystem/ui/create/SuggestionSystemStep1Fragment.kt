@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,10 +14,9 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER
-import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER_VALUE
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,9 +26,11 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private var _binding: FragmentSuggestionSystemStep1Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
+    private var detailData: SuggestionSystemModel? = null
     private lateinit var categoryViewModel: SsCreateCategorySuggestionViewModel
     private lateinit var categoryAdapter: SsCreateCategorySuggestionAdapter
     private val listCategory = ArrayList<CategorySuggestionItem?>()
+    private var source: String = SS_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +41,20 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
         categoryViewModel = injectViewModel(viewModelFactory)
         //categoryViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateCategorySuggestionViewModel::class.java)
+
+        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+
+        source = if (detailData == null) {
+            SS_CREATE
+        } else {
+            SS_DETAIL_DATA
+        }
+
+        data = HawkUtils().getTempDataCreateSs(source)
+
         categoryViewModel.setCategorySuggestion()
         categoryAdapter = SsCreateCategorySuggestionAdapter()
         categoryAdapter.notifyDataSetChanged()
-        data = HawkUtils().getTempDataCreateSs()
-
-        if (!data?.categorySuggestion.isNullOrEmpty()) {
-            data?.categorySuggestion?.let { listCategory.addAll(it) }
-        }
 
         return binding.root
     }
@@ -59,11 +65,18 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         _binding = FragmentSuggestionSystemStep1Binding.bind(view)
 
         binding.apply {
-            if (data?.title != null) {
-                titleSuggestion.setText(data?.title)
-            }
+            ssNo.setText(data?.ssNo)
+            name.setText(data?.name)
+            nik.setText(data?.nik)
+            branch.setText(data?.branch)
+            department.setText(data?.department)
+            directMgr.setText(data?.directMgr)
 
-            setInitCategory(data?.categorySuggestion)
+            titleSuggestion.setText(data?.title)
+            data?.categorySuggestion?.let { category -> listCategory.addAll(category) }
+
+            Timber.w("##### $data")
+            setInitCategory()
             setData()
         }
     }
@@ -73,64 +86,48 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         _binding = null
     }
 
-    private fun setInitCategory(category: ArrayList<CategorySuggestionItem?>?) {
+    private fun setInitCategory() {
         binding.apply {
             rvCategorySuggestion.addItemDecoration(DividerItemDecoration(rvCategorySuggestion.context, DividerItemDecoration.VERTICAL))
             rvCategorySuggestion.setHasFixedSize(true)
             rvCategorySuggestion.layoutManager = LinearLayoutManager(context)
             rvCategorySuggestion.adapter = categoryAdapter
+
+            tvCheckboxOther.setOnClickListener {
+                checkboxOther.isChecked = !checkboxOther.isChecked
+
+                if (checkboxOther.isChecked) {
+                    etOther.visibility = View.VISIBLE
+                } else {
+                    etOther.visibility = View.GONE
+                }
+            }
+
         }
 
         categoryAdapter.ssCreateCallback(object : SuggestionSystemCreateCategorySuggestionCallback {
             override fun checkClicked(data: CategorySuggestionItem, checked: Boolean) {
+                data.checked = checked
                 if (checked) {
-                    if(data.id == SS_CATEGORY_OTHER) {
-                        binding.etOther.visibility = View.VISIBLE
-                    }
-
-                    listCategory.add(
-                        CategorySuggestionItem(
-                            id = data.id,
-                            category = data.category,
-                            checked = checked
-                        )
-                    )
-
+                    listCategory.add(data)
                 } else {
-                    if(data.id == SS_CATEGORY_OTHER) {
-                        binding.etOther.visibility = View.GONE
-                    }
-
-                    listCategory.remove(
-                        CategorySuggestionItem(
-                            id = data.id,
-                            category = data.category,
-                            checked = !checked  // belom bener
-                        )
-                    )
+                    listCategory.remove(data)
                 }
-
-                println("##### listCategory $listCategory")
-                println("##### category $category")
             }
         })
 
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
-
                 categoryAdapter.setListCategorySuggestion(it, listCategory)
                 listCategory.map { checkList ->
-                    if (checkList?.id == SS_CATEGORY_OTHER_VALUE) {
+                    if (checkList?.id == 0) {
                         binding.apply {
+                            checkboxOther.isChecked = !checkboxOther.isChecked
                             etOther.visibility = View.VISIBLE
                             edtLainLain.setText(checkList.category)
                         }
-
                     }
                 }
-
-                Timber.e("### ambil dari getCategorySuggestion $it")
-                Timber.e("### $category")
             }
         })
     }
@@ -140,25 +137,44 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    if (etOther.isVisible && !edtLainLain.text.isNullOrBlank()){
-                        listCategory.add(
-                            CategorySuggestionItem(id = SS_CATEGORY_OTHER_VALUE, category = edtLainLain.text.toString(), checked = true)
-                        )
-                    }else{
-                        if(listCategory.contains(
-                                CategorySuggestionItem(id = SS_CATEGORY_OTHER_VALUE, category = edtLainLain.text.toString(), checked = true))
-                        ) {
+                    if (checkboxOther.isChecked && !edtLainLain.text.isNullOrBlank()){
+                        val (match, notMatch) = listCategory.partition { it?.id == 0 }
+                        if (match.isNotEmpty()) {
                             listCategory.remove(
                                 CategorySuggestionItem(
-                                    id = SS_CATEGORY_OTHER_VALUE,
-                                    category = edtLainLain.text.toString(),
+                                    id = 0,
+                                    category = match[0]?.category.toString(),
                                     checked = true
                                 )
                             )
                         }
+                        listCategory.add(
+                            CategorySuggestionItem(
+                                id = 0,
+                                category = edtLainLain.text.toString(),
+                                checked = true
+                            )
+                        )
+
+                    } else {
+                        listCategory.remove(
+                            CategorySuggestionItem(
+                                id = 0,
+                                category = edtLainLain.text.toString(),
+                                checked = true
+                            )
+                        )
                     }
 
                     when {
+                        checkboxOther.isChecked && edtLainLain.text.isNullOrBlank() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root.rootView, layoutInflater, resources, root.rootView.context,
+                                "Other category must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            edtLainLain.requestFocus()
+                            stat = false
+                        }
                         titleSuggestion.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root.rootView, layoutInflater, resources, root.rootView.context,
@@ -184,6 +200,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                                 branch = branch.text.toString(),
                                 department = department.text.toString(),
                                 directMgr = directMgr.text.toString(),
+                                source = source
                             )
                             stat = true
                         }

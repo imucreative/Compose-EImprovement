@@ -17,8 +17,8 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.utils.SnackBarCustom
-import com.fastrata.eimprovement.utils.FileInformation
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,12 +30,14 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     private val binding get() = _binding!!
     private val pickFromGallery = 101
     private var data: SuggestionSystemCreateModel? = null
-    private lateinit var viewModel: SsCreateAttachmentViewModel
+    private var detailData: SuggestionSystemModel? = null
+    private lateinit var viewModelAttachment: SsCreateAttachmentViewModel
     private lateinit var adapter: SsCreateAttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
     private lateinit var initFileName: String
     private lateinit var initFilePath: String
+    private var source: String = SS_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +45,19 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSuggestionSystemStep4Binding.inflate(layoutInflater, container, false)
-        data = HawkUtils().getTempDataCreateSs()
+
+        viewModelAttachment = injectViewModel(viewModelFactory)
+
+        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+
+        source = if (detailData == null) SS_CREATE else SS_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreateSs(source)
+        viewModelAttachment.setSuggestionSystemAttachment(source)
+
+        adapter = SsCreateAttachmentAdapter()
+        adapter.notifyDataSetChanged()
+
         return binding.root
     }
 
@@ -52,20 +66,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
 
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
         //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
-        viewModel = injectViewModel(viewModelFactory)
-
-        initComponent(data?.attachment)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun initComponent(attachment: ArrayList<AttachmentItem?>?) {
-        viewModel.setSuggestionSystemAttachment()
-        adapter = SsCreateAttachmentAdapter()
-        adapter.notifyDataSetChanged()
 
         binding.apply {
             rvSsAttachment.setHasFixedSize(true)
@@ -77,14 +77,24 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
             }
         }
 
+        initList(data?.attachment)
+        setData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun initList(attachment: ArrayList<AttachmentItem?>?) {
         adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
                 Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
                 attachment?.remove(data)
 
-                viewModel.updateAttachment(attachment)
-                viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+                viewModelAttachment.updateAttachment(attachment)
+                viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
                     if (it != null) {
                         adapter.setList(it)
                         Timber.i("### ambil dari getSuggestionSystemAttachment $it")
@@ -98,14 +108,12 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
             }
         })
 
-        viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+        viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
                 Timber.i("### ambil dari getSuggestionSystemAttachment $it")
             }
         })
-
-        setData()
     }
 
     private fun openFolder() {
@@ -160,7 +168,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                         size = initFileSize
                     )
 
-                    viewModel.addAttachment(addData, data?.attachment)
+                    viewModelAttachment.addAttachment(addData, data?.attachment)
 
                     fileName.text = ""
                 }

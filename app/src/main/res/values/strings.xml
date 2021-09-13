@@ -59,5 +59,6 @@
 
     <!-- Navigation -->
     <string name="dashboard">Dashboard</string>
+    <string name="other">Lain - lain</string>
 
 </resources>

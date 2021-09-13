@@ -27,6 +27,7 @@ const val point= "point"
 const val SS_CREATE = "suggestion_system"
 const val SS_CATEGORY_OTHER = 5
 const val SS_CATEGORY_OTHER_VALUE = 6
+const val SS_DETAIL_DATA = "detail_data_ss"
 
 const val PREF_WELCOME = "isDisplay"
 

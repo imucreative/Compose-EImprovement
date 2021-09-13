@@ -9,17 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep3Binding
-import com.fastrata.eimprovement.utils.HawkUtils
 import android.widget.ArrayAdapter
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
-import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import android.widget.AdapterView.OnItemClickListener
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.utils.SnackBarCustom
-import timber.log.Timber
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject
 
 class SuggestionSystemStep3Fragment: Fragment(), Injectable {
@@ -28,8 +26,10 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private var _binding: FragmentSuggestionSystemStep3Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
-    private lateinit var viewModel: SsCreateTeamMemberViewModel
+    private var detailData: SuggestionSystemModel? = null
+    private lateinit var viewModelTeamMember: SsCreateTeamMemberViewModel
     private lateinit var adapter: SsCreateTeamMemberAdapter
+    private var source: String = SS_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +37,18 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSuggestionSystemStep3Binding.inflate(inflater, container, false)
-        data = HawkUtils().getTempDataCreateSs()
+        viewModelTeamMember = injectViewModel(viewModelFactory)
+
+        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+
+        source = if (detailData == null) SS_CREATE else SS_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreateSs(source)
+        viewModelTeamMember.setSuggestionSystemTeamMember(source)
+
+        adapter = SsCreateTeamMemberAdapter()
+        adapter.notifyDataSetChanged()
+
         return binding.root
     }
 
@@ -46,9 +57,19 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
 
         _binding = FragmentSuggestionSystemStep3Binding.bind(view)
         //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateTeamMemberViewModel::class.java)
-        viewModel = injectViewModel(viewModelFactory)
 
-        initComponent(data?.teamMember)
+        binding.apply {
+            rvSsTeamMember.setHasFixedSize(true)
+            rvSsTeamMember.layoutManager = LinearLayoutManager(context)
+            rvSsTeamMember.adapter = adapter
+        }
+
+        initComponent()
+
+        initList(data?.teamMember)
+
+        setData()
+        setValidation()
     }
 
     override fun onDestroyView() {
@@ -56,16 +77,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         _binding = null
     }
 
-    private fun initComponent(teamMember: ArrayList<TeamMemberItem?>?) {
-        viewModel.setSuggestionSystemTeamMember()
-        adapter = SsCreateTeamMemberAdapter()
-        adapter.notifyDataSetChanged()
-
+    private fun initComponent() {
         binding.apply {
-            rvSsTeamMember.setHasFixedSize(true)
-            rvSsTeamMember.layoutManager = LinearLayoutManager(context)
-            rvSsTeamMember.adapter = adapter
-
             val listMemberName: List<MemberNameItem> = DataDummySs.generateDummyNameMember()
             val adapterMemberName = ArrayAdapter(
                 requireContext(), android.R.layout.simple_list_item_1,
@@ -96,46 +109,30 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             memberTask.setAdapter(adapterMemberTask)
             memberTask.onItemClickListener = onItemClickListener
 
-            /*val adapt = context?.let {
-                ListAdapterCustom(it, R.layout.item_auto_complete_text_view, DataDummySs.generateDummyNameMember())
-            }
-            memberName.threshold = 1
-            memberName.setAdapter(adapt)
-            memberName.setOnItemClickListener { adapterView, view, position, id ->
-                hideKeyboard()
-                val data = adapterView.getItemAtPosition(position)
-                if (data is MemberNameItem){
-                    Toast.makeText(context, "Clicked " + data.name, Toast.LENGTH_SHORT).show()
-                }
-            }*/
-
         }
+    }
 
+    private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
         adapter.ssCreateCallback(object : SuggestionSystemCreateTeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
                 Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
                 teamMember?.remove(data)
 
-                viewModel.updateTeamMember(teamMember)
-                viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                viewModelTeamMember.updateTeamMember(teamMember)
+                viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
                     if (it != null) {
                         adapter.setListTeamMember(it)
-                        Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
                     }
                 })
             }
         })
 
-        viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setListTeamMember(it)
-                Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
             }
         })
-
-        setData()
-        setValidation()
     }
 
     private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
@@ -180,7 +177,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             task = task
                         )
 
-                        viewModel.addTeamMember(addData, data?.teamMember)
+                        viewModelTeamMember.addTeamMember(addData, data?.teamMember)
 
                         memberName.requestFocus()
                         memberName.setText("")

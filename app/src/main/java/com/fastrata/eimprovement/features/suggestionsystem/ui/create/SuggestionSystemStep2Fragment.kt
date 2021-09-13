@@ -11,9 +11,9 @@ import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Bindin
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import javax.inject.Inject
 
 class SuggestionSystemStep2Fragment : Fragment(), Injectable {
@@ -22,7 +22,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     private var _binding: FragmentSuggestionSystemStep2Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
+    private var detailData: SuggestionSystemModel? = null
     private lateinit var datePicker: DatePickerCustom
+    private var source: String = SS_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +32,17 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSuggestionSystemStep2Binding.inflate(inflater, container, false)
-        data = HawkUtils().getTempDataCreateSs()
+
+        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+
+        source = if (detailData == null) {
+            SS_CREATE
+        } else {
+            SS_DETAIL_DATA
+        }
+
+        data = HawkUtils().getTempDataCreateSs(source)
+
         return binding.root
     }
 
@@ -149,7 +161,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
             problem.setText(data?.problem.toString())
             suggestion.setText(data?.suggestion.toString())
 
-            if (data?.statusImplementation?.status?.contains("Sudah pernah diimplementasi") == true) {
+            if (data?.statusImplementation?.status == "1") {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
 
@@ -182,11 +194,11 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                     lateinit var tempTo: String
 
                     if (rbStatus1.isChecked) {
-                        tempStatus = rbStatus1.text.toString()
+                        tempStatus = "1"
                         tempFrom = etFromStatus1.text.toString()
                         tempTo = etToStatus1.text.toString()
                     } else {
-                        tempStatus = rbStatus2.text.toString()
+                        tempStatus = "0"
                         tempFrom = etFromStatus2.text.toString()
                         tempTo = etToStatus2.text.toString()
                     }
@@ -225,7 +237,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         HawkUtils().setTempDataCreateSs(
                             suggestion = suggestion.text.toString(),
                             problem = problem.text.toString(),
-                            statusImplementation = status
+                            statusImplementation = status,
+                            source = source
                         )
                         stat = true
 

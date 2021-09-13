@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemCategorySuggestionBinding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER
-import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER_VALUE
 import kotlin.collections.ArrayList
 
 class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySuggestionAdapter.CategoryViewHolder>() {
@@ -19,7 +17,7 @@ class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySu
 
         checked?.map {
             it?.let { value ->
-                if (value.id != SS_CATEGORY_OTHER_VALUE) {
+                if (value.id != 0) {
                     mergedList.remove(
                         CategorySuggestionItem(
                             id = value.id,
@@ -27,14 +25,7 @@ class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySu
                             checked = false
                         )
                     )
-
-                    mergedList.add(
-                        CategorySuggestionItem(
-                            id = value.id,
-                            category = value.category,
-                            checked = true
-                        )
-                    )
+                    mergedList.add(value)
                 }
             }
         }

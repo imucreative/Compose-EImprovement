@@ -11,9 +11,9 @@ import javax.inject.Inject
 class SsCreateAttachmentViewModel @Inject constructor(): ViewModel() {
     private val list = MutableLiveData<ArrayList<AttachmentItem?>?>()
 
-    fun setSuggestionSystemAttachment() {
+    fun setSuggestionSystemAttachment(source: String) {
         // koneksi ke hawk
-        val data = HawkUtils().getTempDataCreateSs()?.attachment
+        val data = HawkUtils().getTempDataCreateSs(source)?.attachment
         Timber.d("### attachment : $data")
 
         list.postValue(data)

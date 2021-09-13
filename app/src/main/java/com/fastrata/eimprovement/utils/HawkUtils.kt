@@ -10,6 +10,7 @@ internal class HawkUtils() {
 
     // init create object
     private val getDataCreateSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_CREATE)) Hawk.get(SS_CREATE) else null
+    private val getDataDetailSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_DETAIL_DATA)) Hawk.get(SS_DETAIL_DATA) else null
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
     private val getDataCreateCp : ChangePointCreateModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
 
@@ -29,32 +30,42 @@ internal class HawkUtils() {
         problem: String? = null,
         statusImplementation: StatusImplementation? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreateSs?.teamMember == null) arrayListOf() else null,
-        attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null
+        attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null,
+        source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
-            ssNo = ssNo ?: getDataCreateSs?.ssNo,
-            date = date ?: getDataCreateSs?.date,
-            title = title ?: getDataCreateSs?.title,
-            categorySuggestion = listCategory ?: getDataCreateSs?.categorySuggestion,
-            name = name ?: getDataCreateSs?.name,
-            nik = nik ?: getDataCreateSs?.nik,
-            branch = branch ?: getDataCreateSs?.branch,
-            subBranch = subBranch ?: getDataCreateSs?.subBranch,
-            department = department ?: getDataCreateSs?.department,
-            directMgr = directMgr ?: getDataCreateSs?.directMgr,
-            suggestion = suggestion ?: getDataCreateSs?.suggestion,
-            problem = problem ?: getDataCreateSs?.problem,
-            statusImplementation = statusImplementation ?:getDataCreateSs?.statusImplementation,
-            teamMember = teamMember ?: getDataCreateSs?.teamMember,
-            attachment = attachment ?: getDataCreateSs?.attachment
+            ssNo = ssNo ?: if (source == SS_CREATE) getDataCreateSs?.ssNo else getDataDetailSs?.ssNo,
+            date = date ?: if (source == SS_CREATE) getDataCreateSs?.date else getDataDetailSs?.date,
+            title = title ?: if (source == SS_CREATE) getDataCreateSs?.title else getDataDetailSs?.title,
+            categorySuggestion = listCategory ?: if (source == SS_CREATE) getDataCreateSs?.categorySuggestion else getDataDetailSs?.categorySuggestion,
+            name = name ?: if (source == SS_CREATE) getDataCreateSs?.name else getDataDetailSs?.name,
+            nik = nik ?: if (source == SS_CREATE) getDataCreateSs?.nik else getDataDetailSs?.nik,
+            branch = branch ?: if (source == SS_CREATE) getDataCreateSs?.branch else getDataDetailSs?.branch,
+            subBranch = subBranch ?: if (source == SS_CREATE) getDataCreateSs?.subBranch else getDataDetailSs?.subBranch,
+            department = department ?: if (source == SS_CREATE) getDataCreateSs?.department else getDataDetailSs?.department,
+            directMgr = directMgr ?: if (source == SS_CREATE) getDataCreateSs?.directMgr else getDataDetailSs?.directMgr,
+            suggestion = suggestion ?: if (source == SS_CREATE) getDataCreateSs?.suggestion else getDataDetailSs?.suggestion,
+            problem = problem ?: if (source == SS_CREATE) getDataCreateSs?.problem else getDataDetailSs?.problem,
+            statusImplementation = statusImplementation ?: if (source == SS_CREATE) getDataCreateSs?.statusImplementation else getDataDetailSs?.statusImplementation,
+            teamMember = teamMember ?: if (source == SS_CREATE) getDataCreateSs?.teamMember else getDataDetailSs?.teamMember,
+            attachment = attachment ?: if (source == SS_CREATE) getDataCreateSs?.attachment else getDataDetailSs?.attachment
         )
 
-        Hawk.put(SS_CREATE, data)
-        Timber.w("### Hawk : $data")
+        if (source == SS_CREATE) {
+            Hawk.put(SS_CREATE, data)
+            Timber.w("### Hawk : $data")
+        } else {
+            Hawk.put(SS_DETAIL_DATA, data)
+            Timber.w("### Hawk Detail Data: $data")
+        }
     }
 
-    fun getTempDataCreateSs(): SuggestionSystemCreateModel? {
-        return getDataCreateSs
+    fun getTempDataCreateSs(source: String = SS_CREATE): SuggestionSystemCreateModel? {
+        return if (source == SS_CREATE) {
+            getDataCreateSs
+        } else {
+            getDataDetailSs
+        }
     }
 
     fun setLoginBoolean(value: Boolean): Boolean {
