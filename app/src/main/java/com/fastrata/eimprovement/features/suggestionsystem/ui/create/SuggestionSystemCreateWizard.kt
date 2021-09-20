@@ -22,10 +22,8 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SS_CREATE
-import com.fastrata.eimprovement.utils.SS_DETAIL_DATA
-import com.fastrata.eimprovement.utils.Tools
 import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -45,6 +43,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     private val maxStep = 4
     private var currentStep = 1
     private var source: String = SS_CREATE
+    private lateinit var notification: HelperNotification
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -83,19 +82,25 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                         attachment = detailData.attachment,
                         source = SS_DETAIL_DATA
                     )
+
+                    initToolbar()
+                    initComponent()
                 })
             } else {
                 source = SS_CREATE
                 // ini ambil dari session
                 HawkUtils().setTempDataCreateSs(
                     ssNo = "",
-                    name = "name",
-                    nik = "nik",
-                    branch = "branch",
-                    department = "department",
-                    directMgr = "directMgr",
+                    name = HawkUtils().getDataLogin().USER_NAME,
+                    nik = HawkUtils().getDataLogin().NIK,
+                    branch = HawkUtils().getDataLogin().BRANCH,
+                    department = HawkUtils().getDataLogin().DEPARTMENT,
+                    directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,
                     source = SS_CREATE
                 )
+
+                initToolbar()
+                initComponent()
             }
         }
 
@@ -103,9 +108,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
             Timber.e("##### $it")
             Timber.e("##### =====================================")
         }
-
-        initToolbar()
-        initComponent()
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
@@ -213,21 +215,30 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     }
 
     private fun nextStep(progress: Int) {
-        if (progress < maxStep) {
-            val status =  ssCreateCallback.onDataPass()
-            if (status) {
+        val status =  ssCreateCallback.onDataPass()
+        if (status) {
+            if (progress < maxStep) {
                 currentStep = progress + 1
                 currentStepCondition(currentStep)
 
+                binding.apply {
+                    lytBack.visibility = View.VISIBLE
+                    lytNext.visibility = View.VISIBLE
+                }
+            } else {
                 //CoroutineScope(Dispatchers.Default).launch {
-                    binding.apply {
-                        lytBack.visibility = View.VISIBLE
-                        lytNext.visibility = View.VISIBLE
-                        lytSave.visibility = View.GONE
-                        if (currentStep == maxStep) {
-                            lytNext.visibility = View.GONE
-                            lytSave.visibility = View.VISIBLE
-                            lytSave.setOnClickListener {
+                notification = HelperNotification()
+                binding.apply {
+                    notification.shownotificationyesno(
+                        this@SuggestionSystemCreateWizard,
+                        "Submit",
+                        "Are you sure submit this data?",
+                        object : HelperNotification.CallBackNotificationYesNo {
+                            override fun onNotificationNo() {
+
+                            }
+
+                            override fun onNotificationYes() {
                                 val gson = Gson()
                                 val data = gson.toJson(HawkUtils().getTempDataCreateSs(source))
                                 println("### Data form input : $data")
@@ -239,7 +250,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 finish()
                             }
                         }
-                    }
+                    )
+                }
                 // }
             }
         }
@@ -256,7 +268,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
-                lytSave.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }

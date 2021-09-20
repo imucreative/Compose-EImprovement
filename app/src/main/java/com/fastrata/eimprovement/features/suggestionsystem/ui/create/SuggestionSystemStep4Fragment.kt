@@ -79,6 +79,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
 
         initList(data?.attachment)
         setData()
+        setValidation()
     }
 
     override fun onDestroyView() {
@@ -157,7 +158,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
             addAttachment.setOnClickListener {
                 if (fileName.text.isEmpty()) {
                     SnackBarCustom.snackBarIconInfo(
-                        root.rootView, layoutInflater, resources, root.rootView.context,
+                        root, layoutInflater, resources, root.context,
                         "Attachment must be fill before added",
                         R.drawable.ic_close, R.color.red_500)
                 } else {
@@ -174,5 +175,27 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                 }
             }
         }
+    }
+
+    private fun setValidation() {
+        (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object : SuggestionSystemCreateCallback {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+
+                binding.apply {
+                    stat = if (data?.attachment?.size == 0) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            "Attachment must be fill before next",
+                            R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
+                        true
+                    }
+                }
+
+                return stat
+            }
+        })
     }
 }

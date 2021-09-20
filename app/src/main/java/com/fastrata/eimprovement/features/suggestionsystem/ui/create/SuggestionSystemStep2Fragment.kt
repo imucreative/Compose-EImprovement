@@ -211,7 +211,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
                     if (problem.text.isNullOrEmpty()) {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Problem must be fill before next",
                             R.drawable.ic_close, R.color.red_500)
                         problem.requestFocus()
@@ -219,15 +219,15 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
                     } else if (suggestion.text.isNullOrEmpty()) {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Suggestion must be fill before next",
                             R.drawable.ic_close, R.color.red_500)
                         suggestion.requestFocus()
                         stat = false
 
-                    } else  if (!rbStatus1.isChecked && !rbStatus2.isChecked) {
+                    } else if (!rbStatus1.isChecked && !rbStatus2.isChecked) {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Status Implementation must be fill before next",
                             R.drawable.ic_close, R.color.red_500
                         )

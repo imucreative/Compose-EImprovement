@@ -169,7 +169,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                     when {
                         checkboxOther.isChecked && edtLainLain.text.isNullOrBlank() -> {
                             SnackBarCustom.snackBarIconInfo(
-                                root.rootView, layoutInflater, resources, root.rootView.context,
+                                root, layoutInflater, resources, root.context,
                                 "Other category must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             edtLainLain.requestFocus()
@@ -177,7 +177,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                         }
                         titleSuggestion.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
-                                root.rootView, layoutInflater, resources, root.rootView.context,
+                                root, layoutInflater, resources, root.context,
                                 "Title must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             titleSuggestion.requestFocus()
@@ -185,7 +185,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                         }
                         listCategory.isEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
-                                root.rootView, layoutInflater, resources, root.rootView.context,
+                                root, layoutInflater, resources, root.context,
                                 "Category must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             stat = false

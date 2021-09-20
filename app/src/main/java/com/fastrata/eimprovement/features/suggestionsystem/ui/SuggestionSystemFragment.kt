@@ -109,7 +109,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        binding.edtStartDate.text = "$dayStr-$monthStr-$year"
+                        edtStartDate.text = "$dayStr-$monthStr-$year"
                     }
                 })
             }
@@ -120,7 +120,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        binding.edtEndDate.text = "$dayStr-$monthStr-$year"
+                        edtEndDate.text = "$dayStr-$monthStr-$year"
                     }
                 })
             }
@@ -130,7 +130,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             }
 
             btnApply.setOnClickListener {
-                Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
+                Toast.makeText(context,  "Apply filter", Toast.LENGTH_LONG).show()
                 drawer.closeDrawer(GravityCompat.END)
             }
         }

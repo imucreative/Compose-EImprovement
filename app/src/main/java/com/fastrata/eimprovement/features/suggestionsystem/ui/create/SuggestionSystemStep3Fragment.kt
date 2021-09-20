@@ -150,7 +150,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 when {
                     name.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Name must be fill before added",
                             R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
@@ -158,14 +158,14 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                     }
                     department.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Department must be fill before added",
                             R.drawable.ic_close, R.color.red_500)
                         memberDepartment.requestFocus()
                     }
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Task must be fill before added",
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
@@ -197,7 +197,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 binding.apply {
                     stat = if (data?.teamMember?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Team Member must be fill before next",
                             R.drawable.ic_close, R.color.red_500)
                         false
