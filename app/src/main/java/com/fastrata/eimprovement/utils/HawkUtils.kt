@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.utils
 
 import com.fastrata.eimprovement.features.changespoint.data.model.*
+import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.orhanobut.hawk.Hawk
@@ -68,16 +69,23 @@ internal class HawkUtils() {
         }
     }
 
-    fun setLoginBoolean(value: Boolean): Boolean {
-        return Hawk.put(SUCCES_LOGIN,value)
+    fun setStatusLogin(status: Boolean) {
+        Hawk.put(HAWK_SUCCESS_LOGIN, status)
     }
 
-    fun setSaldo(saldo: String) {
-        Hawk.put<Any>(point, saldo)
+    fun getStatusLogin(): Boolean {
+        if (Hawk.contains(HAWK_SUCCESS_LOGIN)) {
+            return Hawk.get(HAWK_SUCCESS_LOGIN)
+        }
+        return false
     }
 
-    fun getSaldo():String {
-        return Hawk.get(point)
+    fun setDataLogin(loginEntity: LoginEntity? = null) {
+        Hawk.put(HAWK_USER, loginEntity)
+    }
+
+    fun getDataLogin(): LoginEntity {
+        return Hawk.get(HAWK_USER)
     }
 
     fun setTempDataCreatePi(

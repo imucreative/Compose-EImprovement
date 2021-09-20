@@ -23,5 +23,12 @@ data class LoginEntity(
     @SerializedName("ORG_ID")
     val API_KEY: String,
     @SerializedName("WAREHOUSE_ID")
-    val ROLES: String
+    val ROLES: String,
+    val NIK: String,
+    val BRANCH: String,
+    val SUB_BRANCH: String,
+    val DEPARTMENT: String,
+    val POSITION: String,
+    val DIRECT_MANAGER: String,
+    val SALDO: String,
 )

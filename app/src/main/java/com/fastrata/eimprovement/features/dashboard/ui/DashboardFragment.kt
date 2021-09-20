@@ -63,9 +63,9 @@ class DashboardFragment: Fragment(), Injectable {
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {
             linearSaldo.setOnClickListener {
-                notification.showNotification(activity,"SALOD ANDA", HawkUtils().getSaldo())
+                notification.showNotification(activity,"SALOD ANDA", HawkUtils().getDataLogin().SALDO)
             }
-            saldoTxt.text = HawkUtils().getSaldo()
+            saldoTxt.text = HawkUtils().getDataLogin().SALDO
             filterActivityDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {

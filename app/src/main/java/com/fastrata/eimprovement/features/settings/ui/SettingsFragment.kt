@@ -45,7 +45,14 @@ class SettingsFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            saldoTxt.text = HawkUtils().getSaldo()
+            tvSaldo.text = HawkUtils().getDataLogin().SALDO
+            tvName.text = HawkUtils().getDataLogin().USER_NAME
+            tvNik.text = HawkUtils().getDataLogin().NIK
+            tvBranch.text = HawkUtils().getDataLogin().BRANCH
+            tvSubBranch.text = HawkUtils().getDataLogin().SUB_BRANCH
+            tvDepartment.text = HawkUtils().getDataLogin().DEPARTMENT
+            tvPosition.text = HawkUtils().getDataLogin().POSITION
+
             btnLogout.setOnClickListener {
                 notification.shownotificationyesno(activity,"Setting","Apakah anda yakin keluar",
                 object  :CallBackNotificationYesNo {
@@ -54,8 +61,9 @@ class SettingsFragment : Fragment(), Injectable {
                     }
 
                     override fun onNotificationYes() {
-                        HawkUtils().setLoginBoolean(false)
-                    startActivity(Intent(activity, SplashScreenActivity::class.java))
+                        HawkUtils().setStatusLogin(false)
+                        HawkUtils().setDataLogin(null)
+                        startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })
             }

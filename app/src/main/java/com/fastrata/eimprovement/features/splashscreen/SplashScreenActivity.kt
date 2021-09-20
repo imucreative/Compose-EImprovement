@@ -16,7 +16,6 @@ import com.fastrata.eimprovement.features.login.ui.LoginActivity
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.PreferenceUtils
-import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -41,25 +40,8 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun processSplashScreen() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-
-//            if (!welcomeMessageModel.isDisplay) {
-//                goToWelcomeMessage()
-//            } else {
-//                goToLoginPage()
-//            }
-            /*
-            val savedLogin = PreferenceUtil(this).get(PREF_USER_NAME, "", true) ?: ""
-            if (savedLogin.isNotEmpty()) {
-                //get master customer
-                //subscribeMasterCustomers(savedLogin)
-                goDashboardPage()
-            } else {
-                //do postDelayed and go to login page
-                goToLoginPage()
-            }
-             */
-            val bool = Hawk.get<Boolean>(SUCCES_LOGIN)
-            if (bool == true){
+            val bool = HawkUtils().getStatusLogin()
+            if (bool){
                 goToHome()
             }else{
                 if (!welcomeMessageModel.isDisplay) {
