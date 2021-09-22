@@ -111,7 +111,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtStartDate.text = "$dayStr-$monthStr-$year"
+                        tvStartDate.text = "$dayStr-$monthStr-$year"
                     }
                 })
             }
@@ -122,7 +122,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtEndDate.text = "$dayStr-$monthStr-$year"
+                        tvEndDate.text = "$dayStr-$monthStr-$year"
                     }
                 })
             }
