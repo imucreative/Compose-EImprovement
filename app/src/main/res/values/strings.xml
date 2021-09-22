@@ -61,5 +61,10 @@
     <string name="dashboard">Dashboard</string>
     <string name="other">Lain - lain</string>
     <string name="history_approval">Histori Persetujuan</string>
+    <string name="title_improvement">Judul Improvement</string>
+    <string name="created_year">Tahun</string>
+    <string name="project_improvement_no">Project Improvement No.</string>
+    <string name="please_fill_the_form_to_create_project_improvement">Please fill the form to create Project Improvement.</string>
+    <string name="form_project_improvement">Form Project Improvement</string>
 
 </resources>

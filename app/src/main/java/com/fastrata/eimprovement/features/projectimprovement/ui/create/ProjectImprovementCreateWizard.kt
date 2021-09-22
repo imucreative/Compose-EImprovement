@@ -17,8 +17,8 @@ import com.fastrata.eimprovement.databinding.ActivityProjectImprovementWizardBin
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.Tools
 import com.google.gson.Gson
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -31,7 +31,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     private lateinit var toolbarBinding: ToolbarBinding
     private val maxStep = 9
     private var currentStep = 1
-    private lateinit var piCreateCallback : ProjectImprovementSystemCreateCallback
+    private var source: String = PI_CREATE
+    private lateinit var notification: HelperNotification
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -42,7 +43,14 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         toolbarBinding = ToolbarBinding.bind(binding.root)
         setContentView(binding.root)
 
-        initToolbar()
+        HawkUtils().setTempDataCreatePi(
+            piNo = "",
+            branch = HawkUtils().getDataLogin().BRANCH,
+            department = HawkUtils().getDataLogin().DEPARTMENT,
+            subBranch = HawkUtils().getDataLogin().SUB_BRANCH
+        )
+
+        initToolbar("Create Project Improvement")
         initComponent()
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
@@ -81,15 +89,16 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         }
     }
 
-    private fun initToolbar() {
+    private fun initToolbar(title: String) {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(this, toolbar, "Create Project Improvement (PI)")
+        setToolbar(this, toolbar, title)
     }
 
-    fun setpiCreateCallback(picreateCallback: ProjectImprovementSystemCreateCallback){
-        this.piCreateCallback = picreateCallback
+    private lateinit var piCreateCallback : ProjectImprovementSystemCreateCallback
+    fun setPiCreateCallback(piCreateCallback: ProjectImprovementSystemCreateCallback){
+        this.piCreateCallback = piCreateCallback
     }
 
     override fun onBackPressed() {
@@ -98,7 +107,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
     private fun backStep(progress: Int) {
         if (progress > 1) {
-            currentStep = progress-1;
+            currentStep = progress-1
             currentStepCondition(currentStep)
 
             binding.apply {
@@ -110,11 +119,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
             }
         }
     }
-
-//    private lateinit var picreateCallback: ProjecImprovementSystemCreateCallback
-//    fun setpiCreateCallback(piCreateCallback: ProjecImprovementSystemCreateCallback) {
-//        this.picreateCallback = piCreateCallback
-//    }
 
     private fun currentStepCondition(currentStep: Int) {
         val mFragmentManager = supportFragmentManager
@@ -257,8 +261,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         }
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         return super.onCreateOptionsMenu(menu)
     }
@@ -271,6 +273,4 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }

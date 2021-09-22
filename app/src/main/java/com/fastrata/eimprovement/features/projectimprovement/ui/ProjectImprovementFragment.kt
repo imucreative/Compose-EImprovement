@@ -19,6 +19,7 @@ import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImpr
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.DatePickerCustom
 import javax.inject.Inject
 
 class ProjectImprovementFragment : Fragment(), Injectable{
@@ -28,6 +29,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var viewModel : ProjectImprovementViewModel
     private lateinit var adapter : ProjectImprovementAdapter
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +41,11 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         context ?: return binding.root
 
         viewModel = injectViewModel(viewModelFactory)
+
+        datePicker = DatePickerCustom(
+            context = binding.root.context, themeDark = true,
+            minDateIsCurrentDate = true, parentFragmentManager
+        )
 
         setHasOptionsMenu(true);
 
@@ -111,17 +118,25 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             drawer.openDrawer(GravityCompat.END)
 
             filterStartDate.setOnClickListener {
-                /*DatePickerCustom.dialogDatePicker(
-                    context = this@ProjectImprovementActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )*/
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        tvStartDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             filterEndDate.setOnClickListener {
-                /*DatePickerCustom.dialogDatePicker(
-                    context = this@ProjectImprovementActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )*/
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        tvEndDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             btnCloseFilter.setOnClickListener {

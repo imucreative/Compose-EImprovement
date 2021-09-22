@@ -181,7 +181,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     }
 
     private fun setValidation() {
-        (activity as ProjectImprovementCreateWizard).setpiCreateCallback(object  :
+        (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object  :
             ProjectImprovementSystemCreateCallback{
             override fun onDataPass(): Boolean {
                 binding.apply {
