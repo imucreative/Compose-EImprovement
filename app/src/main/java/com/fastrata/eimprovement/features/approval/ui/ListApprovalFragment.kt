@@ -7,8 +7,8 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentListApprovalBinding
@@ -17,7 +17,9 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.APPROVE
 import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.SS
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,9 +31,6 @@ class ListApprovalFragment : Fragment(), Injectable {
     private lateinit var viewModelList: ListApprovalViewModel
     private lateinit var adapterList: ListApprovalAdapter
     private lateinit var datePicker: DatePickerCustom
-
-    // receive from dashboard
-    private val args: ListApprovalFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,10 +52,6 @@ class ListApprovalFragment : Fragment(), Injectable {
 
         initToolbar()
         initComponent(requireActivity())
-
-        args.description.let {
-            Timber.e("##### $it")
-        }
 
         return binding.root
     }
@@ -81,7 +76,15 @@ class ListApprovalFragment : Fragment(), Injectable {
 
         adapterList.setApprovalCallback(object : ListApprovalCallback {
             override fun onItemClicked(data: ApprovalModel) {
-                Toast.makeText(activity, data.ssNo, Toast.LENGTH_LONG).show()
+                if (data.type == SS) {
+                    val direction =
+                        ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                            toolbarTitle = "Approve Suggestion System",
+                            action = APPROVE,
+                            ssNo = data.ssNo,
+                        )
+                    requireView().findNavController().navigate(direction)
+                }
             }
         })
 

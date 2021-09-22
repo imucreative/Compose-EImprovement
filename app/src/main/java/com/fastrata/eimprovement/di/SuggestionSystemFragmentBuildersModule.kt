@@ -1,9 +1,7 @@
 package com.fastrata.eimprovement.di
 
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep1Fragment
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep2Fragment
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep3Fragment
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep4Fragment
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusFragment
+import com.fastrata.eimprovement.features.suggestionsystem.ui.create.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -21,4 +19,7 @@ abstract class SuggestionSystemFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSuggestionSystem4Fragment(): SuggestionSystemStep4Fragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeListApprovalHistoryStatusFragment(): ListApprovalHistoryStatusFragment
 }

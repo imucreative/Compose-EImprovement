@@ -4,14 +4,10 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ApprovalModel(
-    val ssNo: String,
-    val title: String,
+data class ApprovalHistoryStatusModel(
+    val pic: String,
     val status: String,
-    val type: String,
-    val name: String,
-    val nik: String,
-    val branch: String,
-    val subBranch: String,
+    val comment: String,
     val date: String
 ): Parcelable
+

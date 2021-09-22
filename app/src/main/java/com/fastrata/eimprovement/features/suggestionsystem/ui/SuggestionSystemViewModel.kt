@@ -24,8 +24,9 @@ class SuggestionSystemViewModel @Inject constructor(): ViewModel() {
         return listSuggestionSystem
     }
 
-    fun setSuggestionSystemDetail() {
+    fun setSuggestionSystemDetail(ssNo: String) {
         // koneksi ke DB
+        println("# $ssNo")
         val data = DataDummySs.generateDummyDetailSuggestionSystem()
         println("##### setSuggestionSystemDetail in viewModel : $detailSuggestionSystem")
         detailSuggestionSystem.postValue(data)

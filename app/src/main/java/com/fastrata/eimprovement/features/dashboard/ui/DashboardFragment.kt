@@ -80,10 +80,7 @@ class DashboardFragment: Fragment(), Injectable {
 
             // action menu
             menuApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(
-                    "List Approval",
-                    "test kirim argument string"
-                )
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment("List Approval")
                 it.findNavController().navigate(direction)
 
                 drawerLayout.closeDrawer(GravityCompat.START)

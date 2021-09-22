@@ -42,11 +42,9 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
-
-        <argument
-            android:name="description"
-            android:defaultValue="default description"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_listApprovalFragment_to_suggestionSystemCreateWizard"
+            app:destination="@id/suggestionSystemCreateWizard" />
     </fragment>
 
     <fragment
@@ -125,10 +123,14 @@
             app:argType="string" />
 
         <argument
-            android:name="data"
-            android:defaultValue="@null"
-            app:nullable="true"
-            app:argType="com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel" />
+            android:name="ssNo"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            android:defaultValue=""
+            app:argType="string" />
     </activity>
 
     <activity

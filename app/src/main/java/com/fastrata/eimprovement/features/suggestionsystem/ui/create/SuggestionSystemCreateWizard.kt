@@ -19,7 +19,7 @@ import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemCreateWizar
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusFragment
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -38,9 +38,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: ActivitySuggestionSystemCreateWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private var data: SuggestionSystemModel? = null
+    private var ssNo: String = ""
+    private var ssAction: String = ""
     private lateinit var viewModel: SuggestionSystemViewModel
-    private val maxStep = 4
+    private var maxStep = 4
     private var currentStep = 1
     private var source: String = SS_CREATE
     private lateinit var notification: HelperNotification
@@ -59,11 +60,22 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         AndroidInjection.inject(this)
         viewModel = injectViewModel(viewModelFactory)
 
-        args.data.let {
-            data = it
-            if (it != null) {
+        val argsTitle   = args.toolbarTitle!!
+        val argsAction  = args.action
+        val argsSsNo    = args.ssNo
+
+        ssAction = argsAction
+
+        if (ssAction == APPROVE) {
+            maxStep += 1
+        }
+
+        when (argsAction) {
+            EDIT -> {
+                ssNo = argsSsNo
+
                 source = SS_DETAIL_DATA
-                viewModel.setSuggestionSystemDetail()
+                viewModel.setSuggestionSystemDetail(argsSsNo)
                 viewModel.getSuggestionSystemDetail().observe(this, { detailData ->
                     Timber.e("### ambil dari getSuggestionSystemDetail $detailData")
                     HawkUtils().setTempDataCreateSs(
@@ -83,10 +95,13 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                         source = SS_DETAIL_DATA
                     )
 
-                    initToolbar()
+                    initToolbar(argsTitle)
                     initComponent()
                 })
-            } else {
+            }
+            ADD -> {
+                ssNo = ""
+
                 source = SS_CREATE
                 // ini ambil dari session
                 HawkUtils().setTempDataCreateSs(
@@ -99,14 +114,37 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     source = SS_CREATE
                 )
 
-                initToolbar()
+                initToolbar(argsTitle)
                 initComponent()
             }
-        }
+            APPROVE -> {
+                ssNo = argsSsNo
 
-        args.action.let {
-            Timber.e("##### $it")
-            Timber.e("##### =====================================")
+                source = SS_DETAIL_DATA
+                viewModel.setSuggestionSystemDetail(argsSsNo)
+                viewModel.getSuggestionSystemDetail().observe(this, { detailData ->
+                    Timber.e("### ambil dari getSuggestionSystemDetail $detailData")
+                    HawkUtils().setTempDataCreateSs(
+                        ssNo = detailData.ssNo,
+                        title = detailData.title,
+                        listCategory = detailData.categorySuggestion,
+                        name = detailData.name,
+                        nik = detailData.nik,
+                        branch = detailData.branch,
+                        department = detailData.department,
+                        directMgr = detailData.directMgr,
+                        suggestion = detailData.suggestion,
+                        problem = detailData.problem,
+                        statusImplementation = detailData.statusImplementation,
+                        teamMember = detailData.teamMember,
+                        attachment = detailData.attachment,
+                        source = SS_DETAIL_DATA
+                    )
+
+                    initToolbar(argsTitle)
+                    initComponent()
+                })
+            }
         }
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
@@ -137,7 +175,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
             if(fragment !is SuggestionSystemStep1Fragment){
                 val args = Bundle()
-                args.putParcelable(SS_DETAIL_DATA, data)
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
                 mHomeFragment.arguments = args
                 mFragmentManager
                     .beginTransaction()
@@ -148,11 +187,11 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         }
     }
 
-    private fun initToolbar() {
+    private fun initToolbar(title: String) {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(this, toolbar, "Create Suggestion System (SS)")
+        setToolbar(this, toolbar, title)
     }
 
     private fun currentStepCondition(currentStep: Int) {
@@ -162,7 +201,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 Timber.e("### step 1 = $currentStep")
                 val fragment = SuggestionSystemStep1Fragment()
                 val args = Bundle()
-                args.putParcelable(SS_DETAIL_DATA, data)
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
                 fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep1Fragment::class.java.simpleName)
@@ -174,7 +214,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 Timber.e("### step 2 = $currentStep")
                 val fragment = SuggestionSystemStep2Fragment()
                 val args = Bundle()
-                args.putParcelable(SS_DETAIL_DATA, data)
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
                 fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep2Fragment::class.java.simpleName)
@@ -186,7 +227,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 Timber.e("### step 3 = $currentStep")
                 val fragment = SuggestionSystemStep3Fragment()
                 val args = Bundle()
-                args.putParcelable(SS_DETAIL_DATA, data)
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
                 fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep3Fragment::class.java.simpleName)
@@ -198,10 +240,24 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 Timber.e("### step 4 = $currentStep")
                 val fragment = SuggestionSystemStep4Fragment()
                 val args = Bundle()
-                args.putParcelable(SS_DETAIL_DATA, data)
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
                 fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container, fragment, SuggestionSystemStep4Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            5 -> {
+                Timber.e("### step 5 = $currentStep")
+                val fragment = ListApprovalHistoryStatusFragment()
+                val args = Bundle()
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container, fragment, ListApprovalHistoryStatusFragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -224,6 +280,12 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 binding.apply {
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
+
+                    if (ssAction == APPROVE) {
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
+                        }
+                    }
                 }
             } else {
                 //CoroutineScope(Dispatchers.Default).launch {

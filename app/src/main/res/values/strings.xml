@@ -60,5 +60,6 @@
     <!-- Navigation -->
     <string name="dashboard">Dashboard</string>
     <string name="other">Lain - lain</string>
+    <string name="history_approval">Histori Persetujuan</string>
 
 </resources>

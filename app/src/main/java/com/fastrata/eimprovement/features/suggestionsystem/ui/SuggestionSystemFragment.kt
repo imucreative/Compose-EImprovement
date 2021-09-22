@@ -17,7 +17,9 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.ADD
 import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.EDIT
 import javax.inject.Inject
 
 class SuggestionSystemFragment : Fragment(), Injectable {
@@ -65,7 +67,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
             createSs.setOnClickListener {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    toolbarTitle = "Create SS", action = "add", data = null
+                    toolbarTitle = "Create Suggestion System", action = ADD, ssNo = "", type = ""
                 )
                 it.findNavController().navigate(direction)
             }
@@ -74,7 +76,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    toolbarTitle = "Create SS", action = "edit", data = data
+                    toolbarTitle = "Edit Suggestion System", action = EDIT, ssNo = data.ssNo, type = ""
                 )
                 requireView().findNavController().navigate(direction)
             }

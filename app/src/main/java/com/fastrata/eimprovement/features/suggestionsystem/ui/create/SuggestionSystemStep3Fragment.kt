@@ -26,7 +26,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private var _binding: FragmentSuggestionSystemStep3Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
-    private var detailData: SuggestionSystemModel? = null
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
     private lateinit var viewModelTeamMember: SsCreateTeamMemberViewModel
     private lateinit var adapter: SsCreateTeamMemberAdapter
     private var source: String = SS_CREATE
@@ -39,9 +40,10 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         _binding = FragmentSuggestionSystemStep3Binding.inflate(inflater, container, false)
         viewModelTeamMember = injectViewModel(viewModelFactory)
 
-        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+        ssNo = arguments?.getString(SS_DETAIL_DATA)
+        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
 
-        source = if (detailData == null) SS_CREATE else SS_DETAIL_DATA
+        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
         viewModelTeamMember.setSuggestionSystemTeamMember(source)
@@ -70,11 +72,25 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
 
         setData()
         setValidation()
+
+        if (ssAction == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            memberName.isEnabled = false
+            memberDepartment.isEnabled = false
+            memberTask.isEnabled = false
+
+            addTeamMember.isClickable = false
+        }
     }
 
     private fun initComponent() {
@@ -115,16 +131,19 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
         adapter.ssCreateCallback(object : SuggestionSystemCreateTeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
-                Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
+                if (ssAction != APPROVE) {
+                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
-                teamMember?.remove(data)
+                    teamMember?.remove(data)
 
-                viewModelTeamMember.updateTeamMember(teamMember)
-                viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        adapter.setListTeamMember(it)
-                    }
-                })
+                    viewModelTeamMember.updateTeamMember(teamMember)
+                    viewModelTeamMember.getSuggestionSystemTeamMember()
+                        .observe(viewLifecycleOwner, {
+                            if (it != null) {
+                                adapter.setListTeamMember(it)
+                            }
+                        })
+                }
             }
         })
 

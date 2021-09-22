@@ -30,7 +30,8 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     private val binding get() = _binding!!
     private val pickFromGallery = 101
     private var data: SuggestionSystemCreateModel? = null
-    private var detailData: SuggestionSystemModel? = null
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
     private lateinit var viewModelAttachment: SsCreateAttachmentViewModel
     private lateinit var adapter: SsCreateAttachmentAdapter
     private lateinit var uri: Uri
@@ -48,9 +49,10 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
 
         viewModelAttachment = injectViewModel(viewModelFactory)
 
-        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+        ssNo = arguments?.getString(SS_DETAIL_DATA)
+        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
 
-        source = if (detailData == null) SS_CREATE else SS_DETAIL_DATA
+        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
         viewModelAttachment.setSuggestionSystemAttachment(source)
@@ -80,6 +82,10 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         initList(data?.attachment)
         setData()
         setValidation()
+
+        if (ssAction == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
@@ -87,20 +93,30 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         _binding = null
     }
 
+    private fun disableForm() {
+        binding.apply {
+            getAttachment.isClickable = false
+            addAttachment.isClickable = false
+        }
+    }
+
     private fun initList(attachment: ArrayList<AttachmentItem?>?) {
         adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
+                if (ssAction != APPROVE) {
+                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
-                attachment?.remove(data)
+                    attachment?.remove(data)
 
-                viewModelAttachment.updateAttachment(attachment)
-                viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        adapter.setList(it)
-                        Timber.i("### ambil dari getSuggestionSystemAttachment $it")
-                    }
-                })
+                    viewModelAttachment.updateAttachment(attachment)
+                    viewModelAttachment.getSuggestionSystemAttachment()
+                        .observe(viewLifecycleOwner, {
+                            if (it != null) {
+                                adapter.setList(it)
+                                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
+                            }
+                        })
+                }
             }
 
             override fun showAttachment(data: AttachmentItem) {

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
@@ -22,7 +23,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     private var _binding: FragmentSuggestionSystemStep2Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
-    private var detailData: SuggestionSystemModel? = null
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
     private lateinit var datePicker: DatePickerCustom
     private var source: String = SS_CREATE
 
@@ -33,13 +35,10 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     ): View {
         _binding = FragmentSuggestionSystemStep2Binding.inflate(inflater, container, false)
 
-        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+        ssNo = arguments?.getString(SS_DETAIL_DATA)
+        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
 
-        source = if (detailData == null) {
-            SS_CREATE
-        } else {
-            SS_DETAIL_DATA
-        }
+        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
 
@@ -59,11 +58,30 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
         }!!
 
         initComponent(binding)
+
+        if (ssAction == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            problem.isEnabled = false
+            suggestion.isEnabled = false
+
+            rbStatus1.isClickable = false
+            etFromStatus1.isEnabled = false
+            etToStatus1.isEnabled = false
+
+            rbStatus2.isClickable = false
+            etFromStatus2.isEnabled = false
+            etToStatus2.isEnabled = false
+        }
     }
 
     private fun initComponent(binding: FragmentSuggestionSystemStep2Binding) {

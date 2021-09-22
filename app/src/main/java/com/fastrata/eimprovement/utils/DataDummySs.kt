@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.utils
 
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
@@ -564,6 +565,23 @@ object DataDummySs {
         data.add(hadiahItem(hadiah = "PULSA 50K"))
         data.add(hadiahItem(hadiah = "PULSA 100K"))
         data.add(hadiahItem(hadiah = "PULSA 500K"))
+        return data
+    }
+
+    fun generateDummyApprovalHistoryStatus(): ArrayList<ApprovalHistoryStatusModel> {
+        val data = ArrayList<ApprovalHistoryStatusModel>()
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Proposal Disubmit", comment = "Proposal Disubmit", date = "2021-08-31 09:39:26"
+        ))
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Proposal Dalam Pengecekan", comment = "Proposal Dalam Pengecekan", date = "2021-08-31 09:39:52"
+        ))
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Proposal Disetujui", comment = "mantap", date = "2021-08-31 09:40:03"
+        ))
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Implementasi Project", comment = "Implementasi Project", date = "2021-08-31 09:40:39"
+        ))
         return data
     }
 }

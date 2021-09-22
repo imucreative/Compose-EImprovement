@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,7 +27,8 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private var _binding: FragmentSuggestionSystemStep1Binding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
-    private var detailData: SuggestionSystemModel? = null
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
     private lateinit var categoryViewModel: SsCreateCategorySuggestionViewModel
     private lateinit var categoryAdapter: SsCreateCategorySuggestionAdapter
     private val listCategory = ArrayList<CategorySuggestionItem?>()
@@ -42,13 +44,10 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         categoryViewModel = injectViewModel(viewModelFactory)
         //categoryViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateCategorySuggestionViewModel::class.java)
 
-        detailData = arguments?.getParcelable(SS_DETAIL_DATA)
+        ssNo = arguments?.getString(SS_DETAIL_DATA)
+        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
 
-        source = if (detailData == null) {
-            SS_CREATE
-        } else {
-            SS_DETAIL_DATA
-        }
+        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
 
@@ -78,12 +77,27 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             Timber.w("##### $data")
             setInitCategory()
             setData()
+
+            if (ssAction == APPROVE) {
+                disableForm()
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            titleSuggestion.isEnabled = false
+            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+            checkboxOther.isEnabled = false
+            tvCheckboxOther.isClickable = false
+            edtLainLain.isEnabled = false
+            //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+        }
     }
 
     private fun setInitCategory() {
@@ -97,9 +111,9 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                 checkboxOther.isChecked = !checkboxOther.isChecked
 
                 if (checkboxOther.isChecked) {
-                    etOther.visibility = View.VISIBLE
+                    edtLayoutLainLain.visibility = View.VISIBLE
                 } else {
-                    etOther.visibility = View.GONE
+                    edtLayoutLainLain.visibility = View.GONE
                 }
             }
 
@@ -118,12 +132,12 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
-                categoryAdapter.setListCategorySuggestion(it, listCategory)
+                categoryAdapter.setListCategorySuggestion(it, listCategory, ssAction!!)
                 listCategory.map { checkList ->
                     if (checkList?.id == 0) {
                         binding.apply {
                             checkboxOther.isChecked = !checkboxOther.isChecked
-                            etOther.visibility = View.VISIBLE
+                            edtLayoutLainLain.visibility = View.VISIBLE
                             edtLainLain.setText(checkList.category)
                         }
                     }

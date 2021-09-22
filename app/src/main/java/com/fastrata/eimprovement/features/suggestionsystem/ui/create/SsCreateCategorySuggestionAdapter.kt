@@ -5,13 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemCategorySuggestionBinding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
+import com.fastrata.eimprovement.utils.APPROVE
 import kotlin.collections.ArrayList
 
 class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySuggestionAdapter.CategoryViewHolder>() {
     private var list = ArrayList<CategorySuggestionItem?>()
-    fun setListCategorySuggestion(data: ArrayList<CategorySuggestionItem?>, checked: ArrayList<CategorySuggestionItem?>?) {
+    private var action = ""
+    fun setListCategorySuggestion(data: ArrayList<CategorySuggestionItem?>, checked: ArrayList<CategorySuggestionItem?>?, act: String) {
         list.clear()
-
+        action = act
         val mergedList: ArrayList<CategorySuggestionItem?> = arrayListOf()
         mergedList.addAll(data)
 
@@ -51,13 +53,18 @@ class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySu
                 tvCategorySuggestion.text = data.category
                 chbxCategorySuggestion.isChecked = data.checked
 
-                tvCategorySuggestion.setOnClickListener {
-                    chbxCategorySuggestion.isChecked = !chbxCategorySuggestion.isChecked
+                if (action == APPROVE) {
+                    chbxCategorySuggestion.isEnabled = false
+                    tvCategorySuggestion.isClickable = false
+                } else {
+                    tvCategorySuggestion.setOnClickListener {
+                        chbxCategorySuggestion.isChecked = !chbxCategorySuggestion.isChecked
 
-                    if (chbxCategorySuggestion.isChecked) {
-                        callback.checkClicked(data, true)
-                    } else if (!chbxCategorySuggestion.isChecked) {
-                        callback.checkClicked(data, false)
+                        if (chbxCategorySuggestion.isChecked) {
+                            callback.checkClicked(data, true)
+                        } else if (!chbxCategorySuggestion.isChecked) {
+                            callback.checkClicked(data, false)
+                        }
                     }
                 }
             }

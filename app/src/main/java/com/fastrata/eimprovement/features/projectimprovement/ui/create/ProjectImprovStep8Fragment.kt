@@ -103,7 +103,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
 
-                categoryAdapter.setListCategorySuggestion(it, listCategory)
+                categoryAdapter.setListCategorySuggestion(it, listCategory, "APPROVE")
                 listCategory.map { checkList ->
                     if (checkList?.id == SS_CATEGORY_OTHER_VALUE) {
                         binding.apply {
