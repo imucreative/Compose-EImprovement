@@ -28,7 +28,7 @@ data class ProjectImprovementCreateModel(
     @SerializedName("status_implementasi")
     var statusImplementation: StatusImplementationPi? = null,
     @SerializedName("identifikasi")
-    var indentification: String?,
+    var identification: String?,
     @SerializedName("penetapan_target")
     var setTarget: String?,
     @SerializedName("sebab_akar_masalah")

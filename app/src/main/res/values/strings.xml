@@ -73,5 +73,8 @@
     <string name="menyusun_rencana_penganggulangan_masalah">Menyusun Rencana Penganggulangan Masalah</string>
     <string name="implementasi_rencana_perbaikan">Implementasi Rencana Perbaikan</string>
     <string name="analisis_periksa_dan_evaluasi_hasil_pencairan">Analisis, Periksa dan Evaluasi Hasil Pencairan</string>
+    <string name="b_menetapkan_target">B. Menetapkan Target</string>
+    <string name="a_mengidentifikasi_masalah">A. Mengidentifikasi Masalah</string>
+    <string name="fase_perencanaan">Fase Perencanaan (PLAN)</string>
 
 </resources>
