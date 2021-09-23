@@ -112,7 +112,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
-                lytSave.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }
@@ -218,11 +217,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 binding.apply {
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
-                    lytSave.visibility = View.GONE
                     if (currentStep == maxStep) {
-                        lytNext.visibility = View.GONE
-                        lytSave.visibility = View.VISIBLE
-                        lytSave.setOnClickListener {
+                        lytNext.setOnClickListener {
                             val gson = Gson()
                             val data = gson.toJson(HawkUtils().getTempDataCreatePi())
                             println("### Data form input : $data")
