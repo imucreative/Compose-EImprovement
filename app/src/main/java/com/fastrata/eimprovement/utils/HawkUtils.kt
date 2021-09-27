@@ -152,21 +152,21 @@ internal class HawkUtils() {
         jabatan: String? = null,
         date: String? = null,
         keterangan: String? = null,
-        rewarddata: ArrayList<ChangePointRewardItem?>? = if (getDataCreateCp?.penukaran_hadiah == null) arrayListOf() else null,
-        riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.riwayat == null) arrayListOf() else null
+        rewarddata: ArrayList<ChangePointRewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
+        riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null
     ){
         val data  =ChangePointCreateModel(
             saldo = saldo?: getDataCreateCp?.saldo,
-            no_penukaran = cpno?: getDataCreateCp?.no_penukaran,
-            nama_pembuat = nama?:getDataCreateCp?.nama_pembuat,
+            cpNo = cpno?: getDataCreateCp?.cpNo,
+            name = nama?:getDataCreateCp?.name,
             nik = nik?:getDataCreateCp?.nik,
-            cabang = branch?:getDataCreateCp?.cabang,
+            branch = branch?:getDataCreateCp?.branch,
             department = departement?:getDataCreateCp?.department,
-            jabatan = jabatan?:getDataCreateCp?.jabatan,
-            tgl_penukaran = date?:getDataCreateCp?.tgl_penukaran,
-            keterangan = keterangan?:getDataCreateCp?.keterangan,
-            penukaran_hadiah = rewarddata ?: getDataCreateCp?.penukaran_hadiah,
-            riwayat = riwayat ?: getDataCreateCp?.riwayat
+            job = jabatan?:getDataCreateCp?.job,
+            date = date?:getDataCreateCp?.date,
+            description = keterangan?:getDataCreateCp?.description,
+            reward = rewarddata ?: getDataCreateCp?.reward,
+            history = riwayat ?: getDataCreateCp?.history
         )
         Hawk.put(CP_CREATE,data)
         Timber.w("### Hawk : $data")

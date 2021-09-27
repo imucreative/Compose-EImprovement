@@ -17,6 +17,7 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
 import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
+import com.fastrata.eimprovement.utils.CP_CREATE
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.SnackBarCustom
@@ -26,10 +27,13 @@ import javax.inject.Inject
 class ChangesPointStep2Fragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var _binding:FragmentChangesPointStep2Binding
+    private var _binding: FragmentChangesPointStep2Binding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel:ChangesPointRewardViewModel
     private lateinit var adapter: ChangesRewardAdapter
     private var data : ChangePointCreateModel? = null
+    private var source :String = CP_CREATE
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +43,23 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         _binding = FragmentChangesPointStep2Binding.inflate(layoutInflater, container, false)
         data = HawkUtils().getTempDataCreateCP()
         viewModel = injectViewModel(viewModelFactory)
-        return _binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentChangesPointStep2Binding.bind(view)
-        initComponent(data?.penukaran_hadiah)
+        initComponent(data?.reward)
+        binding.apply {
+            totalReward.setText(data?.saldo.toString())
+        }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -59,7 +71,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         adapter = ChangesRewardAdapter()
         adapter.notifyDataSetChanged()
 
-        _binding.apply {
+        binding.apply {
             rvChangereward.setHasFixedSize(true)
             rvChangereward.layoutManager = LinearLayoutManager(context)
             rvChangereward.adapter = adapter
@@ -71,8 +83,10 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                 }
             )
 
-            reward.setAdapter(adapterlisreward)
-            reward.onItemClickListener = onItemClickListener
+//            hadiahCp.setAdapter(adapterlisreward)
+//            hadiahCp.onItemClickListener = onItemClickListener
+
+
         }
 
         adapter.setChangeRewardCallback(object  : ChangeRewardCallback{
@@ -87,58 +101,58 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             }
         })
 
-        setData()
+//        setData()
     }
 
 
 
-    private fun setData() {
-        _binding.apply {
-            changePointBtn.setOnClickListener {
-                val hadiah = reward.text.toString()
-                val nilai = jmlh.text.toString()
-                val keterangan = Keterangan.text.toString()
-
-                when {
-                    hadiah.isEmpty() -> {
-                        SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Name must be fill before added",
-                            R.drawable.ic_close, R.color.red_500)
-                        reward.requestFocus()
-                    }
-                    nilai.isEmpty() -> {
-                        SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Name must be fill before added",
-                            R.drawable.ic_close, R.color.red_500)
-                        jmlh.requestFocus()
-                    }
-                    keterangan.isEmpty() -> {
-                        SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Name must be fill before added",
-                            R.drawable.ic_close, R.color.red_500)
-                        Keterangan.requestFocus()
-                    }
-                    else -> {
-                        val addData = ChangePointRewardItem(
-                            no = 1,
-                            hadiah = hadiah,
-                            nilai = nilai,
-                            keterangan = keterangan
-                        )
-
-                        reward.requestFocus()
-                        jmlh.setText("")
-                        Keterangan.setText("")
-
-                    }
-
-
-                }
-            }
-        }
-    }
+//    private fun setData() {
+//        binding.apply {
+//            addReward.setOnClickListener {
+//                val hadiah = hadiahCp.text.toString()
+//                val nilai = nilaiCp.text.toString()
+//                val keterangan = keteranganCp.text.toString()
+//
+//                when {
+//                    hadiah.isEmpty() -> {
+//                        SnackBarCustom.snackBarIconInfo(
+//                            root.rootView, layoutInflater, resources, root.rootView.context,
+//                            "Name must be fill before added",
+//                            R.drawable.ic_close, R.color.red_500)
+//                        hadiahCp.requestFocus()
+//                    }
+//                    nilai.isEmpty() -> {
+//                        SnackBarCustom.snackBarIconInfo(
+//                            root.rootView, layoutInflater, resources, root.rootView.context,
+//                            "Name must be fill before added",
+//                            R.drawable.ic_close, R.color.red_500)
+//                        nilaiCp.requestFocus()
+//                    }
+//                    keterangan.isEmpty() -> {
+//                        SnackBarCustom.snackBarIconInfo(
+//                            root.rootView, layoutInflater, resources, root.rootView.context,
+//                            "Name must be fill before added",
+//                            R.drawable.ic_close, R.color.red_500)
+//                        keteranganCp.requestFocus()
+//                    }
+//                    else -> {
+//                        val addData = ChangePointRewardItem(
+//                            no = 1,
+//                            hadiah = hadiah,
+//                            nilai = nilai,
+//                            keterangan = keterangan
+//                        )
+//
+//                        hadiahCp.requestFocus()
+//                        nilaiCp.setText("")
+//                        keteranganCp.setText("")
+//
+//                    }
+//
+//
+//                }
+//            }
+//        }
+//    }
 
 }

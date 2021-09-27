@@ -54,10 +54,8 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
 
     private fun getData() {
         binding.apply {
-            if (data?.identification != null) {
-                identification.setText(data?.identification.toString())
-                target.setText(data?.setTarget.toString())
-            }
+            indentifikasiMasalah.setText(data?.identification.toString())
+            menetapkanTarget.setText(data?.setTarget.toString())
         }
     }
 
@@ -66,26 +64,26 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    if (identification.text.isNullOrEmpty()) {
+                    if (indentifikasiMasalah.text.isNullOrEmpty()) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             "Identification must be fill before next",
                             R.drawable.ic_close, R.color.red_500)
-                        identification.requestFocus()
+                        indentifikasiMasalah.requestFocus()
                         stat = false
 
-                    } else if (target.text.isNullOrEmpty()) {
+                    } else if (menetapkanTarget.text.isNullOrEmpty()) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             "Target must be fill before next",
                             R.drawable.ic_close, R.color.red_500)
-                        target.requestFocus()
+                        menetapkanTarget.requestFocus()
                         stat = false
 
                     } else {
                         HawkUtils().setTempDataCreatePi(
-                            identification = identification.text.toString(),
-                            target = target.text.toString()
+                            identification = indentifikasiMasalah.text.toString(),
+                            target = menetapkanTarget.text.toString()
                         )
                         stat = true
 

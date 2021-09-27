@@ -126,22 +126,6 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
     private fun nextStep(progress: Int) {
         if (progress < maxStep) {
-//            currentStep = progress+1
-//            currentStepCondition(currentStep)
-//
-//            binding.apply {
-//                lytBack.visibility = View.VISIBLE
-//                lytNext.visibility = View.VISIBLE
-//                lytSave.visibility = View.GONE
-//                if (currentStep == maxStep) {
-//                    lytNext.visibility = View.GONE
-//                    lytSave.visibility = View.VISIBLE
-//                    lytSave.setOnClickListener {
-//                        Toast.makeText(this@ChangesPointCreateWizard, "Save Change Point", Toast.LENGTH_LONG).show()
-//                       finish()
-//                    }
-//                }
-//            }
             val status =cpCreateCallbac.OnDataPass()
             if (status){
                 currentStep = progress+1

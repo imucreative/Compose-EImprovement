@@ -107,4 +107,7 @@
     <string name="g_hasil_implementasi_improvement">G. Hasil Implementasi Improvement</string>
     <string name="jika_improvement_sudah_diimplementasikan">Jika Improvement sudah diimplementasikan</string>
 
+    <!---notification -->
+    <string name="wrong_field">Pastikan data sudah terisi dengan benar</string>
+
 </resources>

@@ -3,27 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.MaterialComponents.Light"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".features.changesPoint.ui.create.ChangesPointStep2Fragment">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="true"
-        android:fillViewport="true"
+        android:layout_weight="1"
         android:scrollbars="none"
-        android:scrollingCache="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:scrollingCache="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
@@ -51,56 +52,56 @@
                             android:gravity="center_vertical"
                             android:text="Penukaran Hadiah"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_80"></TextView>
+                            android:textColor="@color/grey_80" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/spacing_small"
                             android:layout_weight="1" />
 
-                        <Button
-                            android:id="@+id/change_point_btn"
-                            style="@style/Button.Accent.Borderless"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/add_reward"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center"
                             android:text="@string/add"
-                            android:textStyle="bold"
                             android:textColor="@color/colorMainEImprovement"
                             app:icon="@drawable/ic_add"
-                            app:iconTint="@color/colorMainEImprovement">
-                        </Button>
+                            app:iconTint="@color/colorMainEImprovement" />
+
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:textColorHint="@color/colorPrimary"
                         app:boxStrokeColor="@color/colorPrimary">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/reward"
+                            android:id="@+id/hadiah_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Hadiah"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
                             android:textColor="@color/colorPrimary"
-                            tools:text="" />
+                            tools:hint="Hadiah" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:textColorHint="@color/colorPrimary"
                         app:boxStrokeColor="@color/colorPrimary">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/jmlh"
+                            android:id="@+id/nilai_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="Nilai"
@@ -113,25 +114,29 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:textColorHint="@color/colorPrimary"
                         app:boxStrokeColor="@color/colorPrimary">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/Keterangan"
+                            android:id="@+id/keterangan_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Keterangan"
                             android:imeOptions="actionDone"
+                            android:hint="@string/keterangan"
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
                             android:textColor="@color/colorPrimary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_changereward"
                 android:layout_width="match_parent"
@@ -140,46 +145,36 @@
                 tools:listitem="@layout/item_changes_reward"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_xxlarge"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/spacing_middle"
+            android:paddingRight="@dimen/spacing_middle">
 
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:weightSum="4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_gravity="end|bottom"
-        app:rippleColor="@android:color/white"
-        android:orientation="horizontal"
-        android:background="@drawable/shape_rectangle"
-        android:padding="@dimen/spacing_large"
-        android:layout_marginBottom="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total : "
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/grey_90" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:text="Total"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/grey_80"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:text=":Rp. "
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/grey_80"/>
+            <TextView
+                android:id="@+id/total_reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp. 2000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/red_700"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/total_reward"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-           android:textAlignment="center"
-            android:text="0"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/grey_80"/>
-
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

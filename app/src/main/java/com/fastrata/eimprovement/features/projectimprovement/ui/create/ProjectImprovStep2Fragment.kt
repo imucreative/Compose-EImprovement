@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.fastrata.eimprovement.utils.DatePickerCustom
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class ProjectImprovStep2Fragment : Fragment(), Injectable {
@@ -25,6 +28,9 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var datePicker: DatePickerCustom
     private var data : ProjectImprovementCreateModel? = null
+    lateinit var fromDate: Date
+    lateinit var toDate: Date
+    val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,8 +55,8 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         }!!
 
         setLogic()
-        initComponent()
         getData()
+        initComponent()
         setData()
     }
 
@@ -88,13 +94,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun initComponent() {
         binding.apply {
-
             etFromStatus1.setOnClickListener {datePicker.showDialog(object : DatePickerCustom.Callback {
                 override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                     val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                     val mon = month + 1
                     val monthStr = if (mon < 10) "0$mon" else "$mon"
                     etFromStatus1.setText("$dayStr-$monthStr-$year")
+                    fromDate = sdf.parse(etFromStatus1.text.toString())
                 }
             })
             }
@@ -107,6 +113,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToStatus1.setText("$dayStr-$monthStr-$year")
+                            toDate = sdf.parse(etToStatus1.text.toString())
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToStatus1.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -120,6 +134,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromIdentifikasi.setText("$dayStr-$monthStr-$year")
+                            fromDate = sdf.parse(etFromIdentifikasi.text.toString())
                         }
                     })
                 }
@@ -133,6 +148,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToIdentifikasi.setText("$dayStr-$monthStr-$year")
+                            toDate= sdf.parse(etToIdentifikasi.text.toString())
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToIdentifikasi.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -146,6 +169,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromAnalisaData.setText("$dayStr-$monthStr-$year")
+                            fromDate = sdf.parse(etFromAnalisaData.text.toString())
                         }
                     })
                 }
@@ -159,6 +183,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaData.setText("$dayStr-$monthStr-$year")
+                            toDate = sdf.parse(etToAnalisaData.text.toString())
+                            if (!toDate.after(fromDate)) {
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaData.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -172,6 +204,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
+                            fromDate = sdf.parse(etFromAnalisaAkarMasalah.text.toString())
                         }
                     })
                 }
@@ -185,6 +218,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
+                            toDate = sdf.parse(etToAnalisaAkarMasalah.text.toString())
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaAkarMasalah.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -198,6 +239,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
+                            fromDate = sdf.parse(etFromMenyusunRencanaPenanggulanganMasalah.text.toString())
                         }
                     })
                 }
@@ -211,6 +253,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
+                            toDate= sdf.parse(etToMenyusunRencanaPenanggulanganMasalah.text.toString())
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -224,6 +274,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
+                            fromDate = sdf.parse(etFromImplementasiRencanaPerbaikan.text.toString())
                         }
                     })
                 }
@@ -237,6 +288,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
+                            toDate= sdf.parse(etToImplementasiRencanaPerbaikan.text.toString())
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToImplementasiRencanaPerbaikan.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -250,6 +309,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
+                            fromDate = sdf.parse(etFromAnalisaPeriksaDanEvaluasi.text.toString())
                         }
                     })
                 }
@@ -263,6 +323,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
+                            toDate= sdf.parse(etToAnalisaPeriksaDanEvaluasi.text.toString())
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaPeriksaDanEvaluasi.text!!.clear()
+                            }
                         }
                     })
                 }
@@ -275,6 +343,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
             if (data?.statusImplementation?.akan == null) {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
+
 
                 etFromStatus1.setText(data?.statusImplementation?.sudah?.from)
                 etToStatus1.setText(data?.statusImplementation?.sudah?.to)
@@ -361,21 +430,129 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     )
 
                     Timber.e("# $statusImplementation")
+                    when {
+                        //statusimplemen1
+                        rbStatus1.isChecked && etFromStatus1.text.isNullOrEmpty() ->{
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etFromStatus1.requestFocus()
+                            stat = false
+                        }
+                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() ->{
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etToStatus1.requestFocus()
+                            stat = false
+                        }
 
-                    if (!rbStatus1.isChecked && !rbStatus2.isChecked) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Status PI must be fill before next",
-                            R.drawable.ic_close, R.color.red_500
-                        )
-                        stat = false
+                        //statusimplemen2
+                        rbStatus2.isChecked && etFromIdentifikasi.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromIdentifikasi.requestFocus()
+                            stat = false
+                        }
+                        rbStatus2.isChecked && etToIdentifikasi.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToIdentifikasi.requestFocus()
+                            stat = false
+                        }
 
-                    } else {
-                        HawkUtils().setTempDataCreatePi(
-                            statusImplementationpi = statusImplementation
-                        )
-                        stat = true
+                        rbStatus2.isChecked && etFromAnalisaData.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromAnalisaData.requestFocus()
+                            stat = false
+                        }
+                        rbStatus2.isChecked && etToAnalisaData.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaData.requestFocus()
+                            stat = false
+                        }
 
+                        rbStatus2.isChecked && etFromAnalisaAkarMasalah.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromAnalisaAkarMasalah.requestFocus()
+                            stat = false
+                        }
+
+                        rbStatus2.isChecked && etToAnalisaAkarMasalah.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToAnalisaAkarMasalah.requestFocus()
+                            stat = false
+                        }
+
+                        rbStatus2.isChecked && etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
+                            stat = false
+                        }
+
+                        rbStatus2.isChecked && etToMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToMenyusunRencanaPenanggulanganMasalah.requestFocus()
+                            stat = false
+                        }
+
+                        rbStatus2.isChecked && etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToImplementasiRencanaPerbaikan.requestFocus()
+                            stat = false
+                        }
+
+                        rbStatus2.isChecked && etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromAnalisaPeriksaDanEvaluasi.requestFocus()
+                            stat = false
+                        }
+
+                        rbStatus2.isChecked && etToAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToAnalisaPeriksaDanEvaluasi.requestFocus()
+                            stat = false
+                        }
+
+                        else -> {
+                            HawkUtils().setTempDataCreatePi(
+                                statusImplementationpi = statusImplementation
+                            )
+                            stat = true
+                        }
                     }
                 }
                 return stat

@@ -29,12 +29,12 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
             }
 
             binding.apply {
-                nopenukaran.text = data.no_penukaran
+                nopenukaran.text = data.cpNo
                 statusCp.text = data.status
-                descCp.text = data.deskripsi
-                branch.text = data.cabang
-                subBranch.text = data.cabang
-                date.text = data.tgl_input
+                descCp.text = data.desc
+                branch.text = data.branch
+                subBranch.text = data.branch
+                date.text = data.date
                 Total.text = data.total
             }
         }

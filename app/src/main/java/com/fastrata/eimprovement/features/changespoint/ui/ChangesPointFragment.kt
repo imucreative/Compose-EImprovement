@@ -68,7 +68,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
-                Toast.makeText(activity, data.no_penukaran, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, data.cpNo, Toast.LENGTH_LONG).show()
             }
         })
 
