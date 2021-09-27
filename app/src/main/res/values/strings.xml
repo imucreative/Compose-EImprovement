@@ -27,6 +27,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="add">Add</string>
     <string name="attachment_suggestion_system">Attachment Suggestion System</string>
+    <string name="attachment_project_improvement">Attachment Project Improvement</string>
     <string name="max_file_2mb"><![CDATA[Max file 2MB &]]></string>
     <string name="file_type_attachment">File type xls/xlsx/doc/docx/pdf/jpg/png</string>
     <string name="attachment">Attachment</string>

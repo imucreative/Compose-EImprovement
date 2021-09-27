@@ -28,7 +28,6 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     }
 
     fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementModel>> {
-        println("##### getProjectSystem $listProjectImprovement")
         return listProjectImprovement
     }
 
@@ -38,7 +37,6 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     }
 
     fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem?>?>{
-        println("#### getAkarMsalah $listSebabMasalah ")
         return listSebabMasalah
     }
 
@@ -137,14 +135,14 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
-    fun setpiattachment(){
-        val data = HawkUtils().getTempDataCreateSs()?.attachment
+    fun setAttachment(){
+        val data = HawkUtils().getTempDataCreatePi()?.attachment
         Timber.d("### attachment : $data")
 
         listAttachment.postValue(data)
     }
 
-    fun getpiattachment():LiveData<ArrayList<AttachmentItem?>?>{
+    fun getAttachment():LiveData<ArrayList<AttachmentItem?>?>{
         return listAttachment
     }
 
@@ -178,8 +176,5 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     fun getCategorySuggestion(): LiveData<ArrayList<CategorySuggestionItem?>?> {
         return listCategory
     }
-
-
-
 
 }
