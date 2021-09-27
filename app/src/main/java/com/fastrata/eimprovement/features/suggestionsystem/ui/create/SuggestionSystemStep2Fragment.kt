@@ -15,6 +15,8 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.Suggestion
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class SuggestionSystemStep2Fragment : Fragment(), Injectable {
@@ -27,6 +29,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     private var ssAction: String? = ""
     private lateinit var datePicker: DatePickerCustom
     private var source: String = SS_CREATE
+    lateinit var fromDate: Date
+    lateinit var toDate: Date
+    val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,6 +99,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         binding.etFromStatus1.setText("$dayStr-$monthStr-$year")
+                        fromDate = sdf.parse(etFromStatus1.text.toString())
+                        etToStatus1.text!!.clear()
                     }
                 })
             }
@@ -104,6 +111,22 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         binding.etToStatus1.setText("$dayStr-$monthStr-$year")
+                        toDate = sdf.parse(etToStatus1.text.toString())
+                        if (etFromStatus1.text.isNullOrEmpty()){
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etFromStatus1.requestFocus()
+                        }else{
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToStatus1.text!!.clear()
+                            }
+                        }
                     }
                 })
             }
@@ -114,6 +137,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         binding.etFromStatus2.setText("$dayStr-$monthStr-$year")
+                        fromDate = sdf.parse(etFromStatus2.text.toString())
+                        etToStatus2.text!!.clear()
                     }
                 })
             }
@@ -124,6 +149,22 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         binding.etToStatus2.setText("$dayStr-$monthStr-$year")
+                        toDate = sdf.parse(etToStatus2.text.toString())
+                        if (etFromStatus2.text.isNullOrEmpty()){
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromStatus2.requestFocus()
+                        }else{
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToStatus2.text!!.clear()
+                            }
+                        }
                     }
                 })
             }
@@ -227,39 +268,66 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         to = tempTo
                     )
 
-                    if (problem.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Problem must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        problem.requestFocus()
-                        stat = false
+                    when{
+                        problem.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Problem must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            problem.requestFocus()
+                            stat = false
+                        }
+                        suggestion.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Problem must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            suggestion.requestFocus()
+                            stat = false
+                        }
 
-                    } else if (suggestion.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Suggestion must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        suggestion.requestFocus()
-                        stat = false
+                        rbStatus1.isChecked && etFromStatus1.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Problem must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                                etFromStatus1.requestFocus()
+                            stat = false
+                        }
+                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Problem must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            etToStatus1.requestFocus()
+                            stat = false
+                        }
 
-                    } else if (!rbStatus1.isChecked && !rbStatus2.isChecked) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Status Implementation must be fill before next",
-                            R.drawable.ic_close, R.color.red_500
-                        )
-                        stat = false
-
-                    } else {
-                        HawkUtils().setTempDataCreateSs(
-                            suggestion = suggestion.text.toString(),
-                            problem = problem.text.toString(),
-                            statusImplementation = status,
-                            source = source
-                        )
-                        stat = true
-
+                        rbStatus2.isChecked && etFromStatus2.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Problem must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromStatus2.requestFocus()
+                            stat = false
+                        }
+                        rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Problem must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            etToStatus2.requestFocus()
+                            stat = false
+                        }
+                        else -> {
+                            HawkUtils().setTempDataCreateSs(
+                                suggestion = suggestion.text.toString(),
+                                problem = problem.text.toString(),
+                                statusImplementation = status,
+                                source = source
+                            )
+                            stat = true
+                        }
                     }
                 }
                 return stat

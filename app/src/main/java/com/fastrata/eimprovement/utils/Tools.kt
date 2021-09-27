@@ -477,27 +477,4 @@ object Tools {
         val nums = int1 + int2
         return nums.toString()
     }
-
-    // var data1: String = "0"
-    //        var data2: String = "0"
-    //        var stringex1: String
-    //        var stringex2: String
-    //        val int1 : Int?
-    //        val int2: Int?
-    //        if(value1== ""){
-    //            stringex1 = data1
-    //            int1 =stringex1.toInt()
-    //        }else{
-    //            int1 = value1.toInt()
-    //        }
-    //        if(value2== ""){
-    //            stringex2 = data1
-    //            int2 =stringex2.toInt()
-    //        }else{
-    //            int2 = value2.toInt()
-    //        }
-    //
-    //        val nums = listOf(int1, int2)
-    //        var num : String = nums.toString()
-    //        return num
 }

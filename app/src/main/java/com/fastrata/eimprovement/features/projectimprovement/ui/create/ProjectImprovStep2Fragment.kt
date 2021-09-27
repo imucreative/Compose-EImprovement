@@ -101,6 +101,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     val monthStr = if (mon < 10) "0$mon" else "$mon"
                     etFromStatus1.setText("$dayStr-$monthStr-$year")
                     fromDate = sdf.parse(etFromStatus1.text.toString())
+                    etToStatus1.text!!.clear()
                 }
             })
             }
@@ -114,12 +115,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToStatus1.setText("$dayStr-$monthStr-$year")
                             toDate = sdf.parse(etToStatus1.text.toString())
-                            if (!toDate.after(fromDate)){
-                                SnackBarCustom.snackBarIconInfo(
+                            if(etFromStatus1.text.isNullOrEmpty()){
+                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToStatus1.text!!.clear()
+                                etFromStatus1.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToStatus1.text!!.clear()
+                                }
                             }
                         }
                     })
@@ -135,6 +144,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromIdentifikasi.setText("$dayStr-$monthStr-$year")
                             fromDate = sdf.parse(etFromIdentifikasi.text.toString())
+                            etToIdentifikasi.text!!.clear()
                         }
                     })
                 }
@@ -149,12 +159,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToIdentifikasi.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToIdentifikasi.text.toString())
-                            if (!toDate.after(fromDate)){
+                            if(etFromIdentifikasi.text.isNullOrEmpty()){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToIdentifikasi.text!!.clear()
+                                etFromIdentifikasi.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToIdentifikasi.text!!.clear()
+                                }
                             }
                         }
                     })
@@ -170,6 +188,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromAnalisaData.setText("$dayStr-$monthStr-$year")
                             fromDate = sdf.parse(etFromAnalisaData.text.toString())
+                            etToAnalisaData.text!!.clear()
                         }
                     })
                 }
@@ -184,12 +203,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaData.setText("$dayStr-$monthStr-$year")
                             toDate = sdf.parse(etToAnalisaData.text.toString())
-                            if (!toDate.after(fromDate)) {
+                            if(etFromAnalisaData.text.isNullOrEmpty()){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToAnalisaData.text!!.clear()
+                                etFromAnalisaData.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToAnalisaData.text!!.clear()
+                                }
                             }
                         }
                     })
@@ -205,6 +232,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
                             fromDate = sdf.parse(etFromAnalisaAkarMasalah.text.toString())
+                            etToAnalisaAkarMasalah.text!!.clear()
                         }
                     })
                 }
@@ -219,12 +247,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
                             toDate = sdf.parse(etToAnalisaAkarMasalah.text.toString())
-                            if (!toDate.after(fromDate)){
+                            if(etFromAnalisaAkarMasalah.text.isNullOrEmpty()){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToAnalisaAkarMasalah.text!!.clear()
+                                etFromAnalisaAkarMasalah.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToAnalisaAkarMasalah.text!!.clear()
+                                }
                             }
                         }
                     })
@@ -240,6 +276,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
                             fromDate = sdf.parse(etFromMenyusunRencanaPenanggulanganMasalah.text.toString())
+                            etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
                         }
                     })
                 }
@@ -254,12 +291,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToMenyusunRencanaPenanggulanganMasalah.text.toString())
-                            if (!toDate.after(fromDate)){
+                            if(etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
+                                etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
+                                }
                             }
                         }
                     })
@@ -275,6 +320,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
                             fromDate = sdf.parse(etFromImplementasiRencanaPerbaikan.text.toString())
+                            etToImplementasiRencanaPerbaikan.text!!.clear()
                         }
                     })
                 }
@@ -289,12 +335,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToImplementasiRencanaPerbaikan.text.toString())
-                            if (!toDate.after(fromDate)){
+                            if(etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToImplementasiRencanaPerbaikan.text!!.clear()
+                                etFromImplementasiRencanaPerbaikan.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToImplementasiRencanaPerbaikan.text!!.clear()
+                                }
                             }
                         }
                     })
@@ -310,6 +364,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etFromAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
                             fromDate = sdf.parse(etFromAnalisaPeriksaDanEvaluasi.text.toString())
+                            etToAnalisaPeriksaDanEvaluasi.text!!.clear()
                         }
                     })
                 }
@@ -324,12 +379,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToAnalisaPeriksaDanEvaluasi.text.toString())
-                            if (!toDate.after(fromDate)){
+                            if(etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etToAnalisaPeriksaDanEvaluasi.text!!.clear()
+                                etFromAnalisaPeriksaDanEvaluasi.requestFocus()
+                            }else{
+                                if (!toDate.after(fromDate)){
+                                    SnackBarCustom.snackBarIconInfo(
+                                        root, layoutInflater, resources, root.context,
+                                        resources.getString(R.string.wrong_field),
+                                        R.drawable.ic_close, R.color.red_500)
+                                    etToAnalisaPeriksaDanEvaluasi.text!!.clear()
+                                }
                             }
                         }
                     })
