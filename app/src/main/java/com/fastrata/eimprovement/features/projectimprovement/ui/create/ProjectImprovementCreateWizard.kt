@@ -29,6 +29,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     private lateinit var binding: ActivityProjectImprovementWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
+    private var piNo: String = ""
+    private var ssAction: String = ""
     private val maxStep = 9
     private var currentStep = 1
     private var source: String = PI_CREATE
@@ -94,29 +96,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
         setToolbar(this, toolbar, title)
-    }
-
-    private lateinit var piCreateCallback : ProjectImprovementSystemCreateCallback
-    fun setPiCreateCallback(piCreateCallback: ProjectImprovementSystemCreateCallback){
-        this.piCreateCallback = piCreateCallback
-    }
-
-    override fun onBackPressed() {
-        finish()
-    }
-
-    private fun backStep(progress: Int) {
-        if (progress > 1) {
-            currentStep = progress-1
-            currentStepCondition(currentStep)
-
-            binding.apply {
-                lytNext.visibility = View.VISIBLE
-                if (currentStep == 1) {
-                    lytBack.visibility = View.INVISIBLE
-                }
-            }
-        }
     }
 
     private fun currentStepCondition(currentStep: Int) {
@@ -207,29 +186,73 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
     }
 
+    private lateinit var piCreateCallback : ProjectImprovementSystemCreateCallback
+    fun setPiCreateCallback(piCreateCallback: ProjectImprovementSystemCreateCallback){
+        this.piCreateCallback = piCreateCallback
+    }
+
     private fun nextStep(progress: Int) {
-        if(progress <maxStep) {
-            val status = piCreateCallback.onDataPass()
-            if(status) {
+        val status = piCreateCallback.onDataPass()
+        if (status) {
+            if (progress < maxStep) {
                 currentStep = progress + 1
                 currentStepCondition(currentStep)
 
                 binding.apply {
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
-                    if (currentStep == maxStep) {
-                        lytNext.setOnClickListener {
-                            val gson = Gson()
-                            val data = gson.toJson(HawkUtils().getTempDataCreatePi())
-                            println("### Data form input : $data")
-                            Toast.makeText(
-                                this@ProjectImprovementCreateWizard,
-                                "Save Project Improvement",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            finish()
+
+                    if (ssAction == APPROVE) {
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
                         }
                     }
+                }
+            } else {
+                //CoroutineScope(Dispatchers.Default).launch {
+                notification = HelperNotification()
+                binding.apply {
+                    notification.shownotificationyesno(
+                        this@ProjectImprovementCreateWizard,
+                        "Submit",
+                        "Are you sure submit this data?",
+                        object : HelperNotification.CallBackNotificationYesNo {
+                            override fun onNotificationNo() {
+
+                            }
+
+                            override fun onNotificationYes() {
+                                val gson = Gson()
+                                val data = gson.toJson(HawkUtils().getTempDataCreatePi())
+                                println("### Data form input : $data")
+                                Toast.makeText(
+                                    this@ProjectImprovementCreateWizard,
+                                    "Save Project Improvement",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                finish()
+                            }
+                        }
+                    )
+                }
+                // }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        finish()
+    }
+
+    private fun backStep(progress: Int) {
+        if (progress > 1) {
+            currentStep = progress-1
+            currentStepCondition(currentStep)
+
+            binding.apply {
+                lytNext.visibility = View.VISIBLE
+                if (currentStep == 1) {
+                    lytBack.visibility = View.INVISIBLE
                 }
             }
         }

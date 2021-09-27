@@ -105,7 +105,7 @@ internal class HawkUtils() {
         nilaiOutput : String? = null,
         perhitunganNqi : NQIModel? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreatePi?.teamMember == null) arrayListOf() else null,
-        categoryFixingItem: ArrayList<categoryFixingItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
+        categoryFixingItem: ArrayList<CategorySuggestionItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
         hasilImplementasi : String? = null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null
     ){

@@ -101,5 +101,9 @@
     <string name="cost">Cost</string>
     <string name="nqi">NQI</string>
     <string name="aktual">Aktual</string>
+    <string name="f_kategori_perbaikan">F. Kategori Perbaikan</string>
+    <string name="pilihlah_pilihan_yang_menurut_anda_sesuai">Pilihlah - pilihan yang menurut anda sesuai</string>
+    <string name="g_hasil_implementasi_improvement">G. Hasil Implementasi Improvement</string>
+    <string name="jika_improvement_sudah_diimplementasikan">Jika Improvement sudah diimplementasikan</string>
 
 </resources>

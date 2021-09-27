@@ -124,7 +124,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
 
         listTeamMember.postValue(current)
 
-        HawkUtils().setTempDataCreateSs(
+        HawkUtils().setTempDataCreatePi(
             teamMember = current
         )
     }
@@ -132,7 +132,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     fun updateTeamMember(add: ArrayList<TeamMemberItem?>?) {
         listTeamMember.postValue(add)
 
-        HawkUtils().setTempDataCreateSs(
+        HawkUtils().setTempDataCreatePi(
             teamMember = add
         )
     }
@@ -153,7 +153,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
 
         listAttachment.postValue(current)
 
-        HawkUtils().setTempDataCreateSs(
+        HawkUtils().setTempDataCreatePi(
             attachment = current
         )
     }
@@ -161,7 +161,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     fun updateAttachment(add: ArrayList<AttachmentItem?>?) {
         listAttachment.postValue(add)
 
-        HawkUtils().setTempDataCreateSs(
+        HawkUtils().setTempDataCreatePi(
             attachment = add
         )
     }
