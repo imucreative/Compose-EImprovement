@@ -107,7 +107,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
 
     fun setSuggestionSystemTeamMember() {
         // koneksi ke hawk
-        val data = HawkUtils().getTempDataCreateSs()?.teamMember
+        val data = HawkUtils().getTempDataCreatePi()?.teamMember
         Timber.d("### team member : $data")
 
         listTeamMember.postValue(data)
