@@ -431,67 +431,35 @@ object DataDummySs {
     }
 
     fun generateSebabMasalah(): ArrayList<SebabMasalahItem> {
-        val akarmslh = ArrayList<SebabMasalahItem>()
+        val akarMslh = ArrayList<SebabMasalahItem>()
 
-        akarmslh.add(
+        akarMslh.add(
             SebabMasalahItem(
-            1,
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "test",
-                "Penting"
+            "input masih manual",
+            "belum ada sistem", "", "", "", "",
+                "dibuatkan sistem"
         ))
-
-        akarmslh.add(
-            SebabMasalahItem(
-                2,
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test","Penting"
-            ))
-
-        akarmslh.add(
-            SebabMasalahItem(
-                3,
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test","Penting"
-            ))
-
-
-        akarmslh.add(
-            SebabMasalahItem(
-                4,
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test",
-                "Penting"
-            ))
-
-        akarmslh.add(
-            SebabMasalahItem(
-                5,
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test",
-                "Penting"
-            ))
-        return akarmslh
+        akarMslh.add(SebabMasalahItem(
+            "input masih manual",
+            "belum ada sistem", "", "", "", "",
+            "dibuatkan sistem"
+        ))
+        akarMslh.add(SebabMasalahItem(
+            "input masih manual",
+            "belum ada sistem", "", "", "", "",
+            "dibuatkan sistem"
+        ))
+        akarMslh.add(SebabMasalahItem(
+            "input masih manual",
+            "belum ada sistem", "", "", "", "",
+            "dibuatkan sistem"
+        ))
+        akarMslh.add(SebabMasalahItem(
+            "input masih manual",
+            "belum ada sistem", "", "", "", "",
+            "dibuatkan sistem"
+        ))
+        return akarMslh
     }
 
     fun generateDummyAkarMasalah(): ArrayList<AkarMasalahItem>{

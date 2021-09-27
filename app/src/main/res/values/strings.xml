@@ -76,5 +76,30 @@
     <string name="b_menetapkan_target">B. Menetapkan Target</string>
     <string name="a_mengidentifikasi_masalah">A. Mengidentifikasi Masalah</string>
     <string name="fase_perencanaan">Fase Perencanaan (PLAN)</string>
+    <string name="c_mencari_sebab_akar_masalah">C. Mencari Sebab/Akar Masalah</string>
+    <string name="berikan_analisa_dasar_masalah_menggunakan_5_why_always">Berikan Analisa dasar masalah menggunakan 5-Why Always</string>
+    <string name="w1">W1</string>
+    <string name="w2">W2</string>
+    <string name="w3">W3</string>
+    <string name="w4">W4</string>
+    <string name="w5">W5</string>
+    <string name="form_sebab_akar_masalah_must_be_fill">Form Sebab/ akar masalah harus diisi</string>
+    <string name="add_sebab_akar_masalah">Add Sebab/ Akar Masalah</string>
+    <string name="save">S A V E</string>
+    <string name="penyebab_masalah">Penyebab Masalah</string>
+    <string name="akar_masalah_prioritas">Akar Masalah Prioritas</string>
+    <string name="akar_masalah_why_terakhir">Akar Masalah (Why Terakhir)</string>
+    <string name="improvement_yang_dilakukan">Improvement yang dilakukan</string>
+    <string name="detail_langkah_improvement">Detail Langkah Improvement</string>
+    <string name="d_saran_akar_masalah">D. Saran/Akar Masalah</string>
+    <string name="nilai_output_benefit_yang_diharapkan">Nilai Output Benefit yang diharapkan</string>
+    <string name="perhitungan_nqi">Perhitungan NQI</string>
+    <string name="estimasi">Estimasi</string>
+    <string name="benefit">Benefit</string>
+    <string name="keterangan">Keterangan</string>
+    <string name="rp">Rp.</string>
+    <string name="cost">Cost</string>
+    <string name="nqi">NQI</string>
+    <string name="aktual">Aktual</string>
 
 </resources>

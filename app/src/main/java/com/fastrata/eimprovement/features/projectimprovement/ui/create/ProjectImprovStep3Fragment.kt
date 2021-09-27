@@ -54,8 +54,10 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
 
     private fun getData() {
         binding.apply {
-            identification.setText(data?.identification.toString())
-            target.setText(data?.setTarget.toString())
+            if (data?.identification != null) {
+                identification.setText(data?.identification.toString())
+                target.setText(data?.setTarget.toString())
+            }
         }
     }
 

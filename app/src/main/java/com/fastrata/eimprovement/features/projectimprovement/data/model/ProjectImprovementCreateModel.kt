@@ -34,11 +34,11 @@ data class ProjectImprovementCreateModel(
     @SerializedName("sebab_akar_masalah")
     var problem: ArrayList<SebabMasalahItem?>?,
     @SerializedName("saran_akar_masalah")
-    var suggestProblem: ArrayList<AkarMasalahItem?>?,
+    var akarMasalah: ArrayList<AkarMasalahItem?>?,
     @SerializedName("nilai_output_diharapkan")
     var outputValue : String?,
     @SerializedName("perhitungan_nqi")
-    var nqiTotal : NQIModel? = null,
+    var nqi : NQIModel? = null,
     @SerializedName("anggota_tim")
     var teamMember: ArrayList<TeamMemberItem?>?,
     @SerializedName("kategori_perbaikan")

@@ -54,10 +54,10 @@ internal class HawkUtils() {
 
         if (source == SS_CREATE) {
             Hawk.put(SS_CREATE, data)
-            Timber.w("### Hawk : $data")
+            Timber.w("### Hawk SS: $data")
         } else {
             Hawk.put(SS_DETAIL_DATA, data)
-            Timber.w("### Hawk Detail Data: $data")
+            Timber.w("### Hawk SS Detail Data: $data")
         }
     }
 
@@ -101,7 +101,7 @@ internal class HawkUtils() {
         identification: String? = null,
         target: String? = null,
         sebabMasalah: ArrayList<SebabMasalahItem?>? = if(getDataCreatePi?.problem == null) arrayListOf() else null,
-        akarMasalah: ArrayList<AkarMasalahItem?>? = if (getDataCreatePi?.suggestProblem == null) arrayListOf() else null,
+        akarMasalah: ArrayList<AkarMasalahItem?>? = if (getDataCreatePi?.akarMasalah == null) arrayListOf() else null,
         nilaiOutput : String? = null,
         perhitunganNqi : NQIModel? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreatePi?.teamMember == null) arrayListOf() else null,
@@ -122,16 +122,16 @@ internal class HawkUtils() {
             identification = identification ?: getDataCreatePi?.identification,
             setTarget = target ?: getDataCreatePi?.setTarget,
             problem = sebabMasalah ?: getDataCreatePi?.problem,
-            suggestProblem = akarMasalah ?:getDataCreatePi?.suggestProblem,
+            akarMasalah = akarMasalah ?:getDataCreatePi?.akarMasalah,
             outputValue = nilaiOutput ?:getDataCreatePi?.outputValue,
-            nqiTotal = perhitunganNqi ?:getDataCreatePi?.nqiTotal,
+            nqi = perhitunganNqi ?:getDataCreatePi?.nqi,
             teamMember = teamMember ?:getDataCreatePi?.teamMember,
             categoryFixing = categoryFixingItem ?:getDataCreatePi?.categoryFixing,
             implementationResult = hasilImplementasi ?:getDataCreatePi?.implementationResult,
             attachment = attachment ?:getDataCreatePi?.attachment
         )
         Hawk.put(PI_CREATE,data)
-        Timber.w("### Hawk : $data")
+        Timber.w("### Hawk PI : $data")
     }
 
     fun getTempDataCreatePi(): ProjectImprovementCreateModel? {

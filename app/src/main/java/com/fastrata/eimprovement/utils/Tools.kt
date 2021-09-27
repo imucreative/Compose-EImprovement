@@ -459,14 +459,12 @@ object Tools {
     }
 
     //mathematics
-
-    fun sumValues(value1 :String,value2 : String): String{
-        println("vl1:"+value1+"/"+value2)
-        val int1 : Int? = value1.toInt()
-        val int2: Int? = value2.toInt()
-        val nums = listOf(int1, int2)
-        var num : String = nums.toString()
-        return num
+    fun sumValues(value1: String, value2: String): String {
+        println("vl1:$value1+$value2")
+        val int1: Int = value1.toInt()
+        val int2: Int = value2.toInt()
+        val nums = int1 + int2
+        return nums.toString()
     }
 
     // var data1: String = "0"

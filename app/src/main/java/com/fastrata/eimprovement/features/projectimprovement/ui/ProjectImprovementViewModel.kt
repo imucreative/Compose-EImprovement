@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
-    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem>>()
-    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem>>()
+    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem?>?>()
+    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
     private val listCategory = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
@@ -33,24 +33,79 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     }
 
     fun setSebabMasalah(){
-        val data = DataDummySs.generateSebabMasalah()
+        val data = HawkUtils().getTempDataCreatePi()?.problem
         listSebabMasalah.postValue(data)
     }
 
-    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem>>{
+    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem?>?>{
         println("#### getAkarMsalah $listSebabMasalah ")
         return listSebabMasalah
     }
 
+    fun addSebabMasalah(add: SebabMasalahItem, current: ArrayList<SebabMasalahItem?>?) {
+        current?.add(add)
+
+        listSebabMasalah.postValue(current)
+
+        HawkUtils().setTempDataCreatePi(
+            sebabMasalah = current
+        )
+    }
+
+    fun updateSebabMasalah(add: ArrayList<SebabMasalahItem?>?) {
+        listSebabMasalah.postValue(add)
+
+        HawkUtils().setTempDataCreatePi(
+            sebabMasalah = add
+        )
+    }
+
+    fun displayAkarMasalah(dataSaranAkarMasalah: ArrayList<AkarMasalahItem?>){
+        listAkarMasalah.postValue(dataSaranAkarMasalah)
+
+        HawkUtils().setTempDataCreatePi(
+            akarMasalah = dataSaranAkarMasalah
+        )
+    }
+
     fun setAkarMasalah(){
-        val data = DataDummySs.generateDummyAkarMasalah()
+        val data = HawkUtils().getTempDataCreatePi()?.akarMasalah
+
         listAkarMasalah.postValue(data)
     }
 
-    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahItem>>{
+    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahItem?>?>{
         return listAkarMasalah
     }
 
+    fun updateAkarMasalah(add: AkarMasalahItem, index: Int) {
+        val data = HawkUtils().getTempDataCreatePi()?.akarMasalah
+
+        // != -1 = add
+        if (index != -1) {
+            data?.removeAt(index)
+        }
+        data?.add(add)
+
+        val sortMergedList = data?.sortedBy { it?.sequence }
+        val convertToArrayList = listToArrayList(sortMergedList)
+
+        HawkUtils().setTempDataCreatePi(
+            akarMasalah = convertToArrayList
+        )
+    }
+
+    private fun <T> listToArrayList(list: List<T>?): ArrayList<T>? {
+        return list?.let { ArrayList(it) }
+    }
+
+    fun removeAkarMasalah(index: Int, current: ArrayList<AkarMasalahItem?>?) {
+        current?.removeAt(index)
+
+        HawkUtils().setTempDataCreatePi(
+            akarMasalah = current
+        )
+    }
 
     fun setSuggestionSystemTeamMember() {
         // koneksi ke hawk

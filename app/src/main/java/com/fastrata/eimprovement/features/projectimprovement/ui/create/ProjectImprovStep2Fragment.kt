@@ -31,7 +31,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProjectImprovementStep2Binding.inflate(layoutInflater, container, false)
+        _binding = FragmentProjectImprovementStep2Binding.inflate(inflater, container, false)
         data = HawkUtils().getTempDataCreatePi()
         return binding.root
     }

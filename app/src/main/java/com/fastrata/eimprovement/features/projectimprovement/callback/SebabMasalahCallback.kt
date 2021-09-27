@@ -4,5 +4,6 @@ import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMas
 
 interface SebabMasalahCallback {
     fun onItemClicked(data: SebabMasalahItem )
+    fun onItemRemoved(data: SebabMasalahItem, position: Int)
 }
 

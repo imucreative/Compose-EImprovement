@@ -5,12 +5,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SebabMasalahItem(
-    val no : Int,
     val penyebab: String,
     val w1: String,
     val w2: String,
     val w3: String,
     val w4: String,
     val w5: String,
-    val prioritas : String
+    val prioritas : String,
 ): Parcelable

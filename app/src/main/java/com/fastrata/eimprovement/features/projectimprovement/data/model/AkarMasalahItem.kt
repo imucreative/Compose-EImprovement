@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AkarMasalahItem(
-    val no : Int,
+    val sequence : Int,
     val kenapa:String,
     val aksi: String,
     val detail_langkah : String
