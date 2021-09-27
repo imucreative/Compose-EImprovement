@@ -1,6 +1,5 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +10,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep7Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateTeamMemberAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateTeamMemberCallback
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.*
-import com.fastrata.eimprovement.utils.DataDummySs
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,12 +29,14 @@ import javax.inject.Inject
 class ProjectImprovStep7Fragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var _binding: FragmentProjectImprovementStep7Binding
-    private val binding get() = _binding
-    private var data: SuggestionSystemCreateModel? = null
-    private lateinit var viewModel: ProjectImprovementViewModel
+    private var _binding: FragmentProjectImprovementStep7Binding? = null
+    private val binding get() = _binding!!
+    private var data: ProjectImprovementCreateModel? = null
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
+    private lateinit var viewModelTeamMember: ProjectImprovementViewModel
     private lateinit var adapter: PiCreateTeamMemberAdapter
-
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,33 +44,46 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep7Binding.inflate(layoutInflater, container, false)
-        data = HawkUtils().getTempDataCreateSs()
-        return _binding.root
+        viewModelTeamMember = injectViewModel(viewModelFactory)
+
+        data = HawkUtils().getTempDataCreatePi()
+        viewModelTeamMember.setSuggestionSystemTeamMember()
+
+        adapter = PiCreateTeamMemberAdapter()
+        adapter.notifyDataSetChanged()
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentProjectImprovementStep7Binding.bind(view)
-        viewModel = injectViewModel(viewModelFactory)
-        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
-        initComponent()
-    }
-
-    fun initComponent(){
-
-        viewModel.setSuggestionSystemTeamMember()
-        adapter = PiCreateTeamMemberAdapter()
-        adapter.notifyDataSetChanged()
 
         binding.apply {
             rvSsTeamMember.setHasFixedSize(true)
             rvSsTeamMember.layoutManager = LinearLayoutManager(context)
             rvSsTeamMember.adapter = adapter
+        }
 
+        initComponent()
+
+        initList(data?.teamMember)
+
+        setData()
+        setValidation()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    fun initComponent(){
+        binding.apply {
             val listMemberName: List<MemberNameItem> = DataDummySs.generateDummyNameMember()
             val adapterMemberName = ArrayAdapter(
-                requireContext(), R.layout.simple_list_item_1,
+                requireContext(), android.R.layout.simple_list_item_1,
                 listMemberName.map { value ->
                     value.name
                 }
@@ -79,7 +93,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
             val listMemberDepartment: List<MemberDepartmentItem> = DataDummySs.generateDummyDepartmentMember()
             val adapterMemberDepartment = ArrayAdapter(
-                requireContext(), R.layout.simple_list_item_1,
+                requireContext(), android.R.layout.simple_list_item_1,
                 listMemberDepartment.map { value ->
                     value.department
                 }
@@ -89,24 +103,25 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
             val listMemberTask: List<MemberTaskItem> = DataDummySs.generateDummyTaskMember()
             val adapterMemberTask = ArrayAdapter(
-                requireContext(), R.layout.simple_list_item_1,
+                requireContext(), android.R.layout.simple_list_item_1,
                 listMemberTask.map { value ->
                     value.task
                 }
             )
             memberTask.setAdapter(adapterMemberTask)
             memberTask.onItemClickListener = onItemClickListener
-
         }
+    }
 
+    private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
         adapter.piCreateCallback(object : ProjecImprovementCreateTeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
                 Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
-                this@ProjectImprovStep7Fragment.data?.teamMember?.remove(data)
+                teamMember?.remove(data)
 
-                viewModel.updateTeamMember(this@ProjectImprovStep7Fragment.data?.teamMember)
-                viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                viewModelTeamMember.updateTeamMember(teamMember)
+                viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
                     if (it != null) {
                         adapter.setListTeamMember(it)
                         Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
@@ -115,15 +130,12 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
             }
         })
 
-        viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setListTeamMember(it)
                 Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
             }
         })
-
-        setData()
-        setValidation()
     }
 
     private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -141,24 +153,24 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 when {
                     name.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Name must be fill before added",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
 
                     }
                     department.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Department must be fill before added",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            R.drawable.ic_close, R.color.red_500)
                         memberDepartment.requestFocus()
                     }
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Task must be fill before added",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
                     else -> {
@@ -168,7 +180,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             task = task
                         )
 
-                        viewModel.addTeamMember(addData, data?.teamMember)
+                        viewModelTeamMember.addTeamMember(addData, data?.teamMember)
 
                         memberName.requestFocus()
                         memberName.setText("")
@@ -185,11 +197,11 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
             ProjectImprovementSystemCreateCallback{
             override fun onDataPass(): Boolean {
                 binding.apply {
-                var stat = if (data?.teamMember?.size == 0) {
+                val stat = if (data?.teamMember?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
+                            root, layoutInflater, resources, root.context,
                             "Team Member must be fill before next",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            R.drawable.ic_close, R.color.red_500)
                         false
                     } else {
                         true
@@ -197,6 +209,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                     return stat
                 }
             }
-            })
+            }
+        )
     }
 }

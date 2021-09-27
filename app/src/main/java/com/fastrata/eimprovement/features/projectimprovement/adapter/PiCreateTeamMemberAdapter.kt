@@ -3,7 +3,7 @@ package com.fastrata.eimprovement.features.projectimprovement.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.fastrata.eimprovement.databinding.ItemSuggestionSystemTeamMemberBinding
+import com.fastrata.eimprovement.databinding.ItemTeamMemberBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateTeamMemberCallback
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
 
@@ -23,7 +23,7 @@ class PiCreateTeamMemberAdapter : RecyclerView.Adapter<PiCreateTeamMemberAdapter
         this.callback = callback
     }
 
-    inner class TeamMemberViewHolder(private val binding: ItemSuggestionSystemTeamMemberBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class TeamMemberViewHolder(private val binding: ItemTeamMemberBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: TeamMemberItem) {
 
             binding.removeTeamMember.setOnClickListener {
@@ -39,7 +39,7 @@ class PiCreateTeamMemberAdapter : RecyclerView.Adapter<PiCreateTeamMemberAdapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberViewHolder {
-        val items = ItemSuggestionSystemTeamMemberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val items = ItemTeamMemberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TeamMemberViewHolder(items)
     }
 
