@@ -461,8 +461,19 @@ object Tools {
     //mathematics
     fun sumValues(value1: String, value2: String): String {
         println("vl1:$value1+$value2")
-        val int1: Int = value1.toInt()
-        val int2: Int = value2.toInt()
+        var int1: Int
+        var int2: Int
+        if (value1 == "" || value1.isNullOrEmpty()){
+            int1 = 0
+        }else{
+            int1 = value1.toInt()
+        }
+        if(value2 == "" || value2.isNullOrEmpty()){
+            int2 = 0
+        }else{
+            int2  = value2.toInt()
+        }
+        println("vlint : ${int1.toString()}+ ${int2.toString()}")
         val nums = int1 + int2
         return nums.toString()
     }

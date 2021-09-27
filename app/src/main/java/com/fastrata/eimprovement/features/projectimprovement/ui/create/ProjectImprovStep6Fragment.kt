@@ -65,12 +65,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                if (estimasiCost.text.isNullOrEmpty()) {
-                                    estimasiNqiTotal.text = estimasiBenefit.text
-                                } else {
-                                    val sum = Tools.sumValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
-                                    estimasiNqiTotal.setText(sum)
-                                }
+                                val sum = Tools.sumValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
+                                estimasiNqiTotal.setText(sum)
                             }
                         }
                     }, 1000)
@@ -93,12 +89,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                if (estimasiBenefit.text.isNullOrEmpty()) {
-                                    estimasiNqiTotal.text = estimasiCost.text
-                                } else {
-                                    val sum = Tools.sumValues(estimasiCost.text.toString(), estimasiBenefit.text.toString())
-                                    estimasiNqiTotal.setText(sum)
-                                }
+                                val sum = Tools.sumValues(estimasiCost.text.toString(), estimasiBenefit.text.toString())
+                                estimasiNqiTotal.setText(sum)
                             }
                         }
                     }, 1000)
@@ -126,12 +118,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                if (aktualCost.text.isNullOrEmpty()) {
-                                    aktualNqiTotal.text = aktualBenefit.text
-                                } else {
-                                    val sum = Tools.sumValues(aktualBenefit.text.toString(), aktualCost.text.toString())
-                                    aktualNqiTotal.setText(sum)
-                                }
+                                val sum = Tools.sumValues(aktualBenefit.text.toString(), aktualCost.text.toString())
+                                aktualNqiTotal.setText(sum)
                             }
                         }
                     }, 1000)
@@ -154,12 +142,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                if (aktualBenefit.text.isNullOrEmpty()) {
-                                    aktualNqiTotal.text = aktualCost.text
-                                } else {
-                                    val sum = Tools.sumValues(aktualCost.text.toString(), aktualBenefit.text.toString())
-                                    aktualNqiTotal.setText(sum)
-                                }
+                                val sum = Tools.sumValues(aktualCost.text.toString(), aktualBenefit.text.toString())
+                                aktualNqiTotal.setText(sum)
                             }
                         }
                     }, 1000)

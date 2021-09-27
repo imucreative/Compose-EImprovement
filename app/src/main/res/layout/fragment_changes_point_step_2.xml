@@ -89,12 +89,12 @@
                             android:padding="0dp"
                             android:singleLine="true"
                             android:textColor="@color/colorPrimary"
-                            tools:hint="Hadiah" />
+                            android:hint="Hadiah" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:textColorHint="@color/colorPrimary"
@@ -104,7 +104,7 @@
                             android:id="@+id/nilai_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Nilai"
+                            android:hint="    Nilai"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:padding="0dp"
@@ -114,7 +114,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:textColorHint="@color/colorPrimary"
@@ -125,7 +125,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:imeOptions="actionDone"
-                            android:hint="@string/keterangan"
+                            android:hint="    Keterangan"
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
