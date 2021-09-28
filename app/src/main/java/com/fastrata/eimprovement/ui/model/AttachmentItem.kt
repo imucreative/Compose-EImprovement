@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.suggestionsystem.data.model
+package com.fastrata.eimprovement.ui.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

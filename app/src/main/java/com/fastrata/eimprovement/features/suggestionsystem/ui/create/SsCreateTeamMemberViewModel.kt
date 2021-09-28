@@ -3,7 +3,7 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.ui.model.TeamMemberItem
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
 import javax.inject.Inject

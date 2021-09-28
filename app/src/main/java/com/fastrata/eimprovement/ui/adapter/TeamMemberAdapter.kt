@@ -1,12 +1,12 @@
-package com.fastrata.eimprovement.features.suggestionsystem.ui.create
+package com.fastrata.eimprovement.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemTeamMemberBinding
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.ui.model.TeamMemberItem
 
-class SsCreateTeamMemberAdapter : RecyclerView.Adapter<SsCreateTeamMemberAdapter.TeamMemberViewHolder>() {
+class TeamMemberAdapter: RecyclerView.Adapter<TeamMemberAdapter.TeamMemberViewHolder>() {
 
     private var list = ArrayList<TeamMemberItem?>()
     fun setListTeamMember(data: ArrayList<TeamMemberItem?>?) {
@@ -17,8 +17,8 @@ class SsCreateTeamMemberAdapter : RecyclerView.Adapter<SsCreateTeamMemberAdapter
         notifyDataSetChanged()
     }
 
-    private lateinit var callback: SuggestionSystemCreateTeamMemberCallback
-    fun ssCreateCallback(callback: SuggestionSystemCreateTeamMemberCallback) {
+    private lateinit var callback: TeamMemberCallback
+    fun teamMemberCreateCallback(callback: TeamMemberCallback) {
         this.callback = callback
     }
 
@@ -37,12 +37,12 @@ class SsCreateTeamMemberAdapter : RecyclerView.Adapter<SsCreateTeamMemberAdapter
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberAdapter.TeamMemberViewHolder {
         val items = ItemTeamMemberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TeamMemberViewHolder(items)
     }
 
-    override fun onBindViewHolder(holder: TeamMemberViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TeamMemberAdapter.TeamMemberViewHolder, position: Int) {
         list[position]?.let { holder.bind(it) }
     }
 

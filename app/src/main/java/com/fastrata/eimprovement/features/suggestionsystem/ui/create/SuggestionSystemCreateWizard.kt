@@ -81,7 +81,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     HawkUtils().setTempDataCreateSs(
                         ssNo = detailData.ssNo,
                         title = detailData.title,
-                        listCategory = detailData.categorySuggestion,
+                        listCategory = detailData.categoryImprovement,
                         name = detailData.name,
                         nik = detailData.nik,
                         branch = detailData.branch,
@@ -127,7 +127,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     HawkUtils().setTempDataCreateSs(
                         ssNo = detailData.ssNo,
                         title = detailData.title,
-                        listCategory = detailData.categorySuggestion,
+                        listCategory = detailData.categoryImprovement,
                         name = detailData.name,
                         nik = detailData.nik,
                         branch = detailData.branch,

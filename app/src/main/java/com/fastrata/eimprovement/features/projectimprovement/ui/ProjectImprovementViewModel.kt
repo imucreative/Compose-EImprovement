@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -20,7 +18,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
-    private val listCategory = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
+    private val listCategory = MutableLiveData<ArrayList<CategoryImprovementItem?>?>()
 
     fun setProjectImprovement () {
         val data = DataDummySs.generateDummyProjectImprovementList()
@@ -173,7 +171,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         listCategory.postValue(data)
     }
 
-    fun getCategorySuggestion(): LiveData<ArrayList<CategorySuggestionItem?>?> {
+    fun getCategorySuggestion(): LiveData<ArrayList<CategoryImprovementItem?>?> {
         return listCategory
     }
 

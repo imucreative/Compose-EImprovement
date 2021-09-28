@@ -1,37 +1,38 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data.model
 
 import android.os.Parcelable
+import com.fastrata.eimprovement.ui.model.*
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SuggestionSystemCreateModel(
-	@SerializedName("no_ss")
+    @SerializedName("no_ss")
 	var ssNo: String?,
-		var date: String?,
-	@SerializedName("nama_pembuat")
+    var date: String?,
+    @SerializedName("nama_pembuat")
 	var name: String?,
-	@SerializedName("nik")
+    @SerializedName("nik")
 	var nik: String?,
-	@SerializedName("status_implementasi")
+    @SerializedName("status_implementasi")
 	var statusImplementation: StatusImplementation?,
-	@SerializedName("judul")
+    @SerializedName("judul")
 	var title: String?,
-	@SerializedName("cabang")
+    @SerializedName("cabang")
 	var branch: String?,
-		var subBranch: String?,
-	@SerializedName("nama_atasan")
+    var subBranch: String?,
+    @SerializedName("nama_atasan")
 	var directMgr: String?,
-	@SerializedName("identifikasi")
+    @SerializedName("identifikasi")
 	var problem: String?,
-	@SerializedName("saran_ide")
+    @SerializedName("saran_ide")
 	var suggestion: String?,
-	@SerializedName("lampiran")
+    @SerializedName("lampiran")
 	var attachment: ArrayList<AttachmentItem?>?,
-	@SerializedName("kategori")
-	var categorySuggestion: ArrayList<CategorySuggestionItem?>?,
-	@SerializedName("department")
+    @SerializedName("kategori")
+	var categoryImprovement: ArrayList<CategoryImprovementItem?>?,
+    @SerializedName("department")
 	var department: String?,
-	@SerializedName("anggota_tim")
+    @SerializedName("anggota_tim")
 	var teamMember: ArrayList<TeamMemberItem?>?
 ) : Parcelable

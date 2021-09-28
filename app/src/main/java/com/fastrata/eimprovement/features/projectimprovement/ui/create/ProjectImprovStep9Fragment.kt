@@ -15,16 +15,11 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep9Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateAttachmentAdapter
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateAttachmentCallback
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateAttachmentCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateWizard
+import com.fastrata.eimprovement.ui.adapter.*
+import com.fastrata.eimprovement.ui.model.AttachmentItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -40,7 +35,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private var ssNo: String? = ""
     private var ssAction: String? = ""
     private lateinit var viewModel: ProjectImprovementViewModel
-    private lateinit var adapter: PiCreateAttachmentAdapter
+    private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
     private lateinit var initFileName: String
@@ -59,8 +54,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         data = HawkUtils().getTempDataCreatePi()
         viewModel.setAttachment()
 
-        adapter = PiCreateAttachmentAdapter()
-        adapter.notifyDataSetChanged()
+        attachmentAdapter = AttachmentAdapter()
+        attachmentAdapter.notifyDataSetChanged()
 
         return binding.root
     }
@@ -73,7 +68,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         binding.apply {
             rvPiAttachment.setHasFixedSize(true)
             rvPiAttachment.layoutManager = LinearLayoutManager(context)
-            rvPiAttachment.adapter = adapter
+            rvPiAttachment.adapter = attachmentAdapter
 
             getAttachment.setOnClickListener {
                 openFolder()
@@ -102,7 +97,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     }
 
     private fun initList(attachment: ArrayList<AttachmentItem?>?) {
-        adapter.piCreateCallback(object : ProjecImprovementCreateAttachmentCallback {
+        attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
                 if (ssAction != APPROVE) {
                     Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
@@ -113,7 +108,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                     viewModel.getAttachment()
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
-                                adapter.setList(it)
+                                attachmentAdapter.setList(it)
                             }
                         })
                 }
@@ -127,7 +122,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
         viewModel.getAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
-                adapter.setList(it)
+                attachmentAdapter.setList(it)
                 Timber.i("### ambil dari getSuggestionSystemAttachment $it")
             }
         })

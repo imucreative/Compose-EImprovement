@@ -14,12 +14,11 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep7Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateTeamMemberAdapter
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateTeamMemberCallback
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
+import com.fastrata.eimprovement.ui.adapter.*
+import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
@@ -35,7 +34,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     private var ssNo: String? = ""
     private var ssAction: String? = ""
     private lateinit var viewModelTeamMember: ProjectImprovementViewModel
-    private lateinit var adapter: PiCreateTeamMemberAdapter
+    private lateinit var teamMemberAdapter: TeamMemberAdapter
     private var source: String = PI_CREATE
 
     override fun onCreateView(
@@ -49,8 +48,8 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         data = HawkUtils().getTempDataCreatePi()
         viewModelTeamMember.setSuggestionSystemTeamMember()
 
-        adapter = PiCreateTeamMemberAdapter()
-        adapter.notifyDataSetChanged()
+        teamMemberAdapter = TeamMemberAdapter()
+        teamMemberAdapter.notifyDataSetChanged()
 
         return binding.root
     }
@@ -63,7 +62,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         binding.apply {
             rvSsTeamMember.setHasFixedSize(true)
             rvSsTeamMember.layoutManager = LinearLayoutManager(context)
-            rvSsTeamMember.adapter = adapter
+            rvSsTeamMember.adapter = teamMemberAdapter
         }
 
         initComponent()
@@ -114,7 +113,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     }
 
     private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
-        adapter.piCreateCallback(object : ProjecImprovementCreateTeamMemberCallback {
+        teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
                 Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
 
@@ -123,7 +122,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 viewModelTeamMember.updateTeamMember(teamMember)
                 viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
                     if (it != null) {
-                        adapter.setListTeamMember(it)
+                        teamMemberAdapter.setListTeamMember(it)
                         Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
                     }
                 })
@@ -132,7 +131,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
         viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
             if (it != null) {
-                adapter.setListTeamMember(it)
+                teamMemberAdapter.setListTeamMember(it)
                 Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
             }
         })

@@ -1,12 +1,12 @@
-package com.fastrata.eimprovement.features.suggestionsystem.ui.create
+package com.fastrata.eimprovement.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.fastrata.eimprovement.databinding.ItemSuggestionSystemAttachmentBinding
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
+import com.fastrata.eimprovement.databinding.ItemAttachmentBinding
+import com.fastrata.eimprovement.ui.model.AttachmentItem
 
-class SsCreateAttachmentAdapter: RecyclerView.Adapter<SsCreateAttachmentAdapter.AttachmentViewHolder>() {
+class AttachmentAdapter: RecyclerView.Adapter<AttachmentAdapter.AttachmentViewHolder>() {
 
     private var list = ArrayList<AttachmentItem?>()
     fun setList(data: ArrayList<AttachmentItem?>?) {
@@ -17,12 +17,12 @@ class SsCreateAttachmentAdapter: RecyclerView.Adapter<SsCreateAttachmentAdapter.
         notifyDataSetChanged()
     }
 
-    private lateinit var callback: SuggestionSystemCreateAttachmentCallback
-    fun ssCreateCallback(callback: SuggestionSystemCreateAttachmentCallback) {
+    private lateinit var callback: AttachmentCallback
+    fun attachmentCreateCallback(callback: AttachmentCallback) {
         this.callback = callback
     }
 
-    inner class AttachmentViewHolder(private val binding: ItemSuggestionSystemAttachmentBinding): RecyclerView.ViewHolder(binding.root)  {
+    inner class AttachmentViewHolder(private val binding: ItemAttachmentBinding): RecyclerView.ViewHolder(binding.root)  {
         fun bind(data: AttachmentItem) {
             binding.apply {
                 removeAttachment.setOnClickListener {
@@ -39,7 +39,7 @@ class SsCreateAttachmentAdapter: RecyclerView.Adapter<SsCreateAttachmentAdapter.
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachmentViewHolder {
-        val items = ItemSuggestionSystemAttachmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val items = ItemAttachmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AttachmentViewHolder(items)
     }
 

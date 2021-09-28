@@ -4,6 +4,7 @@ import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
+import com.fastrata.eimprovement.ui.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
@@ -20,7 +21,7 @@ internal class HawkUtils() {
         ssNo: String? = null,
         date: String? = null,
         title: String? = null,
-        listCategory: ArrayList<CategorySuggestionItem?>? = if (getDataCreateSs?.categorySuggestion == null) arrayListOf() else null,
+        listCategory: ArrayList<CategoryImprovementItem?>? = if (getDataCreateSs?.categoryImprovement == null) arrayListOf() else null,
         name: String? = null,
         nik: String? = null,
         branch: String? = null,
@@ -38,7 +39,7 @@ internal class HawkUtils() {
             ssNo = ssNo ?: if (source == SS_CREATE) getDataCreateSs?.ssNo else getDataDetailSs?.ssNo,
             date = date ?: if (source == SS_CREATE) getDataCreateSs?.date else getDataDetailSs?.date,
             title = title ?: if (source == SS_CREATE) getDataCreateSs?.title else getDataDetailSs?.title,
-            categorySuggestion = listCategory ?: if (source == SS_CREATE) getDataCreateSs?.categorySuggestion else getDataDetailSs?.categorySuggestion,
+            categoryImprovement = listCategory ?: if (source == SS_CREATE) getDataCreateSs?.categoryImprovement else getDataDetailSs?.categoryImprovement,
             name = name ?: if (source == SS_CREATE) getDataCreateSs?.name else getDataDetailSs?.name,
             nik = nik ?: if (source == SS_CREATE) getDataCreateSs?.nik else getDataDetailSs?.nik,
             branch = branch ?: if (source == SS_CREATE) getDataCreateSs?.branch else getDataDetailSs?.branch,
@@ -105,7 +106,7 @@ internal class HawkUtils() {
         nilaiOutput : String? = null,
         perhitunganNqi : NQIModel? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreatePi?.teamMember == null) arrayListOf() else null,
-        categoryFixingItem: ArrayList<CategorySuggestionItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
+        categoryFixingItem: ArrayList<CategoryImprovementItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
         hasilImplementasi : String? = null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null
     ){

@@ -1,27 +1,26 @@
-package com.fastrata.eimprovement.features.suggestionsystem.ui.create
+package com.fastrata.eimprovement.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemCategorySuggestionBinding
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
+import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.APPROVE
-import kotlin.collections.ArrayList
 
-class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySuggestionAdapter.CategoryViewHolder>() {
-    private var list = ArrayList<CategorySuggestionItem?>()
+class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapter.CategoryViewHolder>() {
+    private var list = ArrayList<CategoryImprovementItem?>()
     private var action = ""
-    fun setListCategorySuggestion(data: ArrayList<CategorySuggestionItem?>, checked: ArrayList<CategorySuggestionItem?>?, act: String) {
+    fun setListCategoryImprovement(data: ArrayList<CategoryImprovementItem?>, checked: ArrayList<CategoryImprovementItem?>?, act: String) {
         list.clear()
         action = act
-        val mergedList: ArrayList<CategorySuggestionItem?> = arrayListOf()
+        val mergedList: ArrayList<CategoryImprovementItem?> = arrayListOf()
         mergedList.addAll(data)
 
         checked?.map {
             it?.let { value ->
                 if (value.id != 0) {
                     mergedList.remove(
-                        CategorySuggestionItem(
+                        CategoryImprovementItem(
                             id = value.id,
                             category = value.category,
                             checked = false
@@ -42,13 +41,13 @@ class SsCreateCategorySuggestionAdapter: RecyclerView.Adapter<SsCreateCategorySu
         notifyDataSetChanged()
     }
 
-    private lateinit var callback: SuggestionSystemCreateCategorySuggestionCallback
-    fun ssCreateCallback(callback: SuggestionSystemCreateCategorySuggestionCallback) {
+    private lateinit var callback: CategoryImprovementCallback
+    fun categoryImprovementCreateCallback(callback: CategoryImprovementCallback) {
         this.callback = callback
     }
 
     inner class CategoryViewHolder(private val binding: ItemCategorySuggestionBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: CategorySuggestionItem) {
+        fun bind(data: CategoryImprovementItem) {
             binding.apply {
                 tvCategorySuggestion.text = data.category
                 chbxCategorySuggestion.isChecked = data.checked

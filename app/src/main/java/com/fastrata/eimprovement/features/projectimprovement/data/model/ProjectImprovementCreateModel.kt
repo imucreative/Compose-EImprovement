@@ -1,9 +1,7 @@
 package com.fastrata.eimprovement.features.projectimprovement.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.ui.model.*
 import com.google.gson.annotations.SerializedName
 
 import kotlinx.parcelize.Parcelize
@@ -43,7 +41,7 @@ data class ProjectImprovementCreateModel(
     @SerializedName("anggota_tim")
     var teamMember: ArrayList<TeamMemberItem?>?,
     @SerializedName("kategori_perbaikan")
-    var categoryFixing : ArrayList<CategorySuggestionItem?>?,
+    var categoryFixing : ArrayList<CategoryImprovementItem?>?,
     @SerializedName("hasil_implementasi")
     var implementationResult : String?,
     @SerializedName("lampiran_pi")

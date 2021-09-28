@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,9 +12,10 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep1Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.ui.adapter.CategoryImprovementAdapter
+import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
+import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -30,8 +30,8 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private var ssNo: String? = ""
     private var ssAction: String? = ""
     private lateinit var categoryViewModel: SsCreateCategorySuggestionViewModel
-    private lateinit var categoryAdapter: SsCreateCategorySuggestionAdapter
-    private val listCategory = ArrayList<CategorySuggestionItem?>()
+    private lateinit var categoryAdapter: CategoryImprovementAdapter
+    private val listCategory = ArrayList<CategoryImprovementItem?>()
     private var source: String = SS_CREATE
 
     override fun onCreateView(
@@ -52,7 +52,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
 
         categoryViewModel.setCategorySuggestion()
-        categoryAdapter = SsCreateCategorySuggestionAdapter()
+        categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
         return binding.root
@@ -72,7 +72,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             directMgr.setText(data?.directMgr)
 
             titleSuggestion.setText(data?.title)
-            data?.categorySuggestion?.let { category -> listCategory.addAll(category) }
+            data?.categoryImprovement?.let { category -> listCategory.addAll(category) }
 
             Timber.w("##### $data")
             setInitCategory()
@@ -119,8 +119,8 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
         }
 
-        categoryAdapter.ssCreateCallback(object : SuggestionSystemCreateCategorySuggestionCallback {
-            override fun checkClicked(data: CategorySuggestionItem, checked: Boolean) {
+        categoryAdapter.categoryImprovementCreateCallback(object : CategoryImprovementCallback {
+            override fun checkClicked(data: CategoryImprovementItem, checked: Boolean) {
                 data.checked = checked
                 if (checked) {
                     listCategory.add(data)
@@ -132,7 +132,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
-                categoryAdapter.setListCategorySuggestion(it, listCategory, ssAction!!)
+                categoryAdapter.setListCategoryImprovement(it, listCategory, ssAction!!)
                 listCategory.map { checkList ->
                     if (checkList?.id == 0) {
                         binding.apply {
@@ -155,7 +155,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                         val (match, notMatch) = listCategory.partition { it?.id == 0 }
                         if (match.isNotEmpty()) {
                             listCategory.remove(
-                                CategorySuggestionItem(
+                                CategoryImprovementItem(
                                     id = 0,
                                     category = match[0]?.category.toString(),
                                     checked = true
@@ -163,7 +163,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                             )
                         }
                         listCategory.add(
-                            CategorySuggestionItem(
+                            CategoryImprovementItem(
                                 id = 0,
                                 category = edtLainLain.text.toString(),
                                 checked = true
@@ -172,7 +172,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
                     } else {
                         listCategory.remove(
-                            CategorySuggestionItem(
+                            CategoryImprovementItem(
                                 id = 0,
                                 category = edtLainLain.text.toString(),
                                 checked = true

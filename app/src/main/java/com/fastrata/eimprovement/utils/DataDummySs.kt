@@ -9,6 +9,7 @@ import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasa
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
+import com.fastrata.eimprovement.ui.model.*
 
 object DataDummySs {
     fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
@@ -68,10 +69,10 @@ object DataDummySs {
     }
 
     fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
-        val categorySuggestionItem = ArrayList<CategorySuggestionItem?>()
-        categorySuggestionItem.add(CategorySuggestionItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
-        categorySuggestionItem.add(CategorySuggestionItem(id = 2, category = "Menurunkan Biaya", checked = true))
-        categorySuggestionItem.add(CategorySuggestionItem(id = 0, category = "Efisiensi", checked = true))
+        val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
+        categorySuggestionItem.add(CategoryImprovementItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
 
         val teamMemberItem = ArrayList<TeamMemberItem?>()
         teamMemberItem.add(TeamMemberItem(name = "budi", department = "ICT", task = "Dokumentasi"))
@@ -96,7 +97,7 @@ object DataDummySs {
             directMgr = "Pak Agung",
             problem = "Code yg terlalu banyak dan berantakan",
             suggestion = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
-            categorySuggestion = categorySuggestionItem,
+            categoryImprovement = categorySuggestionItem,
             teamMember = teamMemberItem,
             attachment = attachmentItem
 
@@ -509,18 +510,18 @@ object DataDummySs {
         return data
     }
 
-    fun generateDummyCategorySuggestion(): ArrayList<CategorySuggestionItem?> {
-        val data = ArrayList<CategorySuggestionItem?>()
-        data.add(CategorySuggestionItem(
+    fun generateDummyCategorySuggestion(): ArrayList<CategoryImprovementItem?> {
+        val data = ArrayList<CategoryImprovementItem?>()
+        data.add(CategoryImprovementItem(
             id = 1, category = "Meningkatkan Penjualan", false
         ))
-        data.add(CategorySuggestionItem(
+        data.add(CategoryImprovementItem(
             id = 2, category = "Menurunkan Biaya", false
         ))
-        data.add(CategorySuggestionItem(
+        data.add(CategoryImprovementItem(
             id = 3, category = "Mencegah Pelanggaran atau Kecurangan", false
         ))
-        data.add(CategorySuggestionItem(
+        data.add(CategoryImprovementItem(
             id = 4, category = "Menyederhanakan Proses Kerja", false
         ))
         return data

@@ -16,6 +16,8 @@ import android.widget.AdapterView.OnItemClickListener
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.ui.adapter.*
+import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject
@@ -29,7 +31,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private var ssNo: String? = ""
     private var ssAction: String? = ""
     private lateinit var viewModelTeamMember: SsCreateTeamMemberViewModel
-    private lateinit var adapter: SsCreateTeamMemberAdapter
+    private lateinit var teamMemberAdapter: TeamMemberAdapter
     private var source: String = SS_CREATE
 
     override fun onCreateView(
@@ -48,8 +50,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
         viewModelTeamMember.setSuggestionSystemTeamMember(source)
 
-        adapter = SsCreateTeamMemberAdapter()
-        adapter.notifyDataSetChanged()
+        teamMemberAdapter = TeamMemberAdapter()
+        teamMemberAdapter.notifyDataSetChanged()
 
         return binding.root
     }
@@ -58,12 +60,11 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentSuggestionSystemStep3Binding.bind(view)
-        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateTeamMemberViewModel::class.java)
 
         binding.apply {
             rvSsTeamMember.setHasFixedSize(true)
             rvSsTeamMember.layoutManager = LinearLayoutManager(context)
-            rvSsTeamMember.adapter = adapter
+            rvSsTeamMember.adapter = teamMemberAdapter
         }
 
         initComponent()
@@ -129,7 +130,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     }
 
     private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
-        adapter.ssCreateCallback(object : SuggestionSystemCreateTeamMemberCallback {
+        teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
                 if (ssAction != APPROVE) {
                     Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
@@ -140,7 +141,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                     viewModelTeamMember.getSuggestionSystemTeamMember()
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
-                                adapter.setListTeamMember(it)
+                                teamMemberAdapter.setListTeamMember(it)
                             }
                         })
                 }
@@ -149,7 +150,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
 
         viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
             if (it != null) {
-                adapter.setListTeamMember(it)
+                teamMemberAdapter.setListTeamMember(it)
             }
         })
     }

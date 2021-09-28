@@ -15,9 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.ui.adapter.AttachmentAdapter
+import com.fastrata.eimprovement.ui.adapter.AttachmentCallback
+import com.fastrata.eimprovement.ui.model.AttachmentItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -33,7 +34,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     private var ssNo: String? = ""
     private var ssAction: String? = ""
     private lateinit var viewModelAttachment: SsCreateAttachmentViewModel
-    private lateinit var adapter: SsCreateAttachmentAdapter
+    private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
     private lateinit var initFileName: String
@@ -57,8 +58,8 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
         viewModelAttachment.setSuggestionSystemAttachment(source)
 
-        adapter = SsCreateAttachmentAdapter()
-        adapter.notifyDataSetChanged()
+        attachmentAdapter = AttachmentAdapter()
+        attachmentAdapter.notifyDataSetChanged()
 
         return binding.root
     }
@@ -72,7 +73,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         binding.apply {
             rvSsAttachment.setHasFixedSize(true)
             rvSsAttachment.layoutManager = LinearLayoutManager(context)
-            rvSsAttachment.adapter = adapter
+            rvSsAttachment.adapter = attachmentAdapter
 
             getAttachment.setOnClickListener {
                 openFolder()
@@ -101,7 +102,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     }
 
     private fun initList(attachment: ArrayList<AttachmentItem?>?) {
-        adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
+        attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
                 if (ssAction != APPROVE) {
                     Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
@@ -112,7 +113,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     viewModelAttachment.getSuggestionSystemAttachment()
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
-                                adapter.setList(it)
+                                attachmentAdapter.setList(it)
                                 Timber.i("### ambil dari getSuggestionSystemAttachment $it")
                             }
                         })
@@ -127,7 +128,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
 
         viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
-                adapter.setList(it)
+                attachmentAdapter.setList(it)
                 Timber.i("### ambil dari getSuggestionSystemAttachment $it")
             }
         })

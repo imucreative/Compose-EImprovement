@@ -15,14 +15,11 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateCategorySuggestionAdapter
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCategorySuggestionCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateWizard
+import com.fastrata.eimprovement.ui.adapter.CategoryImprovementAdapter
+import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
+import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovStep8Fragment : Fragment(), Injectable {
@@ -30,8 +27,8 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentProjectImprovementStep8Binding? = null
     private val binding get() = _binding!!
-    private lateinit var categoryAdapter: SsCreateCategorySuggestionAdapter
-    private val listCategory = ArrayList<CategorySuggestionItem?>()
+    private lateinit var categoryAdapter: CategoryImprovementAdapter
+    private val listCategory = ArrayList<CategoryImprovementItem?>()
     private lateinit var categoryViewModel: ProjectImprovementViewModel
     private var data : ProjectImprovementCreateModel? = null
     private var ssNo: String? = ""
@@ -49,7 +46,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         data = HawkUtils().getTempDataCreatePi()
 
         categoryViewModel.setCategorySuggestion()
-        categoryAdapter = SsCreateCategorySuggestionAdapter()
+        categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
         return binding.root
@@ -90,8 +87,8 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             }
         }
 
-        categoryAdapter.ssCreateCallback(object : SuggestionSystemCreateCategorySuggestionCallback {
-            override fun checkClicked(data: CategorySuggestionItem, checked: Boolean) {
+        categoryAdapter.categoryImprovementCreateCallback(object : CategoryImprovementCallback {
+            override fun checkClicked(data: CategoryImprovementItem, checked: Boolean) {
                 data.checked = checked
                 if (checked) {
                     listCategory.add(data)
@@ -103,7 +100,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
-                categoryAdapter.setListCategorySuggestion(it, listCategory, ssAction!!)
+                categoryAdapter.setListCategoryImprovement(it, listCategory, ssAction!!)
                 listCategory.map { checkList ->
                     if (checkList?.id == 0) {
                         binding.apply {
@@ -127,7 +124,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         val (match, notMatch) = listCategory.partition { it?.id == 0 }
                         if (match.isNotEmpty()) {
                             listCategory.remove(
-                                CategorySuggestionItem(
+                                CategoryImprovementItem(
                                     id = 0,
                                     category = match[0]?.category.toString(),
                                     checked = true
@@ -135,7 +132,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             )
                         }
                         listCategory.add(
-                            CategorySuggestionItem(
+                            CategoryImprovementItem(
                                 id = 0,
                                 category = edtLainLain.text.toString(),
                                 checked = true
@@ -144,7 +141,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
                     } else {
                         listCategory.remove(
-                            CategorySuggestionItem(
+                            CategoryImprovementItem(
                                 id = 0,
                                 category = edtLainLain.text.toString(),
                                 checked = true
