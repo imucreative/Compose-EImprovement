@@ -188,98 +188,136 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    if (outputValue.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Nilai output & benefit must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        outputValue.requestFocus()
-                        stat = false
+                    when {
+                        outputValue.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Nilai output & benefit must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            outputValue.requestFocus()
+                            stat = false
 
-                    } else if (estimasiBenefit.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Benefit must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        estimasiBenefit.requestFocus()
-                        stat = false
+                        }
+                        estimasiBenefit.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Benefit must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            estimasiBenefit.requestFocus()
+                            stat = false
 
-                    } else if (estimasiBenefitKeterangan.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Benefit Keterangan must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        estimasiBenefitKeterangan.requestFocus()
-                        stat = false
+                        }
+                        estimasiBenefitKeterangan.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Benefit Keterangan must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            estimasiBenefitKeterangan.requestFocus()
+                            stat = false
 
-                    } else if (estimasiCost.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Cost must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        estimasiCost.requestFocus()
-                        stat = false
+                        }
+                        estimasiCost.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Cost must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            estimasiCost.requestFocus()
+                            stat = false
 
-                    } else if (estimasiCostKeterangan.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Cost Keterangan must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        estimasiCostKeterangan.requestFocus()
-                        stat = false
+                        }
+                        estimasiCostKeterangan.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Cost Keterangan must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            estimasiCostKeterangan.requestFocus()
+                            stat = false
 
-                    } else if (estimasiNqiTotal.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "NQI must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        estimasiNqiTotal.requestFocus()
-                        stat = false
+                        }
+                        estimasiNqiTotal.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "NQI must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            estimasiNqiTotal.requestFocus()
+                            stat = false
+                        }
+                        aktualBenefit.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "NQI must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            aktualBenefit.requestFocus()
+                            stat = false
+                        }
+                        aktualBenefitKeterangan.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "NQI must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            aktualBenefitKeterangan.requestFocus()
+                            stat = false
+                        }
+                        aktualCost.text.isNullOrEmpty()-> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "NQI must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            aktualCost.requestFocus()
+                            stat = false
+                        }
+                        aktualCostKeterangan.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "NQI must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            aktualCostKeterangan.requestFocus()
+                            stat = false
+                        }
+                        else -> {
+                            val estimasiBenefit = estimasiBenefit.text.toString()
+                            val estimasiBenefitKeterangan = estimasiBenefitKeterangan.text.toString()
+                            val estimasiCost = estimasiCost.text.toString()
+                            val estimasiCostKeterangan = estimasiCostKeterangan.text.toString()
+                            val estimasiCqiTotal = estimasiNqiTotal.text.toString()
 
-                    } else {
-                        val estimasiBenefit = estimasiBenefit.text.toString()
-                        val estimasiBenefitKeterangan = estimasiBenefitKeterangan.text.toString()
-                        val estimasiCost = estimasiCost.text.toString()
-                        val estimasiCostKeterangan = estimasiCostKeterangan.text.toString()
-                        val estimasiCqiTotal = estimasiNqiTotal.text.toString()
+                            val aktualBenefit = aktualBenefit.text.toString()
+                            val aktualBenefitKeterangan = aktualBenefitKeterangan.text.toString()
+                            val aktualCost = aktualCost.text.toString()
+                            val aktualCostKeterangan = aktualCostKeterangan.text.toString()
+                            val aktualNqiTotal = aktualNqiTotal.text.toString()
 
-                        val aktualBenefit = aktualBenefit.text.toString()
-                        val aktualBenefitKeterangan = aktualBenefitKeterangan.text.toString()
-                        val aktualCost = aktualCost.text.toString()
-                        val aktualCostKeterangan = aktualCostKeterangan.text.toString()
-                        val aktualNqiTotal = aktualNqiTotal.text.toString()
+                            val benefit = Benefit(
+                                nilai_estimasi = estimasiBenefit.toInt(),
+                                keterangan_estimasi = estimasiBenefitKeterangan,
+                                nilai_aktual = aktualBenefit.toInt(),
+                                keterangan_aktual = aktualBenefitKeterangan
+                            )
 
-                        val benefit = Benefit(
-                            nilai_estimasi = estimasiBenefit.toInt(),
-                            keterangan_estimasi = estimasiBenefitKeterangan,
-                            nilai_aktual = aktualBenefit.toInt(),
-                            keterangan_aktual = aktualBenefitKeterangan
-                        )
+                            val cost = Cost(
+                                nilai_estimasi = estimasiCost.toInt(),
+                                keterangan_estimasi = estimasiCostKeterangan,
+                                nilai_aktual = aktualCost.toInt(),
+                                keterangan_aktual = aktualCostKeterangan
+                            )
 
-                        val cost = Cost(
-                            nilai_estimasi = estimasiCost.toInt(),
-                            keterangan_estimasi = estimasiCostKeterangan,
-                            nilai_aktual = aktualCost.toInt(),
-                            keterangan_aktual = aktualCostKeterangan
-                        )
+                            val nqiTotal = NQI(
+                                nilai_estimasi = estimasiCqiTotal.toInt(),
+                                nilai_aktual = aktualNqiTotal.toInt(),
+                            )
 
-                        val nqiTotal = NQI(
-                            nilai_estimasi = estimasiCqiTotal.toInt(),
-                            nilai_aktual = aktualNqiTotal.toInt(),
-                        )
+                            val nqi = NQIModel(
+                                benefit = benefit,
+                                cost = cost,
+                                nqi = nqiTotal
+                            )
 
-                        val nqi = NQIModel(
-                            benefit = benefit,
-                            cost = cost,
-                            nqi = nqiTotal
-                        )
-
-                        HawkUtils().setTempDataCreatePi(
-                            nilaiOutput = outputValue.text.toString(),
-                            perhitunganNqi = nqi
-                        )
-                        stat = true
-
+                            HawkUtils().setTempDataCreatePi(
+                                nilaiOutput = outputValue.text.toString(),
+                                perhitunganNqi = nqi
+                            )
+                            stat = true
+                        }
                     }
                 }
                 return stat
