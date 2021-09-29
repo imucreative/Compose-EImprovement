@@ -92,6 +92,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                         statusImplementation = detailData.statusImplementation,
                         teamMember = detailData.teamMember,
                         attachment = detailData.attachment,
+                        statusProposal = detailData.statusProposal,
                         source = SS_DETAIL_DATA
                     )
 
@@ -138,6 +139,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                         statusImplementation = detailData.statusImplementation,
                         teamMember = detailData.teamMember,
                         attachment = detailData.attachment,
+                        statusProposal = detailData.statusProposal,
                         source = SS_DETAIL_DATA
                     )
 

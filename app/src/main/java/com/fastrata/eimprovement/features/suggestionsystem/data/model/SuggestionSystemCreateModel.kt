@@ -34,5 +34,6 @@ data class SuggestionSystemCreateModel(
     @SerializedName("department")
 	var department: String?,
     @SerializedName("anggota_tim")
-	var teamMember: ArrayList<TeamMemberItem?>?
+	var teamMember: ArrayList<TeamMemberItem?>?,
+	var statusProposal: StatusProposal?
 ) : Parcelable
