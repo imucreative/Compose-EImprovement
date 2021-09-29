@@ -37,7 +37,7 @@ data class ProjectImprovementCreateModel(
     @SerializedName("nilai_output_diharapkan")
     var outputValue : String?,
     @SerializedName("perhitungan_nqi")
-    var nqi : NQIModel? = null,
+    var nqi : NqiModel? = null,
     @SerializedName("anggota_tim")
     var teamMember: ArrayList<TeamMemberItem?>?,
     @SerializedName("kategori_perbaikan")
@@ -45,5 +45,6 @@ data class ProjectImprovementCreateModel(
     @SerializedName("hasil_implementasi")
     var implementationResult : String?,
     @SerializedName("lampiran_pi")
-    var attachment: ArrayList<AttachmentItem?>?
+    var attachment: ArrayList<AttachmentItem?>?,
+    var statusProposal: StatusProposal?
 ) : Parcelable

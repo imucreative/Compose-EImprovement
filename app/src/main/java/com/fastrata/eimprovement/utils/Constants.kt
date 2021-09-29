@@ -20,8 +20,6 @@ const val HAWK_SUCCESS_LOGIN = "succes"
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------
 const val SS = "SS"
 const val SS_CREATE = "suggestion_system"
-const val SS_CATEGORY_OTHER = 5
-const val SS_CATEGORY_OTHER_VALUE = 6
 const val SS_DETAIL_DATA = "detail_data_ss"
 
 const val PREF_WELCOME = "isDisplay"
@@ -30,10 +28,12 @@ const val PREF_WELCOME = "isDisplay"
 // Project Improvement (PI) --------------------------------------------------------------------------
 const val PI = "PI"
 const val PI_CREATE = "project_improvement"
+const val PI_DETAIL_DATA = "detail_data_pi"
 
 // Change point (CP) --------------------------------------------------------------------------
 const val CP = "CP"
 const val CP_CREATE = "change_point"
+const val CP_DETAIL_DATA = "detail_data_cp"
 
 // action navigation
 const val ADD = "add"
@@ -41,3 +41,6 @@ const val EDIT = "edit"
 const val DETAIL = "detail"
 const val APPROVE = "approve"
 const val ACTION_DETAIL_DATA = "action_detail_data"
+
+// status proposal
+const val STATUS_IMPLEMENTASI = 6

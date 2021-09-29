@@ -8,12 +8,13 @@ import com.fastrata.eimprovement.ui.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
-internal class HawkUtils() {
+internal class HawkUtils {
 
     // init create object
     private val getDataCreateSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_CREATE)) Hawk.get(SS_CREATE) else null
     private val getDataDetailSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_DETAIL_DATA)) Hawk.get(SS_DETAIL_DATA) else null
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
+    private val getDataDetailPi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_DETAIL_DATA)) Hawk.get(PI_DETAIL_DATA) else null
     private val getDataCreateCp : ChangePointCreateModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
 
     // Create Suggestion System
@@ -33,6 +34,7 @@ internal class HawkUtils() {
         statusImplementation: StatusImplementation? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreateSs?.teamMember == null) arrayListOf() else null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null,
+        statusProposal: StatusProposal? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -50,7 +52,8 @@ internal class HawkUtils() {
             problem = problem ?: if (source == SS_CREATE) getDataCreateSs?.problem else getDataDetailSs?.problem,
             statusImplementation = statusImplementation ?: if (source == SS_CREATE) getDataCreateSs?.statusImplementation else getDataDetailSs?.statusImplementation,
             teamMember = teamMember ?: if (source == SS_CREATE) getDataCreateSs?.teamMember else getDataDetailSs?.teamMember,
-            attachment = attachment ?: if (source == SS_CREATE) getDataCreateSs?.attachment else getDataDetailSs?.attachment
+            attachment = attachment ?: if (source == SS_CREATE) getDataCreateSs?.attachment else getDataDetailSs?.attachment,
+            statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal
         )
 
         if (source == SS_CREATE) {
@@ -97,50 +100,59 @@ internal class HawkUtils() {
         branch: String? = null,
         subBranch: String? = null,
         department: String? = null,
-        year: String? = null,
-        statusImplementationpi: StatusImplementationPi? = null,
+        years: String? = null,
+        statusImplementation: StatusImplementationPi? = null,
         identification: String? = null,
         target: String? = null,
         sebabMasalah: ArrayList<SebabMasalahItem?>? = if(getDataCreatePi?.problem == null) arrayListOf() else null,
         akarMasalah: ArrayList<AkarMasalahItem?>? = if (getDataCreatePi?.akarMasalah == null) arrayListOf() else null,
         nilaiOutput : String? = null,
-        perhitunganNqi : NQIModel? = null,
+        perhitunganNqi : NqiModel? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreatePi?.teamMember == null) arrayListOf() else null,
         categoryFixingItem: ArrayList<CategoryImprovementItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
         hasilImplementasi : String? = null,
-        attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null
+        attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null,
+        statusProposal: StatusProposal? = null,
+        source: String = PI_CREATE
     ){
         val data = ProjectImprovementCreateModel(
-            id = id ?: getDataCreatePi?.id,
-            piNo = piNo ?: getDataCreatePi?.piNo,
-            createdDate = date ?: getDataCreatePi?.createdDate,
-            title = title ?: getDataCreatePi?.title,
-            branch = branch ?: getDataCreatePi?.branch,
-            subBranch = subBranch?: getDataCreatePi?.subBranch,
-            department = department?: getDataCreatePi?.department,
-            years = year?: getDataCreatePi?.years,
-            statusImplementation = statusImplementationpi ?: getDataCreatePi?.statusImplementation,
-            identification = identification ?: getDataCreatePi?.identification,
-            setTarget = target ?: getDataCreatePi?.setTarget,
-            problem = sebabMasalah ?: getDataCreatePi?.problem,
-            akarMasalah = akarMasalah ?:getDataCreatePi?.akarMasalah,
-            outputValue = nilaiOutput ?:getDataCreatePi?.outputValue,
-            nqi = perhitunganNqi ?:getDataCreatePi?.nqi,
-            teamMember = teamMember ?:getDataCreatePi?.teamMember,
-            categoryFixing = categoryFixingItem ?:getDataCreatePi?.categoryFixing,
-            implementationResult = hasilImplementasi ?:getDataCreatePi?.implementationResult,
-            attachment = attachment ?:getDataCreatePi?.attachment
+            id = id ?: if (source == PI_CREATE) getDataCreatePi?.id else getDataDetailPi?.id,
+            piNo = piNo ?: if (source == PI_CREATE) getDataCreatePi?.piNo else getDataDetailPi?.piNo,
+            createdDate = date ?: if (source == PI_CREATE) getDataCreatePi?.createdDate else getDataDetailPi?.createdDate,
+            title = title ?: if (source == PI_CREATE) getDataCreatePi?.title else getDataDetailPi?.title,
+            branch = branch ?: if (source == PI_CREATE) getDataCreatePi?.branch else getDataDetailPi?.branch,
+            subBranch = subBranch?: if (source == PI_CREATE) getDataCreatePi?.subBranch else getDataDetailPi?.subBranch,
+            department = department?: if (source == PI_CREATE) getDataCreatePi?.department else getDataDetailPi?.department,
+            years = years?: if (source == PI_CREATE) getDataCreatePi?.years else getDataDetailPi?.years,
+            statusImplementation = statusImplementation ?: if (source == PI_CREATE) getDataCreatePi?.statusImplementation else getDataDetailPi?.statusImplementation,
+            identification = identification ?: if (source == PI_CREATE) getDataCreatePi?.identification else getDataDetailPi?.identification,
+            setTarget = target ?: if (source == PI_CREATE) getDataCreatePi?.setTarget else getDataDetailPi?.setTarget,
+            problem = sebabMasalah ?: if (source == PI_CREATE) getDataCreatePi?.problem else getDataDetailPi?.problem,
+            akarMasalah = akarMasalah ?: if (source == PI_CREATE) getDataCreatePi?.akarMasalah else getDataDetailPi?.akarMasalah,
+            outputValue = nilaiOutput ?: if (source == PI_CREATE) getDataCreatePi?.outputValue else getDataDetailPi?.outputValue,
+            nqi = perhitunganNqi ?: if (source == PI_CREATE) getDataCreatePi?.nqi else getDataDetailPi?.nqi,
+            teamMember = teamMember ?: if (source == PI_CREATE) getDataCreatePi?.teamMember else getDataDetailPi?.teamMember,
+            categoryFixing = categoryFixingItem ?: if (source == PI_CREATE) getDataCreatePi?.categoryFixing else getDataDetailPi?.categoryFixing,
+            implementationResult = hasilImplementasi ?: if (source == PI_CREATE) getDataCreatePi?.implementationResult else getDataDetailPi?.implementationResult,
+            attachment = attachment ?: if (source == PI_CREATE) getDataCreatePi?.attachment else getDataDetailPi?.attachment,
+            statusProposal = statusProposal ?: if (source == PI_CREATE) getDataCreatePi?.statusProposal else getDataDetailPi?.statusProposal
         )
-        Hawk.put(PI_CREATE,data)
-        Timber.w("### Hawk PI : $data")
+
+        if (source == PI_CREATE) {
+            Hawk.put(PI_CREATE, data)
+            Timber.w("### Hawk PI: $data")
+        } else {
+            Hawk.put(PI_DETAIL_DATA, data)
+            Timber.w("### Hawk PI Detail Data: $data")
+        }
     }
 
-    fun getTempDataCreatePi(): ProjectImprovementCreateModel? {
-        return getDataCreatePi
-    }
-
-    fun getTempDataCreateCP() : ChangePointCreateModel? {
-        return getDataCreateCp
+    fun getTempDataCreatePi(source: String = PI_CREATE): ProjectImprovementCreateModel? {
+        return if (source == PI_CREATE) {
+            getDataCreatePi
+        } else {
+            getDataDetailPi
+        }
     }
 
     fun setTempDataCreateCp(
@@ -171,5 +183,9 @@ internal class HawkUtils() {
         )
         Hawk.put(CP_CREATE,data)
         Timber.w("### Hawk : $data")
+    }
+
+    fun getTempDataCreateCP() : ChangePointCreateModel? {
+        return getDataCreateCp
     }
 }

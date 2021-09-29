@@ -57,8 +57,17 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
-        binding.hasilImplementasiImprovement.setText(data?.implementationResult)
-        data?.categoryFixing?.let { category -> listCategory.addAll(category) }
+        binding.apply {
+            if (data?.statusImplementation?.sudah == null) {
+                cardViewHasilImplementasi.visibility = View.GONE
+            } else {
+                cardViewHasilImplementasi.visibility = View.VISIBLE
+                hasilImplementasiImprovement.setText(data?.implementationResult)
+            }
+            data?.categoryFixing?.let { category ->
+                listCategory.addAll(category)
+            }
+        }
 
         setInitCategory()
         setData()
@@ -158,7 +167,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementation?.sudah != null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 "Hasil Implementasi Improvement must be fill before next",

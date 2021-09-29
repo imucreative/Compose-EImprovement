@@ -4,31 +4,25 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class NQIModel(
-    val benefit: Benefit? = null,
-    val cost: Cost? = null,
-    val nqi: NQI? = null
+data class NqiModel(
+    val estimasi: Estimasi? = null,
+    val aktual: Aktual? = null
 ):Parcelable
 
 @Parcelize
-data class Benefit (
-    val nilai_estimasi: Int,
-    val keterangan_estimasi : String,
-    val nilai_aktual : Int,
-    val keterangan_aktual : String
-    ):Parcelable
-
-@Parcelize
-data class Cost (
-    val nilai_estimasi: Int,
-    val keterangan_estimasi : String,
-    val nilai_aktual : Int,
-    val keterangan_aktual : String
+data class Estimasi (
+    val benefit: Int? = null,
+    val benefit_keterangan: String? = null,
+    val cost: Int? = null,
+    val cost_keterangan: String? = null,
+    val nqi: Int? = null
 ):Parcelable
 
 @Parcelize
-data class NQI (
-    val nilai_estimasi: Int,
-    val nilai_aktual : Int,
+data class Aktual (
+    val benefit: Int? = null,
+    val benefit_keterangan: String? = null,
+    val cost: Int? = null,
+    val cost_keterangan: String? = null,
+    val nqi: Int? = null
 ):Parcelable
-

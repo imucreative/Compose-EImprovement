@@ -154,6 +154,7 @@
                             android:weightSum="2"
                             android:baselineAligned="true">
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_estimasi_benefit"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -177,6 +178,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_estimasi_benefit_keterangan"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -185,7 +187,7 @@
                                 android:textColorHint="@color/colorPrimary"
                                 app:boxStrokeColor="@color/colorPrimary">
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/estimasi_benefit_Keterangan"
+                                    android:id="@+id/estimasi_benefit_keterangan"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:padding="0dp"
@@ -225,6 +227,7 @@
                             android:weightSum="2"
                             android:baselineAligned="true">
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_estimasi_cost"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -248,6 +251,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_estimasi_cost_keterangan"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -282,6 +286,7 @@
                                 android:gravity="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_estimasi_nqi"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -290,19 +295,20 @@
                                 android:textColorHint="@color/grey_80"
                                 app:boxBackgroundColor="@color/grey_10"
                                 app:boxStrokeColor="@color/grey_80">
+
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/estimasi_nqi_total"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:enabled="false"
                                     android:hint="@string/rp"
-                                    android:padding="0dp"
                                     android:imeOptions="actionDone"
                                     android:inputType="numberDecimal"
-                                    android:enabled="false"
-                                    android:singleLine="true"
-                                    android:maxLines="1"
                                     android:lines="1"
-                                    android:textColor="@color/grey_80"/>
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/grey_80" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -370,10 +376,12 @@
                             android:weightSum="2"
                             android:baselineAligned="true">
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_aktual_benefit"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
                                 android:paddingHorizontal="1dp"
+                                android:background="@null"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:textColorHint="@color/colorPrimary"
                                 app:boxStrokeColor="@color/colorPrimary">
@@ -393,6 +401,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_aktual_benefit_keterangan"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -441,6 +450,7 @@
                             android:weightSum="2"
                             android:baselineAligned="true">
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_aktual_cost"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -464,6 +474,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_aktual_cost_keterangan"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"
@@ -498,6 +509,7 @@
                                 android:gravity="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/edt_layout_aktual_nqi"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/spacing_xxlarge"
                                 android:layout_weight="1"

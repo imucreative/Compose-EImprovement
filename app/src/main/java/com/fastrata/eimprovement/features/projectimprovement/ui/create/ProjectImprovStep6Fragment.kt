@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
@@ -16,6 +17,7 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.STATUS_IMPLEMENTASI
 import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.Tools
 import java.util.*
@@ -45,6 +47,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
 
         _binding = FragmentProjectImprovementStep6Binding.bind(view)
 
+        setLogic()
         setLogicEstimasi()
         setLogicAktual()
         getData()
@@ -54,6 +57,70 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setLogic() {
+        binding.apply {
+            when {
+                data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                    estimasiBenefit.isEnabled = false
+                    edtLayoutEstimasiBenefit.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiBenefitKeterangan.isEnabled = false
+                    edtLayoutEstimasiBenefitKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiCost.isEnabled = false
+                    edtLayoutEstimasiCost.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiCostKeterangan.isEnabled = false
+                    edtLayoutEstimasiCostKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiNqiTotal.isEnabled = false
+                    edtLayoutEstimasiNqi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+
+                    aktualBenefit.isEnabled = true
+                    aktualBenefitKeterangan.isEnabled = true
+                    aktualCost.isEnabled = true
+                    aktualCostKeterangan.isEnabled = true
+                }
+                data?.statusProposal == null -> {
+                    estimasiBenefit.isEnabled = true
+                    estimasiBenefitKeterangan.isEnabled = true
+                    estimasiCost.isEnabled = true
+                    estimasiCostKeterangan.isEnabled = true
+
+                    aktualBenefit.isEnabled = false
+                    edtLayoutAktualBenefit.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualBenefitKeterangan.isEnabled = false
+                    edtLayoutAktualBenefitKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualCost.isEnabled = false
+                    edtLayoutAktualCost.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualCostKeterangan.isEnabled = false
+                    edtLayoutAktualCostKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualNqiTotal.isEnabled = false
+                    edtLayoutAktualNqi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                }
+                else -> {
+                    estimasiBenefit.isEnabled = false
+                    edtLayoutEstimasiBenefit.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiBenefitKeterangan.isEnabled = false
+                    edtLayoutEstimasiBenefitKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiCost.isEnabled = false
+                    edtLayoutEstimasiCost.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiCostKeterangan.isEnabled = false
+                    edtLayoutEstimasiCostKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    estimasiNqiTotal.isEnabled = false
+                    edtLayoutEstimasiNqi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+
+                    aktualBenefit.isEnabled = false
+                    edtLayoutAktualBenefit.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualBenefitKeterangan.isEnabled = false
+                    edtLayoutAktualBenefitKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualCost.isEnabled = false
+                    edtLayoutAktualCost.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualCostKeterangan.isEnabled = false
+                    edtLayoutAktualCostKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                    aktualNqiTotal.isEnabled = false
+                    edtLayoutAktualNqi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+                }
+            }
+        }
     }
 
     private fun setLogicEstimasi() {
@@ -167,17 +234,17 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
             if (data?.outputValue != null) {
                 outputValue.setText(data?.outputValue.toString())
 
-                data?.nqi?.benefit?.nilai_estimasi?.let { estimasiBenefit.setText(it.toString()) }
-                data?.nqi?.benefit?.keterangan_estimasi?.let { estimasiBenefitKeterangan.setText(it) }
-                data?.nqi?.cost?.nilai_estimasi?.let { estimasiCost.setText(it.toString()) }
-                data?.nqi?.cost?.keterangan_estimasi?.let { estimasiCostKeterangan.setText(it) }
-                data?.nqi?.nqi?.nilai_estimasi?.let { estimasiNqiTotal.setText(it.toString()) }
+                data?.nqi?.estimasi?.benefit?.let { estimasiBenefit.setText(it.toString()) }
+                data?.nqi?.estimasi?.benefit_keterangan?.let { estimasiBenefitKeterangan.setText(it) }
+                data?.nqi?.estimasi?.cost?.let { estimasiCost.setText(it.toString()) }
+                data?.nqi?.estimasi?.cost_keterangan?.let { estimasiCostKeterangan.setText(it) }
+                data?.nqi?.estimasi?.nqi?.let { estimasiNqiTotal.setText(it.toString()) }
 
-                data?.nqi?.benefit?.nilai_aktual?.let { aktualBenefit.setText(it.toString()) }
-                data?.nqi?.benefit?.keterangan_aktual?.let { aktualBenefitKeterangan.setText(it) }
-                data?.nqi?.cost?.nilai_aktual?.let { aktualCost.setText(it.toString()) }
-                data?.nqi?.cost?.keterangan_aktual?.let { aktualCostKeterangan.setText(it) }
-                data?.nqi?.nqi?.nilai_aktual?.let { aktualNqiTotal.setText(it.toString()) }
+                data?.nqi?.aktual?.benefit?.let { aktualBenefit.setText(it.toString()) }
+                data?.nqi?.aktual?.benefit_keterangan?.let { aktualBenefitKeterangan.setText(it) }
+                data?.nqi?.aktual?.cost?.let { aktualCost.setText(it.toString()) }
+                data?.nqi?.aktual?.cost_keterangan?.let { aktualCostKeterangan.setText(it) }
+                data?.nqi?.aktual?.nqi?.let { aktualNqiTotal.setText(it.toString()) }
             }
         }
     }
@@ -196,90 +263,106 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                                 R.drawable.ic_close, R.color.red_500)
                             outputValue.requestFocus()
                             stat = false
-
                         }
-                        estimasiBenefit.text.isNullOrEmpty() -> {
+
+                        estimasiBenefit.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Benefit must be fill before next",
+                                "Estimasi benefit must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiBenefit.requestFocus()
                             stat = false
-
                         }
-                        estimasiBenefitKeterangan.text.isNullOrEmpty() -> {
+                        estimasiBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Benefit Keterangan must be fill before next",
+                                "Estimasi benefit keterangan must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiBenefitKeterangan.requestFocus()
                             stat = false
-
                         }
-                        estimasiCost.text.isNullOrEmpty() -> {
+                        estimasiCost.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Cost must be fill before next",
+                                "Estimasi cost must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiCost.requestFocus()
                             stat = false
-
                         }
-                        estimasiCostKeterangan.text.isNullOrEmpty() -> {
+                        estimasiCostKeterangan.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Cost Keterangan must be fill before next",
+                                "Estimasi cost keterangan must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiCostKeterangan.requestFocus()
                             stat = false
-
                         }
-                        estimasiNqiTotal.text.isNullOrEmpty() -> {
+                        estimasiNqiTotal.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "NQI must be fill before next",
+                                "Estimasi NQI must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiNqiTotal.requestFocus()
                             stat = false
                         }
-                        aktualBenefit.text.isNullOrEmpty() -> {
+
+                        aktualBenefit.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "NQI must be fill before next",
+                                "Aktual benefit must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             aktualBenefit.requestFocus()
                             stat = false
                         }
-                        aktualBenefitKeterangan.text.isNullOrEmpty()-> {
+                        aktualBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "NQI must be fill before next",
+                                "Aktual benefit keterangan must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             aktualBenefitKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualCost.text.isNullOrEmpty()-> {
+                        aktualCost.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "NQI must be fill before next",
+                                "Aktual cost must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             aktualCost.requestFocus()
                             stat = false
                         }
-                        aktualCostKeterangan.text.isNullOrEmpty() -> {
+                        aktualCostKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "NQI must be fill before next",
+                                "Aktual cost keterangan must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             aktualCostKeterangan.requestFocus()
                             stat = false
                         }
+                        aktualNqiTotal.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Aktual NQI must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            aktualNqiTotal.requestFocus()
+                            stat = false
+                        }
                         else -> {
+                            var estimasi: Estimasi? = null
+                            var aktual: Aktual? = null
+
                             val estimasiBenefit = estimasiBenefit.text.toString()
                             val estimasiBenefitKeterangan = estimasiBenefitKeterangan.text.toString()
                             val estimasiCost = estimasiCost.text.toString()
                             val estimasiCostKeterangan = estimasiCostKeterangan.text.toString()
-                            val estimasiCqiTotal = estimasiNqiTotal.text.toString()
+                            val estimasiNqiTotal = estimasiNqiTotal.text.toString()
+
+                            estimasi = Estimasi(
+                                benefit = if (estimasiBenefit.isNotEmpty()) estimasiBenefit.toInt() else null,
+                                benefit_keterangan = if (estimasiBenefitKeterangan.isNotEmpty()) estimasiBenefitKeterangan else null,
+                                cost = if (estimasiCost.isNotEmpty()) estimasiCost.toInt() else null,
+                                cost_keterangan = if (estimasiCostKeterangan.isNotEmpty()) estimasiCostKeterangan else null,
+                                nqi = if (estimasiNqiTotal.isNotEmpty()) estimasiNqiTotal.toInt() else null
+                            )
 
                             val aktualBenefit = aktualBenefit.text.toString()
                             val aktualBenefitKeterangan = aktualBenefitKeterangan.text.toString()
@@ -287,29 +370,17 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             val aktualCostKeterangan = aktualCostKeterangan.text.toString()
                             val aktualNqiTotal = aktualNqiTotal.text.toString()
 
-                            val benefit = Benefit(
-                                nilai_estimasi = estimasiBenefit.toInt(),
-                                keterangan_estimasi = estimasiBenefitKeterangan,
-                                nilai_aktual = aktualBenefit.toInt(),
-                                keterangan_aktual = aktualBenefitKeterangan
+                            aktual = Aktual(
+                                benefit = if (aktualBenefit.isNotEmpty()) aktualBenefit.toInt() else null,
+                                benefit_keterangan = if (aktualBenefitKeterangan.isNotEmpty()) aktualBenefitKeterangan else null,
+                                cost = if (aktualCost.isNotEmpty()) aktualCost.toInt() else null,
+                                cost_keterangan = if (aktualCostKeterangan.isNotEmpty()) aktualCostKeterangan else null,
+                                nqi = if (aktualNqiTotal.isNotEmpty()) aktualNqiTotal.toInt() else null,
                             )
 
-                            val cost = Cost(
-                                nilai_estimasi = estimasiCost.toInt(),
-                                keterangan_estimasi = estimasiCostKeterangan,
-                                nilai_aktual = aktualCost.toInt(),
-                                keterangan_aktual = aktualCostKeterangan
-                            )
-
-                            val nqiTotal = NQI(
-                                nilai_estimasi = estimasiCqiTotal.toInt(),
-                                nilai_aktual = aktualNqiTotal.toInt(),
-                            )
-
-                            val nqi = NQIModel(
-                                benefit = benefit,
-                                cost = cost,
-                                nqi = nqiTotal
+                            val nqi = NqiModel(
+                                estimasi = estimasi,
+                                aktual = aktual
                             )
 
                             HawkUtils().setTempDataCreatePi(

@@ -35,7 +35,7 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
             binding.apply {
                 nomorPi.text = data.piNo
                 judulPi.text = data.title
-                statusPi.text = data.status
+                statusPi.text = data.status.status
                 kategoriPi.text = data.category
                 datePi.text = data.date
                 branchPi.text = data.branch

@@ -1,9 +1,11 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
@@ -14,6 +16,9 @@ import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectI
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 
 class ProjectImprovStep1Fragment: Fragment(), Injectable {
@@ -36,13 +41,18 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
         return binding.root
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProjectImprovementStep1Binding.bind(view)
+
+        val currentDateTime = LocalDateTime.now()
+
         binding.apply {
             piNo.setText(data?.piNo)
-            year.setText("2020")
-            createdDate.setText("22 Sep 2021")
+            year.setText(currentDateTime.year.toString())
+            createdDate.setText(currentDateTime.format(DateTimeFormatter.ISO_DATE).toString())
             branch.setText(data?.branch)
             department.setText(data?.department)
             subBranch.setText(data?.subBranch)
@@ -77,7 +87,7 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
                         else -> {
                             HawkUtils().setTempDataCreatePi(
                                 piNo = piNo.text.toString(),
-                                year = year.text.toString(),
+                                years = year.text.toString(),
                                 date = createdDate.text.toString(),
                                 branch = branch.text.toString(),
                                 department = department.text.toString(),

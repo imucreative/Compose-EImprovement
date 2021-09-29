@@ -20,7 +20,9 @@ object DataDummySs {
             "SS-0000/08/2021/0041",
             "17-08-2021",
             "Membuat ide baru",
-            "Implementasi Project",
+            StatusProposal(
+                6, "Implementasi Project"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -28,7 +30,9 @@ object DataDummySs {
             "SS-0000/08/2021/0042",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                3, "Proposal Dalam Pengecekan"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -36,7 +40,9 @@ object DataDummySs {
             "SS-0000/08/2021/0043",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                1, "Proposal Dibuat"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -44,7 +50,9 @@ object DataDummySs {
             "SS-0000/08/2021/0044",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                10, "Project Valid"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -52,7 +60,9 @@ object DataDummySs {
             "SS-0000/08/2021/0045",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                2, "Proposal Disubmit"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -60,7 +70,9 @@ object DataDummySs {
             "SS-0000/08/2021/0046",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                6, "Implementasi Project"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -99,8 +111,11 @@ object DataDummySs {
             suggestion = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
             categoryImprovement = categorySuggestionItem,
             teamMember = teamMemberItem,
-            attachment = attachmentItem
-
+            attachment = attachmentItem,
+            statusProposal = StatusProposal(
+                id = 1,
+                status = "Proposal Dibuat"
+            )
         )
     }
 
@@ -343,7 +358,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
             "PI-0001/08/2021/0005",
-            "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
             "Aktif",
             "Perbaikan",
             "Pusat",
@@ -354,7 +371,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    10, "Project Valid"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -365,7 +384,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -376,7 +397,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    3, "Proposal Dalam Pengecekan"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -387,7 +410,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -398,7 +423,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -409,7 +436,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -420,7 +449,9 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
