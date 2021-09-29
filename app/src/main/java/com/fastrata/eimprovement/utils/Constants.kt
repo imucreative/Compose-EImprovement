@@ -29,6 +29,7 @@ const val PREF_WELCOME = "isDisplay"
 const val PI = "PI"
 const val PI_CREATE = "project_improvement"
 const val PI_DETAIL_DATA = "detail_data_pi"
+const val PI_STATUS_IMPLEMENTATION = "status_implement"
 
 // Change point (CP) --------------------------------------------------------------------------
 const val CP = "CP"

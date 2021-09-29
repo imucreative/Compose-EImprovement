@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ChangePointRewardItem(
+data class RewardItem(
     val no : Int?,
     val hadiah: String,
     val nilai: String,

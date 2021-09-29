@@ -4,29 +4,31 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesRewardBinding
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangeRewardCallback
+import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 
 class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRewardAdapterViewHolder>() {
 
-    private var list = ArrayList<ChangePointRewardItem>()
+    private var list = ArrayList<RewardItem?>()
 
-    fun setList(data: ArrayList<ChangePointRewardItem>) {
+    fun setListReward(data: ArrayList<RewardItem?>?) {
         list.clear()
-        list.addAll(data)
+        if (data != null) {
+            list.addAll(data)
+        }
         notifyDataSetChanged()
     }
 
-    private lateinit var ChangesRewardCallback: ChangeRewardCallback
-    fun setChangeRewardCallback(ChangesRewardCallback: ChangeRewardCallback) {
-        this.ChangesRewardCallback = ChangesRewardCallback
+    private lateinit var call: ChangeRewardCallback
+    fun setChangeRewardCallback(callback: ChangeRewardCallback) {
+        this.call = callback
     }
 
     inner class ChangesRewardAdapterViewHolder(private val binding: ItemChangesRewardBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ChangePointRewardItem) {
+        fun bind(data: RewardItem) {
 
-
-            binding.removeTeamMember.setOnClickListener {
-                ChangesRewardCallback.removeClicked(data)
+            binding.removeReward.setOnClickListener {
+                call.removeClicked(data)
             }
 
             binding.apply {
@@ -42,8 +44,8 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
         return ChangesRewardAdapterViewHolder(items)
     }
 
-    override fun onBindViewHolder(holder: ChangesRewardAdapterViewHolder, position: Int) {
-        holder.bind(list[position])
+    override fun onBindViewHolder(holder: ChangesRewardAdapter.ChangesRewardAdapterViewHolder, position: Int) {
+       list[position]?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int {
@@ -52,6 +54,3 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
 
 }
 
-interface ChangeRewardCallback {
-    fun removeClicked(data: ChangePointRewardItem)
-}

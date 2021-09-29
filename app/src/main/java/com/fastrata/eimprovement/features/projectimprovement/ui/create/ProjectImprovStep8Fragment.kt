@@ -34,6 +34,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
     private var ssNo: String? = ""
     private var ssAction: String? = ""
     private var source: String = PI_CREATE
+    var statusImplement : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +50,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
+        statusImplement = HawkUtils().getStatusImplementation()
         return binding.root
     }
 
@@ -71,6 +73,16 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         setInitCategory()
         setData()
+    }
+
+    private fun initComponent() {
+        binding.apply {
+            if (statusImplement == true){
+                linearHasilImplementasi.visibility = View.VISIBLE
+            }else{
+                linearHasilImplementasi.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroyView() {

@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Hadiah"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/grey_80"
                 android:gravity="center_vertical" />
 
@@ -38,7 +38,7 @@
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:id="@+id/remove_team_member"
+                android:id="@+id/remove_reward"
                 android:layout_width="@dimen/spacing_xxxlarge"
                 android:layout_height="@dimen/spacing_xxlarge"
                 app:icon="@drawable/ic_delete"
@@ -59,8 +59,9 @@
             android:layout_height="wrap_content"
             android:text="Nilai"
             android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/grey_600" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/grey_600"
+            android:layout_marginLeft="@dimen/spacing_medium"/>
 
         <TextView
             android:id="@+id/desc"
@@ -69,7 +70,8 @@
             android:layout_height="wrap_content"
             android:text="Keterangan"
             android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/grey_600" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/grey_600"
+            android:layout_marginLeft="@dimen/spacing_medium"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

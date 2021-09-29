@@ -89,7 +89,8 @@
                             android:padding="0dp"
                             android:singleLine="true"
                             android:textColor="@color/colorPrimary"
-                            android:hint="Hadiah" />
+                            android:hint="Hadiah"
+                            android:layout_marginLeft="@dimen/spacing_medium"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,6 +106,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="    Nilai"
+                            android:layout_marginLeft="@dimen/spacing_medium"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:padding="0dp"
@@ -129,7 +131,8 @@
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginLeft="@dimen/spacing_medium"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

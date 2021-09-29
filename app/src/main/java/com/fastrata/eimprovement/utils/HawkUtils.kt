@@ -84,6 +84,17 @@ internal class HawkUtils {
         return false
     }
 
+    fun setStatusImplementation(status: Boolean){
+        Hawk.put(PI_STATUS_IMPLEMENTATION,status)
+    }
+
+    fun getStatusImplementation(): Boolean{
+        if (Hawk.contains(PI_STATUS_IMPLEMENTATION)){
+            return Hawk.get(PI_STATUS_IMPLEMENTATION)
+        }
+        return false
+    }
+
     fun setDataLogin(loginEntity: LoginEntity? = null) {
         Hawk.put(HAWK_USER, loginEntity)
     }
@@ -165,7 +176,7 @@ internal class HawkUtils {
         jabatan: String? = null,
         date: String? = null,
         keterangan: String? = null,
-        rewarddata: ArrayList<ChangePointRewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
+        rewarddata: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
         riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null
     ){
         val data  =ChangePointCreateModel(

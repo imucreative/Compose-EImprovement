@@ -74,13 +74,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                 if (isChecked) {
                     etFromStatus1.isEnabled = true
                     etToStatus1.isEnabled = true
-
+                    HawkUtils().setStatusImplementation(true)
                     linearLayoutAkan.visibility = View.GONE
                 }
             }
 
             rbStatus2.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
+                    HawkUtils().setStatusImplementation(false)
                     etFromStatus1.isEnabled = false
                     etToStatus1.isEnabled = false
                     etFromStatus1.setText("")
@@ -512,101 +513,15 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        //statusimplemen2
-                        rbStatus2.isChecked && etFromIdentifikasi.text.isNullOrEmpty()-> {
+                        rbStatus2.isChecked && etToIdentifikasi.text.isNullOrEmpty() &&
+                                etToAnalisaData.text.isNullOrEmpty() &&
+                                etToAnalisaAkarMasalah.text.isNullOrEmpty() &&
+                                etToMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty() &&
+                                etToAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                            etFromIdentifikasi.requestFocus()
-                            stat = false
-                        }
-                        rbStatus2.isChecked && etToIdentifikasi.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToIdentifikasi.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etFromAnalisaData.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromAnalisaData.requestFocus()
-                            stat = false
-                        }
-                        rbStatus2.isChecked && etToAnalisaData.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                                etToAnalisaData.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etFromAnalisaAkarMasalah.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromAnalisaAkarMasalah.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etToAnalisaAkarMasalah.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToAnalisaAkarMasalah.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etToMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToMenyusunRencanaPenanggulanganMasalah.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToImplementasiRencanaPerbaikan.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromAnalisaPeriksaDanEvaluasi.requestFocus()
-                            stat = false
-                        }
-
-                        rbStatus2.isChecked && etToAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()-> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToAnalisaPeriksaDanEvaluasi.requestFocus()
                             stat = false
                         }
 

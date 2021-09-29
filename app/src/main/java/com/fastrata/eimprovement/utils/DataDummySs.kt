@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.utils
 
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRewardItem
+import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
@@ -204,75 +204,6 @@ object DataDummySs {
             "2021-08-06 17:19:22"))
 
         return approval
-    }
-
-    fun generaterewardmodel() : ArrayList<ChangePointRewardItem>{
-
-        val suggestionSystem = ArrayList<ChangePointRewardItem>()
-
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                1,
-            "PULSA 10K",
-            "1",
-            "Pulsa",
-
-        ))
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                2,
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                3,
-                "PULSA 10K",
-                "1",
-                "Pulsa",
-
-                ))
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                4,
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                5,
-                "PULSA 10K",
-                "1",
-                "Pulsa",
-
-                ))
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                6,
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                7,
-                "PULSA 10K",
-                "1",
-                "Pulsa",
-
-                ))
-        suggestionSystem.add(
-            ChangePointRewardItem(
-                8,
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-        return suggestionSystem
     }
 
     fun generateDummyChangePointList(): ArrayList<ChangePointModel>{
@@ -560,11 +491,9 @@ object DataDummySs {
 
     fun generateDummyReward(): ArrayList<hadiahItem> {
         val data = ArrayList<hadiahItem>()
-        data.add(hadiahItem(hadiah = "PULSA 10K"))
-        data.add(hadiahItem(hadiah = "PULSA 20K"))
         data.add(hadiahItem(hadiah = "PULSA 50K"))
         data.add(hadiahItem(hadiah = "PULSA 100K"))
-        data.add(hadiahItem(hadiah = "PULSA 500K"))
+        data.add(hadiahItem(hadiah = "IPHONE 13"))
         return data
     }
 

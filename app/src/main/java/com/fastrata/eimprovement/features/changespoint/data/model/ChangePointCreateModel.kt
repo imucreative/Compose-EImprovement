@@ -25,7 +25,7 @@ data class ChangePointCreateModel(
     @SerializedName("keterangan")
     var description: String?,
     @SerializedName("penukaran_hadiah")
-    var reward : ArrayList<ChangePointRewardItem?>?,
+    var reward : ArrayList<RewardItem?>?,
     @SerializedName("riwayat")
     var history : ArrayList<RiwayatItem?>?
 
