@@ -98,20 +98,25 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_xxlarge"
-                        android:textColorHint="@color/colorPrimary"
-                        app:boxStrokeColor="@color/colorPrimary">
+                        android:textColorHint="@color/grey_80"
+                        android:background="@color/grey_10"
+                        app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/nilai_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="    Nilai"
+                            android:hint="Nilai"
+                            android:clickable="false"
+                            android:enabled="false"
+                            android:focusable="false"
                             android:layout_marginLeft="@dimen/spacing_medium"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
-                            android:padding="0dp"
+                            android:paddingLeft="@dimen/spacing_large"
                             android:singleLine="true"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="@color/colorPrimary"
+                            android:inputType="number"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,13 +131,13 @@
                             android:id="@+id/keterangan_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/spacing_medium"
+                            android:hint="Keterangan"
                             android:imeOptions="actionDone"
-                            android:hint="    Keterangan"
                             android:maxLines="1"
-                            android:padding="0dp"
+                            android:paddingLeft="@dimen/spacing_large"
                             android:singleLine="true"
-                            android:textColor="@color/colorPrimary"
-                            android:layout_marginLeft="@dimen/spacing_medium"/>
+                            android:textColor="@color/colorPrimary"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

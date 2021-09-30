@@ -1,6 +1,10 @@
 package com.fastrata.eimprovement.features.changespoint.ui.create
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,15 +22,14 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCre
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangeRewardCallback
 import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCallback
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
-import com.fastrata.eimprovement.utils.CP_CREATE
-import com.fastrata.eimprovement.utils.DataDummySs
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import java.util.ArrayList
+import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class ChangesPointStep2Fragment: Fragment(), Injectable {
     @Inject
@@ -37,6 +40,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private lateinit var rewardAdapter: ChangesRewardAdapter
     private var data : ChangePointCreateModel? = null
     private var source :String = CP_CREATE
+    var intTotal : Int = 0
 
 
     override fun onCreateView(
@@ -46,6 +50,9 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     ): View {
         _binding = FragmentChangesPointStep2Binding.inflate(layoutInflater, container, false)
         data = HawkUtils().getTempDataCreateCP()
+//        if (data?.reward != null){
+//            checkBalance()
+//        }
         viewModel = injectViewModel(viewModelFactory)
         viewModel.setChangeRewardPoint()
         rewardAdapter = ChangesRewardAdapter()
@@ -62,13 +69,11 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             rvChangereward.setHasFixedSize(true)
             rvChangereward.layoutManager = LinearLayoutManager(context)
             rvChangereward.adapter = rewardAdapter
+            totalReward.setText(intTotal.toString())
         }
-
         initComponent()
         initlist(data?.reward)
-
         setData()
-
         settValidation()
     }
 
@@ -81,17 +86,38 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     }
 
     private fun initComponent() {
+        var timer: Timer? = null
         binding.apply {
             val listReward : List<hadiahItem> = DataDummySs.generateDummyReward()
             val adapterReward = ArrayAdapter(
                 requireContext(),android.R.layout.simple_list_item_1,
-                listReward.map{
-                    value ->
+                listReward.map{ value ->
                     value.hadiah
                 }
             )
             hadiahCp.setAdapter(adapterReward)
             hadiahCp.onItemClickListener = onItemClickListener
+
+            nilaiCp.addTextChangedListener(object : TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int){}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    timer = Timer()
+                    timer!!.schedule(object : TimerTask(){
+                        override fun run() {
+                            Handler(Looper.getMainLooper()).post {
+
+                            }
+                        }
+                    },1000)
+                }
+            })
+
+
+
         }
     }
 
@@ -101,7 +127,6 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                 Toast.makeText(context,data.hadiah,Toast.LENGTH_LONG).show()
 
                 reward?.remove(data)
-
                 viewModel.updateReward(reward)
                 viewModel.getChangeRewardPoint()
                     .observe(viewLifecycleOwner,{
@@ -120,6 +145,19 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             })
     }
 
+    private fun checkBalance() {
+        if(data?.reward != null){
+            val itemcount = data?.reward!!
+                .map { values ->
+                    values!!.nilai.toInt()
+                }.sum()
+            intTotal = itemcount
+            Timber.i("total : $intTotal")
+        }else{
+            intTotal = 0
+        }
+    }
+
     private fun setData() {
         binding.apply {
             addReward.setOnClickListener {
@@ -134,13 +172,6 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                             "Name must be fill before added",
                             R.drawable.ic_close, R.color.red_500)
                         hadiahCp.requestFocus()
-                    }
-                    point.isEmpty() ->{
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Name must be fill before added",
-                            R.drawable.ic_close, R.color.red_500)
-                        nilaiCp.requestFocus()
                     }
                     desc.isEmpty() ->{
                         SnackBarCustom.snackBarIconInfo(
@@ -179,7 +210,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         stat = if (data?.reward?.size == 0) {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Team Member must be fill before next",
+                                "Reward must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             false
                         } else {

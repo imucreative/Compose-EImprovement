@@ -13,5 +13,7 @@ data class RewardItem(
 
 @Parcelize
 data class hadiahItem(
-    var hadiah: String
+    var hadiah: String,
+    var id: Int,
+    var nilai: String
 ) : Parcelable

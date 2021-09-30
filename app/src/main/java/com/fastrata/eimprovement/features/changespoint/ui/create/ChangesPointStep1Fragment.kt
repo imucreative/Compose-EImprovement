@@ -66,6 +66,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             nik.setText(data?.nik)
             branch.setText(data?.branch)
             subBranch.setText("FBPST")
+            date.setText(data?.date)
             date.setOnClickListener {
                 datePicker.showDialog(object  : DatePickerCustom.Callback{
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
