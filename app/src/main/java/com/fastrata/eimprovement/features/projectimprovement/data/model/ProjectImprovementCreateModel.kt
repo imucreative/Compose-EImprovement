@@ -17,7 +17,7 @@ data class ProjectImprovementCreateModel(
     @SerializedName("tahun")
     var years: String?,
     @SerializedName("tgl_pengajuan")
-    var createdDate: String?,
+    var date: String?,
     @SerializedName("cabang")
     var branch: String?,
     @SerializedName("subcabang")
@@ -29,13 +29,13 @@ data class ProjectImprovementCreateModel(
     @SerializedName("identifikasi")
     var identification: String?,
     @SerializedName("penetapan_target")
-    var setTarget: String?,
+    var target: String?,
     @SerializedName("sebab_akar_masalah")
-    var problem: ArrayList<SebabMasalahItem?>?,
+    var sebabMasalah: ArrayList<SebabMasalahItem?>?,
     @SerializedName("saran_akar_masalah")
     var akarMasalah: ArrayList<AkarMasalahItem?>?,
     @SerializedName("nilai_output_diharapkan")
-    var outputValue : String?,
+    var nilaiOutput : String?,
     @SerializedName("perhitungan_nqi")
     var nqi : NqiModel? = null,
     @SerializedName("anggota_tim")

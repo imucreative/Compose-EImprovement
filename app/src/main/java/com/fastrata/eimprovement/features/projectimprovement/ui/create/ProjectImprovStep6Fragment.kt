@@ -258,8 +258,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
 
     private fun getData() {
         binding.apply {
-            if (data?.outputValue != null) {
-                outputValue.setText(data?.outputValue.toString())
+            if (data?.nilaiOutput != null) {
+                outputValue.setText(data?.nilaiOutput.toString())
 
                 data?.nqi?.estimasi?.benefit?.let { estimasiBenefit.setText(it.toString()) }
                 data?.nqi?.estimasi?.benefit_keterangan?.let { estimasiBenefitKeterangan.setText(it) }
@@ -413,7 +413,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             HawkUtils().setTempDataCreatePi(
                                 id = data?.id,
                                 piNo = data?.piNo,
-                                date = data?.createdDate,
+                                date = data?.date,
                                 title = data?.title,
                                 branch = data?.branch,
                                 subBranch = data?.subBranch,
@@ -421,13 +421,13 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                                 years = data?.years,
                                 statusImplementation = data?.statusImplementation,
                                 identification = data?.identification,
-                                target = data?.setTarget,
-                                sebabMasalah = data?.problem,
+                                target = data?.target,
+                                sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
                                 nilaiOutput = outputValue.text.toString(),
-                                perhitunganNqi = nqi,
+                                nqi = nqi,
                                 teamMember = data?.teamMember,
-                                categoryFixingItem = data?.categoryFixing,
+                                categoryFixing = data?.categoryFixing,
                                 hasilImplementasi = data?.implementationResult,
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,

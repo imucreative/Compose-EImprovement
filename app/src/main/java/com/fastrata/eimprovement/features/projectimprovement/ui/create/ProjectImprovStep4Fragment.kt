@@ -79,7 +79,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
             }
         }
 
-        initList(data?.problem)
+        initList(data?.sebabMasalah)
         setValidation()
 
         if (action == APPROVE) {
@@ -235,7 +235,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                         )
                     }
 
-                    viewModel.addSebabMasalah(addData, data?.problem)
+                    viewModel.addSebabMasalah(addData, data?.sebabMasalah)
                     if (dataSaranAkarMasalah != null) {
                         viewModel.updateAkarMasalah(dataSaranAkarMasalah, -1, source)
                     }
@@ -259,7 +259,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.problem?.size == 0) {
+                    stat = if (data?.sebabMasalah?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             "Sebab/ Akar Masalah must be fill before next",
@@ -269,7 +269,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                         HawkUtils().setTempDataCreatePi(
                             id = data?.id,
                             piNo = data?.piNo,
-                            date = data?.createdDate,
+                            date = data?.date,
                             title = data?.title,
                             branch = data?.branch,
                             subBranch = data?.subBranch,
@@ -277,13 +277,13 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                             years = data?.years,
                             statusImplementation = data?.statusImplementation,
                             identification = data?.identification,
-                            target = data?.setTarget,
-                            sebabMasalah = data?.problem,
+                            target = data?.target,
+                            sebabMasalah = data?.sebabMasalah,
                             akarMasalah = data?.akarMasalah,
-                            nilaiOutput = data?.outputValue,
-                            perhitunganNqi = data?.nqi,
+                            nilaiOutput = data?.nilaiOutput,
+                            nqi = data?.nqi,
                             teamMember = data?.teamMember,
-                            categoryFixingItem = data?.categoryFixing,
+                            categoryFixing = data?.categoryFixing,
                             hasilImplementasi = data?.implementationResult,
                             attachment = data?.attachment,
                             statusProposal = data?.statusProposal,

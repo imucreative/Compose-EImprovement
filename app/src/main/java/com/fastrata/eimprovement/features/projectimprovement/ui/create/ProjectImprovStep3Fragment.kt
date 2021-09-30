@@ -71,7 +71,7 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
         binding.apply {
             if (data?.identification != null) {
                 identifikasiMasalah.setText(data?.identification.toString())
-                menetapkanTarget.setText(data?.setTarget.toString())
+                menetapkanTarget.setText(data?.target.toString())
             }
         }
     }
@@ -104,7 +104,7 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
                             HawkUtils().setTempDataCreatePi(
                                 id = data?.id,
                                 piNo = data?.piNo,
-                                date = data?.createdDate,
+                                date = data?.date,
                                 title = data?.title,
                                 branch = data?.branch,
                                 subBranch = data?.subBranch,
@@ -113,12 +113,12 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
                                 statusImplementation = data?.statusImplementation,
                                 identification = identifikasiMasalah.text.toString(),
                                 target = menetapkanTarget.text.toString(),
-                                sebabMasalah = data?.problem,
+                                sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
-                                nilaiOutput = data?.outputValue,
-                                perhitunganNqi = data?.nqi,
+                                nilaiOutput = data?.nilaiOutput,
+                                nqi = data?.nqi,
                                 teamMember = data?.teamMember,
-                                categoryFixingItem = data?.categoryFixing,
+                                categoryFixing = data?.categoryFixing,
                                 hasilImplementasi = data?.implementationResult,
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,

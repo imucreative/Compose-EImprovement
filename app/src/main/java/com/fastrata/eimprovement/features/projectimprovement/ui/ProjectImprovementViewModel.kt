@@ -44,7 +44,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     }
 
     fun setSebabMasalah(source: String){
-        val data = HawkUtils().getTempDataCreatePi(source)?.problem
+        val data = HawkUtils().getTempDataCreatePi(source)?.sebabMasalah
         listSebabMasalah.postValue(data)
     }
 
