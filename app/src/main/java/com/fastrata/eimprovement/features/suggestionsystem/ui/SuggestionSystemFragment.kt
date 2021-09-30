@@ -65,7 +65,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             rvSs.layoutManager = LinearLayoutManager(activity)
             rvSs.adapter = adapter
 
-            createSs.setOnClickListener {
+            create.setOnClickListener {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
                     toolbarTitle = "Create Suggestion System", action = ADD, ssNo = "", type = ""
                 )

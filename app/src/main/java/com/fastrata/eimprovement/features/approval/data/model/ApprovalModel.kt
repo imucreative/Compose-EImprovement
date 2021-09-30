@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ApprovalModel(
-    val ssNo: String,
+    val typeNo: String,
     val title: String,
     val status: String,
     val type: String,

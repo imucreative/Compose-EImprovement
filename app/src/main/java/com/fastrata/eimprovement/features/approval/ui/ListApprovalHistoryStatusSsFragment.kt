@@ -17,14 +17,14 @@ import com.fastrata.eimprovement.utils.SS_DETAIL_DATA
 import timber.log.Timber
 import javax.inject.Inject
 
-class ListApprovalHistoryStatusFragment: Fragment(), Injectable {
+class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentListApprovalHistoryStatusBinding? = null
     private val binding get() = _binding!!
     private var data: SuggestionSystemCreateModel? = null
-    private var ssNo: String? = ""
-    private var ssAction: String? = ""
+    private var typeNo: String? = ""
+    private var action: String? = ""
     private lateinit var viewModelHistoryStatus: ListApprovalViewModel
     private lateinit var adapter: ListApprovalHistoryStatusAdapter
     private var source: String = SS_CREATE
@@ -38,10 +38,10 @@ class ListApprovalHistoryStatusFragment: Fragment(), Injectable {
 
         viewModelHistoryStatus = injectViewModel(viewModelFactory)
 
-        ssNo = arguments?.getString(SS_DETAIL_DATA)
-        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
+        typeNo = arguments?.getString(SS_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
 
-        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
+        source = if (typeNo == "") SS_CREATE else SS_DETAIL_DATA
 
         //data = HawkUtils().getTempDataCreateSs(source)
         viewModelHistoryStatus.setApprovalHistoryStatus()

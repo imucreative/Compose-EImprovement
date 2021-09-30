@@ -17,9 +17,7 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.ui.setToolbar
-import com.fastrata.eimprovement.utils.APPROVE
-import com.fastrata.eimprovement.utils.DatePickerCustom
-import com.fastrata.eimprovement.utils.SS
+import com.fastrata.eimprovement.utils.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -81,9 +79,28 @@ class ListApprovalFragment : Fragment(), Injectable {
                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
                             toolbarTitle = "Approve Suggestion System",
                             action = APPROVE,
-                            ssNo = data.ssNo,
+                            ssNo = data.typeNo,
+                            type = ""
                         )
                     requireView().findNavController().navigate(direction)
+                } else if (data.type == PI) {
+                    val direction =
+                        ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                            toolbarTitle = "Approve Project Improvement",
+                            action = APPROVE,
+                            piNo = data.typeNo,
+                            type = ""
+                        )
+                    requireView().findNavController().navigate(direction)
+                } else if (data.type == CP) {
+                    /*val direction =
+                        ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                            toolbarTitle = "Approve Change Point",
+                            action = APPROVE,
+                            piNo = data.ssNo,
+                        )
+                    requireView().findNavController().navigate(direction)*/
+                    Toast.makeText(activity, "go to fragment change point", Toast.LENGTH_LONG).show()
                 }
             }
         })

@@ -18,7 +18,6 @@ import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import javax.inject.Inject
 
 class ProjectImprovStep1Fragment: Fragment(), Injectable {
@@ -27,6 +26,8 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
     private var _binding : FragmentProjectImprovementStep1Binding? = null
     private val binding get() = _binding!!
     private var data : ProjectImprovementCreateModel? = null
+    private var piNo: String? = ""
+    private var action: String? = ""
     private var source: String = PI_CREATE
 
     override fun onCreateView(
@@ -36,11 +37,15 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
     ): View {
         _binding = FragmentProjectImprovementStep1Binding.inflate(inflater,container,false)
 
-        data = HawkUtils().getTempDataCreatePi()
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
 
         return binding.root
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,14 +64,24 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
 
             title.setText(data?.title)
 
-            Timber.w("##### $data")
             setData()
+
+            if (action == APPROVE) {
+                disableForm()
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            title.isEnabled = false
+            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+        }
     }
 
     private fun setData() {
@@ -86,14 +101,29 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
                         }
                         else -> {
                             HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
                                 piNo = piNo.text.toString(),
-                                years = year.text.toString(),
                                 date = createdDate.text.toString(),
+                                title = title.text.toString(),
                                 branch = branch.text.toString(),
-                                department = department.text.toString(),
                                 subBranch = subBranch.text.toString(),
-                                title = title.text.toString()
+                                department = department.text.toString(),
+                                years = year.text.toString(),
+                                statusImplementation = data?.statusImplementation,
+                                identification = data?.identification,
+                                target = data?.setTarget,
+                                sebabMasalah = data?.problem,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.outputValue,
+                                perhitunganNqi = data?.nqi,
+                                teamMember = data?.teamMember,
+                                categoryFixingItem = data?.categoryFixing,
+                                hasilImplementasi = data?.implementationResult,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                source = source
                             )
+
                             stat = true
                         }
                     }

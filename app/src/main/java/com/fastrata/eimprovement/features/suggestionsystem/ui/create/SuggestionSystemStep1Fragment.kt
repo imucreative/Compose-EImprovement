@@ -207,13 +207,21 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                         else -> {
                             HawkUtils().setTempDataCreateSs(
                                 ssNo = ssNo.text.toString(),
+                                date = data?.date,
                                 title = titleSuggestion.text.toString(),
                                 listCategory = listCategory,
                                 name = name.text.toString(),
                                 nik = nik.text.toString(),
                                 branch = branch.text.toString(),
+                                subBranch = data?.subBranch,
                                 department = department.text.toString(),
                                 directMgr = directMgr.text.toString(),
+                                suggestion = data?.suggestion,
+                                problem = data?.problem,
+                                statusImplementation = data?.statusImplementation,
+                                teamMember = data?.teamMember,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
                                 source = source
                             )
                             stat = true

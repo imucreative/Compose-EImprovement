@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemAkarMasalahPiBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.utils.APPROVE
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AkarMasalahAdapter(val clickedItemListener: (akarMasalahItem: AkarMasalahItem, index: Int) -> Unit) : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
+class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahItem: AkarMasalahItem, index: Int) -> Unit) : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
 
     private var list = ArrayList<AkarMasalahItem?>()
     private var timer: Timer? = null
+    private var action: String? = action
 
     fun setList(data : ArrayList<AkarMasalahItem?>){
         list.clear()
@@ -37,9 +39,13 @@ class AkarMasalahAdapter(val clickedItemListener: (akarMasalahItem: AkarMasalahI
                 whyTerakhir.setText(data.kenapa)
                 imprvementDilakukan.setText(data.aksi)
                 detilLangkah.setText(data.detail_langkah)
-            }
 
-            binding.apply {
+                if (action == APPROVE) {
+                    whyTerakhir.isEnabled = false
+                    imprvementDilakukan.isEnabled = false
+                    detilLangkah.isEnabled = false
+                }
+
                 whyTerakhir.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
                         afterTextChangeFunc(binding, bindingAdapterPosition)

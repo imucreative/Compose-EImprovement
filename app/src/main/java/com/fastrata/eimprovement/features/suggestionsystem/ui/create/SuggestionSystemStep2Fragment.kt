@@ -5,14 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import java.text.SimpleDateFormat
@@ -321,9 +319,22 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         }
                         else -> {
                             HawkUtils().setTempDataCreateSs(
+                                ssNo = data?.ssNo,
+                                date = data?.date,
+                                title = data?.title,
+                                listCategory = data?.categoryImprovement,
+                                name = data?.name,
+                                nik = data?.nik,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                directMgr = data?.directMgr,
                                 suggestion = suggestion.text.toString(),
                                 problem = problem.text.toString(),
                                 statusImplementation = status,
+                                teamMember = data?.teamMember,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
                                 source = source
                             )
                             stat = true

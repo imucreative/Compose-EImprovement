@@ -40,13 +40,13 @@
             tools:listitem="@layout/item_suggestion_system" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/create_ss"
+            android:id="@+id/create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="CREATE"
+            android:text="@string/create"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/colorPrimary"
             app:icon="@drawable/ic_pencil"
@@ -107,7 +107,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/spacing_large"
                         android:gravity="center_vertical"
-                        android:text="Filter"
+                        android:text="@string/filter"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textColor="@color/blue_500"
                         app:fontFamily="sans-serif-medium" />

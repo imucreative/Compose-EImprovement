@@ -4,16 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.Tools
 import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
     private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
+    private val detailProjectImprovement = MutableLiveData<ProjectImprovementCreateModel>()
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem?>?>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
@@ -29,8 +32,19 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         return listProjectImprovement
     }
 
-    fun setSebabMasalah(){
-        val data = HawkUtils().getTempDataCreatePi()?.problem
+    fun setProjectImprovementDetail(piNo: String) {
+        // koneksi ke DB
+        println("# $piNo")
+        val data = DataDummySs.generateDummyDetailProjectImprovementList()
+        detailProjectImprovement.postValue(data)
+    }
+
+    fun getProjectImprovementDetail(): LiveData<ProjectImprovementCreateModel> {
+        return detailProjectImprovement
+    }
+
+    fun setSebabMasalah(source: String){
+        val data = HawkUtils().getTempDataCreatePi(source)?.problem
         listSebabMasalah.postValue(data)
     }
 
@@ -56,16 +70,8 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
-    fun displayAkarMasalah(dataSaranAkarMasalah: ArrayList<AkarMasalahItem?>){
-        listAkarMasalah.postValue(dataSaranAkarMasalah)
-
-        HawkUtils().setTempDataCreatePi(
-            akarMasalah = dataSaranAkarMasalah
-        )
-    }
-
-    fun setAkarMasalah(){
-        val data = HawkUtils().getTempDataCreatePi()?.akarMasalah
+    fun setAkarMasalah(source: String){
+        val data = HawkUtils().getTempDataCreatePi(source)?.akarMasalah
 
         listAkarMasalah.postValue(data)
     }
@@ -74,8 +80,8 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         return listAkarMasalah
     }
 
-    fun updateAkarMasalah(add: AkarMasalahItem, index: Int) {
-        val data = HawkUtils().getTempDataCreatePi()?.akarMasalah
+    fun updateAkarMasalah(add: AkarMasalahItem, index: Int, source: String) {
+        val data = HawkUtils().getTempDataCreatePi(source)?.akarMasalah
 
         // != -1 = add
         if (index != -1) {
@@ -84,15 +90,11 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         data?.add(add)
 
         val sortMergedList = data?.sortedBy { it?.sequence }
-        val convertToArrayList = listToArrayList(sortMergedList)
+        val convertToArrayList = Tools.listToArrayList(sortMergedList)
 
         HawkUtils().setTempDataCreatePi(
             akarMasalah = convertToArrayList
         )
-    }
-
-    private fun <T> listToArrayList(list: List<T>?): ArrayList<T>? {
-        return list?.let { ArrayList(it) }
     }
 
     fun removeAkarMasalah(index: Int, current: ArrayList<AkarMasalahItem?>?) {
@@ -103,9 +105,9 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
-    fun setSuggestionSystemTeamMember() {
+    fun setSuggestionSystemTeamMember(source: String) {
         // koneksi ke hawk
-        val data = HawkUtils().getTempDataCreatePi()?.teamMember
+        val data = HawkUtils().getTempDataCreatePi(source)?.teamMember
         Timber.d("### team member : $data")
 
         listTeamMember.postValue(data)
@@ -133,8 +135,8 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
-    fun setAttachment(){
-        val data = HawkUtils().getTempDataCreatePi()?.attachment
+    fun setAttachment(source: String){
+        val data = HawkUtils().getTempDataCreatePi(source)?.attachment
         Timber.d("### attachment : $data")
 
         listAttachment.postValue(data)

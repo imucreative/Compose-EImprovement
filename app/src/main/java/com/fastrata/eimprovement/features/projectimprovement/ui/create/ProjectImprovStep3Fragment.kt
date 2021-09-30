@@ -11,9 +11,8 @@ import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep3Bind
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SS_CREATE
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import javax.inject.Inject
 
 class ProjectImprovStep3Fragment : Fragment(), Injectable {
@@ -23,8 +22,8 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private var data : ProjectImprovementCreateModel? = null
     private var piNo: String? = ""
-    private var ssAction: String? = ""
-    private var source: String = SS_CREATE
+    private var action: String? = ""
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +32,12 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
     ): View {
         _binding = FragmentProjectImprovementStep3Binding.inflate(inflater, container, false)
 
-        data = HawkUtils().getTempDataCreatePi()
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
 
         return binding.root
     }
@@ -45,6 +49,10 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
 
         getData()
         setData()
+
+        if (action == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
@@ -52,10 +60,17 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
         _binding = null
     }
 
+    private fun disableForm() {
+        binding.apply {
+            identifikasiMasalah.isEnabled = false
+            menetapkanTarget.isEnabled = false
+        }
+    }
+
     private fun getData() {
         binding.apply {
             if (data?.identification != null) {
-                indentifikasiMasalah.setText(data?.identification.toString())
+                identifikasiMasalah.setText(data?.identification.toString())
                 menetapkanTarget.setText(data?.setTarget.toString())
             }
         }
@@ -66,29 +81,52 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    if (indentifikasiMasalah.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Identification must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        indentifikasiMasalah.requestFocus()
-                        stat = false
+                    when {
+                        identifikasiMasalah.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Identification must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            identifikasiMasalah.requestFocus()
+                            stat = false
 
-                    } else if (menetapkanTarget.text.isNullOrEmpty()) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            "Target must be fill before next",
-                            R.drawable.ic_close, R.color.red_500)
-                        menetapkanTarget.requestFocus()
-                        stat = false
+                        }
+                        menetapkanTarget.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Target must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            menetapkanTarget.requestFocus()
+                            stat = false
 
-                    } else {
-                        HawkUtils().setTempDataCreatePi(
-                            identification = indentifikasiMasalah.text.toString(),
-                            target = menetapkanTarget.text.toString()
-                        )
-                        stat = true
+                        }
+                        else -> {
+                            HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.createdDate,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementation = data?.statusImplementation,
+                                identification = identifikasiMasalah.text.toString(),
+                                target = menetapkanTarget.text.toString(),
+                                sebabMasalah = data?.problem,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.outputValue,
+                                perhitunganNqi = data?.nqi,
+                                teamMember = data?.teamMember,
+                                categoryFixingItem = data?.categoryFixing,
+                                hasilImplementasi = data?.implementationResult,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                source = source
+                            )
+                            stat = true
 
+                        }
                     }
                 }
                 return stat

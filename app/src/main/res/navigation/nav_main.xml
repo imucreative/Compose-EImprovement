@@ -45,6 +45,14 @@
         <action
             android:id="@+id/action_listApprovalFragment_to_suggestionSystemCreateWizard"
             app:destination="@id/suggestionSystemCreateWizard" />
+
+        <action
+            android:id="@+id/action_listApprovalFragment_to_ProjectImprovementCreateWizard"
+            app:destination="@id/projectImprovementCreateWizard" />
+
+        <action
+            android:id="@+id/action_listApprovalFragment_to_ChangePointCreateWizard"
+            app:destination="@id/changesPointCreateWizard" />
     </fragment>
 
     <fragment
@@ -143,6 +151,21 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+
+        <argument
+            android:name="action"
+            android:defaultValue="add"
+            app:argType="string" />
+
+        <argument
+            android:name="piNo"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            android:defaultValue=""
+            app:argType="string" />
     </activity>
 
     <activity

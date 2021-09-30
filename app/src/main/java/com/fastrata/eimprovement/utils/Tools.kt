@@ -43,6 +43,10 @@ import kotlin.math.roundToInt
 
 object Tools {
 
+    fun <T> listToArrayList(list: List<T>?): ArrayList<T>? {
+        return list?.let { ArrayList(it) }
+    }
+
     // extension function to hide soft keyboard
     // https://stackoverflow.com/a/45857155/14795594
     fun Fragment.hideKeyboard() {

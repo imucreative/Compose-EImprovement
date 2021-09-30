@@ -133,8 +133,6 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
                 if (ssAction != APPROVE) {
-                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
-
                     teamMember?.remove(data)
 
                     viewModelTeamMember.updateTeamMember(teamMember)
@@ -222,6 +220,25 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {
+                        HawkUtils().setTempDataCreateSs(
+                            ssNo = data?.ssNo,
+                            date = data?.date,
+                            title = data?.title,
+                            listCategory = data?.categoryImprovement,
+                            name = data?.name,
+                            nik = data?.nik,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            directMgr = data?.directMgr,
+                            suggestion = data?.suggestion,
+                            problem = data?.problem,
+                            statusImplementation = data?.statusImplementation,
+                            teamMember = data?.teamMember,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
                         true
                     }
                 }

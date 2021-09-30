@@ -5,9 +5,7 @@ import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.ui.model.*
 
@@ -153,10 +151,10 @@ object DataDummySs {
         val approval = ArrayList<ApprovalModel>()
 
         approval.add(ApprovalModel(
-            "SS-0000/08/2021/0001",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "PI-0000/08/2021/0100",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA PI",
             "Laporan Akhir Di Submit",
-            "SS",
+            "PI",
             "User Development",
             "00043087",
             "PUSAT",
@@ -173,10 +171,10 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
         approval.add(ApprovalModel(
-            "SS-0000/08/2021/0003",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "CP-0001/05/2021/0010",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA CP",
             "Laporan Akhir Di Submit",
-            "SS",
+            "CP",
             "User Development",
             "00043087",
             "PUSAT",
@@ -391,6 +389,82 @@ object DataDummySs {
                 "John"
             ))
         return projectimprov
+    }
+
+    fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
+        val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
+        categorySuggestionItem.add(CategoryImprovementItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
+
+        val teamMemberItem = ArrayList<TeamMemberItem?>()
+        teamMemberItem.add(TeamMemberItem(name = "budi", department = "ICT", task = "Dokumentasi"))
+
+        val attachmentItem = ArrayList<AttachmentItem?>()
+        attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
+
+        val sudah = Sudah(
+            from = "2020-01-21",
+            to = "2020-02-21"
+        )
+
+        val problem = ArrayList<SebabMasalahItem?>()
+        problem.add(SebabMasalahItem(
+            penyebab = "karena",
+            w1 = "xxx", w2 = "", w3 = "", w4 = "", w5 = "",
+            prioritas = "test"
+        ))
+
+        val akarMasalah = ArrayList<AkarMasalahItem?>()
+        akarMasalah.add(AkarMasalahItem(
+            sequence = 1,
+            kenapa = "test",
+            aksi = "aksi",
+            detail_langkah = "test"
+        ))
+
+        val estimasi = Estimasi(
+            benefit = 1000, benefit_keterangan = "testter",
+            cost = 500, cost_keterangan = "tested",
+            nqi = 1500
+        )
+
+        val aktual = Aktual(
+            benefit = 2000, benefit_keterangan = "terrr",
+            cost = 1000, cost_keterangan = "testerre",
+            nqi = 3000
+        )
+
+        val nqi = NqiModel(estimasi, aktual)
+
+        return ProjectImprovementCreateModel(
+            id = 10,
+            piNo = "PI-0001/08/2021/0005",
+            department = "ICT",
+            years = "2021",
+            createdDate = "17-08-2021",
+            branch = "PUSAT",
+            subBranch = "FBPST - Gd Barang Dagang",
+            title = "Implementasi system dengan robust dan S.O.L.I.D",
+            statusImplementation = StatusImplementationPi(
+                sudah = sudah,
+                akan = null
+            ),
+            identification = "identification",
+            setTarget = "testing target",
+            problem = problem,
+            akarMasalah = akarMasalah,
+            outputValue = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
+            nqi = nqi,
+            teamMember = teamMemberItem,
+            categoryFixing = categorySuggestionItem,
+            implementationResult = "implementasi result",
+            attachment = attachmentItem,
+            statusProposal = StatusProposal(
+                id = 7,
+                status = "Laporan Akhir Di Submit"
+            )
+        )
     }
 
     fun generateSebabMasalah(): ArrayList<SebabMasalahItem> {

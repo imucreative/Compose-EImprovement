@@ -32,15 +32,15 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private val pickFromGallery = 101
     private var data : ProjectImprovementCreateModel? = null
-    private var ssNo: String? = ""
-    private var ssAction: String? = ""
+    private var piNo: String? = ""
+    private var action: String? = ""
     private lateinit var viewModel: ProjectImprovementViewModel
     private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
     private lateinit var initFileName: String
     private lateinit var initFilePath: String
-    private var source: String = SS_CREATE
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +51,13 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
         viewModel = injectViewModel(viewModelFactory)
 
-        data = HawkUtils().getTempDataCreatePi()
-        viewModel.setAttachment()
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
+        viewModel.setAttachment(source)
 
         attachmentAdapter = AttachmentAdapter()
         attachmentAdapter.notifyDataSetChanged()
@@ -79,7 +84,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (ssAction == APPROVE) {
+        if (action == APPROVE) {
             disableForm()
         }
     }
@@ -99,9 +104,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private fun initList(attachment: ArrayList<AttachmentItem?>?) {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                if (ssAction != APPROVE) {
-                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
-
+                if (action != APPROVE) {
                     attachment?.remove(data)
 
                     viewModel.updateAttachment(attachment)
@@ -123,7 +126,6 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         viewModel.getAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
                 attachmentAdapter.setList(it)
-                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
             }
         })
     }
@@ -202,6 +204,29 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {
+                        HawkUtils().setTempDataCreatePi(
+                            id = data?.id,
+                            piNo = data?.piNo,
+                            date = data?.createdDate,
+                            title = data?.title,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            years = data?.years,
+                            statusImplementation = data?.statusImplementation,
+                            identification = data?.identification,
+                            target = data?.setTarget,
+                            sebabMasalah = data?.problem,
+                            akarMasalah = data?.akarMasalah,
+                            nilaiOutput = data?.outputValue,
+                            perhitunganNqi = data?.nqi,
+                            teamMember = data?.teamMember,
+                            categoryFixingItem = data?.categoryFixing,
+                            hasilImplementasi = data?.implementationResult,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
                         true
                     }
                 }

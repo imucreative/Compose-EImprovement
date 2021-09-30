@@ -16,10 +16,8 @@ import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep6Bind
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.STATUS_IMPLEMENTASI
-import com.fastrata.eimprovement.utils.SnackBarCustom
-import com.fastrata.eimprovement.utils.Tools
 import java.util.*
 import javax.inject.Inject
 
@@ -29,6 +27,9 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
     private var _binding: FragmentProjectImprovementStep6Binding? = null
     private val binding get() = _binding!!
     private var data : ProjectImprovementCreateModel? = null
+    private var piNo: String? = ""
+    private var action: String? = ""
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +38,12 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
     ): View {
         _binding = FragmentProjectImprovementStep6Binding.inflate(layoutInflater, container, false)
 
-        data = HawkUtils().getTempDataCreatePi()
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
 
         return binding.root
     }
@@ -52,11 +58,32 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
         setLogicAktual()
         getData()
         setData()
+
+        if (action == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            outputValue.isEnabled = false
+            estimasiBenefit.isEnabled = false
+            estimasiBenefitKeterangan.isEnabled = false
+            estimasiCost.isEnabled = false
+            estimasiCostKeterangan.isEnabled = false
+            estimasiNqiTotal.isEnabled = false
+
+            aktualBenefit.isEnabled = false
+            aktualBenefitKeterangan.isEnabled = false
+            aktualCost.isEnabled = false
+            aktualCostKeterangan.isEnabled = false
+            aktualNqiTotal.isEnabled = false
+        }
     }
 
     private fun setLogic() {
@@ -384,8 +411,27 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             )
 
                             HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.createdDate,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementation = data?.statusImplementation,
+                                identification = data?.identification,
+                                target = data?.setTarget,
+                                sebabMasalah = data?.problem,
+                                akarMasalah = data?.akarMasalah,
                                 nilaiOutput = outputValue.text.toString(),
-                                perhitunganNqi = nqi
+                                perhitunganNqi = nqi,
+                                teamMember = data?.teamMember,
+                                categoryFixingItem = data?.categoryFixing,
+                                hasilImplementasi = data?.implementationResult,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                source = source
                             )
                             stat = true
                         }

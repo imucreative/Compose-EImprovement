@@ -31,8 +31,8 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
     private val listCategory = ArrayList<CategoryImprovementItem?>()
     private lateinit var categoryViewModel: ProjectImprovementViewModel
     private var data : ProjectImprovementCreateModel? = null
-    private var ssNo: String? = ""
-    private var ssAction: String? = ""
+    private var piNo: String? = ""
+    private var action: String? = ""
     private var source: String = PI_CREATE
     var statusImplement : Boolean = false
 
@@ -44,7 +44,12 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep8Binding.inflate(inflater, container, false)
         categoryViewModel = injectViewModel(viewModelFactory)
 
-        data = HawkUtils().getTempDataCreatePi()
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
 
         categoryViewModel.setCategorySuggestion()
         categoryAdapter = CategoryImprovementAdapter()
@@ -73,21 +78,25 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         setInitCategory()
         setData()
-    }
 
-    private fun initComponent() {
-        binding.apply {
-            if (statusImplement == true){
-                linearHasilImplementasi.visibility = View.VISIBLE
-            }else{
-                linearHasilImplementasi.visibility = View.GONE
-            }
+        if (action == APPROVE) {
+            disableForm()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            checkboxOther.isEnabled = false
+            tvCheckboxOther.isClickable = false
+            edtLainLain.isEnabled = false
+
+            hasilImplementasiImprovement.isEnabled = false
+        }
     }
 
     private fun setInitCategory() {
@@ -121,7 +130,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
-                categoryAdapter.setListCategoryImprovement(it, listCategory, ssAction!!)
+                categoryAdapter.setListCategoryImprovement(it, listCategory, action!!)
                 listCategory.map { checkList ->
                     if (checkList?.id == 0) {
                         binding.apply {
@@ -196,8 +205,27 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         }
                         else -> {
                             HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.createdDate,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementation = data?.statusImplementation,
+                                identification = data?.identification,
+                                target = data?.setTarget,
+                                sebabMasalah = data?.problem,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.outputValue,
+                                perhitunganNqi = data?.nqi,
+                                teamMember = data?.teamMember,
                                 categoryFixingItem = listCategory,
                                 hasilImplementasi = hasilImplementasiImprovement.text.toString(),
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                source = source
                             )
                             stat = true
                         }

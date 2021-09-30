@@ -57,7 +57,7 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/indentifikasi_masalah"
+                        android:id="@+id/identifikasi_masalah"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="start"

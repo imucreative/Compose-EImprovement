@@ -195,7 +195,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_xxlarge"
-                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginTop="@dimen/spacing_middle"
                     android:textColorHint="@color/grey_80"
                     app:boxBackgroundColor="@color/grey_10"
                     app:boxStrokeColor="@color/grey_80">

@@ -17,14 +17,13 @@ import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasal
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.utils.HawkUtils
 import javax.inject.Inject
 import android.view.LayoutInflater
 import com.fastrata.eimprovement.databinding.DialogFormCreateSebabMasalahBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
-import com.fastrata.eimprovement.utils.HelperNotification
-import com.fastrata.eimprovement.utils.SnackBarCustom
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
 
 class ProjectImprovStep4Fragment : Fragment(), Injectable {
     @Inject
@@ -37,6 +36,9 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
     private lateinit var adapter : SebabMasalahAdapter
     private var data : ProjectImprovementCreateModel? = null
     private lateinit var notification: HelperNotification
+    private var piNo: String? = ""
+    private var action: String? = ""
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +48,13 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep4Binding.inflate(inflater, container, false)
         viewModel = injectViewModel(viewModelFactory)
 
-        data = HawkUtils().getTempDataCreatePi()
-        viewModel.setSebabMasalah()
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
+        viewModel.setSebabMasalah(source)
 
         adapter = SebabMasalahAdapter()
         adapter.notifyDataSetChanged()
@@ -74,6 +81,21 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
         initList(data?.problem)
         setValidation()
+
+        if (action == APPROVE) {
+            disableForm()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            createSebabMasalah.isClickable = false
+        }
     }
 
     private fun initList(sebabMasalah: ArrayList<SebabMasalahItem?>?) {
@@ -82,31 +104,33 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
             }
 
-            override fun onItemRemoved(dataSebabMasalah: SebabMasalahItem, position: Int) {
+            override fun onItemRemoved(data: SebabMasalahItem, position: Int) {
                 binding.apply {
-                    activity?.let {activity ->
-                        notification.shownotificationyesno(
-                            activity,
-                            "Remove",
-                            "Are you sure remove this data?",
-                            object : HelperNotification.CallBackNotificationYesNo {
-                                override fun onNotificationNo() {
+                    if (action != APPROVE) {
+                        activity?.let { activity ->
+                            notification.shownotificationyesno(
+                                activity,
+                                "Remove",
+                                "Are you sure remove this data?",
+                                object : HelperNotification.CallBackNotificationYesNo {
+                                    override fun onNotificationNo() {
 
+                                    }
+
+                                    override fun onNotificationYes() {
+                                        sebabMasalah?.remove(data)
+
+                                        viewModel.updateSebabMasalah(sebabMasalah)
+                                        viewModel.getSebabMasalah().observe(viewLifecycleOwner, {
+                                            if (it != null) {
+                                                adapter.setList(it)
+                                            }
+                                        })
+                                        viewModel.removeAkarMasalah(position, this@ProjectImprovStep4Fragment.data?.akarMasalah)
+                                    }
                                 }
-
-                                override fun onNotificationYes() {
-                                    sebabMasalah?.remove(dataSebabMasalah)
-
-                                    viewModel.updateSebabMasalah(sebabMasalah)
-                                    viewModel.getSebabMasalah().observe(viewLifecycleOwner, {
-                                        if (it != null) {
-                                            adapter.setList(it)
-                                        }
-                                    })
-                                    viewModel.removeAkarMasalah(position, data?.akarMasalah)
-                                }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
@@ -137,7 +161,9 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
             btnClose.setOnClickListener { dialog.dismiss() }
 
             btnSave.setOnClickListener {
-                setData()
+                if (action != APPROVE) {
+                    setData()
+                }
             }
         }
 
@@ -211,7 +237,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
                     viewModel.addSebabMasalah(addData, data?.problem)
                     if (dataSaranAkarMasalah != null) {
-                        viewModel.updateAkarMasalah(dataSaranAkarMasalah, -1)
+                        viewModel.updateAkarMasalah(dataSaranAkarMasalah, -1, source)
                     }
 
                     penyebabMasalah.setText("")
@@ -240,6 +266,29 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {
+                        HawkUtils().setTempDataCreatePi(
+                            id = data?.id,
+                            piNo = data?.piNo,
+                            date = data?.createdDate,
+                            title = data?.title,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            years = data?.years,
+                            statusImplementation = data?.statusImplementation,
+                            identification = data?.identification,
+                            target = data?.setTarget,
+                            sebabMasalah = data?.problem,
+                            akarMasalah = data?.akarMasalah,
+                            nilaiOutput = data?.outputValue,
+                            perhitunganNqi = data?.nqi,
+                            teamMember = data?.teamMember,
+                            categoryFixingItem = data?.categoryFixing,
+                            hasilImplementasi = data?.implementationResult,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
                         true
                     }
                 }

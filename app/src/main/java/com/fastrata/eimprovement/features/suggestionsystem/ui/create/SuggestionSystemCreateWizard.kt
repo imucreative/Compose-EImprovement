@@ -19,7 +19,7 @@ import com.fastrata.eimprovement.databinding.ActivitySuggestionSystemCreateWizar
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusFragment
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusSsFragment
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -253,13 +253,13 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
             }
             5 -> {
                 Timber.e("### step 5 = $currentStep")
-                val fragment = ListApprovalHistoryStatusFragment()
+                val fragment = ListApprovalHistoryStatusSsFragment()
                 val args = Bundle()
                 args.putString(SS_DETAIL_DATA, ssNo)
                 args.putString(ACTION_DETAIL_DATA, ssAction)
                 fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container, fragment, ListApprovalHistoryStatusFragment::class.java.simpleName)
+                    replace(R.id.frame_container, fragment, ListApprovalHistoryStatusSsFragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }

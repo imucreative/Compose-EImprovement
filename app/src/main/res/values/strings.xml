@@ -109,5 +109,7 @@
 
     <!---notification -->
     <string name="wrong_field">Pastikan data sudah terisi dengan benar</string>
+    <string name="filter">Filter</string>
+    <string name="create">CREATE</string>
 
 </resources>

@@ -105,8 +105,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
                 if (ssAction != APPROVE) {
-                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
-
                     attachment?.remove(data)
 
                     viewModelAttachment.updateAttachment(attachment)
@@ -114,7 +112,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
                                 attachmentAdapter.setList(it)
-                                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
                             }
                         })
                 }
@@ -129,7 +126,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
                 attachmentAdapter.setList(it)
-                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
             }
         })
     }
@@ -207,6 +203,25 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {
+                        HawkUtils().setTempDataCreateSs(
+                            ssNo = data?.ssNo,
+                            date = data?.date,
+                            title = data?.title,
+                            listCategory = data?.categoryImprovement,
+                            name = data?.name,
+                            nik = data?.nik,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            directMgr = data?.directMgr,
+                            suggestion = data?.suggestion,
+                            problem = data?.problem,
+                            statusImplementation = data?.statusImplementation,
+                            teamMember = data?.teamMember,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
                         true
                     }
                 }

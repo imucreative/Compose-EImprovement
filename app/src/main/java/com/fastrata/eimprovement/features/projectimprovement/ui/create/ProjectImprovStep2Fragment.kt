@@ -1,7 +1,6 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep2Binding
-import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
-import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,9 +25,12 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var datePicker: DatePickerCustom
     private var data : ProjectImprovementCreateModel? = null
+    private var piNo: String? = ""
+    private var action: String? = ""
     lateinit var fromDate: Date
     lateinit var toDate: Date
     val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +38,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep2Binding.inflate(inflater, container, false)
-        data = HawkUtils().getTempDataCreatePi()
+
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
         return binding.root
     }
 
@@ -58,11 +64,42 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         getData()
         initComponent()
         setData()
+
+        if (action == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            rbStatus1.isClickable = false
+            etFromStatus1.isEnabled = false
+            etToStatus1.isEnabled = false
+
+            rbStatus2.isClickable = false
+            etFromIdentifikasi.isEnabled = false
+            etToIdentifikasi.isEnabled = false
+
+            etFromAnalisaData.isEnabled = false
+            etToAnalisaData.isEnabled = false
+
+            etFromAnalisaAkarMasalah.isEnabled = false
+            etToAnalisaAkarMasalah.isEnabled = false
+
+            etFromMenyusunRencanaPenanggulanganMasalah.isEnabled = false
+            etToMenyusunRencanaPenanggulanganMasalah.isEnabled = false
+
+            etFromImplementasiRencanaPerbaikan.isEnabled = false
+            etToImplementasiRencanaPerbaikan.isEnabled = false
+
+            etFromAnalisaPeriksaDanEvaluasi.isEnabled = false
+            etToAnalisaPeriksaDanEvaluasi.isEnabled = false
+        }
     }
 
     private fun setLogic() {
@@ -527,7 +564,27 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
                         else -> {
                             HawkUtils().setTempDataCreatePi(
-                                statusImplementation = statusImplementation
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.createdDate,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementation = statusImplementation,
+                                identification = data?.identification,
+                                target = data?.setTarget,
+                                sebabMasalah = data?.problem,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.outputValue,
+                                perhitunganNqi = data?.nqi,
+                                teamMember = data?.teamMember,
+                                categoryFixingItem = data?.categoryFixing,
+                                hasilImplementasi = data?.implementationResult,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                source = source
                             )
                             stat = true
                         }

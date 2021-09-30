@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.di
 
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusPiFragment
 import com.fastrata.eimprovement.features.projectimprovement.ui.create.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -33,4 +34,7 @@ abstract class ProjectImprovementFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeProjectImprovement9Fragment(): ProjectImprovStep9Fragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeListApprovalHistoryStatusFragment(): ListApprovalHistoryStatusPiFragment
 }

@@ -19,7 +19,9 @@ import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImpr
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.ADD
 import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.EDIT
 import javax.inject.Inject
 
 class ProjectImprovementFragment : Fragment(), Injectable{
@@ -66,14 +68,19 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             rvSs.adapter = adapter
 
             createPi.setOnClickListener {
-                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard("Create PI")
+                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                    toolbarTitle = "Create Project Improvement", action = ADD, piNo = "", type = ""
+                )
                 it.findNavController().navigate(direction)
             }
         }
 
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementModel) {
-                Toast.makeText(activity, data.piNo, Toast.LENGTH_LONG).show()
+                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                    toolbarTitle = "Edit Project Improvement", action = EDIT, piNo = data.piNo, type = ""
+                )
+                requireView().findNavController().navigate(direction)
             }
         })
 
