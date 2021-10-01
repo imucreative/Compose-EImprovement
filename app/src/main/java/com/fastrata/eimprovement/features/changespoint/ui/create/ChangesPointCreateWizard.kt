@@ -20,14 +20,12 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.ui.create.ProjectImprovStep1Fragment
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import timber.log.Timber
 import javax.inject.Inject
 
 class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector {
@@ -40,7 +38,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     private lateinit var viewModel : ChangesPointCreateModel
     private var maxStep = 2
     private var currentStep = 1
-    private var action: String = ""
+    private var cpAction: String = ""
     private var cpNo: String = ""
     private var source: String = CP_CREATE
     private lateinit var notification: HelperNotification
@@ -62,9 +60,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         val argsAction  = args.action
         val argsCpNo    = args.cpNo
 
-        action = argsAction
+        cpAction = argsAction
 
-        if (action == APPROVE) {
+        if (cpAction == APPROVE) {
             maxStep += 1
         }
 
@@ -169,7 +167,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
             if(fragment !is ChangesPointStep1Fragment){
                 val args = Bundle()
                 args.putString(CP_DETAIL_DATA, cpNo)
-                args.putString(ACTION_DETAIL_DATA, action)
+                args.putString(ACTION_DETAIL_DATA, cpAction)
                 mHomeFragment.arguments = args
                 mFragmentManager
                     .beginTransaction()
@@ -194,7 +192,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 val mCategoryFragment = ChangesPointStep1Fragment()
                 val args = Bundle()
                 args.putString(CP_DETAIL_DATA, cpNo)
-                args.putString(ACTION_DETAIL_DATA, action)
+                args.putString(ACTION_DETAIL_DATA, cpAction)
                 mCategoryFragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container_cp, mCategoryFragment, ChangesPointStep1Fragment::class.java.simpleName)
@@ -207,7 +205,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 val mCategoryFragment = ChangesPointStep2Fragment()
                 val args = Bundle()
                 args.putString(CP_DETAIL_DATA, cpNo)
-                args.putString(ACTION_DETAIL_DATA, action)
+                args.putString(ACTION_DETAIL_DATA, cpAction)
                 mCategoryFragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
                     replace(R.id.frame_container_cp, mCategoryFragment, ChangesPointStep2Fragment::class.java.simpleName)
@@ -234,38 +232,38 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if (action == APPROVE) {
+                    if (cpAction == APPROVE) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
                         }
                     }
                 }
-            }
-        }else{
-            notification = HelperNotification()
-            binding.apply {
-                notification.shownotificationyesno(
-                    this@ChangesPointCreateWizard,
-                    "Submit",
-                    "Are you sure submit this data?",
-                    object : HelperNotification.CallBackNotificationYesNo {
-                        override fun onNotificationNo() {
+            }else{
+                notification = HelperNotification()
+                binding.apply {
+                    notification.shownotificationyesno(
+                        this@ChangesPointCreateWizard,
+                        "Submit",
+                        "Are you sure submit this data?",
+                        object : HelperNotification.CallBackNotificationYesNo {
+                            override fun onNotificationNo() {
 
-                        }
+                            }
 
-                        override fun onNotificationYes() {
-                            val gson = Gson()
-                            val data = gson.toJson(HawkUtils().getTempDataCreatePi(source))
-                            println("### Data form input : $data")
-                            Toast.makeText(
-                                this@ChangesPointCreateWizard,
-                                "Save Change Point",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            finish()
+                            override fun onNotificationYes() {
+                                val gson = Gson()
+                                val data = gson.toJson(HawkUtils().getTempDataCreatePi(source))
+                                println("### Data form input : $data")
+                                Toast.makeText(
+                                    this@ChangesPointCreateWizard,
+                                    "Save Change Point",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                finish()
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

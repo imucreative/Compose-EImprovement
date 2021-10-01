@@ -77,7 +77,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         initComponent()
         initlist(data?.reward)
         setData()
-        settValidation()
+        setValidation()
     }
 
     override fun onDestroyView() {
@@ -196,10 +196,10 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     }
 
 
-    private fun settValidation() {
+    private fun setValidation() {
         (activity as ChangesPointCreateWizard).setcpCreateCallback(
             object : ChangesPointCreateCallback {
-                override fun OnDataPass(): Boolean {
+                    override fun OnDataPass(): Boolean {
                     var stat : Boolean
                     binding.apply {
                         stat = if (data?.reward?.size == 0) {
