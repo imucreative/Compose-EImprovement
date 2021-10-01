@@ -41,6 +41,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private lateinit var initFileName: String
     private lateinit var initFilePath: String
     private var source: String = PI_CREATE
+    private lateinit var ext : String
+    private val fileNameExt = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -145,23 +147,45 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == pickFromGallery && resultCode == Activity.RESULT_OK) {
             if (data != null) {
+//                uri = data.data!!
+//                initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
+//                initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
+//                initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
+//                binding.fileName.text = initFileName
+//                Timber.e("### path uri : $uri")
+//                Timber.e("### file size : $initFileSize")
+//                Timber.e("### path : $initFilePath")
                 uri = data.data!!
-                initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
-                initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
-                initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
-
-                //if (initFileSize.toInt() <= 2048) {
-                binding.fileName.text = initFileName
-
-                Timber.e("### path uri : $uri")
-                Timber.e("### file size : $initFileSize")
-                Timber.e("### path : $initFilePath")
-                /*} else {
+                val fileData = FileUtils().from(requireContext(),uri)
+                val file_size: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
+                Timber.e("###FILE SIZE: $file_size")
+                if (file_size == 0 || file_size >= 2048){
                     SnackBarCustom.snackBarIconInfo(
-                        binding.root.rootView, layoutInflater, resources, binding.root.rootView.context,
-                        "Attachment must be under 2Mb",
+                        binding.root, layoutInflater, resources, binding.root.context,
+                        "File size failed",
                         R.drawable.ic_close, R.color.red_500)
-                }*/
+                }else{
+                    initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
+                    initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
+                    initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
+                    if(initFileName.contains(".")){
+                        ext = initFileName.substring(initFileName.lastIndexOf("."))
+                        Timber.e("###EXT : $ext")
+                        val match = fileNameExt.filter { ext.contains(it,ignoreCase = true) }
+                        Timber.e("### MATCH SIZE: ${match.size}")
+                        if (match.isNotEmpty()){
+                            binding.fileName.text = initFileName
+                            Timber.e("### path uri : $uri")
+                            Timber.e("### file size : $initFileSize")
+                            Timber.e("### path : $initFilePath")
+                        }else{
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, binding.root.context,
+                                "Attachmen failed",
+                                R.drawable.ic_close, R.color.red_500)
+                        }
+                    }
+                }
             }
         }
     }
