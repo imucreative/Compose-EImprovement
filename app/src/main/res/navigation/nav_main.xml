@@ -179,8 +179,18 @@
             app:argType="string"
             app:nullable="true" />
         <argument
+            android:name="action"
+            android:defaultValue="add"
+            app:argType="string" />
+
+        <argument
             android:name="cpNo"
-            android:defaultValue="null"
-            app:nullable="true"/>
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            android:defaultValue=""
+            app:argType="string" />
     </activity>
 </navigation>

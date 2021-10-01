@@ -1,10 +1,8 @@
 package com.fastrata.eimprovement.utils
 
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
-import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
-import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
+import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.ui.model.*
@@ -117,34 +115,26 @@ object DataDummySs {
         )
     }
 
-    fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
-
-        val suggestionSystem = ArrayList<TeamMemberItem>()
-
-        suggestionSystem.add(TeamMemberItem(
-            "Jery",
-            "ICT",
-            "Membuat dokumentasi"))
-        suggestionSystem.add(TeamMemberItem(
-            "Tom",
-            "ICT",
-            "Implementasi Project"))
-        suggestionSystem.add(TeamMemberItem(
-            "Budi",
-            "ICT",
-            "Menyiapkan peralatan"))
-        suggestionSystem.add(TeamMemberItem(
-            "Anto",
-            "ICT",
-            "Menyiapkan peralatan"))
-        suggestionSystem.add(TeamMemberItem(
-            "User",
-            "ICT",
-            "Menyiapkan peralatan"))
-
-
-        return suggestionSystem
-    }
+   fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
+       val rewardArray = ArrayList<RewardItem?>()
+       rewardArray.add(RewardItem(no = 1,hadiah = "PULSA 100K",nilai = "10000",keterangan = "Penukaran"))
+       val riwayatArray = ArrayList<RiwayatItem?>()
+       riwayatArray.add(RiwayatItem(no = 1,pic = "Bpk Test",status = "Active",komentar = "Baik",tanggal = "2021-08-06 17:19:22"))
+       riwayatArray
+      return ChangePointCreateItemModel(
+          id = 1,
+          saldo = 2000,
+          cpNo = "CP-0000/08/2021/0100",
+          name = "TEST",
+          nik = "101010",
+          branch = "PUSAT",
+          department = "FBPST - Gd Barang Dagang",
+          job = "STAFF",
+          date = "2021-08-06 17:19:22",
+          description = "Test Data",
+          reward = rewardArray,
+          history = riwayatArray)
+   }
 
     fun generateDummyApproval(): ArrayList<ApprovalModel> {
 
@@ -465,57 +455,6 @@ object DataDummySs {
                 status = "Laporan Akhir Di Submit"
             )
         )
-    }
-
-    fun generateSebabMasalah(): ArrayList<SebabMasalahItem> {
-        val akarMslh = ArrayList<SebabMasalahItem>()
-
-        akarMslh.add(
-            SebabMasalahItem(
-            "input masih manual",
-            "belum ada sistem", "", "", "", "",
-                "dibuatkan sistem"
-        ))
-        akarMslh.add(SebabMasalahItem(
-            "input masih manual",
-            "belum ada sistem", "", "", "", "",
-            "dibuatkan sistem"
-        ))
-        akarMslh.add(SebabMasalahItem(
-            "input masih manual",
-            "belum ada sistem", "", "", "", "",
-            "dibuatkan sistem"
-        ))
-        akarMslh.add(SebabMasalahItem(
-            "input masih manual",
-            "belum ada sistem", "", "", "", "",
-            "dibuatkan sistem"
-        ))
-        akarMslh.add(SebabMasalahItem(
-            "input masih manual",
-            "belum ada sistem", "", "", "", "",
-            "dibuatkan sistem"
-        ))
-        return akarMslh
-    }
-
-    fun generateDummyAkarMasalah(): ArrayList<AkarMasalahItem>{
-        val data = ArrayList<AkarMasalahItem>()
-        data.add(
-            AkarMasalahItem(
-                1,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-        )
-        data.add(
-            AkarMasalahItem(
-                2,
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-        )
-        return data
     }
 
     fun generateDummyNameMember(): ArrayList<MemberNameItem> {

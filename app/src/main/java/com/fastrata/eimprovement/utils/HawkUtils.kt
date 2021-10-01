@@ -15,7 +15,8 @@ internal class HawkUtils {
     private val getDataDetailSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_DETAIL_DATA)) Hawk.get(SS_DETAIL_DATA) else null
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
     private val getDataDetailPi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_DETAIL_DATA)) Hawk.get(PI_DETAIL_DATA) else null
-    private val getDataCreateCp : ChangePointCreateModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
+    private val getDataCreateCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
+    private val getDataDetailCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
 
     // Create Suggestion System
     fun setTempDataCreateSs(
@@ -167,6 +168,7 @@ internal class HawkUtils {
     }
 
     fun setTempDataCreateCp(
+        id : Int?= 0,
         saldo : Int?= 0,
         cpno: String? = null,
         nama: String? = null,
@@ -177,26 +179,37 @@ internal class HawkUtils {
         date: String? = null,
         keterangan: String? = null,
         rewarddata: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
-        riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null
+        riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null,
+        source: String = CP_CREATE
     ){
-        val data  =ChangePointCreateModel(
-            saldo = saldo?: getDataCreateCp?.saldo,
-            cpNo = cpno?: getDataCreateCp?.cpNo,
-            name = nama?:getDataCreateCp?.name,
-            nik = nik?:getDataCreateCp?.nik,
-            branch = branch?:getDataCreateCp?.branch,
-            department = departement?:getDataCreateCp?.department,
-            job = jabatan?:getDataCreateCp?.job,
-            date = date?:getDataCreateCp?.date,
-            description = keterangan?:getDataCreateCp?.description,
-            reward = rewarddata ?: getDataCreateCp?.reward,
-            history = riwayat ?: getDataCreateCp?.history
+        val data  =ChangePointCreateItemModel(
+            id = id ?: if (source == CP_CREATE) getDataCreateCp?.id else getDataDetailCp?.id,
+            cpNo = cpno?: if(source == CP_CREATE) getDataCreateCp?.cpNo else getDataDetailCp?.cpNo,
+            saldo = saldo?: if(source == CP_CREATE) getDataCreateCp?.saldo else getDataDetailCp?.saldo,
+            name = nama?: if(source == CP_CREATE) getDataCreateCp?.name else getDataDetailCp?.name,
+            nik = nik?: if(source == CP_CREATE) getDataCreateCp?.nik else getDataDetailCp?.nik,
+            branch = branch?: if(source == CP_CREATE) getDataCreateCp?.branch else getDataDetailCp?.branch,
+            department = departement?: if(source == CP_CREATE) getDataCreateCp?.department else getDataDetailCp?.department,
+            job = jabatan?: if(source == CP_CREATE) getDataCreateCp?.job else getDataDetailCp?.job,
+            date = date?: if(source == CP_CREATE) getDataCreateCp?.date else getDataDetailCp?.date,
+            description = keterangan?: if(source == CP_CREATE) getDataCreateCp?.description else getDataDetailCp?.description,
+            reward = rewarddata?: if(source == CP_CREATE) getDataCreateCp?.reward else getDataDetailCp?.reward,
+            history = riwayat?: if(source == CP_CREATE) getDataCreateCp?.history else getDataDetailCp?.history
         )
-        Hawk.put(CP_CREATE,data)
-        Timber.w("### Hawk : $data")
+        if (source == CP_CREATE) {
+            Hawk.put(CP_CREATE, data)
+            Timber.w("### Hawk PI: $data")
+        } else {
+            Hawk.put(CP_DETAIL_DATA, data)
+            Timber.w("### Hawk PI Detail Data: $data")
+        }
     }
 
-    fun getTempDataCreateCP() : ChangePointCreateModel? {
-        return getDataCreateCp
+    fun getTempDataCreateCP(source: String = CP_CREATE) : ChangePointCreateItemModel? {
+        return if (source == CP_CREATE){
+            getDataCreateCp
+        }else{
+            getDataDetailCp
+        }
     }
 }

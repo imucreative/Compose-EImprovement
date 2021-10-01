@@ -24,7 +24,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentChangesPointSystemBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private lateinit var viewModel: ChangesPointViewModel
+    private lateinit var createModel: ChangesPointCreateModel
     private lateinit var adapter: ChangesPointAdapter
 
     override fun onCreateView(
@@ -36,8 +36,8 @@ class ChangesPointFragment : Fragment(), Injectable {
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
 
-        viewModel = injectViewModel(viewModelFactory)
-        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ChangesPointViewModel::class.java)
+        createModel = injectViewModel(viewModelFactory)
+        //createModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ChangesPointCreateModel::class.java)
 
         setHasOptionsMenu(true);
 
@@ -48,7 +48,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     }
 
     private fun initComponent(activity: FragmentActivity) {
-        viewModel.setSuggestionSystem()
+        createModel.setChangePoint()
         adapter = ChangesPointAdapter()
         adapter.notifyDataSetChanged()
 
@@ -72,7 +72,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             }
         })
 
-        viewModel.getSuggestionSystem().observe(viewLifecycleOwner, {
+        createModel.getChangePoint().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
             }

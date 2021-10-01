@@ -9,16 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
-import com.fastrata.eimprovement.utils.CP_CREATE
-import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 class ChangesPointStep1Fragment: Fragment(), Injectable {
@@ -26,8 +22,10 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding:FragmentChangesPointStep1Binding? = null
     private val binding get() = _binding!!
-    private var data : ChangePointCreateModel? = null
+    private var data : ChangePointCreateItemModel? = null
     private var source :String = CP_CREATE
+    private var action: String? = ""
+    private var cpNo: String? = ""
     private lateinit var datePicker: DatePickerCustom
 
     override fun onCreateView(
@@ -37,7 +35,13 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     ): View {
         _binding = FragmentChangesPointStep1Binding.inflate(layoutInflater, container, false)
 
-        data = HawkUtils().getTempDataCreateCP()
+
+        cpNo = arguments?.getString(CP_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreateCP(source)
 
         return binding.root
     }
@@ -81,6 +85,16 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             desc.setText(data?.description)
             Timber.w("##### $data")
             setData()
+
+            if(action == APPROVE){
+                disableform()
+            }
+        }
+    }
+
+    private fun disableform() {
+        binding.apply {
+            desc.isEnabled = false
         }
     }
 
@@ -99,7 +113,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                         this!!.desc.text.isNullOrEmpty()->{
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Title must be fill before next",
+                                "Desc must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             desc.requestFocus()
                             stat = false
@@ -107,7 +121,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                         this!!.date.text.isNullOrEmpty()->{
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Title must be fill before next",
+                                "Date must be fill before next",
                                 R.drawable.ic_close, R.color.red_500)
                             date.requestFocus()
                             stat = false

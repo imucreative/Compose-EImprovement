@@ -1,10 +1,6 @@
 package com.fastrata.eimprovement.features.changespoint.ui.create
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +14,7 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep2Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangeRewardCallback
 import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 import com.fastrata.eimprovement.features.changespoint.data.model.hadiahItem
@@ -38,9 +34,12 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var viewModel:ChangesPointRewardViewModel
     private lateinit var rewardAdapter: ChangesRewardAdapter
-    private var data : ChangePointCreateModel? = null
+    private var data : ChangePointCreateItemModel? = null
     private var source :String = CP_CREATE
+    private var action: String? = ""
+    private var cpNo: String? = ""
     var intTotal : Int = 0
+    private lateinit var listReward : ArrayList<hadiahItem>
 
 
     override fun onCreateView(
@@ -49,10 +48,15 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChangesPointStep2Binding.inflate(layoutInflater, container, false)
-        data = HawkUtils().getTempDataCreateCP()
-//        if (data?.reward != null){
-//            checkBalance()
-//        }
+        cpNo = arguments?.getString(CP_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
+        data = HawkUtils().getTempDataCreateCP(source)
+        if (data?.reward != null){
+            checkBalance()
+        }
+        listReward = DataDummySs.generateDummyReward()
         viewModel = injectViewModel(viewModelFactory)
         viewModel.setChangeRewardPoint()
         rewardAdapter = ChangesRewardAdapter()
@@ -62,7 +66,6 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         _binding = FragmentChangesPointStep2Binding.bind(view)
         binding.apply {
             totalReward.setText(data?.saldo.toString())
@@ -82,13 +85,16 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         _binding = null
     }
     private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        binding.apply {
+            nilaiCp.setText(listReward[i].nilai)
+        }
         hideKeyboard()
     }
 
     private fun initComponent() {
         var timer: Timer? = null
         binding.apply {
-            val listReward : List<hadiahItem> = DataDummySs.generateDummyReward()
+
             val adapterReward = ArrayAdapter(
                 requireContext(),android.R.layout.simple_list_item_1,
                 listReward.map{ value ->
@@ -97,27 +103,6 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             )
             hadiahCp.setAdapter(adapterReward)
             hadiahCp.onItemClickListener = onItemClickListener
-
-            nilaiCp.addTextChangedListener(object : TextWatcher{
-                override fun beforeTextChanged(
-                    s: CharSequence?, start: Int, count: Int, after: Int){}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(s: Editable?) {
-                    timer = Timer()
-                    timer!!.schedule(object : TimerTask(){
-                        override fun run() {
-                            Handler(Looper.getMainLooper()).post {
-
-                            }
-                        }
-                    },1000)
-                }
-            })
-
-
-
         }
     }
 
@@ -134,6 +119,11 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                             rewardAdapter.setListReward(it)
                         }
                     })
+                val total = checkBalance()
+                viewModel.setTotalReward(total)
+                viewModel.getTotalReward().observe(viewLifecycleOwner,{
+                    binding.totalReward.text = it.toString()
+                })
             }
         })
 
@@ -145,7 +135,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             })
     }
 
-    private fun checkBalance() {
+    private fun checkBalance(): Int {
         if(data?.reward != null){
             val itemcount = data?.reward!!
                 .map { values ->
@@ -156,6 +146,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         }else{
             intTotal = 0
         }
+        return intTotal
     }
 
     private fun setData() {
@@ -189,7 +180,11 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         )
 
                         viewModel.addReward(add,data?.reward)
-
+                        val total = checkBalance()
+                        viewModel.setTotalReward(total)
+                        viewModel.getTotalReward().observe(viewLifecycleOwner,{
+                            totalReward.text = it.toString()
+                        })
                         hadiahCp.requestFocus()
                         hadiahCp.setText("")
                         nilaiCp.setText("")

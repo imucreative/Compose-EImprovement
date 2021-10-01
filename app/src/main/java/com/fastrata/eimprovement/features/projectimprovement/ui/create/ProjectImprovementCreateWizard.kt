@@ -78,6 +78,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 source = PI_DETAIL_DATA
                 viewModel.setProjectImprovementDetail(argsPiNo)
                 viewModel.getProjectImprovementDetail().observe(this, { detailData ->
+                    println("### data :"+detailData)
                     HawkUtils().setTempDataCreatePi(
                         id = detailData.id,
                         piNo = detailData.piNo,
@@ -390,7 +391,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         }
                     )
                 }
-                // }
             }
         }
     }

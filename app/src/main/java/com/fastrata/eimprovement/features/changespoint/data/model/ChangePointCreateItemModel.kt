@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ChangePointCreateModel(
+data class ChangePointCreateItemModel(
+    @SerializedName("id")
+    var id : Int?,
     @SerializedName("saldo")
     var saldo : Int?,
     @SerializedName("no_penukaran")
