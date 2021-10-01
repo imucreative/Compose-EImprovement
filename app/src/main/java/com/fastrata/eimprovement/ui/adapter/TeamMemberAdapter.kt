@@ -30,9 +30,9 @@ class TeamMemberAdapter: RecyclerView.Adapter<TeamMemberAdapter.TeamMemberViewHo
             }
 
             binding.apply {
-                name.text = data.name
-                department.text = data.department
-                task.text = data.task
+                name.text = data.name?.name
+                department.text = data.department?.department
+                task.text = data.task?.task
             }
         }
     }

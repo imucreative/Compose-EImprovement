@@ -82,8 +82,12 @@ object DataDummySs {
         categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
 
+        val memberNameItem = MemberNameItem(id = 1, name = "budi")
+        val memberDepartmentItem = MemberDepartmentItem(id = 1, department = "ICT")
+        val memberTaskItem = MemberTaskItem(id = 1, task = "Dokumentasi")
+
         val teamMemberItem = ArrayList<TeamMemberItem?>()
-        teamMemberItem.add(TeamMemberItem(name = "budi", department = "ICT", task = "Dokumentasi"))
+        teamMemberItem.add(TeamMemberItem(name = memberNameItem, department = memberDepartmentItem, task = memberTaskItem))
 
         val attachmentItem = ArrayList<AttachmentItem?>()
         attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
@@ -120,7 +124,6 @@ object DataDummySs {
        rewardArray.add(RewardItem(no = 1,hadiah = "PULSA 100K",nilai = "10000",keterangan = "Penukaran"))
        val riwayatArray = ArrayList<RiwayatItem?>()
        riwayatArray.add(RiwayatItem(no = 1,pic = "Bpk Test",status = "Active",komentar = "Baik",tanggal = "2021-08-06 17:19:22"))
-       riwayatArray
       return ChangePointCreateItemModel(
           id = 1,
           saldo = 2000,
@@ -135,6 +138,35 @@ object DataDummySs {
           reward = rewardArray,
           history = riwayatArray)
    }
+
+    /*fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
+
+        val suggestionSystem = ArrayList<TeamMemberItem>()
+
+        suggestionSystem.add(TeamMemberItem(
+            "Jery",
+            "ICT",
+            "Membuat dokumentasi"))
+        suggestionSystem.add(TeamMemberItem(
+            "Tom",
+            "ICT",
+            "Implementasi Project"))
+        suggestionSystem.add(TeamMemberItem(
+            "Budi",
+            "ICT",
+            "Menyiapkan peralatan"))
+        suggestionSystem.add(TeamMemberItem(
+            "Anto",
+            "ICT",
+            "Menyiapkan peralatan"))
+        suggestionSystem.add(TeamMemberItem(
+            "User",
+            "ICT",
+            "Menyiapkan peralatan"))
+
+
+        return suggestionSystem
+    }*/
 
     fun generateDummyApproval(): ArrayList<ApprovalModel> {
 
@@ -387,8 +419,12 @@ object DataDummySs {
         categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
 
+        val memberNameItem = MemberNameItem(id = 1, name = "budi")
+        val memberDepartmentItem = MemberDepartmentItem(id = 1, department = "ICT")
+        val memberTaskItem = MemberTaskItem(id = 1, task = "Dokumentasi")
+
         val teamMemberItem = ArrayList<TeamMemberItem?>()
-        teamMemberItem.add(TeamMemberItem(name = "budi", department = "ICT", task = "Dokumentasi"))
+        teamMemberItem.add(TeamMemberItem(name = memberNameItem, department = memberDepartmentItem, task = memberTaskItem))
 
         val attachmentItem = ArrayList<AttachmentItem?>()
         attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
@@ -459,29 +495,29 @@ object DataDummySs {
 
     fun generateDummyNameMember(): ArrayList<MemberNameItem> {
         val data = ArrayList<MemberNameItem>()
-        data.add(MemberNameItem(name = "budi"))
-        data.add(MemberNameItem(name = "Jerry"))
-        data.add(MemberNameItem(name = "Tom"))
-        data.add(MemberNameItem(name = "Ali"))
-        data.add(MemberNameItem(name = "Ahmad"))
+        data.add(MemberNameItem(name = "budi", id = 1))
+        data.add(MemberNameItem(name = "Jerry", id = 2))
+        data.add(MemberNameItem(name = "Tom", id = 3))
+        data.add(MemberNameItem(name = "Ali", id = 4))
+        data.add(MemberNameItem(name = "Ahmad", id = 5))
         return data
     }
 
     fun generateDummyDepartmentMember(): ArrayList<MemberDepartmentItem> {
         val data = ArrayList<MemberDepartmentItem>()
-        data.add(MemberDepartmentItem(department = "ICT"))
-        data.add(MemberDepartmentItem(department = "Accounting"))
-        data.add(MemberDepartmentItem(department = "HR"))
-        data.add(MemberDepartmentItem(department = "Tax"))
-        data.add(MemberDepartmentItem(department = "Marketing"))
+        data.add(MemberDepartmentItem(department = "ICT", id = 1))
+        data.add(MemberDepartmentItem(department = "Accounting", id = 2))
+        data.add(MemberDepartmentItem(department = "HR", id = 3))
+        data.add(MemberDepartmentItem(department = "Tax", id = 4))
+        data.add(MemberDepartmentItem(department = "Marketing", id = 5))
         return data
     }
 
     fun generateDummyTaskMember(): ArrayList<MemberTaskItem> {
         val data = ArrayList<MemberTaskItem>()
-        data.add(MemberTaskItem(task = "Ketua"))
-        data.add(MemberTaskItem(task = "Dokumentasi"))
-        data.add(MemberTaskItem(task = "Anggota"))
+        data.add(MemberTaskItem(task = "Ketua", id = 1))
+        data.add(MemberTaskItem(task = "Dokumentasi", id = 2))
+        data.add(MemberTaskItem(task = "Anggota", id = 3))
         return data
     }
 

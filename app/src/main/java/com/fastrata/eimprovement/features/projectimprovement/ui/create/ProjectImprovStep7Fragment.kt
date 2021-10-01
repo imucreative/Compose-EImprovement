@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -35,6 +35,12 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     private var action: String? = ""
     private lateinit var viewModelTeamMember: ProjectImprovementViewModel
     private lateinit var teamMemberAdapter: TeamMemberAdapter
+    private lateinit var listMemberItem: List<MemberNameItem>
+    private lateinit var listDepartmentItem: List<MemberDepartmentItem>
+    private lateinit var listTaskItem: List<MemberTaskItem>
+    private lateinit var selectedMember: MemberNameItem
+    private lateinit var selectedDepartment: MemberDepartmentItem
+    private lateinit var selectedTask: MemberTaskItem
     private var source: String = PI_CREATE
 
     override fun onCreateView(
@@ -52,6 +58,10 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
         data = HawkUtils().getTempDataCreatePi(source)
         viewModelTeamMember.setSuggestionSystemTeamMember(source)
+
+        listMemberItem = DataDummySs.generateDummyNameMember()
+        listDepartmentItem = DataDummySs.generateDummyDepartmentMember()
+        listTaskItem = DataDummySs.generateDummyTaskMember()
 
         teamMemberAdapter = TeamMemberAdapter()
         teamMemberAdapter.notifyDataSetChanged()
@@ -99,35 +109,41 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
     fun initComponent(){
         binding.apply {
-            val listMemberName: List<MemberNameItem> = DataDummySs.generateDummyNameMember()
             val adapterMemberName = ArrayAdapter(
                 requireContext(), android.R.layout.simple_list_item_1,
-                listMemberName.map { value ->
+                listMemberItem.map { value ->
                     value.name
                 }
             )
             memberName.setAdapter(adapterMemberName)
-            memberName.onItemClickListener = onItemClickListener
+            memberName.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
+                selectedMember = listMemberItem[i]
+                hideKeyboard()
+            }
 
-            val listMemberDepartment: List<MemberDepartmentItem> = DataDummySs.generateDummyDepartmentMember()
             val adapterMemberDepartment = ArrayAdapter(
                 requireContext(), android.R.layout.simple_list_item_1,
-                listMemberDepartment.map { value ->
+                listDepartmentItem.map { value ->
                     value.department
                 }
             )
             memberDepartment.setAdapter(adapterMemberDepartment)
-            memberDepartment.onItemClickListener = onItemClickListener
+            memberDepartment.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
+                selectedDepartment = listDepartmentItem[i]
+                hideKeyboard()
+            }
 
-            val listMemberTask: List<MemberTaskItem> = DataDummySs.generateDummyTaskMember()
             val adapterMemberTask = ArrayAdapter(
                 requireContext(), android.R.layout.simple_list_item_1,
-                listMemberTask.map { value ->
+                listTaskItem.map { value ->
                     value.task
                 }
             )
             memberTask.setAdapter(adapterMemberTask)
-            memberTask.onItemClickListener = onItemClickListener
+            memberTask.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
+                selectedTask = listTaskItem[i]
+                hideKeyboard()
+            }
         }
     }
 
@@ -157,9 +173,9 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         })
     }
 
-    private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+    /*private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
         hideKeyboard()
-    }
+    }*/
 
     private fun setData() {
         binding.apply {
@@ -193,10 +209,19 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         memberTask.requestFocus()
                     }
                     else -> {
+                        val memberNameObj = MemberNameItem(
+                            id = selectedMember.id, name = selectedMember.name
+                        )
+                        val memberDepartmentObj = MemberDepartmentItem(
+                            id = selectedDepartment.id, department = selectedDepartment.department
+                        )
+                        val memberTaskObj = MemberTaskItem(
+                            id = selectedTask.id, task = selectedTask.task
+                        )
                         val addData = TeamMemberItem(
-                            name = name,
-                            department = department,
-                            task = task
+                            name = memberNameObj,
+                            department = memberDepartmentObj,
+                            task = memberTaskObj
                         )
 
                         viewModelTeamMember.addTeamMember(addData, data?.teamMember)
