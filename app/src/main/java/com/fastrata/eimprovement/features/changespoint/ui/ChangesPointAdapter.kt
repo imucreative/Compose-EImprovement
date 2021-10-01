@@ -35,7 +35,7 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
                 branch.text = data.branch
                 subBranch.text = data.branch
                 date.text = data.date
-                Total.text = data.total
+                total.text = data.total
             }
         }
     }

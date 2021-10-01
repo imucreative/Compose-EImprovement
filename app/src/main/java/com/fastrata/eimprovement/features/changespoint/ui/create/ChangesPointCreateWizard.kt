@@ -17,31 +17,35 @@ import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityChangesPointSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateModel
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import timber.log.Timber
 import javax.inject.Inject
 
-class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector {
+class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: ActivityChangesPointSystemCreateWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private lateinit var viewModel : ChangesPointCreateModel
+    private lateinit var viewModel : ChangesPointCreateViewModel
     private var maxStep = 2
     private var currentStep = 1
-    private var cpAction: String = ""
+    private var action: String = ""
     private var cpNo: String = ""
     private var source: String = CP_CREATE
     private lateinit var notification: HelperNotification
+
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
     private val args :ChangesPointCreateWizardArgs by navArgs()
@@ -60,9 +64,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         val argsAction  = args.action
         val argsCpNo    = args.cpNo
 
-        cpAction = argsAction
+        action = argsAction
 
-        if (cpAction == APPROVE) {
+        if (action == APPROVE) {
             maxStep += 1
         }
 
@@ -71,22 +75,21 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
-
                 viewModel.setChangePointDetail(cpNo)
-                viewModel.getChangePointDetail().observe(this, {detailData ->
-                    println("### data :"+detailData)
+                viewModel.getChangePointDetail().observe(this, { detailData ->
                         HawkUtils().setTempDataCreateCp(
                             id = detailData.id,
-                            cpno = detailData.cpNo,
+                            cpNo = detailData.cpNo,
                             saldo = detailData.saldo,
-                            nama = detailData.name,
+                            name = detailData.name,
                             nik = detailData.nik,
                             branch = detailData.branch,
+                            subBranch = detailData.subBranch,
                             departement = detailData.department,
-                            jabatan = detailData.job,
+                            position = detailData.position,
                             date = detailData.date,
                             keterangan = detailData.description,
-                            rewarddata = detailData.reward,
+                            rewardData = detailData.reward,
                             riwayat = detailData.history,
                             source = CP_DETAIL_DATA
                         )
@@ -100,10 +103,16 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                 source = CP_CREATE
                 HawkUtils().setTempDataCreateCp(
-                    cpno = "",
+                    id = 0,
+                    cpNo = "",
+                    saldo = 0,
+                    name = HawkUtils().getDataLogin().USER_NAME,
+                    nik = HawkUtils().getDataLogin().NIK,
                     branch = HawkUtils().getDataLogin().BRANCH,
+                    subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
                     departement = HawkUtils().getDataLogin().DEPARTMENT,
-                    source = PI_CREATE
+                    position = HawkUtils().getDataLogin().POSITION,
+                    source = CP_CREATE
                 )
                 initToolbar(argsTitle)
                 initComponent()
@@ -114,19 +123,19 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 source = CP_DETAIL_DATA
                 viewModel.setChangePointDetail(argsCpNo)
                 viewModel.getChangePointDetail().observe(this,{ detailData ->
-                    println("### data :"+detailData)
                     HawkUtils().setTempDataCreateCp(
                         id = detailData.id,
-                        cpno = detailData.cpNo,
+                        cpNo = detailData.cpNo,
                         saldo = detailData.saldo,
-                        nama = detailData.name,
+                        name = detailData.name,
                         nik = detailData.nik,
                         branch = detailData.branch,
+                        subBranch = detailData.subBranch,
                         departement = detailData.department,
-                        jabatan = detailData.job,
+                        position = detailData.position,
                         date = detailData.date,
                         keterangan = detailData.description,
-                        rewarddata = detailData.reward,
+                        rewardData = detailData.reward,
                         riwayat = detailData.history,
                         source = CP_DETAIL_DATA
                     )
@@ -167,7 +176,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
             if(fragment !is ChangesPointStep1Fragment){
                 val args = Bundle()
                 args.putString(CP_DETAIL_DATA, cpNo)
-                args.putString(ACTION_DETAIL_DATA, cpAction)
+                args.putString(ACTION_DETAIL_DATA, action)
                 mHomeFragment.arguments = args
                 mFragmentManager
                     .beginTransaction()
@@ -189,26 +198,39 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         when (currentStep) {
             1 -> {
                 println("### step 1 = $currentStep")
-                val mCategoryFragment = ChangesPointStep1Fragment()
+                val fragment = ChangesPointStep1Fragment()
                 val args = Bundle()
                 args.putString(CP_DETAIL_DATA, cpNo)
-                args.putString(ACTION_DETAIL_DATA, cpAction)
-                mCategoryFragment.arguments = args
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_cp, mCategoryFragment, ChangesPointStep1Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_cp, fragment, ChangesPointStep1Fragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
             }
             2 -> {
                 println("### step 2 = $currentStep")
-                val mCategoryFragment = ChangesPointStep2Fragment()
+                val fragment = ChangesPointStep2Fragment()
                 val args = Bundle()
                 args.putString(CP_DETAIL_DATA, cpNo)
-                args.putString(ACTION_DETAIL_DATA, cpAction)
-                mCategoryFragment.arguments = args
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
                 mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_cp, mCategoryFragment, ChangesPointStep2Fragment::class.java.simpleName)
+                    replace(R.id.frame_container_cp, fragment, ChangesPointStep2Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            3 -> {
+                Timber.e("### step 3 = $currentStep")
+                val fragment = ListApprovalHistoryStatusCpFragment()
+                val args = Bundle()
+                args.putString(CP_DETAIL_DATA, cpNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_cp, fragment, ListApprovalHistoryStatusCpFragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
@@ -217,12 +239,12 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     }
 
     private  lateinit var cpCreateCallbac : ChangesPointCreateCallback
-    fun setcpCreateCallback(cpCallback: ChangesPointCreateCallback){
-        cpCreateCallbac = cpCallback
+    fun setCpCreateCallback(cpCallback: ChangesPointCreateCallback){
+        this.cpCreateCallbac = cpCallback
     }
 
     private fun nextStep(progress: Int) {
-        val status =cpCreateCallbac.OnDataPass()
+        val status = cpCreateCallbac.onDataPass()
         if(status){
             if (progress < maxStep){
                 currentStep = progress + 1
@@ -232,7 +254,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if (cpAction == APPROVE) {
+                    if (action == APPROVE) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
                         }
@@ -252,7 +274,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             override fun onNotificationYes() {
                                 val gson = Gson()
-                                val data = gson.toJson(HawkUtils().getTempDataCreatePi(source))
+                                val data = gson.toJson(HawkUtils().getTempDataCreateCP(source))
                                 println("### Data form input : $data")
                                 Toast.makeText(
                                     this@ChangesPointCreateWizard,

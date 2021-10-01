@@ -18,10 +18,12 @@ data class ChangePointCreateItemModel(
     var nik : String?,
     @SerializedName("cabang")
     var branch : String?,
+    @SerializedName("sub_cabang")
+    var subBranch : String?,
     @SerializedName("department")
     var department : String?,
     @SerializedName("jabatan")
-    var job : String?,
+    var position : String?,
     @SerializedName("tgl_penukaran")
     var date : String?,
     @SerializedName("keterangan")
@@ -30,5 +32,4 @@ data class ChangePointCreateItemModel(
     var reward : ArrayList<RewardItem?>?,
     @SerializedName("riwayat")
     var history : ArrayList<RiwayatItem?>?
-
 ): Parcelable

@@ -46,7 +46,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="CREATE"
+            android:text="@string/create"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/colorPrimary"
             app:icon="@drawable/ic_pencil"
@@ -107,7 +107,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/spacing_large"
                         android:gravity="center_vertical"
-                        android:text="Filter"
+                        android:text="@string/filter"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textColor="@color/blue_500"
                         app:fontFamily="sans-serif-medium" />
@@ -146,7 +146,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Suggestion System No"
+                        android:text="@string/changes_point_no"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
@@ -174,7 +174,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Status"
+                        android:text="@string/status"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
@@ -191,7 +191,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/spacing_large"
                             android:layout_marginRight="@dimen/spacing_large"
-                            android:text="Select" />
+                            android:text="@string/select" />
 
                         <View
                             android:layout_width="0dp"
@@ -215,7 +215,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Title Suggestion"
+                        android:text="@string/title"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
@@ -243,7 +243,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Category"
+                        android:text="@string/category"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
@@ -271,7 +271,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Branch &amp; Sub Branch"
+                        android:text="@string/branch_amp_sub_branch"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
@@ -293,7 +293,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_large"
                                 android:layout_marginRight="@dimen/spacing_large"
-                                android:text="Branch" />
+                                android:text="@string/branch" />
 
                             <View
                                 android:layout_width="0dp"
@@ -305,7 +305,8 @@
                                 android:layout_height="@dimen/spacing_mxlarge"
                                 android:layout_margin="@dimen/spacing_middle"
                                 app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_arrow_right_black" />
+                                app:srcCompat="@drawable/ic_arrow_right_black"
+                                android:contentDescription="@string/app_name" />
 
                         </LinearLayout>
 
@@ -325,7 +326,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_large"
                                 android:layout_marginRight="@dimen/spacing_large"
-                                android:text="Sub Branch" />
+                                android:text="@string/sub_branch" />
 
                             <View
                                 android:layout_width="0dp"
@@ -337,7 +338,8 @@
                                 android:layout_height="@dimen/spacing_mxlarge"
                                 android:layout_margin="@dimen/spacing_middle"
                                 app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_arrow_right_black" />
+                                app:srcCompat="@drawable/ic_arrow_right_black"
+                                android:contentDescription="@string/app_name" />
 
                         </LinearLayout>
 
@@ -350,7 +352,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Created Date"
+                        android:text="@string/created_date"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
@@ -371,11 +373,12 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tv_start_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_large"
                                 android:layout_marginRight="@dimen/spacing_large"
-                                android:text="Start" />
+                                android:text="@string/start" />
 
                             <View
                                 android:layout_width="0dp"
@@ -387,7 +390,8 @@
                                 android:layout_height="@dimen/spacing_mxlarge"
                                 android:layout_margin="@dimen/spacing_middle"
                                 app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_calendar" />
+                                app:srcCompat="@drawable/ic_calendar"
+                                android:contentDescription="@string/app_name" />
 
                         </LinearLayout>
 
@@ -406,11 +410,12 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tv_end_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_large"
                                 android:layout_marginRight="@dimen/spacing_large"
-                                android:text="End" />
+                                android:text="@string/end" />
 
                             <View
                                 android:layout_width="0dp"
@@ -422,7 +427,8 @@
                                 android:layout_height="@dimen/spacing_mxlarge"
                                 android:layout_margin="@dimen/spacing_middle"
                                 app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_calendar" />
+                                app:srcCompat="@drawable/ic_calendar"
+                                android:contentDescription="@string/app_name" />
 
                         </LinearLayout>
 
@@ -444,7 +450,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="APPLY"
+                    android:text="@string/apply"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                     android:textColor="@android:color/white"
                     app:fontFamily="sans-serif-medium" />

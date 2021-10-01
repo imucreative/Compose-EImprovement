@@ -227,6 +227,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                         memberName.setText("")
                         memberDepartment.setText("")
                         memberTask.setText("")
+                        hideKeyboard()
                     }
                 }
             }

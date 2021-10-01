@@ -10,7 +10,6 @@ import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRewardAdapterViewHolder>() {
 
     private var list = ArrayList<RewardItem?>()
-
     fun setListReward(data: ArrayList<RewardItem?>?) {
         list.clear()
         if (data != null) {
@@ -33,7 +32,7 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
 
             binding.apply {
                 reward.text = data.hadiah
-                Point.text = data.nilai
+                point.text = data.nilai
                 desc.text = data.keterangan
             }
         }

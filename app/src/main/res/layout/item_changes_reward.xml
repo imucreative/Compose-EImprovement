@@ -26,7 +26,7 @@
                 android:id="@+id/reward"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Hadiah"
+                android:text="@string/penukaran_hadiah"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/grey_80"
                 android:gravity="center_vertical" />
@@ -53,31 +53,24 @@
             android:background="@color/grey_10" />
 
         <TextView
-            android:id="@+id/Point"
-            android:padding="@dimen/spacing_medium"
-            android:layout_width="wrap_content"
+            android:id="@+id/point"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nilai"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/grey_600"
-            android:layout_marginLeft="@dimen/spacing_medium"/>
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:text="@string/nilai"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_600"/>
 
         <TextView
             android:id="@+id/desc"
-            android:padding="@dimen/spacing_medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Keterangan"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/grey_600"
-            android:layout_marginLeft="@dimen/spacing_medium"/>
-        <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:layout_marginHorizontal="@dimen/spacing_large"
-            android:background="@color/grey_10"
-            android:layout_marginTop="@dimen/spacing_medium"/>
+            tools:text="@string/keterangan"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_600"/>
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

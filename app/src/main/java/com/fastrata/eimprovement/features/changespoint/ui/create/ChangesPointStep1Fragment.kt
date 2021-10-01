@@ -10,7 +10,6 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
-
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class ChangesPointStep1Fragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private var _binding:FragmentChangesPointStep1Binding? = null
+    private var _binding: FragmentChangesPointStep1Binding? = null
     private val binding get() = _binding!!
     private var data : ChangePointCreateItemModel? = null
     private var source :String = CP_CREATE
@@ -33,8 +32,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentChangesPointStep1Binding.inflate(layoutInflater, container, false)
-
+        _binding = FragmentChangesPointStep1Binding.inflate(inflater, container, false)
 
         cpNo = arguments?.getString(CP_DETAIL_DATA)
         action = arguments?.getString(ACTION_DETAIL_DATA)
@@ -52,7 +50,6 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
         _binding = FragmentChangesPointStep1Binding.bind(view)
 
         binding.apply {
-
             datePicker = activity?.let {
                 DatePickerCustom(
                     context = binding.root.context,themeDark = true,
@@ -61,15 +58,19 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             }!!
 
             if(data?.saldo == null){
-                saldo.setText("0")
+                saldo.text = "0"
             }else{
-                saldo.setText(data?.saldo.toString())
+                saldo.text = data?.saldo.toString()
             }
+
             cpNo.setText(data?.cpNo)
             name.setText(data?.name)
             nik.setText(data?.nik)
             branch.setText(data?.branch)
-            subBranch.setText("FBPST")
+            subBranch.setText(data?.subBranch)
+            department.setText(data?.department)
+            position.setText(data?.position)
+
             date.setText(data?.date)
             date.setOnClickListener {
                 datePicker.showDialog(object  : DatePickerCustom.Callback{
@@ -81,20 +82,21 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                     }
                 })
             }
-            job.setText(data?.job)
             desc.setText(data?.description)
-            Timber.w("##### $data")
+
             setData()
 
             if(action == APPROVE){
-                disableform()
+                disableForm()
             }
         }
     }
 
-    private fun disableform() {
+    private fun disableForm() {
         binding.apply {
             desc.isEnabled = false
+            date.isEnabled = false
+            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
         }
     }
 
@@ -104,21 +106,12 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     }
 
     private fun setData() {
-        (activity as ChangesPointCreateWizard).setcpCreateCallback(object  :
-            ChangesPointCreateCallback{
-            override fun OnDataPass(): Boolean {
+        (activity as ChangesPointCreateWizard).setCpCreateCallback(object  : ChangesPointCreateCallback{
+            override fun onDataPass(): Boolean {
                 var stat : Boolean
-                _binding.apply {
+                binding.apply {
                     when{
-                        this!!.desc.text.isNullOrEmpty()->{
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                "Desc must be fill before next",
-                                R.drawable.ic_close, R.color.red_500)
-                            desc.requestFocus()
-                            stat = false
-                        }
-                        this!!.date.text.isNullOrEmpty()->{
+                        date.text.isNullOrEmpty()->{
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 "Date must be fill before next",
@@ -126,17 +119,29 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                             date.requestFocus()
                             stat = false
                         }
+                        desc.text.isNullOrEmpty()->{
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                "Desc must be fill before next",
+                                R.drawable.ic_close, R.color.red_500)
+                            desc.requestFocus()
+                            stat = false
+                        }
                         else -> {
                             HawkUtils().setTempDataCreateCp(
-
-                                cpno = cpNo.text.toString(),
-                                nama = name.text.toString(),
+                                cpNo = cpNo.text.toString(),
+                                name = name.text.toString(),
                                 nik = nik.text.toString(),
                                 branch = branch.text.toString(),
                                 departement = department.text.toString(),
-                                jabatan = job.text.toString(),
+                                position = position.text.toString(),
                                 date = date.text.toString(),
-                                keterangan = desc.text.toString()
+                                keterangan = desc.text.toString(),
+                                id = data?.id,
+                                subBranch = data?.subBranch,
+                                saldo = data?.saldo,
+                                rewardData = data?.reward,
+                                source = source
                             )
                             stat = true
                         }
@@ -144,7 +149,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                 }
                 return stat
             }
-            })
+        })
     }
 
 }

@@ -11,14 +11,13 @@ class ChangesPointRewardViewModel @Inject constructor() : ViewModel() {
     private val list = MutableLiveData<ArrayList<RewardItem?>?>()
     private val totalReward = MutableLiveData<Int>()
 
-    fun setChangeRewardPoint() {
-        val data = HawkUtils().getTempDataCreateCP()?.reward
+    fun setChangeRewardPoint(source: String) {
+        val data = HawkUtils().getTempDataCreateCP(source)?.reward
 
         list.postValue(data)
     }
 
     fun getChangeRewardPoint(): LiveData<ArrayList<RewardItem?>?> {
-        println("##### getChangePointRewardModel $list")
         return list
     }
 
@@ -27,7 +26,7 @@ class ChangesPointRewardViewModel @Inject constructor() : ViewModel() {
 
         list.postValue(current)
         HawkUtils().setTempDataCreateCp(
-            rewarddata = current
+            rewardData = current
         )
     }
 
@@ -35,7 +34,7 @@ class ChangesPointRewardViewModel @Inject constructor() : ViewModel() {
         list.postValue(add)
 
         HawkUtils().setTempDataCreateCp(
-            rewarddata = add
+            rewardData = add
         )
     }
 

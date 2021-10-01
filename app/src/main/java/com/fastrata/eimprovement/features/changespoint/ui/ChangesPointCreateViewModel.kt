@@ -8,7 +8,7 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointMod
 import com.fastrata.eimprovement.utils.DataDummySs
 import javax.inject.Inject
 
-class ChangesPointCreateModel @Inject constructor() : ViewModel() {
+class ChangesPointCreateViewModel @Inject constructor() : ViewModel() {
 
     private val listChangePoint = MutableLiveData<ArrayList<ChangePointModel>>()
 

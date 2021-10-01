@@ -93,14 +93,13 @@ class ListApprovalFragment : Fragment(), Injectable {
                         )
                     requireView().findNavController().navigate(direction)
                 } else if (data.type == CP) {
-                    /*val direction =
+                    val direction =
                         ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
                             toolbarTitle = "Approve Change Point",
                             action = APPROVE,
-                            piNo = data.ssNo,
+                            cpNo = data.typeNo,
                         )
-                    requireView().findNavController().navigate(direction)*/
-                    Toast.makeText(activity, "go to fragment change point", Toast.LENGTH_LONG).show()
+                    requireView().findNavController().navigate(direction)
                 }
             }
         })

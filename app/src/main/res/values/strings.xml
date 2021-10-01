@@ -112,4 +112,16 @@
     <string name="filter">Filter</string>
     <string name="create">CREATE</string>
 
+    <!-- Change Point -->
+    <string name="tanggal_penukaran">Tanggal Penukaran</string>
+    <string name="changes_point_no">Changes Point No.</string>
+    <string name="saldo_anda">Saldo Anda :</string>
+    <string name="please_fill_the_form_for_changes_point">Please fill the form for changes point</string>
+    <string name="penukaran_point">Penukaran Point</string>
+    <string name="penukaran_hadiah">Penukaran Hadiah</string>
+    <string name="nilai">Nilai</string>
+    <string name="total">Total :</string>
+    <string name="status">Status</string>
+    <string name="category">Category</string>
+
 </resources>

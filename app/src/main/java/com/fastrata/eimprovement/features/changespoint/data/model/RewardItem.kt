@@ -12,7 +12,7 @@ data class RewardItem(
 ):Parcelable
 
 @Parcelize
-data class hadiahItem(
+data class HadiahItem(
     var hadiah: String,
     var id: Int,
     var nilai: String

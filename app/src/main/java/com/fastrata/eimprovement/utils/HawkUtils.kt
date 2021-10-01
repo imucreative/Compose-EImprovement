@@ -16,7 +16,7 @@ internal class HawkUtils {
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
     private val getDataDetailPi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_DETAIL_DATA)) Hawk.get(PI_DETAIL_DATA) else null
     private val getDataCreateCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
-    private val getDataDetailCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
+    private val getDataDetailCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_DETAIL_DATA)) Hawk.get(CP_DETAIL_DATA) else null
 
     // Create Suggestion System
     fun setTempDataCreateSs(
@@ -170,38 +170,40 @@ internal class HawkUtils {
     fun setTempDataCreateCp(
         id : Int?= 0,
         saldo : Int?= 0,
-        cpno: String? = null,
-        nama: String? = null,
+        cpNo: String? = null,
+        name: String? = null,
         nik: String? = null,
         branch: String? = null,
+        subBranch: String? = null,
         departement: String? = null,
-        jabatan: String? = null,
+        position: String? = null,
         date: String? = null,
         keterangan: String? = null,
-        rewarddata: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
+        rewardData: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
         riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null,
         source: String = CP_CREATE
     ){
-        val data  =ChangePointCreateItemModel(
+        val data = ChangePointCreateItemModel(
             id = id ?: if (source == CP_CREATE) getDataCreateCp?.id else getDataDetailCp?.id,
-            cpNo = cpno?: if(source == CP_CREATE) getDataCreateCp?.cpNo else getDataDetailCp?.cpNo,
+            cpNo = cpNo?: if(source == CP_CREATE) getDataCreateCp?.cpNo else getDataDetailCp?.cpNo,
             saldo = saldo?: if(source == CP_CREATE) getDataCreateCp?.saldo else getDataDetailCp?.saldo,
-            name = nama?: if(source == CP_CREATE) getDataCreateCp?.name else getDataDetailCp?.name,
+            name = name?: if(source == CP_CREATE) getDataCreateCp?.name else getDataDetailCp?.name,
             nik = nik?: if(source == CP_CREATE) getDataCreateCp?.nik else getDataDetailCp?.nik,
             branch = branch?: if(source == CP_CREATE) getDataCreateCp?.branch else getDataDetailCp?.branch,
+            subBranch = subBranch?: if(source == CP_CREATE) getDataCreateCp?.subBranch else getDataDetailCp?.subBranch,
             department = departement?: if(source == CP_CREATE) getDataCreateCp?.department else getDataDetailCp?.department,
-            job = jabatan?: if(source == CP_CREATE) getDataCreateCp?.job else getDataDetailCp?.job,
+            position = position?: if(source == CP_CREATE) getDataCreateCp?.position else getDataDetailCp?.position,
             date = date?: if(source == CP_CREATE) getDataCreateCp?.date else getDataDetailCp?.date,
             description = keterangan?: if(source == CP_CREATE) getDataCreateCp?.description else getDataDetailCp?.description,
-            reward = rewarddata?: if(source == CP_CREATE) getDataCreateCp?.reward else getDataDetailCp?.reward,
+            reward = rewardData?: if(source == CP_CREATE) getDataCreateCp?.reward else getDataDetailCp?.reward,
             history = riwayat?: if(source == CP_CREATE) getDataCreateCp?.history else getDataDetailCp?.history
         )
         if (source == CP_CREATE) {
             Hawk.put(CP_CREATE, data)
-            Timber.w("### Hawk PI: $data")
+            Timber.w("### Hawk CP: $data")
         } else {
             Hawk.put(CP_DETAIL_DATA, data)
-            Timber.w("### Hawk PI Detail Data: $data")
+            Timber.w("### Hawk CP Detail Data: $data")
         }
     }
 

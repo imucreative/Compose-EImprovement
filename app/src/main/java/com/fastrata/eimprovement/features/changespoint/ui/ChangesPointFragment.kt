@@ -17,6 +17,9 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.ADD
+import com.fastrata.eimprovement.utils.DatePickerCustom
+import com.fastrata.eimprovement.utils.EDIT
 import javax.inject.Inject
 
 class ChangesPointFragment : Fragment(), Injectable {
@@ -24,8 +27,9 @@ class ChangesPointFragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentChangesPointSystemBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private lateinit var createModel: ChangesPointCreateModel
+    private lateinit var viewModel: ChangesPointCreateViewModel
     private lateinit var adapter: ChangesPointAdapter
+    private lateinit var datePicker: DatePickerCustom
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +40,12 @@ class ChangesPointFragment : Fragment(), Injectable {
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
 
-        createModel = injectViewModel(viewModelFactory)
-        //createModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ChangesPointCreateModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
+
+        datePicker = DatePickerCustom(
+            context = binding.root.context, themeDark = true,
+            minDateIsCurrentDate = true, parentFragmentManager
+        )
 
         setHasOptionsMenu(true);
 
@@ -48,7 +56,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     }
 
     private fun initComponent(activity: FragmentActivity) {
-        createModel.setChangePoint()
+        viewModel.setChangePoint()
         adapter = ChangesPointAdapter()
         adapter.notifyDataSetChanged()
 
@@ -58,21 +66,25 @@ class ChangesPointFragment : Fragment(), Injectable {
             rvSs.adapter = adapter
 
             createSs.setOnClickListener {
-                /*Intent(activity, ChangesPointCreateWizard::class.java).also {
-                    startActivity(it)
-                }*/
-                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard("Create Changes Point")
+                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                    toolbarTitle = "Create Changes Point", action = ADD,
+                    cpNo = "", type = ""
+                )
                 it.findNavController().navigate(direction)
             }
         }
 
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
-                Toast.makeText(activity, data.cpNo, Toast.LENGTH_LONG).show()
+                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                    toolbarTitle = "Edit Changes Point", action = EDIT,
+                    cpNo = data.cpNo, type = ""
+                )
+                requireView().findNavController().navigate(direction)
             }
         })
 
-        createModel.getChangePoint().observe(viewLifecycleOwner, {
+        viewModel.getChangePoint().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
             }
@@ -96,17 +108,25 @@ class ChangesPointFragment : Fragment(), Injectable {
             drawer.openDrawer(GravityCompat.END)
 
             filterStartDate.setOnClickListener {
-                /*DatePickerCustom.dialogDatePicker(
-                    context = this@ChangesPointActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )*/
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        tvStartDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             filterEndDate.setOnClickListener {
-                /*DatePickerCustom.dialogDatePicker(
-                    context = this@ChangesPointActivity, fragmentManager = supportFragmentManager,
-                    themeDark = false, minDateIsCurrentDate = true
-                )*/
+                datePicker.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        tvEndDate.text = "$dayStr-$monthStr-$year"
+                    }
+                })
             }
 
             btnCloseFilter.setOnClickListener {

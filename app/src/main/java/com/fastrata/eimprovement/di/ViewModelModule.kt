@@ -3,7 +3,7 @@ package com.fastrata.eimprovement.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalViewModel
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateModel
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointRewardViewModel
 import com.fastrata.eimprovement.features.login.ui.LoginViewModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
@@ -43,8 +43,8 @@ abstract class ViewModelModule {
     // CP
     @Binds
     @IntoMap
-    @ViewModelKey(ChangesPointCreateModel::class)
-    abstract fun bindListChangesPointViewModel(createModel: ChangesPointCreateModel): ViewModel
+    @ViewModelKey(ChangesPointCreateViewModel::class)
+    abstract fun bindListChangesPointViewModel(createViewModel: ChangesPointCreateViewModel): ViewModel
 
     // CP Reward
     @Binds

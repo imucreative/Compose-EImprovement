@@ -131,9 +131,10 @@ object DataDummySs {
           name = "TEST",
           nik = "101010",
           branch = "PUSAT",
-          department = "FBPST - Gd Barang Dagang",
-          job = "STAFF",
-          date = "2021-08-06 17:19:22",
+          subBranch = "FBPST",
+          department = "ICT",
+          position = "STAFF",
+          date = "2021-08-06",
           description = "Test Data",
           reward = rewardArray,
           history = riwayatArray)
@@ -470,7 +471,7 @@ object DataDummySs {
             years = "2021",
             date = "17-08-2021",
             branch = "PUSAT",
-            subBranch = "FBPST - Gd Barang Dagang",
+            subBranch = "FBPST",
             title = "Implementasi system dengan robust dan S.O.L.I.D",
             statusImplementation = StatusImplementationPi(
                 sudah = sudah,
@@ -538,11 +539,11 @@ object DataDummySs {
         return data
     }
 
-    fun generateDummyReward(): ArrayList<hadiahItem> {
-        val data = ArrayList<hadiahItem>()
-        data.add(hadiahItem(hadiah = "PULSA 50K",1,"1000"))
-        data.add(hadiahItem(hadiah = "PULSA 100K",2,"5000"))
-        data.add(hadiahItem(hadiah = "IPHONE 13",3,"10000"))
+    fun generateDummyReward(): ArrayList<HadiahItem> {
+        val data = ArrayList<HadiahItem>()
+        data.add(HadiahItem(hadiah = "PULSA 50K",1,"1000"))
+        data.add(HadiahItem(hadiah = "PULSA 100K",2,"5000"))
+        data.add(HadiahItem(hadiah = "IPHONE 13",3,"10000"))
         return data
     }
 

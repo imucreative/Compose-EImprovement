@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.di
 
-import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointStep1Fragment
-import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointStep2Fragment
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
+import com.fastrata.eimprovement.features.changespoint.ui.create.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -13,5 +13,8 @@ abstract class ChangesPointFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeChangesPoint2Fragment(): ChangesPointStep2Fragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeListApprovalHistoryStatusFragment(): ListApprovalHistoryStatusCpFragment
 
 }
