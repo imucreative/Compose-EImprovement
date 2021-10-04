@@ -370,8 +370,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ProjectImprovementCreateWizard,
-                        "Submit",
-                        "Are you sure submit this data?",
+                        resources.getString(R.string.submit),
+                        resources.getString(R.string.submit_desc),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
@@ -383,7 +383,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 println("### Data form input : $data")
                                 Toast.makeText(
                                     this@ProjectImprovementCreateWizard,
-                                    "Save Project Improvement",
+                                    resources.getString(R.string.pi_saved),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 finish()

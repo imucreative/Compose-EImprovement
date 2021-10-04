@@ -270,7 +270,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         problem.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Problem must be fill before next",
+                                resources.getString(R.string.problem_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             problem.requestFocus()
                             stat = false
@@ -278,7 +278,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         suggestion.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Problem must be fill before next",
+                                resources.getString(R.string.suggest_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             suggestion.requestFocus()
                             stat = false
@@ -287,7 +287,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         rbStatus1.isChecked && etFromStatus1.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Problem must be fill before next",
+                                resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
                                 etFromStatus1.requestFocus()
                             stat = false
@@ -295,7 +295,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Problem must be fill before next",
+                                resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
                             etToStatus1.requestFocus()
                             stat = false
@@ -304,7 +304,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         rbStatus2.isChecked && etFromStatus2.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Problem must be fill before next",
+                                resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
                             etFromStatus2.requestFocus()
                             stat = false
@@ -312,7 +312,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Problem must be fill before next",
+                                resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
                             etToStatus2.requestFocus()
                             stat = false

@@ -183,7 +183,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         checkboxOther.isChecked && edtLainLain.text.isNullOrBlank() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Other category must be fill before next",
+                                resources.getString(R.string.other_category_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             edtLainLain.requestFocus()
                             stat = false
@@ -191,7 +191,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementation?.sudah != null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Hasil Implementasi Improvement must be fill before next",
+                                resources.getString(R.string.result_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             hasilImplementasiImprovement.requestFocus()
                             stat = false
@@ -199,7 +199,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         listCategory.isEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Category must be fill before next",
+                                resources.getString(R.string.category_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             stat = false
                         }

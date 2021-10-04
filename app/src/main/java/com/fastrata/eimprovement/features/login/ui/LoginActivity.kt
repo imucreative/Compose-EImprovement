@@ -108,7 +108,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                                 //subscribeMasterCustomers(binding)
                             } else {
                                 result.data?.let {
-                                    notification.showErrorDialog(this@LoginActivity,"Error", it.message)
+                                    notification.showErrorDialog(this@LoginActivity,resources.getString(R.string.error), it.message)
                                 }
                             }
                         }
@@ -117,7 +117,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                             Timber.d("###-- ERROR")
 //                            binding.progressbar.progressbar.visibility = View.GONE
                             HelperLoading.hideLoading()
-                            notification.showErrorDialog(this@LoginActivity,"Error", result.message.toString())
+                            notification.showErrorDialog(this@LoginActivity,resources.getString(R.string.error), result.message.toString())
                         }
                     }
                 })

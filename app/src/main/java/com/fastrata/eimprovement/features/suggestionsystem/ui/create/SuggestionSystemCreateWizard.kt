@@ -295,8 +295,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 binding.apply {
                     notification.shownotificationyesno(
                         this@SuggestionSystemCreateWizard,
-                        "Submit",
-                        "Are you sure submit this data?",
+                        resources.getString(R.string.submit),
+                        resources.getString(R.string.submit_desc),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
@@ -308,7 +308,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 println("### Data form input : $data")
                                 Toast.makeText(
                                     this@SuggestionSystemCreateWizard,
-                                    "Save suggestion system",
+                                    resources.getString(R.string.ss_saved),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 finish()

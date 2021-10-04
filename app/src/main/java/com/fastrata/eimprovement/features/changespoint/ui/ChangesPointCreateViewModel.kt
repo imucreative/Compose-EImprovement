@@ -15,7 +15,6 @@ class ChangesPointCreateViewModel @Inject constructor() : ViewModel() {
     private val listChangePointDetail = MutableLiveData<ChangePointCreateItemModel>()
 
     fun setChangePoint() {
-        // koneksi ke DB
         val data = DataDummySs.generateDummyChangePointList()
 
         listChangePoint.postValue(data)

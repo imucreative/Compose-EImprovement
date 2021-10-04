@@ -110,8 +110,8 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                         activity?.let { activity ->
                             notification.shownotificationyesno(
                                 activity,
-                                "Remove",
-                                "Are you sure remove this data?",
+                                resources.getString(R.string.delete),
+                                resources.getString(R.string.delete_confirmation),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
@@ -185,27 +185,18 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                 penyebab.isEmpty() -> {
                     SnackBarCustom.snackBarIconInfo(
                         root, layoutInflater, resources, root.context,
-                        "Penyebab Masalah must be fill before added",
+                        resources.getString(R.string.problem_reason),
                         R.drawable.ic_close, R.color.red_500)
                     penyebabMasalah.requestFocus()
                 }
                 prioritas.isEmpty() -> {
                     SnackBarCustom.snackBarIconInfo(
                         root, layoutInflater, resources, root.context,
-                        "Akar Masalah Prioritas must be fill before added",
+                        resources.getString(R.string.problem_root),
                         R.drawable.ic_close, R.color.red_500)
                     akarMasalahPrioritas.requestFocus()
                 }
                 else -> {
-                    val addData = SebabMasalahItem(
-                        penyebab = penyebab,
-                        w1 = valueW1,
-                        w2 = valueW2,
-                        w3 = valueW3,
-                        w4 = valueW4,
-                        w5 = valueW5,
-                        prioritas = prioritas
-                    )
 
                     var kenapa = ""
                     when {
@@ -225,6 +216,16 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                             kenapa = valueW1
                         }
                     }
+
+                    val addData = SebabMasalahItem(
+                        penyebab = penyebab,
+                        w1 = valueW1,
+                        w2 = valueW2,
+                        w3 = valueW3,
+                        w4 = valueW4,
+                        w5 = valueW5,
+                        prioritas = prioritas
+                    )
 
                     val dataSaranAkarMasalah = data?.akarMasalah?.size?.plus(1)?.let {
                         AkarMasalahItem(
@@ -262,7 +263,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                     stat = if (data?.sebabMasalah?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Sebab/ Akar Masalah must be fill before next",
+                            resources.getString(R.string.problem_root_reason),
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {

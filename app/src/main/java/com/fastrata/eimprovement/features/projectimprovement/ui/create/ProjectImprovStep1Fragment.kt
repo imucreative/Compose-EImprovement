@@ -94,7 +94,7 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
                         title.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Title must be fill before next",
+                                resources.getString(R.string.title_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             title.requestFocus()
                             stat = false

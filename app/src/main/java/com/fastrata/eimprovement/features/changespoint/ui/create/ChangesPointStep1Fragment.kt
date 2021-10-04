@@ -114,7 +114,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                         date.text.isNullOrEmpty()->{
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Date must be fill before next",
+                                resources.getString(R.string.date_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             date.requestFocus()
                             stat = false
@@ -122,7 +122,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                         desc.text.isNullOrEmpty()->{
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Desc must be fill before next",
+                                resources.getString(R.string.desc_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             desc.requestFocus()
                             stat = false

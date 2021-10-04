@@ -189,7 +189,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                     name.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Name must be fill before added",
+                            resources.getString(R.string.name_empty),
                             R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
 
@@ -197,14 +197,14 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                     department.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Department must be fill before added",
+                            resources.getString(R.string.department_empty),
                             R.drawable.ic_close, R.color.red_500)
                         memberDepartment.requestFocus()
                     }
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Task must be fill before added",
+                            resources.getString(R.string.task_empty),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
@@ -244,7 +244,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 val stat = if (data?.teamMember?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Team Member must be fill before next",
+                            resources.getString(R.string.team_member_empty),
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {

@@ -62,8 +62,9 @@ class DashboardFragment: Fragment(), Injectable {
 
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {
+            Toast.makeText(activity,resources.getString(R.string.welcome_user)+" "+HawkUtils().getDataLogin().USER_NAME,Toast.LENGTH_LONG).show()
             linearSaldo.setOnClickListener {
-                notification.showNotification(activity,"SALOD ANDA", HawkUtils().getDataLogin().SALDO)
+                notification.showNotification(activity,resources.getString(R.string.point_balanca), HawkUtils().getDataLogin().SALDO)
             }
             saldoTxt.text = HawkUtils().getDataLogin().SALDO
             filterActivityDate.setOnClickListener {
@@ -80,25 +81,25 @@ class DashboardFragment: Fragment(), Injectable {
 
             // action menu
             menuApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment("List Approval")
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
                 it.findNavController().navigate(direction)
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment("Suggestion System (SS)")
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
                 it.findNavController().navigate(direction)
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment("Project Improvement (PI)")
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
                 it.findNavController().navigate(direction)
 
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuPointExchange.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment("Change Point")
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
                 it.findNavController().navigate(direction)
 
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -139,7 +140,7 @@ class DashboardFragment: Fragment(), Injectable {
                 initNavigationMenu()
             }
             R.id.setting_menu -> {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment("Setting")
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment(resources.getString(R.string.setting))
                 findNavController().navigate(direction)
             }
         }

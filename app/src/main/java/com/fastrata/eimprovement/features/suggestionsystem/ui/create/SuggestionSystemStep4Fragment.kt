@@ -128,7 +128,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
-                        "File Attachment not from device",
+                        resources.getString(R.string.file_not_found),
                         R.drawable.ic_close, R.color.red_500)
                 }else{
                     println("### FILE EXIST : EXIST")
@@ -169,7 +169,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                 if (file_size == 0 || file_size >= 2048){
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
-                        "File size failed",
+                        resources.getString(R.string.file_size),
                         R.drawable.ic_close, R.color.red_500)
                 }else{
                     initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
@@ -188,7 +188,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                         }else{
                             SnackBarCustom.snackBarIconInfo(
                                 binding.root, layoutInflater, resources, binding.root.context,
-                                "Wrong extension file",
+                                resources.getString(R.string.file_ext),
                                 R.drawable.ic_close, R.color.red_500)
                         }
                     }
@@ -204,7 +204,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     fileName.text.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Attachment must be fill before added",
+                            resources.getString(R.string.file_empty),
                             R.drawable.ic_close, R.color.red_500)
                     }
                     else -> {
@@ -233,7 +233,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     stat = if (data?.attachment?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Attachment must be fill before next",
+                            resources.getString(R.string.file_empty),
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {

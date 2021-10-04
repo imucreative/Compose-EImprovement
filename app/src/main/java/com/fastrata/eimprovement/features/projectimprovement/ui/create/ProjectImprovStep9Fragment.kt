@@ -126,7 +126,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
-                        "File Attachment not from device",
+                        resources.getString(R.string.file_not_found),
                         R.drawable.ic_close, R.color.red_500)
                 }else{
                     println("### FILE EXIST : EXIST")
@@ -160,14 +160,6 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == pickFromGallery && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-//                uri = data.data!!
-//                initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
-//                initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
-//                initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
-//                binding.fileName.text = initFileName
-//                Timber.e("### path uri : $uri")
-//                Timber.e("### file size : $initFileSize")
-//                Timber.e("### path : $initFilePath")
                 uri = data.data!!
                 val fileData = FileUtils().from(requireContext(),uri)
                 val file_size: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
@@ -175,7 +167,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 if (file_size == 0 || file_size >= 2048){
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
-                        "File size failed",
+                        resources.getString(R.string.file_size),
                         R.drawable.ic_close, R.color.red_500)
                 }else{
                     initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
@@ -194,7 +186,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         }else{
                             SnackBarCustom.snackBarIconInfo(
                                 binding.root, layoutInflater, resources, binding.root.context,
-                                "Attachmen failed",
+                                resources.getString(R.string.file_ext),
                                 R.drawable.ic_close, R.color.red_500)
                         }
                     }
@@ -209,7 +201,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 if (fileName.text.isEmpty()) {
                     SnackBarCustom.snackBarIconInfo(
                         root, layoutInflater, resources, root.context,
-                        "Attachment must be fill before added",
+                        resources.getString(R.string.file_empty),
                         R.drawable.ic_close, R.color.red_500)
                 } else {
 
@@ -237,7 +229,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                     stat = if (data?.attachment?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Attachment must be fill before next",
+                            resources.getString(R.string.file_empty),
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {

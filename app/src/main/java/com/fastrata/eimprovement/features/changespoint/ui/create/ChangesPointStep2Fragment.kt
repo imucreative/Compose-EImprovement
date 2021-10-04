@@ -176,21 +176,20 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         binding.apply {
             addReward.setOnClickListener {
                 val reward = hadiahCp.text.toString()
-                val point = nilaiCp.text.toString()
                 val desc = keteranganCp.text.toString()
 
                 when{
                     reward.isEmpty() ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Reward must be fill before added",
+                            resources.getString(R.string.reward_empty),
                             R.drawable.ic_close, R.color.red_500)
                         hadiahCp.requestFocus()
                     }
                     desc.isEmpty() ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Description must be fill before added",
+                            resources.getString(R.string.desc_empty),
                             R.drawable.ic_close, R.color.red_500)
                         keteranganCp.requestFocus()
                     }
@@ -229,7 +228,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         stat = if (data?.reward?.size == 0) {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Reward must be fill before next",
+                                resources.getString(R.string.desc_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             false
                         } else {

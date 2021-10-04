@@ -54,7 +54,7 @@ class SettingsFragment : Fragment(), Injectable {
             tvPosition.text = HawkUtils().getDataLogin().POSITION
 
             btnLogout.setOnClickListener {
-                notification.shownotificationyesno(activity,"Setting","Apakah anda yakin keluar",
+                notification.shownotificationyesno(activity,resources.getString(R.string.info),resources.getString(R.string.log_out),
                 object  :CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 

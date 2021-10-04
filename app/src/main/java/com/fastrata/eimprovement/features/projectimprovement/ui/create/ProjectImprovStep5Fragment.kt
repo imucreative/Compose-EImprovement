@@ -100,7 +100,7 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
                     stat = if (data?.akarMasalah?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Saran/ Akar Masalah must be fill before next",
+                            resources.getString(R.string.problem_suggest),
                             R.drawable.ic_close, R.color.red_500)
                         false
                     } else {

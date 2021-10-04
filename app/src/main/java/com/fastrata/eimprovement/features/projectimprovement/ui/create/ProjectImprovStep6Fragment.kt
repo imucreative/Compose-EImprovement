@@ -286,7 +286,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         outputValue.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Nilai output & benefit must be fill before next",
+                                resources.getString(R.string.value_estimasi_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             outputValue.requestFocus()
                             stat = false
@@ -295,7 +295,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         estimasiBenefit.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Estimasi benefit must be fill before next",
+                                resources.getString(R.string.value_estimasi_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiBenefit.requestFocus()
                             stat = false
@@ -303,7 +303,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         estimasiBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Estimasi benefit keterangan must be fill before next",
+                                resources.getString(R.string.value_estimasi_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiBenefitKeterangan.requestFocus()
                             stat = false
@@ -311,7 +311,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         estimasiCost.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Estimasi cost must be fill before next",
+                                resources.getString(R.string.value_estimasi_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiCost.requestFocus()
                             stat = false
@@ -319,7 +319,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         estimasiCostKeterangan.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Estimasi cost keterangan must be fill before next",
+                                resources.getString(R.string.value_estimasi_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiCostKeterangan.requestFocus()
                             stat = false
@@ -327,7 +327,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         estimasiNqiTotal.text.isNullOrEmpty() && data?.statusProposal == null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Estimasi NQI must be fill before next",
+                                resources.getString(R.string.value_estimasi_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             estimasiNqiTotal.requestFocus()
                             stat = false
@@ -336,7 +336,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         aktualBenefit.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Aktual benefit must be fill before next",
+                                resources.getString(R.string.value_Aktual_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             aktualBenefit.requestFocus()
                             stat = false
@@ -344,7 +344,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         aktualBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Aktual benefit keterangan must be fill before next",
+                                resources.getString(R.string.value_Aktual_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             aktualBenefitKeterangan.requestFocus()
                             stat = false
@@ -352,7 +352,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         aktualCost.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Aktual cost must be fill before next",
+                                resources.getString(R.string.value_Aktual_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             aktualCost.requestFocus()
                             stat = false
@@ -360,7 +360,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         aktualCostKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Aktual cost keterangan must be fill before next",
+                                resources.getString(R.string.value_Aktual_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             aktualCostKeterangan.requestFocus()
                             stat = false
@@ -368,7 +368,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         aktualNqiTotal.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Aktual NQI must be fill before next",
+                                resources.getString(R.string.value_Aktual_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             aktualNqiTotal.requestFocus()
                             stat = false

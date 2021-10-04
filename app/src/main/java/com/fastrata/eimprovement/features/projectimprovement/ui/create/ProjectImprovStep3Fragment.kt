@@ -85,7 +85,7 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
                         identifikasiMasalah.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Identification must be fill before next",
+                                resources.getString(R.string.indentification_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             identifikasiMasalah.requestFocus()
                             stat = false
@@ -94,7 +94,7 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
                         menetapkanTarget.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
-                                "Target must be fill before next",
+                                resources.getString(R.string.set_target_empty),
                                 R.drawable.ic_close, R.color.red_500)
                             menetapkanTarget.requestFocus()
                             stat = false

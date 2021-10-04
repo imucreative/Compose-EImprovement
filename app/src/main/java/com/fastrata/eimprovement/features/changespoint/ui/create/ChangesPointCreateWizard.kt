@@ -265,8 +265,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ChangesPointCreateWizard,
-                        "Submit",
-                        "Are you sure submit this data?",
+                        resources.getString(R.string.submit),
+                        resources.getString(R.string.submit_desc),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
@@ -278,7 +278,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                 println("### Data form input : $data")
                                 Toast.makeText(
                                     this@ChangesPointCreateWizard,
-                                    "Save Change Point",
+                                    resources.getString(R.string.cp_saved),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 finish()
