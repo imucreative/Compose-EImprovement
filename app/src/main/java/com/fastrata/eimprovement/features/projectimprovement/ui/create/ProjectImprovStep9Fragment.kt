@@ -120,8 +120,21 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             }
 
             override fun showAttachment(data: AttachmentItem) {
-                //File(URI(uri.toString()))
                 println("### Testing show attachment : ${data.name}")
+                println("### Testing path attachment : ${data.uri}")
+                if (data.uri.isEmpty()){
+                    println("### FILE EXIST : NOT EXIST")
+                    SnackBarCustom.snackBarIconInfo(
+                        binding.root, layoutInflater, resources, binding.root.context,
+                        "File Attachment not from device",
+                        R.drawable.ic_close, R.color.red_500)
+                }else{
+                    println("### FILE EXIST : EXIST")
+                    val intent = Intent()
+                        .setType("*/*")
+                        .setAction(Intent.ACTION_GET_CONTENT)
+                    startActivityForResult(Intent.createChooser(intent, data.uri), 111)
+                }
             }
         })
 

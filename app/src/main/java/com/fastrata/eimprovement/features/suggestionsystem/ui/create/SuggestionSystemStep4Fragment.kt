@@ -122,8 +122,21 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
             }
 
             override fun showAttachment(data: AttachmentItem) {
-                //File(URI(uri.toString()))
                 println("### Testing show attachment : ${data.name}")
+                println("### Testing path attachment : ${data.uri}")
+                if (data.uri.isEmpty()){
+                    println("### FILE EXIST : NOT EXIST")
+                    SnackBarCustom.snackBarIconInfo(
+                        binding.root, layoutInflater, resources, binding.root.context,
+                        "File Attachment not from device",
+                        R.drawable.ic_close, R.color.red_500)
+                }else{
+                    println("### FILE EXIST : EXIST")
+                    val intent = Intent()
+                        .setType("*/*")
+                        .setAction(Intent.ACTION_GET_CONTENT)
+                    startActivityForResult(Intent.createChooser(intent, data.uri), 111)
+                }
             }
         })
 
@@ -175,7 +188,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                         }else{
                             SnackBarCustom.snackBarIconInfo(
                                 binding.root, layoutInflater, resources, binding.root.context,
-                                "Attachmen failed",
+                                "Wrong extension file",
                                 R.drawable.ic_close, R.color.red_500)
                         }
                     }
@@ -194,12 +207,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                             "Attachment must be fill before added",
                             R.drawable.ic_close, R.color.red_500)
                     }
-//                    ext == (".jpg") -> {
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            "Wrong extension file",
-//                            R.drawable.ic_close, R.color.red_500)
-//                    }
                     else -> {
 
                         val addData = AttachmentItem(
