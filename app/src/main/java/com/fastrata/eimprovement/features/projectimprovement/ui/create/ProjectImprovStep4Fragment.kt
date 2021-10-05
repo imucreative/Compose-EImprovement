@@ -39,6 +39,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
     private var piNo: String? = ""
     private var action: String? = ""
     private var source: String = PI_CREATE
+    private var updateAkarMasalah: ArrayList<AkarMasalahItem?>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,13 +121,13 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                                     override fun onNotificationYes() {
                                         sebabMasalah?.remove(data)
 
-                                        viewModel.updateSebabMasalah(sebabMasalah)
+                                        viewModel.updateSebabMasalah(sebabMasalah, source)
                                         viewModel.getSebabMasalah().observe(viewLifecycleOwner, {
                                             if (it != null) {
                                                 adapter.setList(it)
                                             }
                                         })
-                                        viewModel.removeAkarMasalah(position, this@ProjectImprovStep4Fragment.data?.akarMasalah)
+                                        viewModel.removeAkarMasalah(position, this@ProjectImprovStep4Fragment.data?.akarMasalah, source)
                                     }
                                 }
                             )
@@ -189,6 +190,13 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                         R.drawable.ic_close, R.color.red_500)
                     penyebabMasalah.requestFocus()
                 }
+                valueW1.isEmpty() -> {
+                    SnackBarCustom.snackBarIconInfo(
+                        root, layoutInflater, resources, root.context,
+                        resources.getString(R.string.why),
+                        R.drawable.ic_close, R.color.red_500)
+                    w1.requestFocus()
+                }
                 prioritas.isEmpty() -> {
                     SnackBarCustom.snackBarIconInfo(
                         root, layoutInflater, resources, root.context,
@@ -197,6 +205,16 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                     akarMasalahPrioritas.requestFocus()
                 }
                 else -> {
+
+                    val addData = SebabMasalahItem(
+                        penyebab = penyebab,
+                        w1 = valueW1,
+                        w2 = valueW2,
+                        w3 = valueW3,
+                        w4 = valueW4,
+                        w5 = valueW5,
+                        prioritas = prioritas
+                    )
 
                     var kenapa = ""
                     when {
@@ -217,29 +235,17 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                         }
                     }
 
-                    val addData = SebabMasalahItem(
-                        penyebab = penyebab,
-                        w1 = valueW1,
-                        w2 = valueW2,
-                        w3 = valueW3,
-                        w4 = valueW4,
-                        w5 = valueW5,
-                        prioritas = prioritas
-                    )
-
-                    val dataSaranAkarMasalah = data?.akarMasalah?.size?.plus(1)?.let {
-                        AkarMasalahItem(
+                    data?.akarMasalah?.size?.plus(1)?.let {
+                        val dataSaranAkarMasalah = AkarMasalahItem(
                             sequence = it,
                             kenapa = kenapa,
                             aksi = "",
                             detail_langkah = ""
                         )
+                        updateAkarMasalah = viewModel.updateAkarMasalah(dataSaranAkarMasalah, -1, source)
                     }
 
-                    viewModel.addSebabMasalah(addData, data?.sebabMasalah)
-                    if (dataSaranAkarMasalah != null) {
-                        viewModel.updateAkarMasalah(dataSaranAkarMasalah, -1, source)
-                    }
+                    viewModel.addSebabMasalah(addData, data?.sebabMasalah, source)
 
                     penyebabMasalah.setText("")
                     w1.setText("")
@@ -280,7 +286,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                             identification = data?.identification,
                             target = data?.target,
                             sebabMasalah = data?.sebabMasalah,
-                            akarMasalah = data?.akarMasalah,
+                            akarMasalah = updateAkarMasalah,
                             nilaiOutput = data?.nilaiOutput,
                             nqi = data?.nqi,
                             teamMember = data?.teamMember,

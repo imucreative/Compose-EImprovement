@@ -23,21 +23,23 @@ class SsCreateTeamMemberViewModel @Inject constructor(): ViewModel() {
         return list
     }
 
-    fun addTeamMember(add: TeamMemberItem, current: ArrayList<TeamMemberItem?>?) {
+    fun addTeamMember(add: TeamMemberItem, current: ArrayList<TeamMemberItem?>?, source: String) {
         current?.add(add)
 
         list.postValue(current)
 
         HawkUtils().setTempDataCreateSs(
-            teamMember = current
+            teamMember = current,
+            source = source
         )
     }
 
-    fun updateTeamMember(add: ArrayList<TeamMemberItem?>?) {
+    fun updateTeamMember(add: ArrayList<TeamMemberItem?>?, source: String) {
         list.postValue(add)
 
         HawkUtils().setTempDataCreateSs(
-            teamMember = add
+            teamMember = add,
+            source = source
         )
     }
 }

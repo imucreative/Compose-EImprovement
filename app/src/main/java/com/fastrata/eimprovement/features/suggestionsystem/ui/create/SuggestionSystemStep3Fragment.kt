@@ -152,7 +152,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 if (ssAction != APPROVE) {
                     teamMember?.remove(data)
 
-                    viewModelTeamMember.updateTeamMember(teamMember)
+                    viewModelTeamMember.updateTeamMember(teamMember, source)
                     viewModelTeamMember.getSuggestionSystemTeamMember()
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
@@ -221,7 +221,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             task = memberTaskObj
                         )
 
-                        viewModelTeamMember.addTeamMember(addData, data?.teamMember)
+                        viewModelTeamMember.addTeamMember(addData, data?.teamMember, source)
 
                         memberName.requestFocus()
                         memberName.setText("")

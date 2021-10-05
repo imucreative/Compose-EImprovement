@@ -138,6 +138,7 @@
     <string name="delete">Hapus</string>
     <string name="delete_confirmation">Apakah Anda Yakin Menghapus Data Ini?</string>
     <string name="problem_reason">Silahkan Isi Kolom Penyebab Masalah Dengan Sesuai</string>
+    <string name="why">Why 1 harus diisi</string>
     <string name="problem_root">Silahkan Isi Kolom Akar Masalah Dengan Sesuai</string>
     <string name="problem_root_reason">Silahkan Tambah Sebab/Akar Masalah</string>
     <string name="problem_suggest">Silahkan Isi Kolom Saran/Akar Masalah Dengan Sesuai</string>
