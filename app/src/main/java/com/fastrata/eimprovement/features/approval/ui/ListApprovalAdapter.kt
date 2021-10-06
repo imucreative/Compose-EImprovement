@@ -29,7 +29,7 @@ class ListApprovalAdapter : RecyclerView.Adapter<ListApprovalAdapter.ApprovalVie
             }
 
             binding.apply {
-                ssNo.text = data.ssNo
+                typeNo.text = data.typeNo
                 title.text = data.title
                 status.text = data.status
                 branch.text = data.branch

@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.MaterialComponents.Light"
-    tools:context=".features.ChangesPoint.ui.create.ChangesPointStep1Fragment">
+    android:theme="@style/Theme.MaterialComponents.Light">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="Penukaran Point"
+                    android:text="@string/penukaran_point"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -44,20 +43,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="Please fill the form for changes point"
+                    android:text="@string/please_fill_the_form_for_changes_point"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
                     android:layout_marginTop="@dimen/spacing_large"
-                    android:text="Saldo Anda : 20000"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/red_700"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/saldo_anda"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/red_700"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/saldo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="20000"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/red_700"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -71,18 +85,19 @@
                     android:layout_height="@dimen/spacing_xxlarge"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:textColorHint="@color/grey_80"
-                    android:background="@color/grey_10"
+                    app:boxBackgroundColor="@color/grey_10"
                     app:boxStrokeColor="@color/grey_80">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/cp_no"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Changes Point No."
+                        android:hint="@string/changes_point_no"
                         android:padding="0dp"
-                        android:text="CP-0000/08/2021/0041"
+                        tools:text="CP-0000/08/2021/0041"
                         android:textColor="@color/grey_80" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -99,18 +114,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Name"
+                            android:hint="@string/name"
                             android:padding="0dp"
-                            android:text="User Development"
+                            tools:text="User Development"
                             android:textColor="@color/grey_80" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -125,18 +141,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nik"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="NIK"
+                            android:hint="@string/nik"
                             android:padding="0dp"
-                            android:text="11210012"
+                            tools:text="11210012"
                             android:textColor="@color/grey_80"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -155,18 +172,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/branch"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Branch"
+                            android:hint="@string/branch"
                             android:padding="0dp"
-                            android:text="PUSAT"
+                            tools:text="PUSAT"
                             android:textColor="@color/grey_80" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -181,18 +199,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sub_branch"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Sub Branch"
+                            android:hint="@string/sub_branch"
                             android:padding="0dp"
-                            android:text="FBPST"
+                            tools:text="FBPST"
                             android:textColor="@color/grey_80"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -211,18 +230,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/department"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Departement"
+                            android:hint="@string/department"
                             android:padding="0dp"
-                            android:text="ICT"
+                            tools:text="ICT"
                             android:textColor="@color/grey_80" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -237,18 +257,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/position"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Jabatan"
+                            android:hint="@string/position"
                             android:padding="0dp"
-                            android:text="Staff"
+                            tools:text="Staff"
                             android:textColor="@color/grey_80"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -260,20 +281,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_xxlarge"
                     android:layout_marginTop="@dimen/spacing_middle"
-                    android:textColorHint="@color/grey_80"
-                    android:background="@color/grey_10"
-                    app:boxStrokeColor="@color/grey_80">
+                    android:textColorHint="@color/colorPrimary"
+                    app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/date"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableEnd="@drawable/ic_calendar"
                         android:clickable="false"
-                        android:enabled="false"
                         android:focusable="false"
-                        android:hint="Tanggal Penukaran"
+                        android:maxLines="1"
                         android:padding="0dp"
-                        android:text="2021-08-05"
-                        android:textColor="@color/grey_80" />
+                        android:singleLine="true"
+                        android:textColor="@color/colorPrimary"
+                        android:hint="@string/tanggal_penukaran"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -286,22 +308,17 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/desc"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:hint="Keterangan"
+                        android:hint="@string/keterangan"
                         android:padding="0dp"
-                        tools:text="Kosong"
+                        tools:text=""
                         android:textColor="@color/colorPrimary" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/spacing_large"
-                    android:background="@color/grey_10" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

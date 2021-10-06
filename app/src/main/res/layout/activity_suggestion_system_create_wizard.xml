@@ -97,34 +97,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/lyt_save"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_middle"
-                android:focusable="true"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SAVE"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_check" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </RelativeLayout>

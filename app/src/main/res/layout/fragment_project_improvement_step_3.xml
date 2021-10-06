@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="Fase Perencanaan (PLAN)"
+                    android:text="@string/fase_perencanaan"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -45,7 +45,7 @@
                     android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="A. Mengindentifikasi Masalah"
+                    android:text="@string/a_mengidentifikasi_masalah"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -57,6 +57,7 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/identifikasi_masalah"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="start"
@@ -74,7 +75,7 @@
                     android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="B. Menetapkan Target"
+                    android:text="@string/b_menetapkan_target"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -86,6 +87,7 @@
                     app:boxStrokeColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/menetapkan_target"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="start"

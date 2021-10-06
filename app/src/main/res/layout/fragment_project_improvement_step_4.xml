@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme.Material"
     tools:context=".features.projectimprovement.ui.create.ProjectImprovStep4Fragment">
 
     <androidx.cardview.widget.CardView
@@ -30,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_large"
                 android:layout_marginBottom="@dimen/spacing_medium"
-                android:text="C. Mencari Sebab/Akar Masalah"
+                android:text="@string/c_mencari_sebab_akar_masalah"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/grey_80" />
 
@@ -40,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:layout_marginRight="@dimen/spacing_large"
-                android:text="(Berikan Analisa dasar masalah menggunakan 5-Why Always)"
+                android:text="@string/berikan_analisa_dasar_masalah_menggunakan_5_why_always"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/grey_40" />
         </LinearLayout>
@@ -59,17 +61,18 @@
         app:layout_constraintTop_toBottomOf="@+id/card_view"
         tools:listitem="@layout/item_sebab_masalah_pi" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_akar"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/create_sebab_masalah"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:minHeight="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:icon="@drawable/ic_add"
+        app:iconTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
-
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

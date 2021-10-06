@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemProjectImprovmentBinding
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import java.util.ArrayList
 
 class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter.ProjectImprovementViewHolder>() {
 
-    private var list = ArrayList<ProjectImprovementItem>()
+    private var list = ArrayList<ProjectImprovementModel>()
 
-    fun setList(data: ArrayList<ProjectImprovementItem>) {
+    fun setList(data: ArrayList<ProjectImprovementModel>) {
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -26,7 +26,7 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
     }
 
     inner class ProjectImprovementViewHolder(private val binding: ItemProjectImprovmentBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ProjectImprovementItem) {
+        fun bind(data: ProjectImprovementModel) {
 
             binding.root.setOnClickListener {
                 projectSystemCallback.onItemClicked(data)
@@ -35,12 +35,12 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
             binding.apply {
                 nomorPi.text = data.piNo
                 judulPi.text = data.title
-                statusPi.text = data.status
-                kategoriPi.text = data.categoryRepairment
+                statusPi.text = data.status.status
+                kategoriPi.text = data.category
                 datePi.text = data.date
                 branchPi.text = data.branch
                 subBranchPi.text = data.subBranch
-                createbyPi.text = data.createby
+                createbyPi.text = data.createdBy
             }
         }
     }

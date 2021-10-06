@@ -1,12 +1,11 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointRewardModel
-import com.fastrata.eimprovement.features.ChangesPoint.data.model.ChangePointSystemModel
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
+import com.fastrata.eimprovement.features.changespoint.data.model.*
+import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
+import com.fastrata.eimprovement.ui.model.*
 
 object DataDummySs {
     fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
@@ -17,7 +16,9 @@ object DataDummySs {
             "SS-0000/08/2021/0041",
             "17-08-2021",
             "Membuat ide baru",
-            "Implementasi Project",
+            StatusProposal(
+                6, "Implementasi Project"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -25,7 +26,9 @@ object DataDummySs {
             "SS-0000/08/2021/0042",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                3, "Proposal Dalam Pengecekan"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -33,7 +36,9 @@ object DataDummySs {
             "SS-0000/08/2021/0043",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                1, "Proposal Dibuat"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -41,7 +46,9 @@ object DataDummySs {
             "SS-0000/08/2021/0044",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                10, "Project Valid"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -49,7 +56,9 @@ object DataDummySs {
             "SS-0000/08/2021/0045",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                2, "Proposal Disubmit"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -57,7 +66,9 @@ object DataDummySs {
             "SS-0000/08/2021/0046",
             "17-08-2021",
             "Membuat ide baru new",
-            "Implementasi Project",
+            StatusProposal(
+                6, "Implementasi Project"
+            ),
             "test",
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
@@ -65,7 +76,71 @@ object DataDummySs {
         return suggestionSystem
     }
 
-    fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
+    fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
+        val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
+        categorySuggestionItem.add(CategoryImprovementItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
+
+        val memberNameItem = MemberNameItem(id = 1, name = "budi")
+        val memberDepartmentItem = MemberDepartmentItem(id = 1, department = "ICT")
+        val memberTaskItem = MemberTaskItem(id = 1, task = "Dokumentasi")
+
+        val teamMemberItem = ArrayList<TeamMemberItem?>()
+        teamMemberItem.add(TeamMemberItem(name = memberNameItem, department = memberDepartmentItem, task = memberTaskItem))
+
+        val attachmentItem = ArrayList<AttachmentItem?>()
+        attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
+
+        return SuggestionSystemCreateModel(
+            ssNo = "SS-0000/08/2021/0041",
+            date = "17-08-2021",
+            name = "Maman",
+            nik = "11210012",
+            statusImplementation = StatusImplementation(
+                status = "1",
+                from = "20-10-2021",
+                to = "11-11-2021"
+            ),
+            title = "Implementasi system dengan robust dan S.O.L.I.D",
+            branch = "PUSAT",
+            subBranch = "FBPST - Gd Barang Dagang",
+            department = "ICT",
+            directMgr = "Pak Agung",
+            problem = "Code yg terlalu banyak dan berantakan",
+            suggestion = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
+            categoryImprovement = categorySuggestionItem,
+            teamMember = teamMemberItem,
+            attachment = attachmentItem,
+            statusProposal = StatusProposal(
+                id = 1,
+                status = "Proposal Dibuat"
+            )
+        )
+    }
+
+   fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
+       val rewardArray = ArrayList<RewardItem?>()
+       rewardArray.add(RewardItem(no = 1,hadiah = "PULSA 100K",nilai = "10000",keterangan = "Penukaran"))
+       val riwayatArray = ArrayList<RiwayatItem?>()
+       riwayatArray.add(RiwayatItem(no = 1,pic = "Bpk Test",status = "Active",komentar = "Baik",tanggal = "2021-08-06 17:19:22"))
+      return ChangePointCreateItemModel(
+          id = 1,
+          saldo = 2000,
+          cpNo = "CP-0000/08/2021/0100",
+          name = "TEST",
+          nik = "101010",
+          branch = "PUSAT",
+          subBranch = "FBPST",
+          department = "ICT",
+          position = "STAFF",
+          date = "2021-08-06",
+          description = "Test Data",
+          reward = rewardArray,
+          history = riwayatArray)
+   }
+
+    /*fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
 
         val suggestionSystem = ArrayList<TeamMemberItem>()
 
@@ -92,17 +167,17 @@ object DataDummySs {
 
 
         return suggestionSystem
-    }
+    }*/
 
     fun generateDummyApproval(): ArrayList<ApprovalModel> {
 
         val approval = ArrayList<ApprovalModel>()
 
         approval.add(ApprovalModel(
-            "SS-0000/08/2021/0001",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "PI-0000/08/2021/0100",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA PI",
             "Laporan Akhir Di Submit",
-            "SS",
+            "PI",
             "User Development",
             "00043087",
             "PUSAT",
@@ -119,10 +194,10 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
         approval.add(ApprovalModel(
-            "SS-0000/08/2021/0003",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
+            "CP-0001/05/2021/0010",
+            "PEMBUATAN SISTEM SARAN FASTRATA BUANA CP",
             "Laporan Akhir Di Submit",
-            "SS",
+            "CP",
             "User Development",
             "00043087",
             "PUSAT",
@@ -152,72 +227,11 @@ object DataDummySs {
         return approval
     }
 
-    fun generaterewardmodel() : ArrayList<ChangePointRewardModel>{
-
-        val suggestionSystem = ArrayList<ChangePointRewardModel>()
-
-        suggestionSystem.add(
-            ChangePointRewardModel(
-            "PULSA 10K",
-            "1",
-            "Pulsa",
-
-        ))
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 10K",
-                "1",
-                "Pulsa",
-
-                ))
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 10K",
-                "1",
-                "Pulsa",
-
-                ))
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 10K",
-                "1",
-                "Pulsa",
-
-                ))
-        suggestionSystem.add(
-            ChangePointRewardModel(
-                "PULSA 20K",
-                "1",
-                "Pulsa",
-            ))
-        return suggestionSystem
-    }
-
-    fun generateDummyChangePointList(): ArrayList<ChangePointSystemModel>{
-        val changepoint = ArrayList<ChangePointSystemModel>()
+    fun generateDummyChangePointList(): ArrayList<ChangePointModel>{
+        val changepoint = ArrayList<ChangePointModel>()
 
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
             "CP-0001/08/2021/0005",
             "AKTIF",
             "2021-08-06 17:19:22",
@@ -227,7 +241,7 @@ object DataDummySs {
             "0"
         ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -237,7 +251,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -247,7 +261,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -257,7 +271,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -267,7 +281,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -277,7 +291,7 @@ object DataDummySs {
                 "0"
             ))
         changepoint.add(
-            ChangePointSystemModel(
+            ChangePointModel(
                 "CP-0001/08/2021/0005",
                 "AKTIF",
                 "2021-08-06 17:19:22",
@@ -290,13 +304,15 @@ object DataDummySs {
         return changepoint
     }
 
-    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementItem>{
-        val projectimprov = ArrayList<ProjectImprovementItem>()
+    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementModel>{
+        val projectimprov = ArrayList<ProjectImprovementModel>()
 
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
             "PI-0001/08/2021/0005",
-            "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
             "Aktif",
             "Perbaikan",
             "Pusat",
@@ -305,9 +321,11 @@ object DataDummySs {
             "John"
         ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    10, "Project Valid"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -316,9 +334,11 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -327,9 +347,11 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    3, "Proposal Dalam Pengecekan"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -338,9 +360,11 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -349,9 +373,11 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -360,9 +386,11 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -371,9 +399,11 @@ object DataDummySs {
                 "John"
             ))
         projectimprov.add(
-            ProjectImprovementItem(
+            ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                "Improvement",
+                StatusProposal(
+                    6, "Implementasi Project"
+                ),
                 "Aktif",
                 "Perbaikan",
                 "Pusat",
@@ -384,128 +414,152 @@ object DataDummySs {
         return projectimprov
     }
 
-    fun generateSebabMasalah(): ArrayList<SebabMasalahItem> {
-        val akarmslh = ArrayList<SebabMasalahItem>()
+    fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
+        val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
+        categorySuggestionItem.add(CategoryImprovementItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
 
-        akarmslh.add(
-            SebabMasalahItem(
-            "satu",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "test"
+        val memberNameItem = MemberNameItem(id = 1, name = "budi")
+        val memberDepartmentItem = MemberDepartmentItem(id = 1, department = "ICT")
+        val memberTaskItem = MemberTaskItem(id = 1, task = "Dokumentasi")
+
+        val teamMemberItem = ArrayList<TeamMemberItem?>()
+        teamMemberItem.add(TeamMemberItem(name = memberNameItem, department = memberDepartmentItem, task = memberTaskItem))
+
+        val attachmentItem = ArrayList<AttachmentItem?>()
+        attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
+
+        val sudah = Sudah(
+            from = "2020-01-21",
+            to = "2020-02-21"
+        )
+
+        val problem = ArrayList<SebabMasalahItem?>()
+        problem.add(SebabMasalahItem(
+            penyebab = "karena",
+            w1 = "xxx", w2 = "", w3 = "", w4 = "", w5 = "",
+            prioritas = "test"
         ))
 
-        akarmslh.add(
-            SebabMasalahItem(
-                "satu",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test"
-            ))
+        val akarMasalah = ArrayList<AkarMasalahItem?>()
+        akarMasalah.add(AkarMasalahItem(
+            sequence = 1,
+            kenapa = "test",
+            aksi = "aksi",
+            detail_langkah = "test"
+        ))
 
-        akarmslh.add(
-            SebabMasalahItem(
-                "satu",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test"
-            ))
-
-
-        akarmslh.add(
-            SebabMasalahItem(
-                "satu",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test"
-            ))
-
-        akarmslh.add(
-            SebabMasalahItem(
-                "satu",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "test"
-            ))
-        return akarmslh
-    }
-
-    fun generateDummyAkarMasalah(): ArrayList<AkarMasalahItem>{
-        val data = ArrayList<AkarMasalahItem>()
-        data.add(
-            AkarMasalahItem(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+        val estimasi = Estimasi(
+            benefit = 1000, benefit_keterangan = "testter",
+            cost = 500, cost_keterangan = "tested",
+            nqi = 1500
         )
-        data.add(
-            AkarMasalahItem(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+
+        val aktual = Aktual(
+            benefit = 2000, benefit_keterangan = "terrr",
+            cost = 1000, cost_keterangan = "testerre",
+            nqi = 3000
         )
-        return data
+
+        val nqi = NqiModel(estimasi, aktual)
+
+        return ProjectImprovementCreateModel(
+            id = 10,
+            piNo = "PI-0001/08/2021/0005",
+            department = "ICT",
+            years = "2021",
+            date = "17-08-2021",
+            branch = "PUSAT",
+            subBranch = "FBPST",
+            title = "Implementasi system dengan robust dan S.O.L.I.D",
+            statusImplementation = StatusImplementationPi(
+                sudah = sudah,
+                akan = null
+            ),
+            identification = "identification",
+            target = "testing target",
+            sebabMasalah = problem,
+            akarMasalah = akarMasalah,
+            nilaiOutput = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
+            nqi = nqi,
+            teamMember = teamMemberItem,
+            categoryFixing = categorySuggestionItem,
+            implementationResult = "implementasi result",
+            attachment = attachmentItem,
+            statusProposal = StatusProposal(
+                id = 7,
+                status = "Laporan Akhir Di Submit"
+            )
+        )
     }
 
     fun generateDummyNameMember(): ArrayList<MemberNameItem> {
         val data = ArrayList<MemberNameItem>()
-        data.add(MemberNameItem(name = "budi"))
-        data.add(MemberNameItem(name = "Jerry"))
-        data.add(MemberNameItem(name = "Tom"))
-        data.add(MemberNameItem(name = "Ali"))
-        data.add(MemberNameItem(name = "Ahmad"))
+        data.add(MemberNameItem(name = "budi", id = 1))
+        data.add(MemberNameItem(name = "Jerry", id = 2))
+        data.add(MemberNameItem(name = "Tom", id = 3))
+        data.add(MemberNameItem(name = "Ali", id = 4))
+        data.add(MemberNameItem(name = "Ahmad", id = 5))
         return data
     }
 
     fun generateDummyDepartmentMember(): ArrayList<MemberDepartmentItem> {
         val data = ArrayList<MemberDepartmentItem>()
-        data.add(MemberDepartmentItem(department = "ICT"))
-        data.add(MemberDepartmentItem(department = "Accounting"))
-        data.add(MemberDepartmentItem(department = "HR"))
-        data.add(MemberDepartmentItem(department = "Tax"))
-        data.add(MemberDepartmentItem(department = "Marketing"))
+        data.add(MemberDepartmentItem(department = "ICT", id = 1))
+        data.add(MemberDepartmentItem(department = "Accounting", id = 2))
+        data.add(MemberDepartmentItem(department = "HR", id = 3))
+        data.add(MemberDepartmentItem(department = "Tax", id = 4))
+        data.add(MemberDepartmentItem(department = "Marketing", id = 5))
         return data
     }
 
     fun generateDummyTaskMember(): ArrayList<MemberTaskItem> {
         val data = ArrayList<MemberTaskItem>()
-        data.add(MemberTaskItem(task = "Ketua"))
-        data.add(MemberTaskItem(task = "Dokumentasi"))
-        data.add(MemberTaskItem(task = "Anggota"))
+        data.add(MemberTaskItem(task = "Ketua", id = 1))
+        data.add(MemberTaskItem(task = "Dokumentasi", id = 2))
+        data.add(MemberTaskItem(task = "Anggota", id = 3))
         return data
     }
 
-    fun generateDummyCategorySuggestion(): ArrayList<CategorySuggestionItem?> {
-        val data = ArrayList<CategorySuggestionItem?>()
-        data.add(CategorySuggestionItem(
+    fun generateDummyCategorySuggestion(): ArrayList<CategoryImprovementItem?> {
+        val data = ArrayList<CategoryImprovementItem?>()
+        data.add(CategoryImprovementItem(
             id = 1, category = "Meningkatkan Penjualan", false
         ))
-        data.add(CategorySuggestionItem(
+        data.add(CategoryImprovementItem(
             id = 2, category = "Menurunkan Biaya", false
         ))
-        data.add(CategorySuggestionItem(
+        data.add(CategoryImprovementItem(
             id = 3, category = "Mencegah Pelanggaran atau Kecurangan", false
         ))
-        data.add(CategorySuggestionItem(
+        data.add(CategoryImprovementItem(
             id = 4, category = "Menyederhanakan Proses Kerja", false
         ))
-        data.add(CategorySuggestionItem(
-            id = 5, category = "Lain-lain", false
+        return data
+    }
+
+    fun generateDummyReward(): ArrayList<HadiahItem> {
+        val data = ArrayList<HadiahItem>()
+        data.add(HadiahItem(hadiah = "PULSA 50K",1,"1000"))
+        data.add(HadiahItem(hadiah = "PULSA 100K",2,"5000"))
+        data.add(HadiahItem(hadiah = "IPHONE 13",3,"10000"))
+        return data
+    }
+
+    fun generateDummyApprovalHistoryStatus(): ArrayList<ApprovalHistoryStatusModel> {
+        val data = ArrayList<ApprovalHistoryStatusModel>()
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Proposal Disubmit", comment = "Proposal Disubmit", date = "2021-08-31 09:39:26"
+        ))
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Proposal Dalam Pengecekan", comment = "Proposal Dalam Pengecekan", date = "2021-08-31 09:39:52"
+        ))
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Proposal Disetujui", comment = "mantap", date = "2021-08-31 09:40:03"
+        ))
+        data.add(ApprovalHistoryStatusModel(
+            pic = "Tyas Febriatmoko", status = "Implementasi Project", comment = "Implementasi Project", date = "2021-08-31 09:40:39"
         ))
         return data
     }

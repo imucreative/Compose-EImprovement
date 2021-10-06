@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/dashboardFragment">
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.fastrata.eimprovement.features.dashboard.ui.DashboardFragment"
+        android:label="@string/dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_listApprovalFragment"
+            app:destination="@id/listApprovalFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_suggestionSystemFragment"
+            app:destination="@id/suggestionSystemFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_projectImprovementFragment"
+            app:destination="@id/projectImprovementFragment"
+             />
+        <action
+            android:id="@+id/action_dashboardFragment_to_changesPointFragment"
+            app:destination="@id/changesPointFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listApprovalFragment"
+        android:name="com.fastrata.eimprovement.features.approval.ui.ListApprovalFragment"
+        android:label="ListApprovalFragment"
+        tools:layout="@layout/fragment_list_approval" >
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_listApprovalFragment_to_suggestionSystemCreateWizard"
+            app:destination="@id/suggestionSystemCreateWizard" />
+
+        <action
+            android:id="@+id/action_listApprovalFragment_to_ProjectImprovementCreateWizard"
+            app:destination="@id/projectImprovementCreateWizard" />
+
+        <action
+            android:id="@+id/action_listApprovalFragment_to_ChangePointCreateWizard"
+            app:destination="@id/changesPointCreateWizard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/suggestionSystemFragment"
+        android:name="com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemFragment"
+        android:label="SuggestionSystemFragment"
+        tools:layout="@layout/fragment_suggestion_system">
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_suggestionSystemFragment_to_suggestionSystemCreateWizard"
+            app:destination="@id/suggestionSystemCreateWizard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.fastrata.eimprovement.features.settings.ui.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" >
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/projectImprovementFragment"
+        android:name="com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementFragment"
+        android:label="ProjectImprovementFragment"
+        tools:layout="@layout/fragment_project_improvement">
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_projectImprovementFragment_to_projectImprovementCreateWizard"
+            app:destination="@id/projectImprovementCreateWizard"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/changesPointFragment"
+        android:name="com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragment"
+        android:label="ChangesPointFragment"
+        tools:layout="@layout/fragment_changes_point_system">
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_changesPointFragment_to_changesPointCreateWizard"
+            app:destination="@id/changesPointCreateWizard"
+            />
+    </fragment>
+
+    <activity
+        android:id="@+id/suggestionSystemCreateWizard"
+        android:name="com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateWizard"
+        android:label="activity_suggestion_system_create_wizard"
+        tools:layout="@layout/activity_suggestion_system_create_wizard" >
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="action"
+            android:defaultValue="add"
+            app:argType="string" />
+
+        <argument
+            android:name="ssNo"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            android:defaultValue=""
+            app:argType="string" />
+    </activity>
+
+    <activity
+        android:id="@+id/projectImprovementCreateWizard"
+        android:name="com.fastrata.eimprovement.features.projectimprovement.ui.create.ProjectImprovementCreateWizard"
+        android:label="activity_project_improvement_wizard"
+        tools:layout="@layout/activity_project_improvement_wizard" >
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="action"
+            android:defaultValue="add"
+            app:argType="string" />
+
+        <argument
+            android:name="piNo"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            android:defaultValue=""
+            app:argType="string" />
+    </activity>
+
+    <activity
+        android:id="@+id/changesPointCreateWizard"
+        android:name="com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointCreateWizard"
+        android:label="changes_point_system_create_wizard"
+        tools:layout="@layout/activity_changes_point_system_create_wizard" >
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="action"
+            android:defaultValue="add"
+            app:argType="string" />
+
+        <argument
+            android:name="cpNo"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            android:defaultValue=""
+            app:argType="string" />
+    </activity>
+</navigation>

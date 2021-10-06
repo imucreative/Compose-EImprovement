@@ -16,33 +16,223 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/spacing_large">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Akar Masalah"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/grey_80"
-                android:gravity="center_vertical" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_toStartOf="@id/remove_sebab_masalah"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/penyebab_masalah"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+                <TextView
+                    android:id="@+id/penyebab_masalah"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80"
+                    tools:text="masalah apa sih kawan" />
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/remove_sebab_masalah"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:id="@+id/remove_team_member"
                 android:layout_width="@dimen/spacing_xxxlarge"
                 android:layout_height="@dimen/spacing_xxlarge"
+                android:layout_alignParentEnd="true"
                 app:icon="@drawable/ic_delete"
                 app:iconTint="@color/colorAccent" />
 
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:background="@color/grey_10" />
+
+        <LinearLayout
+            android:id="@+id/linear_why_expand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/why_expand"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Why"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/grey_80" />
+
+            <ImageButton
+                android:id="@+id/btn_expand"
+                android:layout_width="@dimen/spacing_xlarge"
+                android:layout_height="@dimen/spacing_xlarge"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/grey_60"
+                app:srcCompat="@drawable/ic_arrow_down_black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyt_expand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_3"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/linear_w1_pi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/w1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+                <TextView
+                    android:id="@+id/w1_pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Membuat dokumentasi project"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_w2_pi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/w2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+                <TextView
+                    android:id="@+id/w2_pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Membuat dokumentasi project"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_w3_pi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/w3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+                <TextView
+                    android:id="@+id/w3_pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Membuat dokumentasi project"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_w4_pi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/w4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+                <TextView
+                    android:id="@+id/w4_pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Membuat dokumentasi project"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_w5_pi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/w5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+                <TextView
+                    android:id="@+id/w5_pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Membuat dokumentasi project"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <View
@@ -51,196 +241,29 @@
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:background="@color/grey_10" />
 
-        <TextView
-            android:id="@+id/penyebab_masalah"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/spacing_large"
             android:layout_marginRight="@dimen/spacing_large"
             android:layout_marginTop="@dimen/spacing_medium"
-            tools:text="masalah apa sih kawan"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/grey_40" />
-
-
-        <LinearLayout
-            android:id="@+id/linear_w1_pi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:layout_marginTop="@dimen/spacing_medium"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="W1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/grey_40" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/w1_pi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Membuat dokumentasi project"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_w2_pi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="W2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/grey_40" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/w2_pi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Membuat dokumentasi project"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_w3_pi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="W3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/grey_40" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/w3_pi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Membuat dokumentasi project"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_w4_pi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="W4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/grey_40" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/w4_pi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Membuat dokumentasi project"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_w5_pi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_middle"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="W5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:text="@string/akar_masalah_prioritas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/grey_40" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
             <TextView
-                android:id="@+id/w5_pi"
-                android:layout_width="wrap_content"
+                android:id="@+id/akar_prioritas"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Membuat dokumentasi project"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
+                tools:text="Akar masalah prioritas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/grey_80" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:background="@color/grey_10" />
-
-        <TextView
-            android:id="@+id/akar_prioritas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:layout_marginTop="@dimen/spacing_medium"
-            tools:text="Akar masalah prioritas"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/grey_40" />
 
     </LinearLayout>
 

@@ -26,8 +26,8 @@
                 android:id="@+id/reward"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Hadiah"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/penukaran_hadiah"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/grey_80"
                 android:gravity="center_vertical" />
 
@@ -38,7 +38,7 @@
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:id="@+id/remove_team_member"
+                android:id="@+id/remove_reward"
                 android:layout_width="@dimen/spacing_xxxlarge"
                 android:layout_height="@dimen/spacing_xxlarge"
                 app:icon="@drawable/ic_delete"
@@ -53,23 +53,24 @@
             android:background="@color/grey_10" />
 
         <TextView
-            android:id="@+id/Point"
-            android:padding="@dimen/spacing_medium"
-            android:layout_width="wrap_content"
+            android:id="@+id/point"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nilai"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/grey_600" />
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:text="@string/nilai"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_600"/>
 
         <TextView
             android:id="@+id/desc"
-            android:padding="@dimen/spacing_medium"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Keterangan"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/grey_600" />
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            tools:text="@string/keterangan"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_600"/>
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

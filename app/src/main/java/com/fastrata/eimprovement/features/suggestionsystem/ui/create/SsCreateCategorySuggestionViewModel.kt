@@ -3,11 +3,12 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
+import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.DataDummySs
+import javax.inject.Inject
 
-class SsCreateCategorySuggestionViewModel : ViewModel() {
-    private val list = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
+class SsCreateCategorySuggestionViewModel @Inject constructor(): ViewModel() {
+    private val list = MutableLiveData<ArrayList<CategoryImprovementItem?>?>()
 
     fun setCategorySuggestion() {
         // koneksi ke hawk
@@ -18,7 +19,7 @@ class SsCreateCategorySuggestionViewModel : ViewModel() {
         list.postValue(data)
     }
 
-    fun getCategorySuggestion(): LiveData<ArrayList<CategorySuggestionItem?>?> {
+    fun getCategorySuggestion(): LiveData<ArrayList<CategoryImprovementItem?>?> {
         return list
     }
 }

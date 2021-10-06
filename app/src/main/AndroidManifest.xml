@@ -26,35 +26,18 @@
         android:roundIcon="@mipmap/ic_logo_eimprovement_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".features.ChangesPoint.ui.create.add.AddChangeRewardActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".features.ChangesPoint.ui.ChangesPointActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".features.ChangesPoint.ui.create.ChangesPointCreateWizard"
+        <activity android:name=".features.changespoint.ui.create.add.AddChangeRewardActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
-        <activity android:name=".features.projectimprovement.ui.ProjectImprovementActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".features.projectimprovement.ui.create.ProjectImprovementCreateWizard"
+        <activity android:name=".features.changespoint.ui.create.ChangesPointCreateWizard"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".features.approval.ui.ListApprovalActivity"
+            android:name=".features.projectimprovement.ui.create.ProjectImprovementCreateWizard"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".features.suggestionsystem.ui.create.SuggestionSystemCreateWizard"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".features.suggestionsystem.ui.SuggestionSystemActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".features.settings.ui.SettingsActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/Theme.MaterialComponents.Light"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".features.projectimprovement.ui.create.ProjectImprovStep1Fragment">
 
     <androidx.core.widget.NestedScrollView
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text="Form Project Improvement"
+                    android:text="@string/form_project_improvement"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/grey_80" />
 
@@ -43,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:text="Please fill the form to create Project Improvement."
+                    android:text="@string/please_fill_the_form_to_create_project_improvement"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -59,39 +60,18 @@
                     android:layout_height="@dimen/spacing_xxlarge"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:textColorHint="@color/grey_80"
-                    android:background="@color/grey_10"
+                    app:boxBackgroundColor="@color/grey_10"
                     app:boxStrokeColor="@color/grey_80">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pi_no"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Project Improvement No."
+                        android:hint="@string/project_improvement_no"
                         android:padding="0dp"
-                        android:text="PI-0000/08/2021/0041"
-                        android:textColor="@color/grey_80" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/spacing_xxlarge"
-                    android:layout_marginTop="@dimen/spacing_large"
-                    android:textColorHint="@color/grey_80"
-                    android:background="@color/grey_10"
-                    app:boxStrokeColor="@color/grey_80">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="Departement"
-                        android:padding="0dp"
-                        android:text="ICT"
                         android:textColor="@color/grey_80" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,18 +87,19 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/year"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Tahun"
+                            android:hint="@string/created_year"
                             android:padding="0dp"
-                            android:text="2021"
+                            tools:text="2021"
                             android:textColor="@color/grey_80" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -133,19 +114,20 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/created_date"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Tanggal Pengajuan"
+                            android:hint="@string/created_date"
                             android:padding="0dp"
-                            android:text="12 aug 2021"
-                            android:textColor="@color/grey_80"/>
+                            android:textColor="@color/grey_80"
+                            tools:text="12 aug 2021"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,19 +145,20 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/branch"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Branch"
+                            android:hint="@string/branch"
                             android:padding="0dp"
-                            android:text="Pusat"
-                            android:textColor="@color/grey_80" />
+                            android:textColor="@color/grey_80"
+                            tools:text="Pusat" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,19 +172,20 @@
                         android:layout_height="@dimen/spacing_xxlarge"
                         android:layout_weight="1"
                         android:textColorHint="@color/grey_80"
-                        android:background="@color/grey_10"
+                        app:boxBackgroundColor="@color/grey_10"
                         app:boxStrokeColor="@color/grey_80">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/department"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="Sub Branch"
+                            android:hint="@string/department"
                             android:padding="0dp"
-                            android:text="FBPST - Gd Barang Dagang"
-                            android:textColor="@color/grey_80"/>
+                            android:textColor="@color/grey_80"
+                            tools:text="ICT" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -211,24 +195,50 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_xxlarge"
-                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginTop="@dimen/spacing_middle"
                     android:textColorHint="@color/grey_80"
-                    android:background="@color/grey_10"
+                    app:boxBackgroundColor="@color/grey_10"
                     app:boxStrokeColor="@color/grey_80">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/sub_branch"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Judul Improvement"
+                        android:hint="@string/sub_branch"
                         android:padding="0dp"
-                        android:text="Percobaan"
-                        android:textColor="@color/grey_80" />
+                        android:textColor="@color/grey_80"
+                        tools:text="FBPST - Gd Barang Dagang" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spacing_xxlarge"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:textColorHint="@color/colorPrimary"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/title_improvement"
+                        android:imeOptions="actionDone"
+                        android:maxLines="2"
+                        android:padding="0dp"
+                        android:textColor="@color/colorPrimary"
+                        tools:text="Percobaan"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
 
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
+
     </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

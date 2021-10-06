@@ -3,8 +3,6 @@ package com.fastrata.eimprovement.features.login.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.stetho.server.http.HttpStatus
@@ -14,9 +12,9 @@ import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.ActivityLoginBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.PreferenceUtils
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import dagger.android.AndroidInjection
 import timber.log.Timber
@@ -41,40 +39,15 @@ class LoginActivity : AppCompatActivity(), Injectable {
 
         binding.apply {
             btnLogin.setOnClickListener {
-                /*UserName = username.text.toString()
-                Password =password.text.toString()
-                Log.i("user/pass :",UserName+"/"+Password)
-                if (UserName== "" || Password == ""){
-                    notification.showErrorDialog(this@LoginActivity,"Error","Silahkan masukan Username/Password Anda")
-                }else{
-                    SendData()
-                }*/
                 doLogin(binding)
             }
         }
-
-        /*val savedLogin = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
-        if (savedLogin.isNotEmpty()) {
-            goToHomePage()
-        }*/
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
     }
 
-    /*private fun SendData() {
-        val req = HashMap<String, String>()
-        req["user_name"] = UserName
-        req["user_password"] = Password
-        req["device_uid"] = Tools.getDeviceID(this)
-        req["device_name"] = Tools.deviceName
-        Log.i("datanya yg dikirim", Gson().toJson(req))
-        goToHomePage()
-    }*/
-
     private fun goToHomePage() {
-        HawkUtils().setSaldo("50000")
-        HawkUtils().setLoginBoolean(true)
         startActivity(Intent(applicationContext, HomeActivity::class.java))
         this.finish()
     }
@@ -103,34 +76,48 @@ class LoginActivity : AppCompatActivity(), Injectable {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             Timber.d("###-- LOADING")
-                            binding.progressbar.progressbar.visibility = View.VISIBLE
+//                            binding.progressbar.progressbar.visibility = View.VISIBLE
+                            HelperLoading.displayLoadingWithText(this@LoginActivity,"",false)
                         }
 
                         Result.Status.SUCCESS -> {
                             Timber.d("###-- SUCCESS")
-                            binding.progressbar.progressbar.visibility = View.GONE
+//                            binding.progressbar.progressbar.visibility = View.GONE
+                            HelperLoading.hideLoading()
 
                             if (result.data?.code == HttpStatus.HTTP_OK) {
-                                //saved into shared pref
-                                PreferenceUtils(this).set(PREF_USER_NAME, result.data.data[0].USER_NAME, true)
-                                PreferenceUtils(this).set(PREF_USER_ID, result.data.data[0].USER_ID, true)
-                                PreferenceUtils(this).set(PREF_TOKEN, result.data.data[0].TOKEN, true)
-                                PreferenceUtils(this).set(PREF_API_KEY, result.data.data[0].API_KEY, true)
-                                PreferenceUtils(this).set(PREF_ROLES, result.data.data[0].ROLES, true)
+                                // saved into hawk
+                                val loginEntity = LoginEntity(
+                                    USER_ID = result.data.data[0].USER_ID,
+                                    USER_NAME = result.data.data[0].USER_NAME,
+                                    TOKEN = result.data.data[0].TOKEN,
+                                    API_KEY = result.data.data[0].API_KEY,
+                                    ROLES = result.data.data[0].ROLES,
+                                    NIK = "11210012",
+                                    BRANCH = "PUSAT",
+                                    SUB_BRANCH = "FBPST - Gd Barang Dagang",
+                                    DEPARTMENT = "ICT",
+                                    POSITION = "STAFF",
+                                    DIRECT_MANAGER = "Pak Ahmad",
+                                    SALDO = "50000"
+                                )
+                                HawkUtils().setDataLogin(loginEntity = loginEntity)
+                                HawkUtils().setStatusLogin(true)
 
                                 goToHomePage()
                                 //subscribeMasterCustomers(binding)
                             } else {
                                 result.data?.let {
-                                    notification.showErrorDialog(this@LoginActivity,"Error", it.message)
+                                    notification.showErrorDialog(this@LoginActivity,resources.getString(R.string.error), it.message)
                                 }
                             }
                         }
 
                         Result.Status.ERROR -> {
                             Timber.d("###-- ERROR")
-                            binding.progressbar.progressbar.visibility = View.GONE
-                            notification.showErrorDialog(this@LoginActivity,"Error", result.message.toString())
+//                            binding.progressbar.progressbar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            notification.showErrorDialog(this@LoginActivity,resources.getString(R.string.error), result.message.toString())
                         }
                     }
                 })

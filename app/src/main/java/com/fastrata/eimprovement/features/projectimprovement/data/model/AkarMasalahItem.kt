@@ -5,7 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AkarMasalahItem(
-    val akarmslsh:String,
-    val improvement: String,
-    val detail : String
+    val sequence : Int,
+    val kenapa:String,
+    val aksi: String,
+    val detail_langkah : String
 ): Parcelable

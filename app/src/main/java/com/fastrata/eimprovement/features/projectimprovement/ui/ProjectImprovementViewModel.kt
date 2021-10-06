@@ -4,56 +4,161 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.Tools
 import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovementViewModel : ViewModel(){
-    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementItem>>()
-    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem>>()
-    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem>>()
+class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
+    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
+    private val detailProjectImprovement = MutableLiveData<ProjectImprovementCreateModel>()
+    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem?>?>()
+    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
-    private val listCategory = MutableLiveData<ArrayList<CategorySuggestionItem?>?>()
+    private val listCategory = MutableLiveData<ArrayList<CategoryImprovementItem?>?>()
 
     fun setProjectImprovement () {
         val data = DataDummySs.generateDummyProjectImprovementList()
         listProjectImprovement.postValue(data)
     }
 
-    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementItem>> {
-        println("##### getProjectSystem $listProjectImprovement")
+    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementModel>> {
         return listProjectImprovement
     }
 
-    fun setSebabMasalah(){
-        val data = DataDummySs.generateSebabMasalah()
+    fun setProjectImprovementDetail(piNo: String) {
+        // koneksi ke DB
+        println("# $piNo")
+        val data = DataDummySs.generateDummyDetailProjectImprovementList()
+        detailProjectImprovement.postValue(data)
+    }
+
+    fun getProjectImprovementDetail(): LiveData<ProjectImprovementCreateModel> {
+        return detailProjectImprovement
+    }
+
+    // Sebab Masalah
+    fun setSebabMasalah(source: String){
+        val data = HawkUtils().getTempDataCreatePi(source)?.sebabMasalah
         listSebabMasalah.postValue(data)
     }
 
-    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem>>{
-        println("#### getAkarMsalah $listSebabMasalah ")
+    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem?>?>{
         return listSebabMasalah
     }
 
-    fun setAkarMasalah(){
-        val data = DataDummySs.generateDummyAkarMasalah()
+    fun addSebabMasalah(add: SebabMasalahItem, current: ArrayList<SebabMasalahItem?>?, source: String) {
+        current?.add(add)
+
+        listSebabMasalah.postValue(current)
+
+        val data = HawkUtils().getTempDataCreatePi(source)
+
+        HawkUtils().setTempDataCreatePi(
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementation = data?.statusImplementation,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = current,
+            akarMasalah = data?.akarMasalah,
+            nilaiOutput = data?.nilaiOutput,
+            nqi = data?.nqi,
+            teamMember = data?.teamMember,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = data?.attachment,
+            statusProposal = data?.statusProposal,
+            source = source
+        )
+    }
+
+    fun updateSebabMasalah(add: ArrayList<SebabMasalahItem?>?, source: String) {
+        listSebabMasalah.postValue(add)
+
+        val data = HawkUtils().getTempDataCreatePi(source)
+
+        HawkUtils().setTempDataCreatePi(
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementation = data?.statusImplementation,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = add,
+            akarMasalah = data?.akarMasalah,
+            nilaiOutput = data?.nilaiOutput,
+            nqi = data?.nqi,
+            teamMember = data?.teamMember,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = data?.attachment,
+            statusProposal = data?.statusProposal,
+            source = source
+        )
+    }
+
+    // Akar Masalah
+    fun setAkarMasalah(source: String){
+        val data = HawkUtils().getTempDataCreatePi(source)?.akarMasalah
+
         listAkarMasalah.postValue(data)
     }
 
-    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahItem>>{
+    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahItem?>?>{
         return listAkarMasalah
     }
 
+    fun updateAkarMasalah(add: AkarMasalahItem, index: Int, source: String): ArrayList<AkarMasalahItem?>? {
+        val data = HawkUtils().getTempDataCreatePi(source)
 
-    fun setSuggestionSystemTeamMember() {
+        // != -1 = add
+        if (index != -1) {
+            data?.akarMasalah?.removeAt(index)
+        }
+        data?.akarMasalah?.add(add)
+
+        val sortMergedList = data?.akarMasalah?.sortedBy { it?.sequence }
+        val convertToArrayList = Tools.listToArrayList(sortMergedList)
+
+        HawkUtils().setTempDataCreatePi(
+            akarMasalah = convertToArrayList,
+            source = source
+        )
+
+        return convertToArrayList
+    }
+
+    fun removeAkarMasalah(index: Int, current: ArrayList<AkarMasalahItem?>?, source: String) {
+        current?.removeAt(index)
+
+        HawkUtils().setTempDataCreatePi(
+            akarMasalah = current,
+            source = source
+        )
+    }
+
+    // Team Member
+    fun setSuggestionSystemTeamMember(source: String) {
         // koneksi ke hawk
-        val data = HawkUtils().getTempDataCreateSs()?.teamMember
+        val data = HawkUtils().getTempDataCreatePi(source)?.teamMember
         Timber.d("### team member : $data")
 
         listTeamMember.postValue(data)
@@ -63,32 +168,76 @@ class ProjectImprovementViewModel : ViewModel(){
         return listTeamMember
     }
 
-    fun addTeamMember(add: TeamMemberItem, current: ArrayList<TeamMemberItem?>?) {
+    fun addTeamMember(add: TeamMemberItem, current: ArrayList<TeamMemberItem?>?, source: String) {
         current?.add(add)
 
         listTeamMember.postValue(current)
 
-        HawkUtils().setTempDataCreateSs(
-            teamMember = current
+        val data = HawkUtils().getTempDataCreatePi(source)
+
+        HawkUtils().setTempDataCreatePi(
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementation = data?.statusImplementation,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = data?.sebabMasalah,
+            akarMasalah = data?.akarMasalah,
+            nilaiOutput = data?.nilaiOutput,
+            nqi = data?.nqi,
+            teamMember = current,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = data?.attachment,
+            statusProposal = data?.statusProposal,
+            source = source
         )
     }
 
-    fun updateTeamMember(add: ArrayList<TeamMemberItem?>?) {
+    fun updateTeamMember(add: ArrayList<TeamMemberItem?>?, source: String) {
         listTeamMember.postValue(add)
 
-        HawkUtils().setTempDataCreateSs(
-            teamMember = add
+        val data = HawkUtils().getTempDataCreatePi(source)
+
+        HawkUtils().setTempDataCreatePi(
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementation = data?.statusImplementation,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = data?.sebabMasalah,
+            akarMasalah = data?.akarMasalah,
+            nilaiOutput = data?.nilaiOutput,
+            nqi = data?.nqi,
+            teamMember = add,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = data?.attachment,
+            statusProposal = data?.statusProposal,
+            source = source
         )
     }
 
-    fun setpiattachment(){
-        val data = HawkUtils().getTempDataCreateSs()?.attachment
+    fun setAttachment(source: String){
+        val data = HawkUtils().getTempDataCreatePi(source)?.attachment
         Timber.d("### attachment : $data")
 
         listAttachment.postValue(data)
     }
 
-    fun getpiattachment():LiveData<ArrayList<AttachmentItem?>?>{
+    fun getAttachment():LiveData<ArrayList<AttachmentItem?>?>{
         return listAttachment
     }
 
@@ -97,7 +246,7 @@ class ProjectImprovementViewModel : ViewModel(){
 
         listAttachment.postValue(current)
 
-        HawkUtils().setTempDataCreateSs(
+        HawkUtils().setTempDataCreatePi(
             attachment = current
         )
     }
@@ -105,7 +254,7 @@ class ProjectImprovementViewModel : ViewModel(){
     fun updateAttachment(add: ArrayList<AttachmentItem?>?) {
         listAttachment.postValue(add)
 
-        HawkUtils().setTempDataCreateSs(
+        HawkUtils().setTempDataCreatePi(
             attachment = add
         )
     }
@@ -119,11 +268,8 @@ class ProjectImprovementViewModel : ViewModel(){
         listCategory.postValue(data)
     }
 
-    fun getCategorySuggestion(): LiveData<ArrayList<CategorySuggestionItem?>?> {
+    fun getCategorySuggestion(): LiveData<ArrayList<CategoryImprovementItem?>?> {
         return listCategory
     }
-
-
-
 
 }

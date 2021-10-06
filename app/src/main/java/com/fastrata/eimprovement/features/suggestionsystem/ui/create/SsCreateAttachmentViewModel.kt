@@ -3,16 +3,17 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
+import com.fastrata.eimprovement.ui.model.AttachmentItem
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import javax.inject.Inject
 
-class SsCreateAttachmentViewModel : ViewModel() {
+class SsCreateAttachmentViewModel @Inject constructor(): ViewModel() {
     private val list = MutableLiveData<ArrayList<AttachmentItem?>?>()
 
-    fun setSuggestionSystemAttachment() {
+    fun setSuggestionSystemAttachment(source: String) {
         // koneksi ke hawk
-        val data = HawkUtils().getTempDataCreateSs()?.attachment
+        val data = HawkUtils().getTempDataCreateSs(source)?.attachment
         Timber.d("### attachment : $data")
 
         list.postValue(data)

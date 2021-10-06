@@ -1,6 +1,5 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
-import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
@@ -12,23 +11,45 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.fastrata.eimprovement.HomeActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ActivityProjectImprovementWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
-import com.fastrata.eimprovement.features.ChangesPoint.ui.create.add.AddChangeRewardActivity
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusPiFragment
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.Tools
 import com.google.gson.Gson
+import dagger.android.AndroidInjection
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovementCreateWizard : AppCompatActivity() {
-
+class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: ActivityProjectImprovementWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
-    private val maxStep = 9
+    private var piNo: String = ""
+    private var action: String = ""
+    private lateinit var viewModel: ProjectImprovementViewModel
+    private var maxStep = 9
     private var currentStep = 1
-    private lateinit var piCreateCallback : ProjecImprovementSystemCreateCallback
+    private var source: String = PI_CREATE
+    private lateinit var notification: HelperNotification
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
+
+    private val args: ProjectImprovementCreateWizardArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +58,105 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
         toolbarBinding = ToolbarBinding.bind(binding.root)
         setContentView(binding.root)
 
-        initToolbar()
-        initComponent()
+        AndroidInjection.inject(this)
+        viewModel = injectViewModel(viewModelFactory)
+
+        val argsTitle   = args.toolbarTitle!!
+        val argsAction  = args.action
+        val argsPiNo    = args.piNo
+
+        action = argsAction
+
+        if (action == APPROVE) {
+            maxStep += 1
+        }
+
+        when (argsAction) {
+            EDIT -> {
+                piNo = argsPiNo
+
+                source = PI_DETAIL_DATA
+                viewModel.setProjectImprovementDetail(argsPiNo)
+                viewModel.getProjectImprovementDetail().observe(this, { detailData ->
+                    println("### data :"+detailData)
+                    HawkUtils().setTempDataCreatePi(
+                        id = detailData.id,
+                        piNo = detailData.piNo,
+                        department = detailData.department,
+                        years = detailData.years,
+                        date = detailData.date,
+                        branch = detailData.branch,
+                        subBranch = detailData.subBranch,
+                        title = detailData.title,
+                        statusImplementation = detailData.statusImplementation,
+                        identification = detailData.identification,
+                        target = detailData.target,
+                        sebabMasalah = detailData.sebabMasalah,
+                        akarMasalah = detailData.akarMasalah,
+                        nilaiOutput = detailData.nilaiOutput,
+                        nqi = detailData.nqi,
+                        teamMember = detailData.teamMember,
+                        categoryFixing = detailData.categoryFixing,
+                        hasilImplementasi = detailData.implementationResult,
+                        attachment = detailData.attachment,
+                        statusProposal = detailData.statusProposal,
+                        source = PI_DETAIL_DATA
+                    )
+
+                    initToolbar(argsTitle)
+                    initComponent()
+                })
+            }
+            ADD -> {
+                piNo = ""
+
+                source = PI_CREATE
+                HawkUtils().setTempDataCreatePi(
+                    piNo = "",
+                    branch = HawkUtils().getDataLogin().BRANCH,
+                    department = HawkUtils().getDataLogin().DEPARTMENT,
+                    subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
+                    source = PI_CREATE
+                )
+
+                initToolbar(argsTitle)
+                initComponent()
+            }
+            APPROVE -> {
+                piNo = argsPiNo
+
+                source = PI_DETAIL_DATA
+                viewModel.setProjectImprovementDetail(argsPiNo)
+                viewModel.getProjectImprovementDetail().observe(this, { detailData ->
+                    HawkUtils().setTempDataCreatePi(
+                        id = detailData.id,
+                        piNo = detailData.piNo,
+                        department = detailData.department,
+                        years = detailData.years,
+                        date = detailData.date,
+                        branch = detailData.branch,
+                        subBranch = detailData.subBranch,
+                        title = detailData.title,
+                        statusImplementation = detailData.statusImplementation,
+                        identification = detailData.identification,
+                        target = detailData.target,
+                        sebabMasalah = detailData.sebabMasalah,
+                        akarMasalah = detailData.akarMasalah,
+                        nilaiOutput = detailData.nilaiOutput,
+                        nqi = detailData.nqi,
+                        teamMember = detailData.teamMember,
+                        categoryFixing = detailData.categoryFixing,
+                        hasilImplementasi = detailData.implementationResult,
+                        attachment = detailData.attachment,
+                        statusProposal = detailData.statusProposal,
+                        source = PI_DETAIL_DATA
+                    )
+
+                    initToolbar(argsTitle)
+                    initComponent()
+                })
+            }
+        }
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
         Tools.setSystemBarLight(this)
@@ -67,6 +185,10 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
             val fragment = mFragmentManager.findFragmentByTag(ProjectImprovStep1Fragment::class.java.simpleName)
 
             if(fragment !is ProjectImprovStep1Fragment){
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                mHomeFragment.arguments = args
                 mFragmentManager
                     .beginTransaction()
                     .add(R.id.frame_container_pi, mHomeFragment, ProjectImprovStep1Fragment::class.java.simpleName)
@@ -76,16 +198,201 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
         }
     }
 
-    private fun initToolbar() {
+    private fun initToolbar(title: String) {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Create Project Improvement (PI)"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        setToolbar(this, toolbar, title)
     }
 
-    fun setpiCreateCallback(picreateCallback: ProjecImprovementSystemCreateCallback){
-        this.piCreateCallback = picreateCallback
+    private fun currentStepCondition(currentStep: Int) {
+        val mFragmentManager = supportFragmentManager
+        when (currentStep) {
+            1 -> {
+                println("### step 1 = $currentStep")
+                val fragment = ProjectImprovStep1Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep1Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            2 -> {
+                println("### step 2 = $currentStep")
+                val fragment = ProjectImprovStep2Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep2Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            3 -> {
+                println("### step 3 = $currentStep")
+                val fragment = ProjectImprovStep3Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep3Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            4 -> {
+                println("### step 4 = $currentStep")
+                val fragment = ProjectImprovStep4Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep4Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            5 -> {
+                println("### step 5 = $currentStep")
+                val fragment = ProjectImprovStep5Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep5Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            6 -> {
+                println("### step 6 = $currentStep")
+                val fragment = ProjectImprovStep6Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep6Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            7 -> {
+                println("### step 7 = $currentStep")
+                val fragment = ProjectImprovStep7Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep7Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            8 -> {
+                println("### step 8 = $currentStep")
+                val fragment = ProjectImprovStep8Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep8Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            9 -> {
+                println("### step 9 = $currentStep")
+                val fragment = ProjectImprovStep9Fragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment,ProjectImprovStep9Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            10 -> {
+                Timber.e("### step 10 = $currentStep")
+                val fragment = ListApprovalHistoryStatusPiFragment()
+                val args = Bundle()
+                args.putString(PI_DETAIL_DATA, piNo)
+                args.putString(ACTION_DETAIL_DATA, action)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container_pi, fragment, ListApprovalHistoryStatusPiFragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+        }
+
+    }
+
+    private lateinit var piCreateCallback : ProjectImprovementSystemCreateCallback
+    fun setPiCreateCallback(piCreateCallback: ProjectImprovementSystemCreateCallback){
+        this.piCreateCallback = piCreateCallback
+    }
+
+    private fun nextStep(progress: Int) {
+        val status = piCreateCallback.onDataPass()
+        if (status) {
+            if (progress < maxStep) {
+                currentStep = progress + 1
+                currentStepCondition(currentStep)
+
+                binding.apply {
+                    lytBack.visibility = View.VISIBLE
+                    lytNext.visibility = View.VISIBLE
+
+                    if (action == APPROVE) {
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            } else {
+                //CoroutineScope(Dispatchers.Default).launch {
+                notification = HelperNotification()
+                binding.apply {
+                    notification.shownotificationyesno(
+                        this@ProjectImprovementCreateWizard,
+                        resources.getString(R.string.submit),
+                        resources.getString(R.string.submit_desc),
+                        object : HelperNotification.CallBackNotificationYesNo {
+                            override fun onNotificationNo() {
+
+                            }
+
+                            override fun onNotificationYes() {
+                                val gson = Gson()
+                                val data = gson.toJson(HawkUtils().getTempDataCreatePi(source))
+                                println("### Data form input : $data")
+                                Toast.makeText(
+                                    this@ProjectImprovementCreateWizard,
+                                    resources.getString(R.string.pi_saved),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                finish()
+                            }
+                        }
+                    )
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -94,163 +401,15 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
 
     private fun backStep(progress: Int) {
         if (progress > 1) {
-            currentStep = progress-1;
+            currentStep = progress-1
             currentStepCondition(currentStep)
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
-                lytSave.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }
             }
-        }
-    }
-
-//    private lateinit var picreateCallback: ProjecImprovementSystemCreateCallback
-//    fun setpiCreateCallback(piCreateCallback: ProjecImprovementSystemCreateCallback) {
-//        this.picreateCallback = piCreateCallback
-//    }
-
-    private fun currentStepCondition(currentStep: Int) {
-        val mFragmentManager = supportFragmentManager
-        when (currentStep) {
-            1 -> {
-                println("### step 1 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep1Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep1Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            2 -> {
-                println("### step 2 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep2Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep2Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            3 -> {
-                println("### step 3 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep3Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep3Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            4 -> {
-                println("### step 4 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep4Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep4Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            5 -> {
-                println("### step 5 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep5Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep5Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            6 -> {
-                println("### step 6 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep6Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep6Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            7 -> {
-                println("### step 7 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep7Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep7Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            8 -> {
-                println("### step 8 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep8Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-            9 -> {
-                println("### step 9 = $currentStep")
-                val mCategoryFragment = ProjectImprovStep9Fragment()
-                mFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_container_pi, mCategoryFragment,ProjectImprovStep8Fragment::class.java.simpleName)
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-        }
-
-    }
-
-    private fun nextStep(progress: Int) {
-//        if (progress < maxStep) {
-//            currentStep = progress+1
-//            currentStepCondition(currentStep)
-//
-//            binding.apply {
-//                lytBack.visibility = View.VISIBLE
-//                lytNext.visibility = View.VISIBLE
-//                lytSave.visibility = View.GONE
-//                if (currentStep == maxStep) {
-//                    lytNext.visibility = View.GONE
-//                    lytSave.visibility = View.VISIBLE
-//                    lytSave.setOnClickListener {
-//                        Toast.makeText(this@ProjectImprovementCreateWizard, "Save suggestion system", Toast.LENGTH_LONG).show()
-//                    }
-//                }
-//            }
-//        }
-        if(progress <maxStep) {
-//            val status = piCreateCallback.onDataPass()
-//            if(status){
-                currentStep = progress +1
-                currentStepCondition(currentStep)
-
-                binding.apply {
-                    lytBack.visibility = View.VISIBLE
-                    lytNext.visibility = View.VISIBLE
-                    lytSave.visibility = View.GONE
-                    if (currentStep == maxStep) {
-                        lytNext.visibility = View.GONE
-                        lytSave.visibility = View.VISIBLE
-                        lytSave.setOnClickListener {
-                            val gson = Gson()
-                            val data = gson.toJson(HawkUtils().getTempDataCreatePi())
-                            println("### Data form input : $data")
-                            Toast.makeText(
-                                this@ProjectImprovementCreateWizard,
-                                "Save Project Improvement",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            backtodashboard()
-                        }
-                    }
-                }
-
-        }
-    }
-
-    private fun backtodashboard() {
-        Intent(this, HomeActivity::class.java).also {
-            startActivity(it)
         }
     }
 
@@ -276,8 +435,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
         }
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         return super.onCreateOptionsMenu(menu)
     }
@@ -290,6 +447,4 @@ class ProjectImprovementCreateWizard : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }

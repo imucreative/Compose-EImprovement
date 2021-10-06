@@ -1,6 +1,6 @@
 package com.fastrata.eimprovement.di
 
-import com.fastrata.eimprovement.features.login.data.LoginRemoteRequest
+import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

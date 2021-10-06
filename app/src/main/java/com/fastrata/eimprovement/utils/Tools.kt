@@ -43,6 +43,10 @@ import kotlin.math.roundToInt
 
 object Tools {
 
+    fun <T> listToArrayList(list: List<T>?): ArrayList<T>? {
+        return list?.let { ArrayList(it) }
+    }
+
     // extension function to hide soft keyboard
     // https://stackoverflow.com/a/45857155/14795594
     fun Fragment.hideKeyboard() {
@@ -459,36 +463,22 @@ object Tools {
     }
 
     //mathematics
-
-    fun sumValues(value1 :String,value2 : String): String{
-        println("vl1:"+value1+"/"+value2)
-        val int1 : Int? = value1.toInt()
-        val int2: Int? = value2.toInt()
-        val nums = listOf(int1, int2)
-        var num : String = nums.toString()
-        return num
+    fun sumValues(value1: String, value2: String): String {
+        println("vl1:$value1+$value2")
+        var int1: Int
+        var int2: Int
+        if (value1 == "" || value1.isNullOrEmpty()){
+            int1 = 0
+        }else{
+            int1 = value1.toInt()
+        }
+        if(value2 == "" || value2.isNullOrEmpty()){
+            int2 = 0
+        }else{
+            int2  = value2.toInt()
+        }
+        println("vlint : ${int1.toString()}+ ${int2.toString()}")
+        val nums = int1 + int2
+        return nums.toString()
     }
-
-    // var data1: String = "0"
-    //        var data2: String = "0"
-    //        var stringex1: String
-    //        var stringex2: String
-    //        val int1 : Int?
-    //        val int2: Int?
-    //        if(value1== ""){
-    //            stringex1 = data1
-    //            int1 =stringex1.toInt()
-    //        }else{
-    //            int1 = value1.toInt()
-    //        }
-    //        if(value2== ""){
-    //            stringex2 = data1
-    //            int2 =stringex2.toInt()
-    //        }else{
-    //            int2 = value2.toInt()
-    //        }
-    //
-    //        val nums = listOf(int1, int2)
-    //        var num : String = nums.toString()
-    //        return num
 }

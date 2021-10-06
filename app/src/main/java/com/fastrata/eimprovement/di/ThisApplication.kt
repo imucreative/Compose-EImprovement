@@ -6,8 +6,7 @@ import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import dagger.android.DispatchingAndroidInjector
 import com.fastrata.eimprovement.BuildConfig
-import com.fastrata.eimprovement.utils.PREF_USER_NAME
-import com.fastrata.eimprovement.utils.PreferenceUtils
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.orhanobut.hawk.Hawk
 import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector
@@ -51,10 +50,11 @@ class ThisApplication : Application(), HasAndroidInjector {
             })
         }
 
-        val userName = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
+        /*//val userName = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
+        val userName = HawkUtils().getDataLogin().USER_NAME
 
         //don't start sync if user does not login yet
-        if (userName.isBlank()) return
+        if (userName.isBlank()) return*/
     }
 
 

@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
     app:cardMaxElevation="4dp"
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginTop="@dimen/spacing_large"
-            android:text="CP-0000/08/2021/0001"
+            tools:text="CP-0000/08/2021/0001"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/grey_80" />
 
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginVertical="@dimen/spacing_medium"
-            android:text="Aktif"
+            tools:text="Aktif"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/grey_80" />
 
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginVertical="@dimen/spacing_medium"
-            android:text="Desc"
+            tools:text="Desc"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/grey_80" />
 
@@ -57,9 +58,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginVertical="@dimen/spacing_medium"
             android:layout_marginTop="@dimen/spacing_medium"
             android:orientation="horizontal">
 
@@ -67,7 +67,7 @@
                 android:id="@+id/branch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PUSAT"
+                tools:text="PUSAT"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/grey_40" />
 
@@ -80,7 +80,7 @@
                 android:id="@+id/sub_branch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FBPST - Gd Barang Dagang"
+                tools:text="FBPST - Gd Barang Dagang"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/grey_40" />
 
@@ -89,16 +89,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wed, 20 Jan 19, 05:08 PM"
+                tools:text="Wed, 20 Jan 19, 05:08 PM"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/grey_40" />
 
@@ -108,14 +107,12 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/Total"
+                android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total"
+                tools:text="1000"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/grey_40" />
-
-
 
         </LinearLayout>
 

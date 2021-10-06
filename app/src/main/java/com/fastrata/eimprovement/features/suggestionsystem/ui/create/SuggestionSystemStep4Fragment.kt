@@ -9,29 +9,41 @@ import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep4Binding
 import android.content.Intent
 import android.net.Uri
+import android.os.FileUtils
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.utils.SnackBarCustom
-import com.fastrata.eimprovement.utils.FileInformation
+import com.fastrata.eimprovement.ui.adapter.AttachmentAdapter
+import com.fastrata.eimprovement.ui.adapter.AttachmentCallback
+import com.fastrata.eimprovement.ui.model.AttachmentItem
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
+import java.io.File
+import javax.inject.Inject
 
-class SuggestionSystemStep4Fragment: Fragment() {
-
+class SuggestionSystemStep4Fragment: Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentSuggestionSystemStep4Binding? = null
     private val binding get() = _binding!!
     private val pickFromGallery = 101
     private var data: SuggestionSystemCreateModel? = null
-    private lateinit var viewModel: SsCreateAttachmentViewModel
-    private lateinit var adapter: SsCreateAttachmentAdapter
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
+    private lateinit var viewModelAttachment: SsCreateAttachmentViewModel
+    private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
     private lateinit var initFileName: String
     private lateinit var initFilePath: String
+    private var source: String = SS_CREATE
+    private lateinit var ext : String
+    private val fileNameExt = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +51,20 @@ class SuggestionSystemStep4Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSuggestionSystemStep4Binding.inflate(layoutInflater, container, false)
-        data = HawkUtils().getTempDataCreateSs()
+
+        viewModelAttachment = injectViewModel(viewModelFactory)
+
+        ssNo = arguments?.getString(SS_DETAIL_DATA)
+        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreateSs(source)
+        viewModelAttachment.setSuggestionSystemAttachment(source)
+
+        attachmentAdapter = AttachmentAdapter()
+        attachmentAdapter.notifyDataSetChanged()
+
         return binding.root
     }
 
@@ -47,9 +72,25 @@ class SuggestionSystemStep4Fragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
 
-        initComponent(data?.attachment)
+        binding.apply {
+            rvSsAttachment.setHasFixedSize(true)
+            rvSsAttachment.layoutManager = LinearLayoutManager(context)
+            rvSsAttachment.adapter = attachmentAdapter
+
+            getAttachment.setOnClickListener {
+                openFolder()
+            }
+        }
+
+        initList(data?.attachment)
+        setData()
+        setValidation()
+
+        if (ssAction == APPROVE) {
+            disableForm()
+        }
     }
 
     override fun onDestroyView() {
@@ -57,50 +98,53 @@ class SuggestionSystemStep4Fragment: Fragment() {
         _binding = null
     }
 
-    private fun initComponent(attachment: ArrayList<AttachmentItem?>?) {
-        viewModel.setSuggestionSystemAttachment()
-        adapter = SsCreateAttachmentAdapter()
-        adapter.notifyDataSetChanged()
-
+    private fun disableForm() {
         binding.apply {
-            rvSsAttachment.setHasFixedSize(true)
-            rvSsAttachment.layoutManager = LinearLayoutManager(context)
-            rvSsAttachment.adapter = adapter
-
-            getAttachment.setOnClickListener {
-                openFolder()
-            }
+            getAttachment.isClickable = false
+            addAttachment.isClickable = false
         }
+    }
 
-        adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
+    private fun initList(attachment: ArrayList<AttachmentItem?>?) {
+        attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
+                if (ssAction != APPROVE) {
+                    attachment?.remove(data)
 
-                attachment?.remove(data)
-
-                viewModel.updateAttachment(attachment)
-                viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        adapter.setList(it)
-                        Timber.i("### ambil dari getSuggestionSystemAttachment $it")
-                    }
-                })
+                    viewModelAttachment.updateAttachment(attachment)
+                    viewModelAttachment.getSuggestionSystemAttachment()
+                        .observe(viewLifecycleOwner, {
+                            if (it != null) {
+                                attachmentAdapter.setList(it)
+                            }
+                        })
+                }
             }
 
             override fun showAttachment(data: AttachmentItem) {
-                //File(URI(uri.toString()))
                 println("### Testing show attachment : ${data.name}")
+                println("### Testing path attachment : ${data.uri}")
+                if (data.uri.isEmpty()){
+                    println("### FILE EXIST : NOT EXIST")
+                    SnackBarCustom.snackBarIconInfo(
+                        binding.root, layoutInflater, resources, binding.root.context,
+                        resources.getString(R.string.file_not_found),
+                        R.drawable.ic_close, R.color.red_500)
+                }else{
+                    println("### FILE EXIST : EXIST")
+                    val intent = Intent()
+                        .setType("*/*")
+                        .setAction(Intent.ACTION_GET_CONTENT)
+                    startActivityForResult(Intent.createChooser(intent, data.uri), 111)
+                }
             }
         })
 
-        viewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+        viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
-                adapter.setList(it)
-                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
+                attachmentAdapter.setList(it)
             }
         })
-
-        setData()
     }
 
     private fun openFolder() {
@@ -119,22 +163,36 @@ class SuggestionSystemStep4Fragment: Fragment() {
         if (requestCode == pickFromGallery && resultCode == RESULT_OK) {
             if (data != null) {
                 uri = data.data!!
-                initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
-                initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
-                initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
-
-                //if (initFileSize.toInt() <= 2048) {
-                    binding.fileName.text = initFileName
-
-                    Timber.e("### path uri : $uri")
-                    Timber.e("### file size : $initFileSize")
-                    Timber.e("### path : $initFilePath")
-                /*} else {
+                val fileData = FileUtils().from(requireContext(),uri)
+                val file_size: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
+                Timber.e("###FILE SIZE: $file_size")
+                if (file_size == 0 || file_size >= 2048){
                     SnackBarCustom.snackBarIconInfo(
-                        binding.root.rootView, layoutInflater, resources, binding.root.rootView.context,
-                        "Attachment must be under 2Mb",
+                        binding.root, layoutInflater, resources, binding.root.context,
+                        resources.getString(R.string.file_size),
                         R.drawable.ic_close, R.color.red_500)
-                }*/
+                }else{
+                    initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
+                    initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
+                    initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
+                    if(initFileName.contains(".")){
+                        ext = initFileName.substring(initFileName.lastIndexOf("."))
+                        Timber.e("###EXT : $ext")
+                        val match = fileNameExt.filter { ext.contains(it,ignoreCase = true) }
+                        Timber.e("### MATCH SIZE: ${match.size}")
+                        if (match.isNotEmpty()){
+                            binding.fileName.text = initFileName
+                            Timber.e("### path uri : $uri")
+                            Timber.e("### file size : $initFileSize")
+                            Timber.e("### path : $initFilePath")
+                        }else{
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, binding.root.context,
+                                resources.getString(R.string.file_ext),
+                                R.drawable.ic_close, R.color.red_500)
+                        }
+                    }
+                }
             }
         }
     }
@@ -142,24 +200,68 @@ class SuggestionSystemStep4Fragment: Fragment() {
     private fun setData() {
         binding.apply {
             addAttachment.setOnClickListener {
-                if (fileName.text.isEmpty()) {
-                    SnackBarCustom.snackBarIconInfo(
-                        root.rootView, layoutInflater, resources, root.rootView.context,
-                        "Attachment must be fill before added",
-                        R.drawable.ic_close, R.color.red_500)
-                } else {
+                when {
+                    fileName.text.isEmpty() -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500)
+                    }
+                    else -> {
 
-                    val addData = AttachmentItem(
-                        name = initFileName,
-                        uri = uri.toString(),
-                        size = initFileSize
-                    )
+                        val addData = AttachmentItem(
+                            name = initFileName,
+                            uri = uri.toString(),
+                            size = initFileSize
+                        )
 
-                    viewModel.addAttachment(addData, data?.attachment)
+                        viewModelAttachment.addAttachment(addData, data?.attachment)
 
-                    fileName.text = ""
+                        fileName.text = ""
+                    }
                 }
             }
         }
+    }
+
+    private fun setValidation() {
+        (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object : SuggestionSystemCreateCallback {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+
+                binding.apply {
+                    stat = if (data?.attachment?.size == 0) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
+                        HawkUtils().setTempDataCreateSs(
+                            ssNo = data?.ssNo,
+                            date = data?.date,
+                            title = data?.title,
+                            listCategory = data?.categoryImprovement,
+                            name = data?.name,
+                            nik = data?.nik,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            directMgr = data?.directMgr,
+                            suggestion = data?.suggestion,
+                            problem = data?.problem,
+                            statusImplementation = data?.statusImplementation,
+                            teamMember = data?.teamMember,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
+                        true
+                    }
+                }
+
+                return stat
+            }
+        })
     }
 }

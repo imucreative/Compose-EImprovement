@@ -4,48 +4,68 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep5Binding
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.AkarMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import javax.inject.Inject
 
-class ProjectImprovStep5Fragment : Fragment() {
-
-    private lateinit var _binding: FragmentProjectImprovementStep5Binding
-    private val binding get() = _binding
+class ProjectImprovStep5Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private var _binding: FragmentProjectImprovementStep5Binding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel : ProjectImprovementViewModel
     private lateinit var adapter : AkarMasalahAdapter
     private var data : ProjectImprovementCreateModel? = null
+    private var piNo: String? = ""
+    private var action: String? = ""
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProjectImprovementStep5Binding.inflate(layoutInflater, container, false)
-        data = HawkUtils().getTempDataCreatePi()
-        return _binding.root
+        _binding = FragmentProjectImprovementStep5Binding.inflate(inflater, container, false)
+
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentProjectImprovementStep5Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
 
         initComponent()
+        setValidation()
     }
 
     private fun initComponent() {
-        viewModel.setAkarMasalah()
-        adapter = AkarMasalahAdapter()
+        viewModel.setAkarMasalah(source)
+
+        adapter = AkarMasalahAdapter(action = action, clickedItemListener = { akarMasalahItem, index ->
+            changeItemListener(akarMasalahItem, index)
+        })
         adapter.notifyDataSetChanged()
 
         binding.apply {
@@ -56,7 +76,7 @@ class ProjectImprovStep5Fragment : Fragment() {
 
         adapter.setAkarMslhCallback(object : AkarMasalahCallback {
             override fun onItemClicked(data: AkarMasalahItem) {
-                Toast.makeText(context,data.akarmslsh, Toast.LENGTH_SHORT).show()
+
             }
         })
 
@@ -67,5 +87,52 @@ class ProjectImprovStep5Fragment : Fragment() {
         })
     }
 
+    private fun changeItemListener(akarMasalahItem: AkarMasalahItem, index: Int) {
+        viewModel.updateAkarMasalah(akarMasalahItem, index, source)
+    }
 
+    private fun setValidation() {
+        (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object : ProjectImprovementSystemCreateCallback {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+
+                binding.apply {
+                    stat = if (data?.akarMasalah?.size == 0) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.problem_suggest),
+                            R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
+                        HawkUtils().setTempDataCreatePi(
+                            id = data?.id,
+                            piNo = data?.piNo,
+                            date = data?.date,
+                            title = data?.title,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            years = data?.years,
+                            statusImplementation = data?.statusImplementation,
+                            identification = data?.identification,
+                            target = data?.target,
+                            sebabMasalah = data?.sebabMasalah,
+                            akarMasalah = data?.akarMasalah,
+                            nilaiOutput = data?.nilaiOutput,
+                            nqi = data?.nqi,
+                            teamMember = data?.teamMember,
+                            categoryFixing = data?.categoryFixing,
+                            hasilImplementasi = data?.implementationResult,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
+                        true
+                    }
+                }
+
+                return stat
+            }
+        })
+    }
 }

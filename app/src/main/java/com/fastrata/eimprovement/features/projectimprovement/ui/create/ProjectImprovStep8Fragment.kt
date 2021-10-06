@@ -1,56 +1,62 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep8Binding
-import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateAttachmentAdapter
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateAttachmentCallback
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.AttachmentItem
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.CategorySuggestionItem
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateCategorySuggestionAdapter
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateCategorySuggestionViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateAttachmentCallback
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCategorySuggestionCallback
+import com.fastrata.eimprovement.ui.adapter.CategoryImprovementAdapter
+import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
+import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER
-import com.fastrata.eimprovement.utils.SS_CATEGORY_OTHER_VALUE
-import com.fastrata.eimprovement.utils.SnackBarCustom
-import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovStep8Fragment : Fragment () {
-
-
-    private lateinit var _binding: FragmentProjectImprovementStep8Binding
+class ProjectImprovStep8Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private var _binding: FragmentProjectImprovementStep8Binding? = null
     private val binding get() = _binding!!
-    private lateinit var categoryAdapter: SsCreateCategorySuggestionAdapter
-    private val listCategory = ArrayList<CategorySuggestionItem?>()
+    private lateinit var categoryAdapter: CategoryImprovementAdapter
+    private val listCategory = ArrayList<CategoryImprovementItem?>()
     private lateinit var categoryViewModel: ProjectImprovementViewModel
     private var data : ProjectImprovementCreateModel? = null
+    private var piNo: String? = ""
+    private var action: String? = ""
+    private var source: String = PI_CREATE
+    var statusImplement : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProjectImprovementStep8Binding.inflate(layoutInflater, container, false)
-        categoryViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProjectImprovementViewModel::class.java)
+        _binding = FragmentProjectImprovementStep8Binding.inflate(inflater, container, false)
+        categoryViewModel = injectViewModel(viewModelFactory)
+
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
+
         categoryViewModel.setCategorySuggestion()
-        categoryAdapter = SsCreateCategorySuggestionAdapter()
+        categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
-        data = HawkUtils().getTempDataCreatePi()
-        return _binding.root
+
+        statusImplement = HawkUtils().getStatusImplementation()
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,12 +64,38 @@ class ProjectImprovStep8Fragment : Fragment () {
 
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
-        initComponent()
+        binding.apply {
+            if (data?.statusImplementation?.sudah == null) {
+                cardViewHasilImplementasi.visibility = View.GONE
+            } else {
+                cardViewHasilImplementasi.visibility = View.VISIBLE
+                hasilImplementasiImprovement.setText(data?.implementationResult)
+            }
+            data?.categoryFixing?.let { category ->
+                listCategory.addAll(category)
+            }
+        }
+
+        setInitCategory()
+        setData()
+
+        if (action == APPROVE) {
+            disableForm()
+        }
     }
 
-    private fun initComponent() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun disableForm() {
         binding.apply {
-            setInitCategory()
+            checkboxOther.isEnabled = false
+            tvCheckboxOther.isClickable = false
+            edtLainLain.isEnabled = false
+
+            hasilImplementasiImprovement.isEnabled = false
         }
     }
 
@@ -73,54 +105,133 @@ class ProjectImprovStep8Fragment : Fragment () {
             rvCategoryImprovement.setHasFixedSize(true)
             rvCategoryImprovement.layoutManager = LinearLayoutManager(context)
             rvCategoryImprovement.adapter = categoryAdapter
-        }
-        categoryAdapter.ssCreateCallback(object : SuggestionSystemCreateCategorySuggestionCallback {
-            override fun checkClicked(data: CategorySuggestionItem, checked: Boolean) {
-                if (checked) {
-                    if(data.id == SS_CATEGORY_OTHER) {
-                        binding.etOther.visibility = View.VISIBLE
-                    }
 
-                    listCategory.add(
-                        CategorySuggestionItem(
-                            id = data.id,
-                            category = data.category,
-                            checked = checked
-                        )
-                    )
+            tvCheckboxOther.setOnClickListener {
+                checkboxOther.isChecked = !checkboxOther.isChecked
 
+                if (checkboxOther.isChecked) {
+                    edtLayoutLainLain.visibility = View.VISIBLE
                 } else {
-                    if(data.id == SS_CATEGORY_OTHER) {
-                        binding.etOther.visibility = View.GONE
-                    }
-
-                    listCategory.remove(
-                        CategorySuggestionItem(
-                            id = data.id,
-                            category = data.category,
-                            checked = !checked  // belom bener
-                        )
-                    )
+                    edtLayoutLainLain.visibility = View.GONE
                 }
-                println("##### listCategory $listCategory")
+            }
+        }
+
+        categoryAdapter.categoryImprovementCreateCallback(object : CategoryImprovementCallback {
+            override fun checkClicked(data: CategoryImprovementItem, checked: Boolean) {
+                data.checked = checked
+                if (checked) {
+                    listCategory.add(data)
+                } else {
+                    listCategory.remove(data)
+                }
             }
         })
 
         categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
             if (it != null) {
-
-                categoryAdapter.setListCategorySuggestion(it, listCategory)
+                categoryAdapter.setListCategoryImprovement(it, listCategory, action!!)
                 listCategory.map { checkList ->
-                    if (checkList?.id == SS_CATEGORY_OTHER_VALUE) {
+                    if (checkList?.id == 0) {
                         binding.apply {
-                            etOther.visibility = View.VISIBLE
+                            checkboxOther.isChecked = !checkboxOther.isChecked
+                            edtLayoutLainLain.visibility = View.VISIBLE
                             edtLainLain.setText(checkList.category)
                         }
-
                     }
                 }
+            }
+        })
+    }
 
-                Timber.e("### ambil dari getCategorySuggestion $it")
+    private fun setData() {
+        (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object :
+            ProjectImprovementSystemCreateCallback {
+            override fun onDataPass(): Boolean {
+                var stat: Boolean
+                binding.apply {
+                    if (checkboxOther.isChecked && !edtLainLain.text.isNullOrBlank()){
+                        val (match, notMatch) = listCategory.partition { it?.id == 0 }
+                        if (match.isNotEmpty()) {
+                            listCategory.remove(
+                                CategoryImprovementItem(
+                                    id = 0,
+                                    category = match[0]?.category.toString(),
+                                    checked = true
+                                )
+                            )
+                        }
+                        listCategory.add(
+                            CategoryImprovementItem(
+                                id = 0,
+                                category = edtLainLain.text.toString(),
+                                checked = true
+                            )
+                        )
+
+                    } else {
+                        listCategory.remove(
+                            CategoryImprovementItem(
+                                id = 0,
+                                category = edtLainLain.text.toString(),
+                                checked = true
+                            )
+                        )
+                    }
+
+                    when {
+                        checkboxOther.isChecked && edtLainLain.text.isNullOrBlank() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.other_category_empty),
+                                R.drawable.ic_close, R.color.red_500)
+                            edtLainLain.requestFocus()
+                            stat = false
+                        }
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementation?.sudah != null -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.result_empty),
+                                R.drawable.ic_close, R.color.red_500)
+                            hasilImplementasiImprovement.requestFocus()
+                            stat = false
+                        }
+                        listCategory.isEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.category_empty),
+                                R.drawable.ic_close, R.color.red_500)
+                            stat = false
+                        }
+                        else -> {
+                            HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.date,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementation = data?.statusImplementation,
+                                identification = data?.identification,
+                                target = data?.target,
+                                sebabMasalah = data?.sebabMasalah,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.nilaiOutput,
+                                nqi = data?.nqi,
+                                teamMember = data?.teamMember,
+                                categoryFixing = listCategory,
+                                hasilImplementasi = hasilImplementasiImprovement.text.toString(),
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                source = source
+                            )
+                            stat = true
+                        }
+                    }
+                }
+                return stat
             }
         })
     }

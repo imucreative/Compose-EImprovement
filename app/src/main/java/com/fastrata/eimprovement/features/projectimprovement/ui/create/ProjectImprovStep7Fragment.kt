@@ -1,37 +1,47 @@
 package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep7Binding
-import com.fastrata.eimprovement.features.projectimprovement.adapter.PiCreateTeamMemberAdapter
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementCreateTeamMemberCallback
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjecImprovementSystemCreateCallback
+import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.*
-import com.fastrata.eimprovement.utils.DataDummySs
+import com.fastrata.eimprovement.ui.adapter.*
+import com.fastrata.eimprovement.ui.model.*
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import timber.log.Timber
+import javax.inject.Inject
 
-class ProjectImprovStep7Fragment : Fragment () {
-
-    private lateinit var _binding: FragmentProjectImprovementStep7Binding
-    private val binding get() = _binding
-    private var data: SuggestionSystemCreateModel? = null
-    private lateinit var viewModel: ProjectImprovementViewModel
-    private lateinit var adapter: PiCreateTeamMemberAdapter
-
+class ProjectImprovStep7Fragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private var _binding: FragmentProjectImprovementStep7Binding? = null
+    private val binding get() = _binding!!
+    private var data: ProjectImprovementCreateModel? = null
+    private var piNo: String? = ""
+    private var action: String? = ""
+    private lateinit var viewModelTeamMember: ProjectImprovementViewModel
+    private lateinit var teamMemberAdapter: TeamMemberAdapter
+    private lateinit var listMemberItem: List<MemberNameItem>
+    private lateinit var listDepartmentItem: List<MemberDepartmentItem>
+    private lateinit var listTaskItem: List<MemberTaskItem>
+    private lateinit var selectedMember: MemberNameItem
+    private lateinit var selectedDepartment: MemberDepartmentItem
+    private lateinit var selectedTask: MemberTaskItem
+    private var source: String = PI_CREATE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,92 +49,133 @@ class ProjectImprovStep7Fragment : Fragment () {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep7Binding.inflate(layoutInflater, container, false)
-        data = HawkUtils().getTempDataCreateSs()
-        return _binding.root
+        viewModelTeamMember = injectViewModel(viewModelFactory)
+
+        piNo = arguments?.getString(PI_DETAIL_DATA)
+        action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+
+        data = HawkUtils().getTempDataCreatePi(source)
+        viewModelTeamMember.setSuggestionSystemTeamMember(source)
+
+        listMemberItem = DataDummySs.generateDummyNameMember()
+        listDepartmentItem = DataDummySs.generateDummyDepartmentMember()
+        listTaskItem = DataDummySs.generateDummyTaskMember()
+
+        teamMemberAdapter = TeamMemberAdapter()
+        teamMemberAdapter.notifyDataSetChanged()
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentProjectImprovementStep7Binding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            ProjectImprovementViewModel::class.java)
-        initComponent()
-    }
-
-    fun initComponent(){
-
-        viewModel.setSuggestionSystemTeamMember()
-        adapter = PiCreateTeamMemberAdapter()
-        adapter.notifyDataSetChanged()
 
         binding.apply {
             rvSsTeamMember.setHasFixedSize(true)
             rvSsTeamMember.layoutManager = LinearLayoutManager(context)
-            rvSsTeamMember.adapter = adapter
+            rvSsTeamMember.adapter = teamMemberAdapter
+        }
 
-            val listMemberName: List<MemberNameItem> = DataDummySs.generateDummyNameMember()
+        initComponent()
+
+        initList(data?.teamMember)
+
+        setData()
+        setValidation()
+
+        if (action == APPROVE) {
+            disableForm()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun disableForm() {
+        binding.apply {
+            memberName.isEnabled = false
+            memberDepartment.isEnabled = false
+            memberTask.isEnabled = false
+
+            addTeamMember.isClickable = false
+        }
+    }
+
+    fun initComponent(){
+        binding.apply {
             val adapterMemberName = ArrayAdapter(
-                requireContext(), R.layout.simple_list_item_1,
-                listMemberName.map { value ->
+                requireContext(), android.R.layout.simple_list_item_1,
+                listMemberItem.map { value ->
                     value.name
                 }
             )
             memberName.setAdapter(adapterMemberName)
-            memberName.onItemClickListener = onItemClickListener
+            memberName.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
+                selectedMember = listMemberItem[i]
+                hideKeyboard()
+            }
 
-            val listMemberDepartment: List<MemberDepartmentItem> = DataDummySs.generateDummyDepartmentMember()
             val adapterMemberDepartment = ArrayAdapter(
-                requireContext(), R.layout.simple_list_item_1,
-                listMemberDepartment.map { value ->
+                requireContext(), android.R.layout.simple_list_item_1,
+                listDepartmentItem.map { value ->
                     value.department
                 }
             )
             memberDepartment.setAdapter(adapterMemberDepartment)
-            memberDepartment.onItemClickListener = onItemClickListener
+            memberDepartment.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
+                selectedDepartment = listDepartmentItem[i]
+                hideKeyboard()
+            }
 
-            val listMemberTask: List<MemberTaskItem> = DataDummySs.generateDummyTaskMember()
             val adapterMemberTask = ArrayAdapter(
-                requireContext(), R.layout.simple_list_item_1,
-                listMemberTask.map { value ->
+                requireContext(), android.R.layout.simple_list_item_1,
+                listTaskItem.map { value ->
                     value.task
                 }
             )
             memberTask.setAdapter(adapterMemberTask)
-            memberTask.onItemClickListener = onItemClickListener
-
+            memberTask.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
+                selectedTask = listTaskItem[i]
+                hideKeyboard()
+            }
         }
+    }
 
-        adapter.piCreateCallback(object : ProjecImprovementCreateTeamMemberCallback {
+    private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
+        teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
-                Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
+                if (action != APPROVE) {
+                    teamMember?.remove(data)
 
-                this@ProjectImprovStep7Fragment.data?.teamMember?.remove(data)
-
-                viewModel.updateTeamMember(this@ProjectImprovStep7Fragment.data?.teamMember)
-                viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        adapter.setListTeamMember(it)
-                        Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
-                    }
-                })
+                    viewModelTeamMember.updateTeamMember(teamMember, source)
+                    viewModelTeamMember.getSuggestionSystemTeamMember()
+                        .observe(viewLifecycleOwner, {
+                            if (it != null) {
+                                teamMemberAdapter.setListTeamMember(it)
+                                Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
+                            }
+                        })
+                }
             }
         })
 
-        viewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
             if (it != null) {
-                adapter.setListTeamMember(it)
+                teamMemberAdapter.setListTeamMember(it)
                 Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
             }
         })
-
-        setData()
-        setValidation()
     }
 
-    private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+    /*private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
         hideKeyboard()
-    }
+    }*/
 
     private fun setData() {
         binding.apply {
@@ -137,34 +188,43 @@ class ProjectImprovStep7Fragment : Fragment () {
                 when {
                     name.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Name must be fill before added",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.name_empty),
+                            R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
 
                     }
                     department.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Department must be fill before added",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.department_empty),
+                            R.drawable.ic_close, R.color.red_500)
                         memberDepartment.requestFocus()
                     }
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Task must be fill before added",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.task_empty),
+                            R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
                     else -> {
+                        val memberNameObj = MemberNameItem(
+                            id = selectedMember.id, name = selectedMember.name
+                        )
+                        val memberDepartmentObj = MemberDepartmentItem(
+                            id = selectedDepartment.id, department = selectedDepartment.department
+                        )
+                        val memberTaskObj = MemberTaskItem(
+                            id = selectedTask.id, task = selectedTask.task
+                        )
                         val addData = TeamMemberItem(
-                            name = name,
-                            department = department,
-                            task = task
+                            name = memberNameObj,
+                            department = memberDepartmentObj,
+                            task = memberTaskObj
                         )
 
-                        viewModel.addTeamMember(addData, data?.teamMember)
+                        viewModelTeamMember.addTeamMember(addData, data?.teamMember, source)
 
                         memberName.requestFocus()
                         memberName.setText("")
@@ -177,22 +237,46 @@ class ProjectImprovStep7Fragment : Fragment () {
     }
 
     private fun setValidation() {
-        (activity as ProjectImprovementCreateWizard).setpiCreateCallback(object  :
-            ProjecImprovementSystemCreateCallback{
+        (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object  :
+            ProjectImprovementSystemCreateCallback{
             override fun onDataPass(): Boolean {
                 binding.apply {
-                var stat = if (data?.teamMember?.size == 0) {
+                val stat = if (data?.teamMember?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(
-                            root.rootView, layoutInflater, resources, root.rootView.context,
-                            "Team Member must be fill before next",
-                            com.fastrata.eimprovement.R.drawable.ic_close, com.fastrata.eimprovement.R.color.red_500)
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.team_member_empty),
+                            R.drawable.ic_close, R.color.red_500)
                         false
                     } else {
+                        HawkUtils().setTempDataCreatePi(
+                            id = data?.id,
+                            piNo = data?.piNo,
+                            date = data?.date,
+                            title = data?.title,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            years = data?.years,
+                            statusImplementation = data?.statusImplementation,
+                            identification = data?.identification,
+                            target = data?.target,
+                            sebabMasalah = data?.sebabMasalah,
+                            akarMasalah = data?.akarMasalah,
+                            nilaiOutput = data?.nilaiOutput,
+                            nqi = data?.nqi,
+                            teamMember = data?.teamMember,
+                            categoryFixing = data?.categoryFixing,
+                            hasilImplementasi = data?.implementationResult,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            source = source
+                        )
                         true
                     }
                     return stat
                 }
             }
-            })
+            }
+        )
     }
 }

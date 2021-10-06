@@ -43,15 +43,10 @@ class HelperNotification {
         (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
         dialog.setCancelable(true)
-//        val lp = WindowManager.LayoutParams()
-//        lp.copyFrom(dialog.window!!.attributes)
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         (dialog.findViewById<View>(R.id.btn_dismiss) as TextView).setOnClickListener { v ->
             dialog.dismiss()
         }
         dialog.show()
-//        dialog.window!!.attributes = lp
     }
 
     interface CallBackNotificationYesNo {

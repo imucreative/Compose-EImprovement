@@ -32,7 +32,7 @@ class SuggestionSystemAdapter : RecyclerView.Adapter<SuggestionSystemAdapter.Sug
                 ssNo.text = data.ssNo
                 date.text = data.date
                 title.text = data.title
-                status.text = data.status
+                status.text = data.status.status
                 branch.text = data.branch
                 subBranch.text = data.subBranch
             }
