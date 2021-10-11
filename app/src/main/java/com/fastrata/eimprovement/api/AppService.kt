@@ -9,6 +9,6 @@ import retrofit2.http.*
  * App REST API access points
  */
 interface AppService {
-    @POST("surveyor/login")
+    @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRemoteRequest): Response<ResultsResponse<LoginEntity>>
 }

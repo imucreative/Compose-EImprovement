@@ -64,9 +64,9 @@ class DashboardFragment: Fragment(), Injectable {
         binding.apply {
             Toast.makeText(activity,resources.getString(R.string.welcome_user)+" "+HawkUtils().getDataLogin().USER_NAME,Toast.LENGTH_LONG).show()
             linearSaldo.setOnClickListener {
-                notification.showNotification(activity,resources.getString(R.string.point_balanca), HawkUtils().getDataLogin().SALDO)
+                notification.showNotification(activity,resources.getString(R.string.point_balanca), "50000")
             }
-            saldoTxt.text = HawkUtils().getDataLogin().SALDO
+            saldoTxt.text = "50000"
             filterActivityDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {

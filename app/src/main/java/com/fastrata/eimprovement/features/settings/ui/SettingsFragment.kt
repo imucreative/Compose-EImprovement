@@ -45,8 +45,8 @@ class SettingsFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            tvSaldo.text = HawkUtils().getDataLogin().SALDO
-            tvName.text = HawkUtils().getDataLogin().USER_NAME
+            tvSaldo.text = "50000"
+            tvName.text = HawkUtils().getDataLogin().FULL_NAME
             tvNik.text = HawkUtils().getDataLogin().NIK
             tvBranch.text = HawkUtils().getDataLogin().BRANCH
             tvSubBranch.text = HawkUtils().getDataLogin().SUB_BRANCH
