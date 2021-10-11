@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.R.layout.simple_list_item_1
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +14,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import android.widget.AdapterView.OnItemClickListener
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.ui.adapter.*
@@ -33,9 +34,9 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private var ssAction: String? = ""
     private lateinit var viewModelTeamMember: SsCreateTeamMemberViewModel
     private lateinit var teamMemberAdapter: TeamMemberAdapter
-    private lateinit var listMemberItem: List<MemberNameItem>
-    private lateinit var listDepartmentItem: List<MemberDepartmentItem>
-    private lateinit var listTaskItem: List<MemberTaskItem>
+    private var listMemberItem: List<MemberNameItem>? = null
+    private var listDepartmentItem: List<MemberDepartmentItem>? = null
+    private var listTaskItem: List<MemberTaskItem>? = null
     private lateinit var selectedMember: MemberNameItem
     private lateinit var selectedDepartment: MemberDepartmentItem
     private lateinit var selectedTask: MemberTaskItem
@@ -57,9 +58,9 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
         viewModelTeamMember.setSuggestionSystemTeamMember(source)
 
-        listMemberItem = DataDummySs.generateDummyNameMember()
-        listDepartmentItem = DataDummySs.generateDummyDepartmentMember()
-        listTaskItem = DataDummySs.generateDummyTaskMember()
+        data?.branchCode?.let { viewModelTeamMember.setTeamMemberName(it) }
+        viewModelTeamMember.setDepartment()
+        viewModelTeamMember.setTeamRole()
 
         teamMemberAdapter = TeamMemberAdapter()
         teamMemberAdapter.notifyDataSetChanged()
@@ -78,7 +79,9 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             rvSsTeamMember.adapter = teamMemberAdapter
         }
 
-        initComponent()
+        retrieveDataMemberName()
+        retrieveDataDepartment()
+        retrieveDataTeamRole()
 
         initList(data?.teamMember)
 
@@ -105,44 +108,132 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         }
     }
 
-    private fun initComponent() {
+    private fun retrieveDataMemberName(){
+        viewModelTeamMember.getTeamMemberName.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get team member name")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listMemberItem = result.data?.data
+                            initComponentMemberName()
+                            Timber.d("###-- Success get team member name")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get team member name")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun retrieveDataDepartment(){
+        viewModelTeamMember.getDepartment.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get Department")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listDepartmentItem = result.data?.data
+                            initComponentDepartment()
+                            Timber.d("###-- Success get Department")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get Department")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun retrieveDataTeamRole(){
+        viewModelTeamMember.getTeamRole.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get Team role")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listTaskItem = result.data?.data
+                            initComponentTeamRole()
+                            Timber.d("###-- Success get Team role")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get Team role")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun initComponentMemberName() {
         binding.apply {
             val adapterMemberName = ArrayAdapter(
-                requireContext(), android.R.layout.simple_list_item_1,
-                listMemberItem.map { value ->
+                requireContext(), simple_list_item_1,
+                listMemberItem!!.map { value ->
                     value.name
                 }
             )
             memberName.setAdapter(adapterMemberName)
             memberName.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
-                selectedMember = listMemberItem[i]
+                selectedMember = listMemberItem!![i]
                 hideKeyboard()
             }
+        }
+    }
 
+    private fun initComponentDepartment() {
+        binding.apply {
             val adapterMemberDepartment = ArrayAdapter(
-                requireContext(), android.R.layout.simple_list_item_1,
-                listDepartmentItem.map { value ->
+                requireContext(), simple_list_item_1,
+                listDepartmentItem!!.map { value ->
                     value.department
                 }
             )
             memberDepartment.setAdapter(adapterMemberDepartment)
             memberDepartment.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
-                selectedDepartment = listDepartmentItem[i]
+                selectedDepartment = listDepartmentItem!![i]
                 hideKeyboard()
             }
+        }
+    }
 
+    private fun initComponentTeamRole() {
+        binding.apply {
             val adapterMemberTask = ArrayAdapter(
-                requireContext(), android.R.layout.simple_list_item_1,
-                listTaskItem.map { value ->
+                requireContext(), simple_list_item_1,
+                listTaskItem!!.map { value ->
                     value.task
                 }
             )
             memberTask.setAdapter(adapterMemberTask)
             memberTask.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
-                selectedTask = listTaskItem[i]
+                selectedTask = listTaskItem!![i]
                 hideKeyboard()
             }
-
         }
     }
 

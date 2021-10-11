@@ -18,8 +18,10 @@ data class SuggestionSystemCreateModel(
 	var statusImplementation: StatusImplementation?,
     @SerializedName("judul")
 	var title: String?,
-    @SerializedName("cabang")
-	var branch: String?,
+    @SerializedName("BRANCH_CODE")
+	var branchCode: String?,
+    @SerializedName("BRANCH")
+    var branch: String?,
     var subBranch: String?,
     @SerializedName("nama_atasan")
 	var directMgr: String?,

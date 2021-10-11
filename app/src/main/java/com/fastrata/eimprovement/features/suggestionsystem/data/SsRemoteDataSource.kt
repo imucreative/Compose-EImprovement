@@ -8,4 +8,16 @@ class SsRemoteDataSource @Inject constructor(private val service: AppService) : 
     suspend fun requestListCategory() = getResult {
         service.listCategory()
     }
+
+    suspend fun requestListTeamMember(branchCode: String) = getResult {
+        service.listTeamMember(branchCode)
+    }
+
+    suspend fun requestListDepartment() = getResult {
+        service.listDepartment()
+    }
+
+    suspend fun requestListTeamRole() = getResult {
+        service.listTeamRole()
+    }
 }

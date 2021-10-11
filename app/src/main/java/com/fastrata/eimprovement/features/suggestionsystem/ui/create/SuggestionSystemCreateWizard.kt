@@ -109,6 +109,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     ssNo = "",
                     name = HawkUtils().getDataLogin().USER_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
+                    branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,

@@ -103,6 +103,7 @@ object DataDummySs {
                 to = "11-11-2021"
             ),
             title = "Implementasi system dengan robust dan S.O.L.I.D",
+            branchCode = "0000",
             branch = "PUSAT",
             subBranch = "FBPST - Gd Barang Dagang",
             department = "ICT",

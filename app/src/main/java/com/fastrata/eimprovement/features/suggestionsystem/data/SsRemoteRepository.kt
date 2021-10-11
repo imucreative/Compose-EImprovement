@@ -9,4 +9,16 @@ class SsRemoteRepository @Inject constructor(private val remoteDataSource: SsRem
     fun observeListCategory() = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestListCategory() }
     )
+
+    fun observeListTeamMember(branchCode: String) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListTeamMember(branchCode) }
+    )
+
+    fun observeListDepartment() = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListDepartment() }
+    )
+
+    fun observeListTeamRole() = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListTeamRole() }
+    )
 }

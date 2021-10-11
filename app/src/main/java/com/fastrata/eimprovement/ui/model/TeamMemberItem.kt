@@ -6,34 +6,34 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class TeamMemberItem(
-    @SerializedName("nama")
+    @SerializedName("TEAM_MEMBER")
     var name: MemberNameItem?,
-    @SerializedName("department")
+    @SerializedName("DEPARTMENT")
     var department: MemberDepartmentItem?,
-    @SerializedName("peran")
+    @SerializedName("TEAM_ROLE")
     var task: MemberTaskItem?
 ) : Parcelable
 
 @Parcelize
 data class MemberNameItem(
-    @SerializedName("id")
+    @SerializedName("USER_ID")
     var id: Int,
-    @SerializedName("full_name")
+    @SerializedName("FULL_NAME")
     var name: String
 ) : Parcelable
 
 @Parcelize
 data class MemberDepartmentItem(
-    @SerializedName("id")
+    @SerializedName("DEPARTMENT_ID")
     var id: Int,
-    @SerializedName("department_name")
+    @SerializedName("DEPARTMENT_NAME")
     var department: String
 ) : Parcelable
 
 @Parcelize
 data class MemberTaskItem(
-    @SerializedName("id")
+    @SerializedName("TEAM_ROLE_ID")
     var id: Int,
-    @SerializedName("name")
+    @SerializedName("TEAM_ROLE_NAME")
     var task: String
 ) : Parcelable
