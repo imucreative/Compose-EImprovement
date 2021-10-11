@@ -78,8 +78,8 @@ object DataDummySs {
 
     fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
-        categorySuggestionItem.add(CategoryImprovementItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
-        categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 6, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 8, category = "Menurunkan Biaya", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
 
         val memberNameItem = MemberNameItem(id = 1, name = "budi")
@@ -416,8 +416,8 @@ object DataDummySs {
 
     fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
-        categorySuggestionItem.add(CategoryImprovementItem(id = 1, category = "Meningkatkan Penjualan", checked = true))
-        categorySuggestionItem.add(CategoryImprovementItem(id = 2, category = "Menurunkan Biaya", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 6, category = "Meningkatkan Penjualan", checked = true))
+        categorySuggestionItem.add(CategoryImprovementItem(id = 8, category = "Menurunkan Biaya", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 0, category = "Efisiensi", checked = true))
 
         val memberNameItem = MemberNameItem(id = 1, name = "budi")

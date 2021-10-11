@@ -3,6 +3,10 @@ package com.fastrata.eimprovement.features.projectimprovement.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.fastrata.eimprovement.api.ResultsResponse
+import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
@@ -11,17 +15,18 @@ import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
+import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
+class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository): ViewModel(){
     private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
     private val detailProjectImprovement = MutableLiveData<ProjectImprovementCreateModel>()
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem?>?>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
-    private val listCategory = MutableLiveData<ArrayList<CategoryImprovementItem?>?>()
 
     fun setProjectImprovement () {
         val data = DataDummySs.generateDummyProjectImprovementList()
@@ -259,17 +264,14 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
+    private val _listCategory = MutableLiveData<Event<LiveData<Result<ResultsResponse<CategoryImprovementItem>>>>>()
+    val getCategorySuggestion: LiveData<Event<LiveData<Result<ResultsResponse<CategoryImprovementItem>>>>> get() = _listCategory
+
     fun setCategorySuggestion() {
-        // koneksi ke hawk
-        val data = DataDummySs.generateDummyCategorySuggestion()
-
-        println("### category suggestion : $data")
-
-        listCategory.postValue(data)
-    }
-
-    fun getCategorySuggestion(): LiveData<ArrayList<CategoryImprovementItem?>?> {
-        return listCategory
+        viewModelScope.launch {
+            val result = repository.observeListCategory()
+            _listCategory.value = Event(result)
+        }
     }
 
 }

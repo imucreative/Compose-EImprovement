@@ -6,15 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemCategorySuggestionBinding
 import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.APPROVE
+import com.fastrata.eimprovement.utils.Tools
 
 class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapter.CategoryViewHolder>() {
     private var list = ArrayList<CategoryImprovementItem?>()
     private var action = ""
-    fun setListCategoryImprovement(data: ArrayList<CategoryImprovementItem?>, checked: ArrayList<CategoryImprovementItem?>?, act: String) {
+    fun setListCategoryImprovement(data: List<CategoryImprovementItem>?, checked: ArrayList<CategoryImprovementItem?>?, act: String) {
         list.clear()
         action = act
         val mergedList: ArrayList<CategoryImprovementItem?> = arrayListOf()
-        mergedList.addAll(data)
+        val convertToArrayList = Tools.listToArrayList(data)
+        if (convertToArrayList != null) {
+            mergedList.addAll(convertToArrayList)
+        }
 
         checked?.map {
             it?.let { value ->
@@ -35,7 +39,9 @@ class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapte
             val sortMergedList = mergedList.sortedBy { it?.id }
             list.addAll(sortMergedList)
         } else {
-            list.addAll(data)
+            if (convertToArrayList != null) {
+                list.addAll(convertToArrayList)
+            }
         }
 
         notifyDataSetChanged()

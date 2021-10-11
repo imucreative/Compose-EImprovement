@@ -6,10 +6,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CategoryImprovementItem(
-    @SerializedName("id")
+    @SerializedName("CATEGORY_ID")
     var id: Int,
-    @SerializedName("kategory")
+    @SerializedName("CATEGORY_NAME")
     var category: String,
-    @SerializedName("checked")
+    @SerializedName("CHECKED")
     var checked: Boolean
 ) : Parcelable

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep8Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
@@ -20,6 +21,7 @@ import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
 import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovStep8Fragment : Fragment(), Injectable {
@@ -128,20 +130,38 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             }
         })
 
-        categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
-            if (it != null) {
-                categoryAdapter.setListCategoryImprovement(it, listCategory, action!!)
-                listCategory.map { checkList ->
-                    if (checkList?.id == 0) {
-                        binding.apply {
-                            checkboxOther.isChecked = !checkboxOther.isChecked
-                            edtLayoutLainLain.visibility = View.VISIBLE
-                            edtLainLain.setText(checkList.category)
+        categoryViewModel.getCategorySuggestion.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get SS item from Dashboard")
                         }
+                        Result.Status.SUCCESS -> {
+                            categoryAdapter.setListCategoryImprovement(result.data?.data, listCategory, action!!)
+                            listCategory.map { checkList ->
+                                if (checkList?.id == 0) {
+                                    binding.apply {
+                                        checkboxOther.isChecked = !checkboxOther.isChecked
+                                        edtLayoutLainLain.visibility = View.VISIBLE
+                                        edtLainLain.setText(checkList.category)
+                                    }
+                                }
+                            }
+
+                            Timber.d("###-- Success get master item from Dashboard")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get master item from Dashboard")
+                        }
+
                     }
+
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun setData() {
