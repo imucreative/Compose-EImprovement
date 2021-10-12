@@ -85,6 +85,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         department = detailData.department,
                         years = detailData.years,
                         date = detailData.date,
+                        branchCode = detailData.branchCode,
                         branch = detailData.branch,
                         subBranch = detailData.subBranch,
                         title = detailData.title,
@@ -113,6 +114,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 source = PI_CREATE
                 HawkUtils().setTempDataCreatePi(
                     piNo = "",
+                    branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
@@ -134,6 +136,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         department = detailData.department,
                         years = detailData.years,
                         date = detailData.date,
+                        branchCode = detailData.branchCode,
                         branch = detailData.branch,
                         subBranch = detailData.subBranch,
                         title = detailData.title,

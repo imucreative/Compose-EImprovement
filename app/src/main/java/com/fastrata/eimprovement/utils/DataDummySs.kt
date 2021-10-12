@@ -471,6 +471,7 @@ object DataDummySs {
             department = "ICT",
             years = "2021",
             date = "17-08-2021",
+            branchCode = "0000",
             branch = "PUSAT",
             subBranch = "FBPST",
             title = "Implementasi system dengan robust dan S.O.L.I.D",

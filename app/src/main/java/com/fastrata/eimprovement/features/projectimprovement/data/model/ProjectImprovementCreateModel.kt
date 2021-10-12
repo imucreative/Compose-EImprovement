@@ -21,6 +21,8 @@ data class ProjectImprovementCreateModel(
     var years: String?,
     @SerializedName("tgl_pengajuan")
     var date: String?,
+    @SerializedName("BRANCH_CODE")
+    var branchCode: String?,
     @SerializedName("cabang")
     var branch: String?,
     @SerializedName("subcabang")
