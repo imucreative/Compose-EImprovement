@@ -3,7 +3,7 @@ package com.fastrata.eimprovement.features.projectimprovement.data.model
 import android.os.Parcelable
 import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.google.gson.annotations.SerializedName
 
@@ -51,5 +51,5 @@ data class ProjectImprovementCreateModel(
     var implementationResult : String?,
     @SerializedName("lampiran_pi")
     var attachment: ArrayList<AttachmentItem?>?,
-    var statusProposal: StatusProposal?
+    var statusProposal: StatusProposalItem?
 ) : Parcelable

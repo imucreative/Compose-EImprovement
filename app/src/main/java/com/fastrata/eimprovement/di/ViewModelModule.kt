@@ -11,6 +11,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemVi
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateAttachmentViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateTeamMemberViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.TeamMemberViewModel
 import dagger.Binds
 import dagger.Module
@@ -75,6 +76,12 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TeamMemberViewModel::class)
     abstract fun bindListMasterDataTeamMemberViewModel(viewModel: TeamMemberViewModel): ViewModel
+
+    // Master Status Proposal
+    @Binds
+    @IntoMap
+    @ViewModelKey(StatusProposalViewModel::class)
+    abstract fun bindListMasterDataStatusProposalViewModel(viewModel: StatusProposalViewModel): ViewModel
 
 
     @Binds

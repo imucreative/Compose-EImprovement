@@ -3,10 +3,7 @@ package com.fastrata.eimprovement.api
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
-import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
-import com.fastrata.eimprovement.featuresglobal.data.model.MemberDepartmentItem
-import com.fastrata.eimprovement.featuresglobal.data.model.MemberNameItem
-import com.fastrata.eimprovement.featuresglobal.data.model.MemberTaskItem
+import com.fastrata.eimprovement.featuresglobal.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -31,4 +28,7 @@ interface AppService {
 
     @GET("master/gift")
     suspend fun listGift(): Response<ResultsResponse<GiftItem>>
+
+    @GET("master/statusproposal")
+    suspend fun listStatusProposal(): Response<ResultsResponse<StatusProposalItem>>
 }

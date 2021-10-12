@@ -16,7 +16,7 @@ object DataDummySs {
             "SS-0000/08/2021/0041",
             "17-08-2021",
             "Membuat ide baru",
-            StatusProposal(
+            StatusProposalItem(
                 6, "Implementasi Project"
             ),
             "test",
@@ -26,7 +26,7 @@ object DataDummySs {
             "SS-0000/08/2021/0042",
             "17-08-2021",
             "Membuat ide baru new",
-            StatusProposal(
+            StatusProposalItem(
                 3, "Proposal Dalam Pengecekan"
             ),
             "test",
@@ -36,7 +36,7 @@ object DataDummySs {
             "SS-0000/08/2021/0043",
             "17-08-2021",
             "Membuat ide baru new",
-            StatusProposal(
+            StatusProposalItem(
                 1, "Proposal Dibuat"
             ),
             "test",
@@ -46,7 +46,7 @@ object DataDummySs {
             "SS-0000/08/2021/0044",
             "17-08-2021",
             "Membuat ide baru new",
-            StatusProposal(
+            StatusProposalItem(
                 10, "Project Valid"
             ),
             "test",
@@ -56,7 +56,7 @@ object DataDummySs {
             "SS-0000/08/2021/0045",
             "17-08-2021",
             "Membuat ide baru new",
-            StatusProposal(
+            StatusProposalItem(
                 2, "Proposal Disubmit"
             ),
             "test",
@@ -66,7 +66,7 @@ object DataDummySs {
             "SS-0000/08/2021/0046",
             "17-08-2021",
             "Membuat ide baru new",
-            StatusProposal(
+            StatusProposalItem(
                 6, "Implementasi Project"
             ),
             "test",
@@ -113,7 +113,7 @@ object DataDummySs {
             categoryImprovement = categorySuggestionItem,
             teamMember = teamMemberItem,
             attachment = attachmentItem,
-            statusProposal = StatusProposal(
+            statusProposal = StatusProposalItem(
                 id = 1,
                 status = "Proposal Dibuat"
             )
@@ -311,7 +311,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
             "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     6, "Implementasi Project"
                 ),
             "Aktif",
@@ -324,7 +324,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     10, "Project Valid"
                 ),
                 "Aktif",
@@ -337,7 +337,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     6, "Implementasi Project"
                 ),
                 "Aktif",
@@ -350,7 +350,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     3, "Proposal Dalam Pengecekan"
                 ),
                 "Aktif",
@@ -363,7 +363,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     6, "Implementasi Project"
                 ),
                 "Aktif",
@@ -376,7 +376,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     6, "Implementasi Project"
                 ),
                 "Aktif",
@@ -389,7 +389,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     6, "Implementasi Project"
                 ),
                 "Aktif",
@@ -402,7 +402,7 @@ object DataDummySs {
         projectimprov.add(
             ProjectImprovementModel(
                 "PI-0001/08/2021/0005",
-                StatusProposal(
+                StatusProposalItem(
                     6, "Implementasi Project"
                 ),
                 "Aktif",
@@ -489,7 +489,7 @@ object DataDummySs {
             categoryFixing = categorySuggestionItem,
             implementationResult = "implementasi result",
             attachment = attachmentItem,
-            statusProposal = StatusProposal(
+            statusProposal = StatusProposalItem(
                 id = 7,
                 status = "Laporan Akhir Di Submit"
             )

@@ -2,7 +2,7 @@ package com.fastrata.eimprovement.utils
 
 import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
@@ -39,7 +39,7 @@ internal class HawkUtils {
         statusImplementation: StatusImplementation? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreateSs?.teamMember == null) arrayListOf() else null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null,
-        statusProposal: StatusProposal? = null,
+        statusProposal: StatusProposalItem? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -130,7 +130,7 @@ internal class HawkUtils {
         categoryFixing: ArrayList<CategoryImprovementItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
         hasilImplementasi : String? = null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null,
-        statusProposal: StatusProposal? = null,
+        statusProposal: StatusProposalItem? = null,
         source: String = PI_CREATE
     ){
         val data = ProjectImprovementCreateModel(

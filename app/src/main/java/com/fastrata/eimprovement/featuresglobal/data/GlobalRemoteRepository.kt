@@ -19,4 +19,8 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     fun observeListTeamRole() = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestListTeamRole() }
     )
+
+    fun observeListStatusProposal() = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListStatusProposal() }
+    )
 }

@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.features.projectimprovement.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -10,7 +10,7 @@ data class ProjectImprovementModel(
     @SerializedName("no_pi")
     val piNo: String,
     @SerializedName("status")
-    val status: StatusProposal,
+    val status: StatusProposalItem,
     @SerializedName("judul")
     val title: String,
     @SerializedName("kategori")
