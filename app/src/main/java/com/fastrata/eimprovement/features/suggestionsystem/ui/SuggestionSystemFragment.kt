@@ -275,11 +275,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun initNavigationMenu() {
 
         binding.apply {
-
-            val drawer = drawerFilter
-
             // open drawer at start
-            drawer.openDrawer(GravityCompat.END)
+            drawerFilter.openDrawer(GravityCompat.END)
 
             edtFromDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
@@ -304,12 +301,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             }
 
             btnCloseFilter.setOnClickListener {
-                drawer.closeDrawer(GravityCompat.END)
+                drawerFilter.closeDrawer(GravityCompat.END)
             }
 
             btnApply.setOnClickListener {
                 Toast.makeText(context,  "Apply filter", Toast.LENGTH_LONG).show()
-                drawer.closeDrawer(GravityCompat.END)
+                drawerFilter.closeDrawer(GravityCompat.END)
             }
         }
     }
