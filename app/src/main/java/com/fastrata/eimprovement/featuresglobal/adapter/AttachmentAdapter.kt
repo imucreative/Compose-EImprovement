@@ -1,10 +1,10 @@
-package com.fastrata.eimprovement.ui.adapter
+package com.fastrata.eimprovement.featuresglobal.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemAttachmentBinding
-import com.fastrata.eimprovement.ui.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 
 class AttachmentAdapter: RecyclerView.Adapter<AttachmentAdapter.AttachmentViewHolder>() {
 

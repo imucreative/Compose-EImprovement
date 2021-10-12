@@ -16,9 +16,10 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.ui.adapter.CategoryImprovementAdapter
-import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
-import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementAdapter
+import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementCallback
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -31,7 +32,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var categoryAdapter: CategoryImprovementAdapter
     private val listCategory = ArrayList<CategoryImprovementItem?>()
-    private lateinit var categoryViewModel: ProjectImprovementViewModel
+    private lateinit var masterDataCategoryViewModel: CategoryViewModel
     private var data : ProjectImprovementCreateModel? = null
     private var piNo: String? = ""
     private var action: String? = ""
@@ -44,7 +45,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep8Binding.inflate(inflater, container, false)
-        categoryViewModel = injectViewModel(viewModelFactory)
+        masterDataCategoryViewModel = injectViewModel(viewModelFactory)
 
         piNo = arguments?.getString(PI_DETAIL_DATA)
         action = arguments?.getString(ACTION_DETAIL_DATA)
@@ -53,7 +54,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         data = HawkUtils().getTempDataCreatePi(source)
 
-        categoryViewModel.setCategorySuggestion()
+        masterDataCategoryViewModel.setCategory()
         categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
@@ -130,7 +131,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             }
         })
 
-        categoryViewModel.getCategorySuggestion.observeEvent(this) { resultObserve ->
+        masterDataCategoryViewModel.getCategory.observeEvent(this) { resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
                     when (result.status) {

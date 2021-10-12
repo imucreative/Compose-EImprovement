@@ -9,8 +9,9 @@ import com.fastrata.eimprovement.features.login.ui.LoginViewModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateAttachmentViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateCategorySuggestionViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateTeamMemberViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.TeamMemberViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -52,11 +53,6 @@ abstract class ViewModelModule {
     @ViewModelKey(ChangesPointRewardViewModel::class)
     abstract fun bindListChangesPointRewardViewModel(viewModel: ChangesPointRewardViewModel): ViewModel
 
-    // SS Step 1
-    @Binds
-    @IntoMap
-    @ViewModelKey(SsCreateCategorySuggestionViewModel::class)
-    abstract fun bindListCategorySuggestionViewModel(viewModel: SsCreateCategorySuggestionViewModel): ViewModel
     // SS Step 3
     @Binds
     @IntoMap
@@ -67,6 +63,18 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SsCreateAttachmentViewModel::class)
     abstract fun bindListAttachmentViewModel(viewModel: SsCreateAttachmentViewModel): ViewModel
+
+    // Master Category
+    @Binds
+    @IntoMap
+    @ViewModelKey(CategoryViewModel::class)
+    abstract fun bindListMasterDataCategoryViewModel(viewModel: CategoryViewModel): ViewModel
+
+    // Master Team Member
+    @Binds
+    @IntoMap
+    @ViewModelKey(TeamMemberViewModel::class)
+    abstract fun bindListMasterDataTeamMemberViewModel(viewModel: TeamMemberViewModel): ViewModel
 
 
     @Binds

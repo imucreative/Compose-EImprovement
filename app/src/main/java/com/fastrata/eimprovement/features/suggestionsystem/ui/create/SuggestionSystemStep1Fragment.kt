@@ -14,9 +14,10 @@ import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep1Bindin
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.ui.adapter.CategoryImprovementAdapter
-import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
-import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementAdapter
+import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementCallback
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -30,7 +31,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private var data: SuggestionSystemCreateModel? = null
     private var ssNo: String? = ""
     private var ssAction: String? = ""
-    private lateinit var categoryViewModel: SsCreateCategorySuggestionViewModel
+    private lateinit var masterDataCategoryViewModel: CategoryViewModel
     private lateinit var categoryAdapter: CategoryImprovementAdapter
     private val listCategory = ArrayList<CategoryImprovementItem?>()
     private var source: String = SS_CREATE
@@ -42,8 +43,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     ): View {
         _binding = FragmentSuggestionSystemStep1Binding.inflate(inflater, container, false)
 
-        categoryViewModel = injectViewModel(viewModelFactory)
-        //categoryViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateCategorySuggestionViewModel::class.java)
+        masterDataCategoryViewModel = injectViewModel(viewModelFactory)
 
         ssNo = arguments?.getString(SS_DETAIL_DATA)
         ssAction = arguments?.getString(ACTION_DETAIL_DATA)
@@ -52,7 +52,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
         data = HawkUtils().getTempDataCreateSs(source)
 
-        categoryViewModel.setCategorySuggestion()
+        masterDataCategoryViewModel.setCategory()
         categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
@@ -131,7 +131,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             }
         })
 
-        categoryViewModel.getCategorySuggestion.observeEvent(this) { resultObserve ->
+        masterDataCategoryViewModel.getCategory.observeEvent(this) { resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
                     when (result.status) {

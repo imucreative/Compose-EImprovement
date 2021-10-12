@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.ui.model
+package com.fastrata.eimprovement.featuresglobal.data.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

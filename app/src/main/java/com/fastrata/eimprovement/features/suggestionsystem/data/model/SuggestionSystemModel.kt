@@ -1,7 +1,7 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.ui.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposal
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 

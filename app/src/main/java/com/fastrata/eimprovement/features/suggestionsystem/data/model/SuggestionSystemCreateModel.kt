@@ -1,7 +1,10 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.ui.model.*
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -37,5 +40,5 @@ data class SuggestionSystemCreateModel(
 	var department: String?,
     @SerializedName("anggota_tim")
 	var teamMember: ArrayList<TeamMemberItem?>?,
-	var statusProposal: StatusProposal?
+    var statusProposal: StatusProposal?
 ) : Parcelable

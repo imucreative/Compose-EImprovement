@@ -9,21 +9,18 @@ import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep4Binding
 import android.content.Intent
 import android.net.Uri
-import android.os.FileUtils
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.ui.adapter.AttachmentAdapter
-import com.fastrata.eimprovement.ui.adapter.AttachmentCallback
-import com.fastrata.eimprovement.ui.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.adapter.AttachmentAdapter
+import com.fastrata.eimprovement.featuresglobal.adapter.AttachmentCallback
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
-import java.io.File
 import javax.inject.Inject
 
 class SuggestionSystemStep4Fragment: Fragment(), Injectable {

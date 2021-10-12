@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
-import com.fastrata.eimprovement.ui.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
@@ -262,16 +264,6 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         HawkUtils().setTempDataCreatePi(
             attachment = add
         )
-    }
-
-    private val _listCategory = MutableLiveData<Event<LiveData<Result<ResultsResponse<CategoryImprovementItem>>>>>()
-    val getCategorySuggestion: LiveData<Event<LiveData<Result<ResultsResponse<CategoryImprovementItem>>>>> get() = _listCategory
-
-    fun setCategorySuggestion() {
-        viewModelScope.launch {
-            val result = repository.observeListCategory()
-            _listCategory.value = Event(result)
-        }
     }
 
 }

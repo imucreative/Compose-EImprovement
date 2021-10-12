@@ -15,10 +15,14 @@ import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import android.widget.AdapterView.OnItemClickListener
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.featuresglobal.data.model.MemberDepartmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.MemberNameItem
+import com.fastrata.eimprovement.featuresglobal.data.model.MemberTaskItem
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.ui.adapter.*
-import com.fastrata.eimprovement.ui.model.*
+import com.fastrata.eimprovement.featuresglobal.adapter.*
+import com.fastrata.eimprovement.featuresglobal.viewmodel.TeamMemberViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -32,7 +36,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private var data: SuggestionSystemCreateModel? = null
     private var ssNo: String? = ""
     private var ssAction: String? = ""
-    private lateinit var viewModelTeamMember: SsCreateTeamMemberViewModel
+    private lateinit var listTeamMemberViewModel: SsCreateTeamMemberViewModel
+    private lateinit var masterDataTeamMemberViewModel: TeamMemberViewModel
     private lateinit var teamMemberAdapter: TeamMemberAdapter
     private var listMemberItem: List<MemberNameItem>? = null
     private var listDepartmentItem: List<MemberDepartmentItem>? = null
@@ -48,7 +53,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSuggestionSystemStep3Binding.inflate(inflater, container, false)
-        viewModelTeamMember = injectViewModel(viewModelFactory)
+        listTeamMemberViewModel = injectViewModel(viewModelFactory)
+        masterDataTeamMemberViewModel = injectViewModel(viewModelFactory)
 
         ssNo = arguments?.getString(SS_DETAIL_DATA)
         ssAction = arguments?.getString(ACTION_DETAIL_DATA)
@@ -56,11 +62,11 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
-        viewModelTeamMember.setSuggestionSystemTeamMember(source)
+        listTeamMemberViewModel.setSuggestionSystemTeamMember(source)
 
-        data?.branchCode?.let { viewModelTeamMember.setTeamMemberName(it) }
-        viewModelTeamMember.setDepartment()
-        viewModelTeamMember.setTeamRole()
+        data?.branchCode?.let { masterDataTeamMemberViewModel.setTeamMemberName(it) }
+        masterDataTeamMemberViewModel.setDepartment()
+        masterDataTeamMemberViewModel.setTeamRole()
 
         teamMemberAdapter = TeamMemberAdapter()
         teamMemberAdapter.notifyDataSetChanged()
@@ -109,7 +115,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     }
 
     private fun retrieveDataMemberName(){
-        viewModelTeamMember.getTeamMemberName.observeEvent(this) { resultObserve ->
+        masterDataTeamMemberViewModel.getTeamMemberName.observeEvent(this) { resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
                     when (result.status) {
@@ -136,7 +142,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     }
 
     private fun retrieveDataDepartment(){
-        viewModelTeamMember.getDepartment.observeEvent(this) { resultObserve ->
+        masterDataTeamMemberViewModel.getDepartment.observeEvent(this) { resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
                     when (result.status) {
@@ -163,7 +169,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     }
 
     private fun retrieveDataTeamRole(){
-        viewModelTeamMember.getTeamRole.observeEvent(this) { resultObserve ->
+        masterDataTeamMemberViewModel.getTeamRole.observeEvent(this) { resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
                     when (result.status) {
@@ -243,8 +249,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 if (ssAction != APPROVE) {
                     teamMember?.remove(data)
 
-                    viewModelTeamMember.updateTeamMember(teamMember, source)
-                    viewModelTeamMember.getSuggestionSystemTeamMember()
+                    listTeamMemberViewModel.updateTeamMember(teamMember, source)
+                    listTeamMemberViewModel.getSuggestionSystemTeamMember()
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
                                 teamMemberAdapter.setListTeamMember(it)
@@ -254,7 +260,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             }
         })
 
-        viewModelTeamMember.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
             if (it != null) {
                 teamMemberAdapter.setListTeamMember(it)
             }
@@ -312,7 +318,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             task = memberTaskObj
                         )
 
-                        viewModelTeamMember.addTeamMember(addData, data?.teamMember, source)
+                        listTeamMemberViewModel.addTeamMember(addData, data?.teamMember, source)
 
                         memberName.requestFocus()
                         memberName.setText("")

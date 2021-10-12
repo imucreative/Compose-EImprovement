@@ -1,10 +1,10 @@
-package com.fastrata.eimprovement.ui.adapter
+package com.fastrata.eimprovement.featuresglobal.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemCategorySuggestionBinding
-import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.APPROVE
 import com.fastrata.eimprovement.utils.Tools
 

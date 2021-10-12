@@ -1,11 +1,11 @@
 package com.fastrata.eimprovement.utils
 
+import com.fastrata.eimprovement.featuresglobal.data.model.*
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
-import com.fastrata.eimprovement.ui.model.*
 
 object DataDummySs {
     fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
@@ -525,18 +525,26 @@ object DataDummySs {
 
     fun generateDummyCategorySuggestion(): ArrayList<CategoryImprovementItem?> {
         val data = ArrayList<CategoryImprovementItem?>()
-        data.add(CategoryImprovementItem(
+        data.add(
+            CategoryImprovementItem(
             id = 1, category = "Meningkatkan Penjualan", false
-        ))
-        data.add(CategoryImprovementItem(
+        )
+        )
+        data.add(
+            CategoryImprovementItem(
             id = 2, category = "Menurunkan Biaya", false
-        ))
-        data.add(CategoryImprovementItem(
+        )
+        )
+        data.add(
+            CategoryImprovementItem(
             id = 3, category = "Mencegah Pelanggaran atau Kecurangan", false
-        ))
-        data.add(CategoryImprovementItem(
+        )
+        )
+        data.add(
+            CategoryImprovementItem(
             id = 4, category = "Menyederhanakan Proses Kerja", false
-        ))
+        )
+        )
         return data
     }
 

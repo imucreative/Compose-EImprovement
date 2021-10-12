@@ -1,10 +1,10 @@
-package com.fastrata.eimprovement.ui.adapter
+package com.fastrata.eimprovement.featuresglobal.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemTeamMemberBinding
-import com.fastrata.eimprovement.ui.model.TeamMemberItem
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 
 class TeamMemberAdapter: RecyclerView.Adapter<TeamMemberAdapter.TeamMemberViewHolder>() {
 
