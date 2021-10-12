@@ -10,7 +10,6 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber

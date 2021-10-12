@@ -549,11 +549,11 @@ object DataDummySs {
         return data
     }
 
-    fun generateDummyReward(): ArrayList<HadiahItem> {
-        val data = ArrayList<HadiahItem>()
-        data.add(HadiahItem(hadiah = "PULSA 50K",1,"1000"))
-        data.add(HadiahItem(hadiah = "PULSA 100K",2,"5000"))
-        data.add(HadiahItem(hadiah = "IPHONE 13",3,"10000"))
+    fun generateDummyReward(): ArrayList<GiftItem> {
+        val data = ArrayList<GiftItem>()
+        data.add(GiftItem(1, hadiah = "PULSA 50K","1000"))
+        data.add(GiftItem(2, hadiah = "PULSA 100K","5000"))
+        data.add(GiftItem(3, hadiah = "IPHONE 13","10000"))
         return data
     }
 

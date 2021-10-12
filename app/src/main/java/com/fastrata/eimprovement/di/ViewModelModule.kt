@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalViewModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
-import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointRewardViewModel
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesRewardViewModel
 import com.fastrata.eimprovement.features.login.ui.LoginViewModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
@@ -50,8 +50,8 @@ abstract class ViewModelModule {
     // CP Reward
     @Binds
     @IntoMap
-    @ViewModelKey(ChangesPointRewardViewModel::class)
-    abstract fun bindListChangesPointRewardViewModel(viewModel: ChangesPointRewardViewModel): ViewModel
+    @ViewModelKey(ChangesRewardViewModel::class)
+    abstract fun bindListChangesPointRewardViewModel(viewModel: ChangesRewardViewModel): ViewModel
 
     // SS Step 3
     @Binds

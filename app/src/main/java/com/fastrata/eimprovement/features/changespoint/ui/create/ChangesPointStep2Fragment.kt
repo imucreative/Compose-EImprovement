@@ -6,19 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.R.layout.simple_list_item_1
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep2Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangeRewardCallback
-import com.fastrata.eimprovement.features.changespoint.data.model.HadiahItem
-import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
+import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
@@ -31,15 +28,15 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentChangesPointStep2Binding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ChangesPointRewardViewModel
+    private lateinit var changesRewardViewModel: ChangesRewardViewModel
     private lateinit var rewardAdapter: ChangesRewardAdapter
     private var data : ChangePointCreateItemModel? = null
     private var source: String = CP_CREATE
     private var action: String? = ""
     private var cpNo: String? = ""
     var intTotal : Int = 0
-    private lateinit var listReward : ArrayList<HadiahItem>
-    private lateinit var selectedReward: HadiahItem
+    private var listRewardItem : List<GiftItem>? = null
+    private lateinit var selectedReward: GiftItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +44,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChangesPointStep2Binding.inflate(inflater, container, false)
-        viewModel = injectViewModel(viewModelFactory)
+        changesRewardViewModel = injectViewModel(viewModelFactory)
 
         cpNo = arguments?.getString(CP_DETAIL_DATA)
         action = arguments?.getString(ACTION_DETAIL_DATA)
@@ -60,9 +57,9 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             checkBalance()
         }
 
-        viewModel.setChangeRewardPoint(source)
+        changesRewardViewModel.setChangeRewardPoint(source)
 
-        listReward = DataDummySs.generateDummyReward()
+        changesRewardViewModel.setAllGift()
 
         rewardAdapter = ChangesRewardAdapter()
         rewardAdapter.notifyDataSetChanged()
@@ -85,7 +82,8 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             totalReward.text = intTotal.toString()
         }
 
-        initComponent()
+        retrieveDataGift()
+
         initList(data?.reward)
         setData()
         setValidation()
@@ -109,19 +107,46 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         }
     }
 
+    private fun retrieveDataGift(){
+        changesRewardViewModel.getAllGift.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get team member name")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listRewardItem = result.data?.data
+                            initComponentGift()
+                            Timber.d("###-- Success get team member name")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get team member name")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
     private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
         binding.apply {
-            nilaiCp.setText(listReward[i].nilai)
-            selectedReward = listReward[i]
+            nilaiCp.setText(listRewardItem!![i].nilai)
+            selectedReward = listRewardItem!![i]
         }
         hideKeyboard()
     }
 
-    private fun initComponent() {
+    private fun initComponentGift() {
         binding.apply {
             val adapterReward = ArrayAdapter(
-                requireContext(),android.R.layout.simple_list_item_1,
-                listReward.map{ value ->
+                requireContext(), simple_list_item_1,
+                listRewardItem!!.map{ value ->
                     value.hadiah
                 }
             )
@@ -131,28 +156,28 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     }
 
     private fun initList(reward: ArrayList<RewardItem?>?) {
-        rewardAdapter.setChangeRewardCallback(object : ChangeRewardCallback {
+        rewardAdapter.setChangeRewardCallback(object : ChangesRewardCallback {
             override fun removeClicked(data: RewardItem) {
                 if (action != APPROVE) {
 
                     reward?.remove(data)
-                    viewModel.updateReward(reward)
-                    viewModel.getChangeRewardPoint().observe(viewLifecycleOwner, {
+                    changesRewardViewModel.updateReward(reward)
+                    changesRewardViewModel.getChangeRewardPoint().observe(viewLifecycleOwner, {
                         if (it != null) {
                             rewardAdapter.setListReward(it)
                         }
                     })
 
                     val total = checkBalance()
-                    viewModel.setTotalReward(total)
-                    viewModel.getTotalReward().observe(viewLifecycleOwner, {
+                    changesRewardViewModel.setTotalReward(total)
+                    changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner, {
                         binding.totalReward.text = it.toString()
                     })
                 }
             }
         })
 
-        viewModel.getChangeRewardPoint().observe(viewLifecycleOwner, {
+        changesRewardViewModel.getChangeRewardPoint().observe(viewLifecycleOwner, {
             if (it != null){
                 rewardAdapter.setListReward(it)
             }
@@ -201,11 +226,11 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                             keterangan = desc
                         )
 
-                        viewModel.addReward(add, data?.reward)
+                        changesRewardViewModel.addReward(add, data?.reward)
 
                         val total = checkBalance()
-                        viewModel.setTotalReward(total)
-                        viewModel.getTotalReward().observe(viewLifecycleOwner,{
+                        changesRewardViewModel.setTotalReward(total)
+                        changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner,{
                             totalReward.text = it.toString()
                         })
 

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesRewardBinding
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangeRewardCallback
 import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 
 class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRewardAdapterViewHolder>() {
@@ -18,8 +17,8 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
         notifyDataSetChanged()
     }
 
-    private lateinit var call: ChangeRewardCallback
-    fun setChangeRewardCallback(callback: ChangeRewardCallback) {
+    private lateinit var call: ChangesRewardCallback
+    fun setChangeRewardCallback(callback: ChangesRewardCallback) {
         this.call = callback
     }
 

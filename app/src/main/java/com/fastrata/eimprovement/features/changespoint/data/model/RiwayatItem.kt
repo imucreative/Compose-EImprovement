@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RiwayatItem (
-            val no: Int,
-            val pic : String,
-            val status : String,
-            val komentar : String,
-            val tanggal : String
-        ):Parcelable
+    val no: Int,
+    val pic : String,
+    val status : String,
+    val komentar : String,
+    val tanggal : String
+):Parcelable

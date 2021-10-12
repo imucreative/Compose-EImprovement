@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.api
 
+import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
@@ -27,4 +28,7 @@ interface AppService {
 
     @GET("master/teamrole")
     suspend fun listTeamRole(): Response<ResultsResponse<MemberTaskItem>>
+
+    @GET("master/gift")
+    suspend fun listGift(): Response<ResultsResponse<GiftItem>>
 }

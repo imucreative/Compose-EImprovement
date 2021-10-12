@@ -10,10 +10,3 @@ data class RewardItem(
     val nilai: String,
     val keterangan: String
 ):Parcelable
-
-@Parcelize
-data class HadiahItem(
-    var hadiah: String,
-    var id: Int,
-    var nilai: String
-) : Parcelable

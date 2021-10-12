@@ -5,8 +5,3 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointMod
 interface ChangesPointCallback {
     fun onItemClicked(data: ChangePointModel)
 }
-
-interface ChangesPointCreateCallback {
-    fun onDataPass() : Boolean
-}
-

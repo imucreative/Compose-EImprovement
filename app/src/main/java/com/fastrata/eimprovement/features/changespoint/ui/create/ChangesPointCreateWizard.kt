@@ -20,7 +20,6 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
