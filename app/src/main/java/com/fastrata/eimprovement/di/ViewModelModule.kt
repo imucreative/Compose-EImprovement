@@ -18,11 +18,13 @@ import dagger.multibindings.IntoMap
 @Suppress("unused")
 @Module
 abstract class ViewModelModule {
+    // Login
     @Binds
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
 
+    // LP
     @Binds
     @IntoMap
     @ViewModelKey(ListApprovalViewModel::class)
@@ -67,7 +69,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SsCreateAttachmentViewModel::class)
     abstract fun bindListAttachmentViewModel(viewModel: SsCreateAttachmentViewModel): ViewModel
-
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

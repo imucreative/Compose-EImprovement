@@ -80,6 +80,25 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_changesPasswordFragment"
+            app:destination="@id/ChangesPasswordFragment"></action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ChangesPasswordFragment"
+        android:name="com.fastrata.eimprovement.features.settings.ui.ChangePasswordFragment"
+        android:label="ChangesPassword"
+        tools:layout="@layout/fragment_change_password">
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_changesPassword_to_settingsFragment"
+            app:destination="@id/settingsFragment"/>
+
     </fragment>
 
     <fragment

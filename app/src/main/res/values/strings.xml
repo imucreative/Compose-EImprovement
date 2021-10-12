@@ -41,6 +41,8 @@
     <string name="start">Mulai</string>
     <string name="end">Selesai</string>
     <string name="apply">TERAPKAN</string>
+    <string name="confirm">Yes</string>
+    <string name="cancel">No</string>
 
     <string name="suggestion_system_no">Sistem Saran No</string>
     <string name="please_fill_the_form_to_create_suggestion">Silahkan Isi Untuk Membuat Saran.</string>
@@ -53,8 +55,8 @@
     <string name="ceritakan_apa_yang_anda_lakukan">Ceritakan apa yang anda lakukan.</string>
     <string name="status_implementasi_improvement">Status Implementasi Improvement</string>
     <string name="sudah_pernah_diimplementasi_pada_periode">Sudah pernah diimplementasi. Pada periode :</string>
-    <string name="from">From</string>
-    <string name="to">To</string>
+    <string name="from">Mulai</string>
+    <string name="to">Sampai</string>
     <string name="akan_diimplementasi_pada_periode">Akan diimplementasi. Pada periode :</string>
     <string name="dash">-</string>
     <string name="team_member">Anggota Tim</string>
@@ -112,13 +114,12 @@
     <string name="g_hasil_implementasi_improvement">G. Hasil Implementasi Improvement</string>
     <string name="jika_improvement_sudah_diimplementasikan">Jika Improvement sudah diimplementasikan</string>
     <string name="setting">Pengaturan</string>
-
     <!---notification -->
     <string name="error">Error</string>
     <string name="please_fill_the_form_to_create_project_improvement">Silahkan Isi Untuk Membuat Project Improvement.</string>
     <string name="wrong_field">Pastikan data sudah terisi dengan benar</string>
     <string name="filter">Filter</string>
-    <string name="create">Buat</string>
+    <string name="create">Tambah</string>
     <string name="form_sebab_akar_masalah_must_be_fill">Form Sebab/ akar masalah harus diisi</string>
     <string name="name_empty">Silahkan Isi Kolom Nama Dengan Sesuai</string>
     <string name="department_empty">Silahkan Isi Kolom Departement Dengan Sesuai</string>
@@ -154,6 +155,10 @@
     <string name="file_ext">Ekstensien Lampiran Tidak Sesuai</string>
     <string name="file_empty">Lampiran Tidak Tersedia</string>
     <string name="log_out">Apakah Anda Yakin Keluar Akun?</string>
+    <string name="old_pass_empty">Masukan Password Lama Anda</string>
+    <string name="new_pass_empty">Masukan Password Baru Anda</string>
+    <string name="conf_pass_empty">Masukan Password Konfirmasi Anda</string>
+    <string name="not_match_conf_password">Pastikan Password Konfirmasi sama dengan Password Baru Anda</string>
 
     <!-- Change Point -->
     <string name="tanggal_penukaran">Tanggal Penukaran</string>

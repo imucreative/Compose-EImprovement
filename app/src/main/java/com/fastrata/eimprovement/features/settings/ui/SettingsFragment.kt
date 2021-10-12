@@ -6,6 +6,8 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
@@ -32,6 +34,7 @@ class SettingsFragment : Fragment(), Injectable {
     ): View {
         binding = FragmentSettingsBinding.inflate(layoutInflater)
         toolbarBinding = ToolbarBinding.bind(binding.root)
+        context ?: return binding.root
 
         setHasOptionsMenu(true);
 
@@ -52,6 +55,14 @@ class SettingsFragment : Fragment(), Injectable {
             tvSubBranch.text = HawkUtils().getDataLogin().SUB_BRANCH
             tvDepartment.text = HawkUtils().getDataLogin().DEPARTMENT
             tvPosition.text = HawkUtils().getDataLogin().POSITION
+
+
+
+            btnChangePassword.setOnClickListener {
+//                val directions = SettingsFragmentDirections.actionSettingsFragmentToChangesPasswordFragment(resources.getString(R.string.change_password))
+//                                it.findNavController().navigate(directions)
+                Navigation.findNavController(it).navigate(R.id.action_settingsFragment_to_changesPasswordFragment)
+            }
 
             btnLogout.setOnClickListener {
                 notification.shownotificationyesno(activity,resources.getString(R.string.info),resources.getString(R.string.log_out),
@@ -74,7 +85,7 @@ class SettingsFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Setting")
+        setToolbar(toolbar, resources.getString(R.string.setting))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
