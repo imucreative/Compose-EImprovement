@@ -10,6 +10,7 @@ import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImproveme
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateAttachmentViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateTeamMemberViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.TeamMemberViewModel
@@ -82,6 +83,12 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StatusProposalViewModel::class)
     abstract fun bindListMasterDataStatusProposalViewModel(viewModel: StatusProposalViewModel): ViewModel
+
+    // Master Branch
+    @Binds
+    @IntoMap
+    @ViewModelKey(BranchViewModel::class)
+    abstract fun bindListMasterDataBranchViewModel(viewModel: BranchViewModel): ViewModel
 
 
     @Binds

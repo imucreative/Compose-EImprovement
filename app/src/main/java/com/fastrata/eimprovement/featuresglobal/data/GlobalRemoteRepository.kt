@@ -23,4 +23,12 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     fun observeListStatusProposal() = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestListStatusProposal() }
     )
+
+    fun observeListBranch() = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListBranch() }
+    )
+
+    fun observeListSubBranch(orgId: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListSubBranch(orgId) }
+    )
 }

@@ -24,4 +24,12 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
     suspend fun requestListStatusProposal() = getResult {
         service.listStatusProposal()
     }
+
+    suspend fun requestListBranch() = getResult {
+        service.listBranch()
+    }
+
+    suspend fun requestListSubBranch(orgId: Int) = getResult {
+        service.listSubBranch(orgId)
+    }
 }

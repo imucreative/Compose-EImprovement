@@ -31,4 +31,10 @@ interface AppService {
 
     @GET("master/statusproposal")
     suspend fun listStatusProposal(): Response<ResultsResponse<StatusProposalItem>>
+
+    @GET("master/branch")
+    suspend fun listBranch(): Response<ResultsResponse<BranchItem>>
+
+    @GET("master/subbranch/{ORG_ID}")
+    suspend fun listSubBranch(@Path("ORG_ID") orgId: Int): Response<ResultsResponse<SubBranchItem>>
 }

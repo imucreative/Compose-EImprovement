@@ -19,7 +19,10 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
+import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
+import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.ADD
@@ -38,10 +41,15 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var listSsViewModel: SuggestionSystemViewModel
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
+    private lateinit var masterBranchViewModel: BranchViewModel
     private lateinit var adapter: SuggestionSystemAdapter
     private lateinit var datePicker: DatePickerCustom
     private var listStatusProposalItem: List<StatusProposalItem>? = null
+    private var listBranchItem: List<BranchItem>? = null
+    private var listSubBranchItem: List<SubBranchItem>? = null
     private lateinit var selectedStatusProposal: StatusProposalItem
+    private lateinit var selectedBranch: BranchItem
+    private lateinit var selectedSubBranch: SubBranchItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +62,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
         listSsViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
+        masterBranchViewModel = injectViewModel(viewModelFactory)
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
@@ -63,6 +72,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         listSsViewModel.setSuggestionSystem()
 
         masterDataStatusProposalViewModel.setStatusProposal()
+        masterBranchViewModel.setBranch()
 
         adapter = SuggestionSystemAdapter()
         adapter.notifyDataSetChanged()
@@ -93,6 +103,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         }
 
         retrieveDataStatusProposal()
+        retrieveDataBranch()
     }
 
     override fun onDestroyView() {
@@ -107,17 +118,71 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             //binding.progressBar.visibility = View.VISIBLE
-                            Timber.d("###-- Loading get team member name")
+                            Timber.d("###-- Loading get status proposal")
                         }
                         Result.Status.SUCCESS -> {
                             //binding.progressBar.visibility = View.GONE
                             listStatusProposalItem = result.data?.data
                             initComponentStatusProposal()
-                            Timber.d("###-- Success get team member name")
+                            Timber.d("###-- Success get status proposal")
                         }
                         Result.Status.ERROR -> {
                             //binding.progressBar.visibility = View.GONE
-                            Timber.d("###-- Error get team member name")
+                            Timber.d("###-- Error get status proposal")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun retrieveDataBranch(){
+        masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get Branch")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listBranchItem = result.data?.data
+                            initComponentBranch()
+                            Timber.d("###-- Success get Branch")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get Branch")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun retrieveDataSubBranch(){
+        masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get sub Branch")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listSubBranchItem = result.data?.data
+                            initComponentSubBranch()
+                            Timber.d("###-- Success get sub Branch")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get sub Branch")
                         }
 
                     }
@@ -140,6 +205,45 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 AdapterView.OnItemClickListener { adapterView, view, i, l ->
                     selectedStatusProposal = listStatusProposalItem!![i]
                     hideKeyboard()
+                }
+        }
+    }
+
+    private fun initComponentBranch() {
+        binding.apply {
+            val adapter = ArrayAdapter(
+                requireContext(), simple_list_item_1,
+                listBranchItem!!.map { value ->
+                    value.branch
+                }
+            )
+            edtBranch.setAdapter(adapter)
+            edtBranch.onItemClickListener =
+                AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                    selectedBranch = listBranchItem!![i]
+                    edtSubBranch.setText("")
+                    masterBranchViewModel.setSubBranch(listBranchItem!![i].orgId)
+                    retrieveDataSubBranch()
+                    hideKeyboard()
+
+                }
+        }
+    }
+
+    private fun initComponentSubBranch() {
+        binding.apply {
+            val adapter = ArrayAdapter(
+                requireContext(), simple_list_item_1,
+                listSubBranchItem!!.map { value ->
+                    value.subBranchName
+                }
+            )
+            edtSubBranch.setAdapter(adapter)
+            edtSubBranch.onItemClickListener =
+                AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                    selectedSubBranch = listSubBranchItem!![i]
+                    hideKeyboard()
+
                 }
         }
     }

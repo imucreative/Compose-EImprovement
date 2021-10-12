@@ -315,7 +315,7 @@
                             app:boxStrokeColor="@color/colorPrimary">
 
                             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                                android:id="@+id/edt_subbranch"
+                                android:id="@+id/edt_sub_branch"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:imeOptions="actionNext"
