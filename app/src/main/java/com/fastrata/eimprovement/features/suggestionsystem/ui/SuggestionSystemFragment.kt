@@ -25,12 +25,11 @@ import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
 import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
-import com.fastrata.eimprovement.utils.ADD
-import com.fastrata.eimprovement.utils.DatePickerCustom
-import com.fastrata.eimprovement.utils.EDIT
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.fastrata.eimprovement.utils.observeEvent
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class SuggestionSystemFragment : Fragment(), Injectable {
@@ -52,6 +51,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private lateinit var selectedStatusProposal: StatusProposalItem
     private lateinit var selectedBranch: BranchItem
     private lateinit var selectedSubBranch: SubBranchItem
+    lateinit var fromDate: Date
+    lateinit var toDate: Date
+    val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -287,6 +289,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         edtFromDate.setText("$dayStr-$monthStr-$year")
+                        fromDate = sdf.parse(edtFromDate.text.toString())
+                        edtToDate.text!!.clear()
                     }
                 })
             }
@@ -298,6 +302,22 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         edtToDate.setText("$dayStr-$monthStr-$year")
+                        toDate = sdf.parse(edtToDate.text.toString())
+                        if (edtFromDate.text.isNullOrEmpty()){
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            edtFromDate.requestFocus()
+                        }else{
+                            if (!toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                edtToDate.text!!.clear()
+                            }
+                        }
                     }
                 })
             }
