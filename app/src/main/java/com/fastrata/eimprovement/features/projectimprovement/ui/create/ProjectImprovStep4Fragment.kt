@@ -193,7 +193,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                 valueW1.isEmpty() -> {
                     SnackBarCustom.snackBarIconInfo(
                         root, layoutInflater, resources, root.context,
-                        resources.getString(R.string.why),
+                        resources.getString(R.string.why_required),
                         R.drawable.ic_close, R.color.red_500)
                     w1.requestFocus()
                 }

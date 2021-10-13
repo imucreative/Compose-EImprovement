@@ -114,7 +114,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Poin Anda"
+                                    android:text="@string/poin_anda"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                                     android:textColor="@color/grey_40" />
 
@@ -183,7 +183,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Recent Activity"
+                                    android:text="@string/recent_activity"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                                     android:textColor="@color/grey_60"
                                     android:textStyle="bold" />
@@ -388,12 +388,13 @@
                                 android:background="?attr/selectableItemBackground"
                                 android:clickable="true"
                                 android:gravity="center"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:focusable="true">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="See More"
+                                    android:text="@string/see_more"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                                     android:textColor="@color/colorPrimary" />
 
@@ -405,8 +406,7 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
+                <View android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_middle" />
 
             </LinearLayout>
@@ -453,11 +453,12 @@
                         android:contentDescription="@string/app_name" />
 
                     <TextView
+                        android:id="@+id/welcome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginRight="@dimen/spacing_large"
-                        android:text="Menu"
+                        android:text="@string/welcome_user"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:textColor="@color/blue_grey_800"
                         app:fontFamily="sans-serif-medium" />
@@ -478,10 +479,8 @@
                         app:civ_shadow="true"
                         app:civ_shadow_radius="0dp" />
 
-                    <View
-                        android:layout_width="@dimen/spacing_large"
+                    <View android:layout_width="@dimen/spacing_large"
                         android:layout_height="0dp" />
-
 
                 </LinearLayout>
 
@@ -500,7 +499,7 @@
                     android:layout_margin="@dimen/spacing_middle"
                     android:paddingLeft="@dimen/spacing_middle"
                     android:paddingRight="@dimen/spacing_middle"
-                    android:text="MENU"
+                    android:text="@string/menu"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/grey_40" />
 
@@ -545,7 +544,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="List Approval"
+                            android:text="@string/list_approval"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
@@ -601,7 +600,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Suggestion System (SS)"
+                            android:text="@string/suggestion_system"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
@@ -657,7 +656,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Project Improvement (PI)"
+                            android:text="@string/project_improvement"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
@@ -713,7 +712,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Point Exchange"
+                            android:text="@string/change_point"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
@@ -733,7 +732,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
     </com.google.android.material.navigation.NavigationView>
 

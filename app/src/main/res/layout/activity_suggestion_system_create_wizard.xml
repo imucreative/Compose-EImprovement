@@ -50,12 +50,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_arrow_left_black" />
+                    app:srcCompat="@drawable/ic_arrow_left_black"
+                    android:contentDescription="@string/app_name" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BACK"
+                    android:text="@string/back"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_60"
                     android:textStyle="bold" />
@@ -84,7 +85,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NEXT"
+                    android:text="@string/next"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_60"
                     android:textStyle="bold" />
@@ -93,7 +94,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_arrow_right_black" />
+                    app:srcCompat="@drawable/ic_arrow_right_black"
+                    android:contentDescription="@string/app_name" />
 
             </LinearLayout>
 

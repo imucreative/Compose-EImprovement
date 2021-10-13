@@ -321,6 +321,9 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
+
     </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

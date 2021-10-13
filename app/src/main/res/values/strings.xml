@@ -7,7 +7,7 @@
     <string name="username">USERNAME</string>
     <string name="sign_in_to_continue">Sign in to continue</string>
     <string name="welcome">Selamat Datang di E-Improvement</string>
-    <string name="welcome_user">Selamat Datang</string>
+    <string name="welcome_user">Welcome</string>
     <string name="back">KEMBALI</string>
     <string name="next">LANJUT</string>
     <string name="getStarted">MULAI</string>
@@ -138,7 +138,8 @@
     <string name="delete">Hapus</string>
     <string name="delete_confirmation">Apakah Anda Yakin Menghapus Data Ini?</string>
     <string name="problem_reason">Silahkan Isi Kolom Penyebab Masalah Dengan Sesuai</string>
-    <string name="why">Why 1 harus diisi</string>
+    <string name="why">Why</string>
+    <string name="why_required">Why 1 harus diisi</string>
     <string name="problem_root">Silahkan Isi Kolom Akar Masalah Dengan Sesuai</string>
     <string name="problem_root_reason">Silahkan Tambah Sebab/Akar Masalah</string>
     <string name="problem_suggest">Silahkan Isi Kolom Saran/Akar Masalah Dengan Sesuai</string>
@@ -168,6 +169,20 @@
     <string name="category">Kategori</string>
     <string name="created_by">Dibuat Oleh</string>
     <string name="no_proposal">No Proposal</string>
+    <string name="no_internet">No internet access!!!</string>
+    <string name="close">Close</string>
+    <string name="tap_to_dismiss">Tap to dismiss!</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="ok">OK</string>
+    <string name="no">NO</string>
+    <string name="poin_anda">Poin Anda</string>
+    <string name="recent_activity">Recent Activity</string>
+    <string name="see_more">See More</string>
+    <string name="menu">MENU</string>
+    <string name="agree">Setuju</string>
+    <string name="not_agree">Tolak</string>
+    <string name="reject">Revisi</string>
+    <string name="loading">Loading</string>
 
 
 </resources>

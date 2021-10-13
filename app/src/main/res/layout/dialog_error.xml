@@ -20,14 +20,15 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_error_outline" />
+            app:srcCompat="@drawable/ic_error_outline"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:id="@+id/title_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_middle"
-            android:text="No internet !"
+            android:text="@string/no_internet"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
-            android:text="Error"
+            android:text="@string/error"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/grey_60" />
@@ -68,7 +69,7 @@
             android:background="@drawable/btn_rounded_red"
             android:paddingLeft="@dimen/spacing_mlarge"
             android:paddingRight="@dimen/spacing_mlarge"
-            android:text="Close"
+            android:text="@string/close"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

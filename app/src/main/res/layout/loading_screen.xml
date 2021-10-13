@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/text"
-        android:text="Loading"
+        android:text="@string/loading"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/progress"

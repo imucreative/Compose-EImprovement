@@ -62,7 +62,9 @@ class DashboardFragment: Fragment(), Injectable {
 
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {
-            Toast.makeText(activity,resources.getString(R.string.welcome_user)+" "+HawkUtils().getDataLogin().USER_NAME,Toast.LENGTH_LONG).show()
+            Toast.makeText(activity,resources.getString(R.string.welcome_user)+" "+HawkUtils().getDataLogin().FULL_NAME,Toast.LENGTH_LONG).show()
+            welcome.text = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
+
             linearSaldo.setOnClickListener {
                 notification.showNotification(activity,resources.getString(R.string.point_balanca), "50000")
             }

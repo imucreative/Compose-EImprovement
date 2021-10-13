@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="260dp"
     android:layout_height="wrap_content"
@@ -20,14 +21,15 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_error_outline" />
+            app:srcCompat="@drawable/ic_error_outline"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:id="@+id/title_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_middle"
-            android:text="No internet !"
+            android:text="@string/no_internet"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
@@ -46,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
-            android:text="apakah lanjut?"
+            android:text="@string/are_you_sure"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/grey_60" />
@@ -70,7 +72,7 @@
             android:background="@drawable/btn_rounded_green"
             android:paddingLeft="@dimen/spacing_mlarge"
             android:paddingRight="@dimen/spacing_mlarge"
-            android:text="OK"
+            android:text="@string/ok"
             android:textColor="@android:color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -82,7 +84,7 @@
             android:background="@drawable/btn_rounded_red"
             android:paddingLeft="@dimen/spacing_mlarge"
             android:paddingRight="@dimen/spacing_mlarge"
-            android:text="No"
+            android:text="@string/no"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

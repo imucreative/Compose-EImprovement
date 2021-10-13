@@ -513,7 +513,7 @@
                 android:layout_marginBottom="@dimen/spacing_middle"
                 android:layout_marginStart="@dimen/spacing_large"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:text="Log Out"
+                android:text="@string/log_out"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/grey_40" />
@@ -561,7 +561,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Log Out"
+                            android:text="@string/log_out"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 

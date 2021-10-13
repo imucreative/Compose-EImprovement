@@ -123,7 +123,7 @@
 
                         <View
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/spacing_mlarge" />
+                            android:layout_height="@dimen/spacing_medium" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
