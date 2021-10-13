@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white">
 
-            <include layout="@layout/toolbar" />
+            <include layout="@layout/toolbar_dashboard" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -153,12 +153,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:paddingLeft="@dimen/spacing_middle"
                     android:paddingRight="@dimen/spacing_middle">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xsmall"
                         android:layout_marginLeft="@dimen/spacing_xsmall"
@@ -169,59 +169,6 @@
                         app:cardCornerRadius="2dp"
                         app:cardElevation="2dp">
 
-<!--                        <LinearLayout-->
-<!--                            android:id="@+id/btn_list_approval"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:orientation="horizontal"-->
-<!--                            android:background="?attr/selectableItemBackground"-->
-<!--                            android:clickable="true"-->
-<!--                            android:padding="@dimen/spacing_large">-->
-
-<!--                            <androidx.cardview.widget.CardView-->
-<!--                                android:layout_width="@dimen/spacing_xlarge"-->
-<!--                                android:layout_height="@dimen/spacing_xlarge"-->
-<!--                                app:cardBackgroundColor="@color/purple_400"-->
-<!--                                app:cardCornerRadius="4dp"-->
-<!--                                app:cardElevation="0dp">-->
-
-<!--                                <ImageView-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="match_parent"-->
-<!--                                    android:layout_margin="@dimen/spacing_xmedium"-->
-<!--                                    app:srcCompat="@drawable/ic_check_circle_outline_black"-->
-<!--                                    app:tint="@android:color/white"-->
-<!--                                    android:contentDescription="@string/app_name" />-->
-
-<!--                            </androidx.cardview.widget.CardView>-->
-
-<!--                            <View-->
-<!--                                android:layout_width="@dimen/spacing_middle"-->
-<!--                                android:layout_height="0dp" />-->
-
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:text="@string/list_approval_short"-->
-<!--                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"-->
-<!--                                    android:textColor="@color/grey_60"-->
-<!--                                    android:textStyle="bold" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:text="12 Available"-->
-<!--                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
-<!--                                    android:textColor="@color/grey_40" />-->
-
-<!--                            </LinearLayout>-->
-
-<!--                        </LinearLayout>-->
 
                         <LinearLayout
                             android:id="@+id/btn_list_approval"
@@ -283,10 +230,10 @@
 
                     <View
                         android:layout_width="@dimen/spacing_middle"
-                        android:layout_height="0dp" />
+                        android:layout_height="@dimen/spacing_middle" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xsmall"
                         android:layout_marginLeft="@dimen/spacing_xsmall"
@@ -300,26 +247,12 @@
                         <LinearLayout
                             android:id="@+id/btn_suggestion_system"
                             android:layout_width="match_parent"
-                            android:layout_height="85dp"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:padding="@dimen/spacing_large"
                             android:background="?attr/selectableItemBackground"
                             android:clickable="true">
 
-<!--                            <RelativeLayout-->
-<!--                                android:layout_width="40dp"-->
-<!--                                android:layout_height="40dp">-->
-
-
-<!--                                <ImageView-->
-<!--                                    android:layout_width="20dp"-->
-<!--                                    android:layout_height="20dp"-->
-<!--                                    android:layout_centerInParent="true"-->
-<!--                                    app:srcCompat="@drawable/ic_assignment"-->
-<!--                                    app:tint="@android:color/white"-->
-<!--                                    android:contentDescription="@string/app_name" />-->
-
-<!--                            </RelativeLayout>-->
                             <androidx.cardview.widget.CardView
                                 android:layout_width="@dimen/spacing_xlarge"
                                 android:layout_height="@dimen/spacing_xlarge"
@@ -377,12 +310,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:paddingLeft="@dimen/spacing_middle"
                     android:paddingRight="@dimen/spacing_middle">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xsmall"
                         android:layout_marginLeft="@dimen/spacing_xsmall"
@@ -452,10 +385,10 @@
 
                     <View
                         android:layout_width="@dimen/spacing_middle"
-                        android:layout_height="0dp" />
+                        android:layout_height="@dimen/spacing_middle" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xsmall"
                         android:layout_marginLeft="@dimen/spacing_xsmall"
@@ -541,7 +474,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="50dp"
-                        android:layout_marginTop="140dp"
+                        android:layout_marginTop="70dp"
                         android:layout_marginEnd="50dp"
                         android:layout_marginBottom="50dp"
                         android:adjustViewBounds="true"

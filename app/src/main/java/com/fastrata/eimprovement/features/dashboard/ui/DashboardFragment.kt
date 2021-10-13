@@ -19,6 +19,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.databinding.FragmentDashboardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
+import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
+
+
 import com.fastrata.eimprovement.di.Injectable
 import javax.inject.Inject
 
@@ -26,9 +29,10 @@ class DashboardFragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentDashboardBinding
-    private lateinit var toolbarBinding: ToolbarBinding
+    private lateinit var toolbarBinding: ToolbarDashboardBinding
     private lateinit var notification: HelperNotification
     private lateinit var datePicker: DatePickerCustom
+    private var greetings: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +40,7 @@ class DashboardFragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        toolbarBinding = ToolbarBinding.bind(binding.root)
+        toolbarBinding = ToolbarDashboardBinding.bind(binding.root)
         context ?: return binding.root
 
         notification = HelperNotification()
@@ -47,7 +51,11 @@ class DashboardFragment: Fragment(), Injectable {
         )
 
         setHasOptionsMenu(true);
-
+        if(HawkUtils().getDataLogin().FULL_NAME != null){
+            greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
+        }else{
+            greetings = "${resources.getString(R.string.welcome_user)} Guest"
+        }
         initToolbar()
         initComponent(requireActivity())
 
@@ -55,17 +63,15 @@ class DashboardFragment: Fragment(), Injectable {
     }
 
     private fun initToolbar() {
-        val toolbar = toolbarBinding.toolbar
+        val toolbar = toolbarBinding.toolbarDash
         toolbar.setNavigationIcon(R.drawable.ic_menu)
-
-        setToolbar(toolbar, "Dashboard")
+        toolbarBinding.textGreetings.text = greetings
+        setToolbar(toolbar, "")
     }
 
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {
-            Toast.makeText(activity,resources.getString(R.string.welcome_user)+" "+HawkUtils().getDataLogin().FULL_NAME,Toast.LENGTH_LONG).show()
-            welcome.text = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
-
+            welcome.text = greetings
             linearSaldo.setOnClickListener {
                 notification.showNotification(activity,resources.getString(R.string.point_balanca), "50000")
             }
@@ -137,7 +143,7 @@ class DashboardFragment: Fragment(), Injectable {
         val toggle = object : ActionBarDrawerToggle(
             activity,
             drawer,
-            toolbarBinding.toolbar,
+            toolbarBinding.toolbarDash,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         ) {
