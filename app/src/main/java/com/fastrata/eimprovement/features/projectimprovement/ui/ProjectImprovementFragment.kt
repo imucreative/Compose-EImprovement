@@ -5,9 +5,9 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import android.R.layout.simple_list_item_1
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -94,9 +94,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         initComponent()
 
         binding.apply {
-            rvPi.setHasFixedSize(true)
-            rvPi.layoutManager = LinearLayoutManager(activity)
-            rvPi.adapter = adapter
+            rv.setHasFixedSize(true)
+            rv.layoutManager = LinearLayoutManager(activity)
+            rv.adapter = adapter
 
             createPi.setOnClickListener {
                 val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
@@ -199,7 +199,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun initComponentStatusProposal() {
         binding.apply {
             val adapter = ArrayAdapter(
-                requireContext(), android.R.layout.simple_list_item_1,
+                requireContext(), simple_list_item_1,
                 listStatusProposalItem!!.map { value ->
                     value.status
                 }
@@ -216,7 +216,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun initComponentBranch() {
         binding.apply {
             val adapter = ArrayAdapter(
-                requireContext(), android.R.layout.simple_list_item_1,
+                requireContext(), simple_list_item_1,
                 listBranchItem!!.map { value ->
                     value.branch
                 }
@@ -237,7 +237,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun initComponentSubBranch() {
         binding.apply {
             val adapter = ArrayAdapter(
-                requireContext(), android.R.layout.simple_list_item_1,
+                requireContext(), simple_list_item_1,
                 listSubBranchItem!!.map { value ->
                     value.subBranchName
                 }

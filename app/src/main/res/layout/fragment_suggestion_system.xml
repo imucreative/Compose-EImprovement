@@ -27,7 +27,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_ss"
+            android:id="@+id/rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical"
@@ -51,7 +51,7 @@
             app:backgroundTint="@color/colorPrimary"
             app:icon="@drawable/ic_pencil"
             app:iconTint="@android:color/white"
-            app:layout_anchor="@id/rv_ss"
+            app:layout_anchor="@id/rv"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

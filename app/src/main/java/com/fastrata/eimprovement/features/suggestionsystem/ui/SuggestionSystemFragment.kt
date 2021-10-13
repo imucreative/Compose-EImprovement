@@ -90,9 +90,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         initComponent()
 
         binding.apply {
-            rvSs.setHasFixedSize(true)
-            rvSs.layoutManager = LinearLayoutManager(activity)
-            rvSs.adapter = adapter
+            rv.setHasFixedSize(true)
+            rv.layoutManager = LinearLayoutManager(activity)
+            rv.adapter = adapter
 
             create.setOnClickListener {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(

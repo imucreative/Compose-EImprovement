@@ -166,6 +166,7 @@
     <string name="total">Total :</string>
     <string name="status">Status</string>
     <string name="category">Kategori</string>
+    <string name="created_by">Dibuat Oleh</string>
 
 
 </resources>

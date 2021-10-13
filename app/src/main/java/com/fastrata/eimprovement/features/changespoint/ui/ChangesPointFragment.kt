@@ -2,7 +2,10 @@ package com.fastrata.eimprovement.features.changespoint.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import android.R.layout.simple_list_item_1
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -11,59 +14,89 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
+import com.fastrata.eimprovement.databinding.FragmentProjectImprovementBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
+import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
+import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.ADD
 import com.fastrata.eimprovement.utils.DatePickerCustom
 import com.fastrata.eimprovement.utils.EDIT
+import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import com.fastrata.eimprovement.utils.observeEvent
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChangesPointFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var binding: FragmentChangesPointSystemBinding
+    private var _binding: FragmentChangesPointSystemBinding? = null
+    private val binding get() = _binding!!
     private lateinit var toolbarBinding: ToolbarBinding
-    private lateinit var viewModel: ChangesPointCreateViewModel
+    private lateinit var listCpViewModel: ChangesPointCreateViewModel
+    private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
+    private lateinit var masterBranchViewModel: BranchViewModel
+
     private lateinit var adapter: ChangesPointAdapter
     private lateinit var datePicker: DatePickerCustom
+
+    private var listStatusProposalItem: List<StatusProposalItem>? = null
+    private var listBranchItem: List<BranchItem>? = null
+    private var listSubBranchItem: List<SubBranchItem>? = null
+    private lateinit var selectedStatusProposal: StatusProposalItem
+    private lateinit var selectedBranch: BranchItem
+    private lateinit var selectedSubBranch: SubBranchItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentChangesPointSystemBinding.inflate(inflater, container, false)
+        _binding = FragmentChangesPointSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
 
-        viewModel = injectViewModel(viewModelFactory)
+        listCpViewModel = injectViewModel(viewModelFactory)
+        masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
+        masterBranchViewModel = injectViewModel(viewModelFactory)
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
-        setHasOptionsMenu(true);
+        listCpViewModel.setChangePoint()
 
-        initToolbar()
-        initComponent(requireActivity())
+        masterDataStatusProposalViewModel.setStatusProposal()
+        masterBranchViewModel.setBranch()
+
+        adapter = ChangesPointAdapter()
+        adapter.notifyDataSetChanged()
 
         return binding.root
     }
 
-    private fun initComponent(activity: FragmentActivity) {
-        viewModel.setChangePoint()
-        adapter = ChangesPointAdapter()
-        adapter.notifyDataSetChanged()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true);
+
+        _binding = FragmentChangesPointSystemBinding.bind(view)
+
+        initToolbar()
+        initComponent()
 
         binding.apply {
-            rvSs.setHasFixedSize(true)
-            rvSs.layoutManager = LinearLayoutManager(activity)
-            rvSs.adapter = adapter
+            rv.setHasFixedSize(true)
+            rv.layoutManager = LinearLayoutManager(activity)
+            rv.adapter = adapter
 
             createSs.setOnClickListener {
                 val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
@@ -74,6 +107,153 @@ class ChangesPointFragment : Fragment(), Injectable {
             }
         }
 
+        retrieveDataStatusProposal()
+        retrieveDataBranch()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun retrieveDataStatusProposal(){
+        masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get status proposal")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listStatusProposalItem = result.data?.data
+                            initComponentStatusProposal()
+                            Timber.d("###-- Success get status proposal")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get status proposal")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun retrieveDataBranch(){
+        masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get Branch")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listBranchItem = result.data?.data
+                            initComponentBranch()
+                            Timber.d("###-- Success get Branch")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get Branch")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun retrieveDataSubBranch(){
+        masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get sub Branch")
+                        }
+                        Result.Status.SUCCESS -> {
+                            //binding.progressBar.visibility = View.GONE
+                            listSubBranchItem = result.data?.data
+                            initComponentSubBranch()
+                            Timber.d("###-- Success get sub Branch")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get sub Branch")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun initComponentStatusProposal() {
+        binding.apply {
+            val adapter = ArrayAdapter(
+                requireContext(), simple_list_item_1,
+                listStatusProposalItem!!.map { value ->
+                    value.status
+                }
+            )
+            edtStatusProposal.setAdapter(adapter)
+            edtStatusProposal.onItemClickListener =
+                AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                    selectedStatusProposal = listStatusProposalItem!![i]
+                    hideKeyboard()
+                }
+        }
+    }
+
+    private fun initComponentBranch() {
+        binding.apply {
+            val adapter = ArrayAdapter(
+                requireContext(), simple_list_item_1,
+                listBranchItem!!.map { value ->
+                    value.branch
+                }
+            )
+            edtBranch.setAdapter(adapter)
+            edtBranch.onItemClickListener =
+                AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                    selectedBranch = listBranchItem!![i]
+                    edtSubBranch.setText("")
+                    masterBranchViewModel.setSubBranch(listBranchItem!![i].orgId)
+                    retrieveDataSubBranch()
+                    hideKeyboard()
+
+                }
+        }
+    }
+
+    private fun initComponentSubBranch() {
+        binding.apply {
+            val adapter = ArrayAdapter(
+                requireContext(), simple_list_item_1,
+                listSubBranchItem!!.map { value ->
+                    value.subBranchName
+                }
+            )
+            edtSubBranch.setAdapter(adapter)
+            edtSubBranch.onItemClickListener =
+                AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                    selectedSubBranch = listSubBranchItem!![i]
+                    hideKeyboard()
+
+                }
+        }
+    }
+
+    private fun initComponent() {
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
                 val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
@@ -84,7 +264,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             }
         })
 
-        viewModel.getChangePoint().observe(viewLifecycleOwner, {
+        listCpViewModel.getChangePoint().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
             }
@@ -101,41 +281,38 @@ class ChangesPointFragment : Fragment(), Injectable {
     private fun initNavigationMenu() {
 
         binding.apply {
-
-            val drawer = drawerFilter
-
             // open drawer at start
-            drawer.openDrawer(GravityCompat.END)
+            drawerFilter.openDrawer(GravityCompat.END)
 
-            filterStartDate.setOnClickListener {
+            edtFromDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        tvStartDate.text = "$dayStr-$monthStr-$year"
+                        edtFromDate.setText("$dayStr-$monthStr-$year")
                     }
                 })
             }
 
-            filterEndDate.setOnClickListener {
+            edtToDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        tvEndDate.text = "$dayStr-$monthStr-$year"
+                        edtToDate.setText("$dayStr-$monthStr-$year")
                     }
                 })
             }
 
             btnCloseFilter.setOnClickListener {
-                drawer.closeDrawer(GravityCompat.END)
+                drawerFilter.closeDrawer(GravityCompat.END)
             }
 
             btnApply.setOnClickListener {
                 Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
-                drawer.closeDrawer(GravityCompat.END)
+                drawerFilter.closeDrawer(GravityCompat.END)
             }
         }
     }
