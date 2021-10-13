@@ -42,8 +42,10 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private lateinit var listSsViewModel: SuggestionSystemViewModel
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
     private lateinit var masterBranchViewModel: BranchViewModel
+
     private lateinit var adapter: SuggestionSystemAdapter
     private lateinit var datePicker: DatePickerCustom
+
     private var listStatusProposalItem: List<StatusProposalItem>? = null
     private var listBranchItem: List<BranchItem>? = null
     private var listSubBranchItem: List<SubBranchItem>? = null
