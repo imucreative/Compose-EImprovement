@@ -237,76 +237,7 @@ object DataDummySs {
     fun generateDummyChangePointList(): ArrayList<ChangePointModel>{
         val changepoint = ArrayList<ChangePointModel>()
 
-        changepoint.add(
-            ChangePointModel(
-            "CP-0001/08/2021/0005",
-            "AKTIF",
-            "2021-08-06 17:19:22",
-        "Reward",
-            "PUSAT",
-            "FDTB",
-            "0"
-        ))
-        changepoint.add(
-            ChangePointModel(
-                "CP-0001/08/2021/0005",
-                "AKTIF",
-                "2021-08-06 17:19:22",
-                "Reward",
-                "PUSAT",
-                "FDTB",
-                "0"
-            ))
-        changepoint.add(
-            ChangePointModel(
-                "CP-0001/08/2021/0005",
-                "AKTIF",
-                "2021-08-06 17:19:22",
-                "Reward",
-                "PUSAT",
-                "FDTB",
-                "0"
-            ))
-        changepoint.add(
-            ChangePointModel(
-                "CP-0001/08/2021/0005",
-                "AKTIF",
-                "2021-08-06 17:19:22",
-                "Reward",
-                "PUSAT",
-                "FDTB",
-                "0"
-            ))
-        changepoint.add(
-            ChangePointModel(
-                "CP-0001/08/2021/0005",
-                "AKTIF",
-                "2021-08-06 17:19:22",
-                "Reward",
-                "PUSAT",
-                "FDTB",
-                "0"
-            ))
-        changepoint.add(
-            ChangePointModel(
-                "CP-0001/08/2021/0005",
-                "AKTIF",
-                "2021-08-06 17:19:22",
-                "Reward",
-                "PUSAT",
-                "FDTB",
-                "0"
-            ))
-        changepoint.add(
-            ChangePointModel(
-                "CP-0001/08/2021/0005",
-                "AKTIF",
-                "2021-08-06 17:19:22",
-                "Reward",
-                "PUSAT",
-                "FDTB",
-                "0"
-            ))
+
 
         return changepoint
     }

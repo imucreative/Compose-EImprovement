@@ -7,13 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.changespoint.data.CpRemoteRepository
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
 import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.featuresglobal.data.model.MemberDepartmentItem
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ChangesRewardViewModel @Inject constructor(private val repository: CpRemoteRepository) : ViewModel() {

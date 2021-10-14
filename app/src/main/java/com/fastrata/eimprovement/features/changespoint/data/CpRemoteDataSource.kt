@@ -8,4 +8,8 @@ class CpRemoteDataSource @Inject constructor(private val service: AppService) : 
     suspend fun requestListGift() = getResult {
         service.listGift()
     }
+
+    suspend fun requestListCp(userId: Int) = getResult {
+        service.listCp(userId)
+    }
 }

@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.api
 
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
@@ -47,4 +48,8 @@ interface AppService {
     @FormUrlEncoded
     @POST("pi/list")
     suspend fun listPi(@Field("userId") userId: Int): Response<ResultsResponse<ProjectImprovementModel>>
+
+    @FormUrlEncoded
+    @POST("rp/list")
+    suspend fun listCp(@Field("userId") userId: Int): Response<ResultsResponse<ChangePointModel>>
 }
