@@ -75,7 +75,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         )
 
         try {
-            listSsViewModel.setListSs()
+            val userId = HawkUtils().getDataLogin().USER_ID
+            listSsViewModel.setListSs(userId)
         } catch (e: Exception){
             Timber.e("Error setListSs : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()

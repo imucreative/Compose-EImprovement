@@ -7,20 +7,20 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProjectImprovementModel(
-    @SerializedName("no_pi")
+    @SerializedName("PI_NO")
     val piNo: String,
-    @SerializedName("status")
+    @SerializedName("STATUS_PROPOSAL")
     val status: StatusProposalItem,
-    @SerializedName("judul")
+    @SerializedName("TITLE")
     val title: String,
-    @SerializedName("kategori")
+    @SerializedName("CATEGORY")
     val category: String,
-    @SerializedName("cabang")
+    @SerializedName("BRANCH")
     val branch: String,
-    @SerializedName("subcabang")
+    @SerializedName("SUBBRANCH")
     val subBranch: String,
-    @SerializedName("tgl_dibuat")
+    @SerializedName("CREATED_DATE")
     val date : String,
-    @SerializedName("dibuat_oleh")
+    @SerializedName("CREATED_BY")
     val createdBy : String
 ): Parcelable

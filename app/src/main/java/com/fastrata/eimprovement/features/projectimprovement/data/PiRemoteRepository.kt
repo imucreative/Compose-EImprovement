@@ -4,7 +4,7 @@ import com.fastrata.eimprovement.data.resultMutableLiveDataRemote
 import javax.inject.Inject
 
 class PiRemoteRepository @Inject constructor(private val remoteDataSource: PiRemoteDataSource){
-    fun observeListCategory() = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.requestListCategory() }
+    fun observeListPi(userId: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListPi(userId) }
     )
 }

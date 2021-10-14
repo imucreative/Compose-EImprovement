@@ -18,26 +18,18 @@ import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
 import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository): ViewModel(){
-    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
     private val detailProjectImprovement = MutableLiveData<ProjectImprovementCreateModel>()
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem?>?>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
-
-    fun setProjectImprovement () {
-        val data = DataDummySs.generateDummyProjectImprovementList()
-        listProjectImprovement.postValue(data)
-    }
-
-    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementModel>> {
-        return listProjectImprovement
-    }
 
     fun setProjectImprovementDetail(piNo: String) {
         // koneksi ke DB
@@ -264,6 +256,17 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         HawkUtils().setTempDataCreatePi(
             attachment = add
         )
+    }
+
+    // === List PI
+    private val _listPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>>()
+    val getListPiItem: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>> get() = _listPi
+
+    fun setListPi(userId: Int) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListPi(userId) }
+            _listPi.value = Event(result)
+        }
     }
 
 }

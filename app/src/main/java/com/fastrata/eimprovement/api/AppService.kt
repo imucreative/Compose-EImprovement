@@ -4,6 +4,7 @@ import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -42,4 +43,8 @@ interface AppService {
     @FormUrlEncoded
     @POST("ss/list")
     suspend fun listSs(@Field("userId") userId: Int): Response<ResultsResponse<SuggestionSystemModel>>
+
+    @FormUrlEncoded
+    @POST("pi/list")
+    suspend fun listPi(@Field("userId") userId: Int): Response<ResultsResponse<ProjectImprovementModel>>
 }

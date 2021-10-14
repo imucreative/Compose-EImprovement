@@ -6,18 +6,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemProjectImprovmentBinding
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
+import com.fastrata.eimprovement.utils.Tools
 import java.util.ArrayList
 
 class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter.ProjectImprovementViewHolder>() {
 
     private var list = ArrayList<ProjectImprovementModel>()
 
-    fun setList(data: ArrayList<ProjectImprovementModel>) {
+    fun setList(data: List<ProjectImprovementModel>?) {
         list.clear()
-        list.addAll(data)
+        val convertToArrayList = Tools.listToArrayList(data)
+        if (convertToArrayList != null) {
+            list.addAll(convertToArrayList)
+        }
         notifyDataSetChanged()
     }
-
 
     private lateinit var projectSystemCallback: ProjectSystemCallback
     fun setProjectImprovementSystemCallback(projectSystemCallback: ProjectSystemCallback) {
@@ -36,7 +39,6 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
                 nomorPi.text = data.piNo
                 judulPi.text = data.title
                 statusPi.text = data.status.status
-                kategoriPi.text = data.category
                 datePi.text = data.date
                 branchPi.text = data.branch
                 subBranchPi.text = data.subBranch
