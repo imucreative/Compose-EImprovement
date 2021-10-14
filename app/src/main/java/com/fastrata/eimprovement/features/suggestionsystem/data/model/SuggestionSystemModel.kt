@@ -7,18 +7,20 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SuggestionSystemModel(
-    @SerializedName("no_ss")
+    @SerializedName("SS_H_ID")
+    val idSs: Int,
+    @SerializedName("SS_NO")
     val ssNo: String,
-    @SerializedName("tgl_dibuat")
+    @SerializedName("CREATED_DATE")
     val date: String,
-    @SerializedName("judul")
+    @SerializedName("TITLE")
     val title: String,
-    @SerializedName("status")
+    @SerializedName("STATUS_PROPOSAL")
     val status: StatusProposalItem,
-    @SerializedName("kategori")
+    @SerializedName("CATEGORY")
     val categoryRepairment: String,
-    @SerializedName("cabang")
+    @SerializedName("BRANCH")
     val branch: String,
-    @SerializedName("subcabang")
+    @SerializedName("SUBBRANCH")
     val subBranch: String
 ) : Parcelable

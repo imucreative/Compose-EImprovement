@@ -3,6 +3,7 @@ package com.fastrata.eimprovement.api
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -37,4 +38,8 @@ interface AppService {
 
     @GET("master/subbranch/{ORG_ID}")
     suspend fun listSubBranch(@Path("ORG_ID") orgId: Int): Response<ResultsResponse<SubBranchItem>>
+
+    @FormUrlEncoded
+    @POST("ss/list")
+    suspend fun listSs(@Field("userId") userId: Int): Response<ResultsResponse<SuggestionSystemModel>>
 }

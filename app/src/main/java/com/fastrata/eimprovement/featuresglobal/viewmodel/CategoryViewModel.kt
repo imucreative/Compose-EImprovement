@@ -9,7 +9,9 @@ import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
 import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CategoryViewModel @Inject constructor(private val repository: GlobalRemoteRepository): ViewModel(){
@@ -17,8 +19,8 @@ class CategoryViewModel @Inject constructor(private val repository: GlobalRemote
     val getCategory: LiveData<Event<LiveData<Result<ResultsResponse<CategoryImprovementItem>>>>> get() = _listCategory
 
     fun setCategory() {
-        viewModelScope.launch {
-            val result = repository.observeListCategory()
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListCategory() }
             _listCategory.value = Event(result)
         }
     }

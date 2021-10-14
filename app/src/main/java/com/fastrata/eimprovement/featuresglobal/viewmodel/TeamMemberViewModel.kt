@@ -11,7 +11,9 @@ import com.fastrata.eimprovement.featuresglobal.data.model.MemberDepartmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.MemberNameItem
 import com.fastrata.eimprovement.featuresglobal.data.model.MemberTaskItem
 import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemoteRepository): ViewModel() {
@@ -20,8 +22,8 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     val getTeamMemberName: LiveData<Event<LiveData<Result<ResultsResponse<MemberNameItem>>>>> get() = _listTeamMemberName
 
     fun setTeamMemberName(branchCode: String) {
-        viewModelScope.launch {
-            val result = repository.observeListTeamMember(branchCode)
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(branchCode) }
             _listTeamMemberName.value = Event(result)
         }
     }
@@ -31,8 +33,8 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     val getDepartment: LiveData<Event<LiveData<Result<ResultsResponse<MemberDepartmentItem>>>>> get() = _listDepartment
 
     fun setDepartment() {
-        viewModelScope.launch {
-            val result = repository.observeListDepartment()
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListDepartment() }
             _listDepartment.value = Event(result)
         }
     }
@@ -42,8 +44,8 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     val getTeamRole: LiveData<Event<LiveData<Result<ResultsResponse<MemberTaskItem>>>>> get() = _listTeamRole
 
     fun setTeamRole() {
-        viewModelScope.launch {
-            val result = repository.observeListTeamRole()
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListTeamRole() }
             _listTeamRole.value = Event(result)
         }
     }

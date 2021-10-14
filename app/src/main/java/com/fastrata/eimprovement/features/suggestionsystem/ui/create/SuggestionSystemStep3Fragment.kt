@@ -120,17 +120,17 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.memberName.isEnabled = false
                             Timber.d("###-- Loading get team member name")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.memberName.isEnabled = true
                             listMemberItem = result.data?.data
                             initComponentMemberName()
                             Timber.d("###-- Success get team member name")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.memberName.isEnabled = false
                             Timber.d("###-- Error get team member name")
                         }
 
@@ -147,17 +147,17 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.memberDepartment.isEnabled = false
                             Timber.d("###-- Loading get Department")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.memberDepartment.isEnabled = true
                             listDepartmentItem = result.data?.data
                             initComponentDepartment()
                             Timber.d("###-- Success get Department")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.memberDepartment.isEnabled = false
                             Timber.d("###-- Error get Department")
                         }
 
@@ -174,17 +174,17 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.memberTask.isEnabled = false
                             Timber.d("###-- Loading get Team role")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.memberTask.isEnabled = true
                             listTaskItem = result.data?.data
                             initComponentTeamRole()
                             Timber.d("###-- Success get Team role")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.memberTask.isEnabled = false
                             Timber.d("###-- Error get Team role")
                         }
 

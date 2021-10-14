@@ -13,6 +13,7 @@ object DataDummySs {
         val suggestionSystem = ArrayList<SuggestionSystemModel>()
 
         suggestionSystem.add(SuggestionSystemModel(
+            1,
             "SS-0000/08/2021/0041",
             "17-08-2021",
             "Membuat ide baru",
@@ -23,6 +24,7 @@ object DataDummySs {
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
+            2,
             "SS-0000/08/2021/0042",
             "17-08-2021",
             "Membuat ide baru new",
@@ -33,6 +35,7 @@ object DataDummySs {
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
+            3,
             "SS-0000/08/2021/0043",
             "17-08-2021",
             "Membuat ide baru new",
@@ -43,6 +46,7 @@ object DataDummySs {
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
+            4,
             "SS-0000/08/2021/0044",
             "17-08-2021",
             "Membuat ide baru new",
@@ -53,6 +57,7 @@ object DataDummySs {
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
+            5,
             "SS-0000/08/2021/0045",
             "17-08-2021",
             "Membuat ide baru new",
@@ -63,6 +68,7 @@ object DataDummySs {
             "PUSAT",
             "FBPST - Gd Barang Dagang"))
         suggestionSystem.add(SuggestionSystemModel(
+            6,
             "SS-0000/08/2021/0046",
             "17-08-2021",
             "Membuat ide baru new",

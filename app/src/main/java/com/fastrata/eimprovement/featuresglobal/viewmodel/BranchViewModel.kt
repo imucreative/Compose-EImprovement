@@ -10,7 +10,9 @@ import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
 import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BranchViewModel @Inject constructor(private val repository: GlobalRemoteRepository): ViewModel() {
@@ -19,8 +21,8 @@ class BranchViewModel @Inject constructor(private val repository: GlobalRemoteRe
     val getBranchItem: LiveData<Event<LiveData<Result<ResultsResponse<BranchItem>>>>> get() = _listBranch
 
     fun setBranch() {
-        viewModelScope.launch {
-            val result = repository.observeListBranch()
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListBranch() }
             _listBranch.value = Event(result)
         }
     }
@@ -30,8 +32,8 @@ class BranchViewModel @Inject constructor(private val repository: GlobalRemoteRe
     val getSubBranchItem: LiveData<Event<LiveData<Result<ResultsResponse<SubBranchItem>>>>> get() = _listSubBranch
 
     fun setSubBranch(orgId: Int) {
-        viewModelScope.launch {
-            val result = repository.observeListSubBranch(orgId)
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListSubBranch(orgId) }
             _listSubBranch.value = Event(result)
         }
     }

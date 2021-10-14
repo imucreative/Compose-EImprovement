@@ -28,6 +28,7 @@ import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import timber.log.Timber
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -73,10 +74,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
-        listSsViewModel.setSuggestionSystem()
-
-        masterDataStatusProposalViewModel.setStatusProposal()
-        masterBranchViewModel.setBranch()
+        try {
+            listSsViewModel.setListSs()
+        } catch (e: Exception){
+            Timber.e("Error setListSs : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
 
         adapter = SuggestionSystemAdapter()
         adapter.notifyDataSetChanged()
@@ -105,9 +108,6 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 it.findNavController().navigate(direction)
             }
         }
-
-        retrieveDataStatusProposal()
-        retrieveDataBranch()
     }
 
     override fun onDestroyView() {
@@ -121,17 +121,17 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Loading get status proposal")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtStatusProposal.isEnabled = true
                             listStatusProposalItem = result.data?.data
                             initComponentStatusProposal()
                             Timber.d("###-- Success get status proposal")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -148,17 +148,17 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.edtBranch.isEnabled = false
                             Timber.d("###-- Loading get Branch")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
                             listBranchItem = result.data?.data
                             initComponentBranch()
+                            binding.edtBranch.isEnabled = true
                             Timber.d("###-- Success get Branch")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtBranch.isEnabled = false
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -175,17 +175,17 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.edtSubBranch.isEnabled = false
                             Timber.d("###-- Loading get sub Branch")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtSubBranch.isEnabled = true
                             listSubBranchItem = result.data?.data
                             initComponentSubBranch()
                             Timber.d("###-- Success get sub Branch")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtSubBranch.isEnabled = false
                             Timber.d("###-- Error get sub Branch")
                         }
 
@@ -262,11 +262,47 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             }
         })
 
-        listSsViewModel.getSuggestionSystem().observe(viewLifecycleOwner, {
-            if (it != null) {
-                adapter.setList(it)
-            }
-        })
+        listSsViewModel.getListSsItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get List SS")
+                        }
+                        Result.Status.SUCCESS -> {
+                            binding.progressBar.visibility = View.GONE
+                            adapter.setList(result.data?.data)
+
+                            try {
+                                masterDataStatusProposalViewModel.setStatusProposal()
+                            } catch (e: Exception){
+                                Timber.e("Error setStatusProposal : $e")
+                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                            }
+
+                            try {
+                                masterBranchViewModel.setBranch()
+                            } catch (e: Exception){
+                                Timber.e("Error setBranch : $e")
+                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                            }
+
+                            retrieveDataStatusProposal()
+                            retrieveDataBranch()
+
+                            Timber.d("###-- Success get List SS")
+                        }
+                        Result.Status.ERROR -> {
+                            binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get List SS")
+                        }
+
+                    }
+
+                }
+            })
+        }
     }
 
     private fun initToolbar() {
