@@ -137,7 +137,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             //binding.progressBar.visibility = View.VISIBLE
-                            Timber.d("###-- Loading get SS item from Dashboard")
+                            Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
                             //binding.progressBar.visibility = View.GONE
@@ -152,11 +152,11 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                                 }
                             }
 
-                            Timber.d("###-- Success get master item from Dashboard")
+                            Timber.d("###-- Success get master item getCategory")
                         }
                         Result.Status.ERROR -> {
                             //binding.progressBar.visibility = View.GONE
-                            Timber.d("###-- Error get master item from Dashboard")
+                            Timber.d("###-- Error get master item getCategory")
                         }
 
                     }

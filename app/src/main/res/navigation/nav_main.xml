@@ -136,6 +136,10 @@
             app:argType="string" />
 
         <argument
+            android:name="idSs"
+            app:argType="integer" />
+
+        <argument
             android:name="type"
             android:defaultValue=""
             app:argType="string" />

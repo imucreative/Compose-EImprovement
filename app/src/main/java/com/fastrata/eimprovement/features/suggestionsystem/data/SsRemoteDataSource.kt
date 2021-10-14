@@ -8,4 +8,8 @@ class SsRemoteDataSource @Inject constructor(private val service: AppService) : 
     suspend fun requestListSs(userId: Int) = getResult {
         service.listSs(userId)
     }
+
+    suspend fun requestDetailSs(id: Int, userId: Int) = getResult {
+        service.detailSs(id, userId)
+    }
 }

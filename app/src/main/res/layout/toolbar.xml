@@ -12,6 +12,6 @@
         android:theme="@style/Toolbar.Light"
         app:contentInsetStartWithNavigation="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Dashboard" />
+        tools:title="Dashboard" />
 
 </merge>

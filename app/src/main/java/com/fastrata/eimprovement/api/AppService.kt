@@ -6,6 +6,7 @@ import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -52,4 +53,11 @@ interface AppService {
     @FormUrlEncoded
     @POST("rp/list")
     suspend fun listCp(@Field("userId") userId: Int): Response<ResultsResponse<ChangePointModel>>
+
+    @FormUrlEncoded
+    @POST("ss/detail")
+    suspend fun detailSs(
+        @Field("id") id: Int,
+        @Field("userId") userId: Int
+    ): Response<ResultsResponse<SuggestionSystemCreateModel>>
 }

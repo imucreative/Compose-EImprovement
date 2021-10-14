@@ -218,7 +218,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
             problem.setText(data?.problem.toString())
             suggestion.setText(data?.suggestion.toString())
 
-            if (data?.statusImplementation?.status == "1") {
+            if (data?.statusImplementation?.status == 1) {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
 
@@ -246,16 +246,16 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    lateinit var tempStatus: String
+                    val tempStatus: Int?
                     lateinit var tempFrom: String
                     lateinit var tempTo: String
 
                     if (rbStatus1.isChecked) {
-                        tempStatus = "1"
+                        tempStatus = 1
                         tempFrom = etFromStatus1.text.toString()
                         tempTo = etToStatus1.text.toString()
                     } else {
-                        tempStatus = "0"
+                        tempStatus = 0
                         tempFrom = etFromStatus2.text.toString()
                         tempTo = etToStatus2.text.toString()
                     }

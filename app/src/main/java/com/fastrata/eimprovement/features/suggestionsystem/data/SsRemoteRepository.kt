@@ -9,4 +9,8 @@ class SsRemoteRepository @Inject constructor(private val remoteDataSource: SsRem
     fun observeListSs(userId: Int) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestListSs(userId) }
     )
+
+    fun observeDetailSs(id: Int, userId: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestDetailSs(id, userId) }
+    )
 }

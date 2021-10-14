@@ -7,6 +7,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProjectImprovementModel(
+    @SerializedName("PI_H_ID")
+    val idPi: Int,
     @SerializedName("PI_NO")
     val piNo: String,
     @SerializedName("STATUS_PROPOSAL")

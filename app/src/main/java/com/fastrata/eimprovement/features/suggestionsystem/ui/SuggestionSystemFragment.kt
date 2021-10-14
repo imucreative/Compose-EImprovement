@@ -104,7 +104,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
             create.setOnClickListener {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    toolbarTitle = "Create Suggestion System", action = ADD, ssNo = "", type = ""
+                    toolbarTitle = "Create Suggestion System", action = ADD, idSs = 0, ssNo = "", type = ""
                 )
                 it.findNavController().navigate(direction)
             }
@@ -257,7 +257,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    toolbarTitle = "Edit Suggestion System", action = EDIT, ssNo = data.ssNo, type = ""
+                    toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
                 )
                 requireView().findNavController().navigate(direction)
             }

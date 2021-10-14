@@ -104,7 +104,7 @@ object DataDummySs {
             name = "Maman",
             nik = "11210012",
             statusImplementation = StatusImplementation(
-                status = "1",
+                status = 1,
                 from = "20-10-2021",
                 to = "11-11-2021"
             ),
@@ -181,6 +181,7 @@ object DataDummySs {
         val approval = ArrayList<ApprovalModel>()
 
         approval.add(ApprovalModel(
+            1,
             "PI-0000/08/2021/0100",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA PI",
             "Laporan Akhir Di Submit",
@@ -191,6 +192,7 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22",))
         approval.add(ApprovalModel(
+            2,
             "SS-0000/08/2021/0002",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
             "Laporan Akhir Di Submit",
@@ -201,6 +203,7 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
         approval.add(ApprovalModel(
+            3,
             "CP-0001/05/2021/0010",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA CP",
             "Laporan Akhir Di Submit",
@@ -211,6 +214,7 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
         approval.add(ApprovalModel(
+            4,
             "SS-0000/08/2021/0004",
             "PEMBUATAN SISTEM SARN FASTRATA BUANA",
             "Laporan Akhir Di Submit",
@@ -221,6 +225,7 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
         approval.add(ApprovalModel(
+            5,
             "SS-0000/08/2021/0005",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
             "Laporan Akhir Di Submit",
@@ -247,6 +252,7 @@ object DataDummySs {
 
         projectimprov.add(
             ProjectImprovementModel(
+                1,
             "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     6, "Implementasi Project"
@@ -260,6 +266,7 @@ object DataDummySs {
         ))
         projectimprov.add(
             ProjectImprovementModel(
+                2,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     10, "Project Valid"
@@ -273,6 +280,7 @@ object DataDummySs {
             ))
         projectimprov.add(
             ProjectImprovementModel(
+                3,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     6, "Implementasi Project"
@@ -286,6 +294,7 @@ object DataDummySs {
             ))
         projectimprov.add(
             ProjectImprovementModel(
+                4,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     3, "Proposal Dalam Pengecekan"
@@ -299,6 +308,7 @@ object DataDummySs {
             ))
         projectimprov.add(
             ProjectImprovementModel(
+                5,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     6, "Implementasi Project"
@@ -312,6 +322,7 @@ object DataDummySs {
             ))
         projectimprov.add(
             ProjectImprovementModel(
+                6,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     6, "Implementasi Project"
@@ -325,6 +336,7 @@ object DataDummySs {
             ))
         projectimprov.add(
             ProjectImprovementModel(
+                7,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     6, "Implementasi Project"
@@ -338,6 +350,7 @@ object DataDummySs {
             ))
         projectimprov.add(
             ProjectImprovementModel(
+                8,
                 "PI-0001/08/2021/0005",
                 StatusProposalItem(
                     6, "Implementasi Project"

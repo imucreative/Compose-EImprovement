@@ -254,6 +254,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                             ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
                                 toolbarTitle = "Approve Suggestion System",
                                 action = APPROVE,
+                                idSs = data.id,
                                 ssNo = data.typeNo,
                                 type = ""
                             )
