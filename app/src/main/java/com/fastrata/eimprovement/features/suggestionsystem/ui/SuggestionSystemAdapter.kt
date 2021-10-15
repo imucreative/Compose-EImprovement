@@ -12,7 +12,6 @@ class SuggestionSystemAdapter : RecyclerView.Adapter<SuggestionSystemAdapter.Sug
     private var list = ArrayList<SuggestionSystemModel>()
 
     fun setList(data: List<SuggestionSystemModel>?) {
-        list.clear()
         val convertToArrayList = Tools.listToArrayList(data)
         if (convertToArrayList != null) {
             list.addAll(convertToArrayList)
@@ -20,6 +19,10 @@ class SuggestionSystemAdapter : RecyclerView.Adapter<SuggestionSystemAdapter.Sug
         notifyDataSetChanged()
     }
 
+    fun clear(){
+        list.clear()
+        notifyDataSetChanged()
+    }
     private lateinit var suggestionSystemCallback: SuggestionSystemCallback
     fun setSuggestionSystemCallback(suggestionSystemCallback: SuggestionSystemCallback) {
         this.suggestionSystemCallback = suggestionSystemCallback

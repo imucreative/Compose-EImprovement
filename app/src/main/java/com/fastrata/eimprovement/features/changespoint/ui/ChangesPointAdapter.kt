@@ -12,12 +12,16 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
     private var list = ArrayList<ChangePointModel>()
 
     fun setList(data: List<ChangePointModel>?) {
-        list.clear()
 //        list.addAll(data)
         val convertToArrayList = Tools.listToArrayList(data)
         if (convertToArrayList != null){
             list.addAll(convertToArrayList)
         }
+        notifyDataSetChanged()
+    }
+
+    fun clear(){
+        list.clear()
         notifyDataSetChanged()
     }
 

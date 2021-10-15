@@ -14,11 +14,15 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
     private var list = ArrayList<ProjectImprovementModel>()
 
     fun setList(data: List<ProjectImprovementModel>?) {
-        list.clear()
         val convertToArrayList = Tools.listToArrayList(data)
         if (convertToArrayList != null) {
             list.addAll(convertToArrayList)
         }
+        notifyDataSetChanged()
+    }
+
+    fun clear(){
+        list.clear()
         notifyDataSetChanged()
     }
 

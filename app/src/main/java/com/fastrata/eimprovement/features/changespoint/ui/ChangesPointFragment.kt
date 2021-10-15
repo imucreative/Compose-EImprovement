@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.R.layout.simple_list_item_1
+import android.os.Handler
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
@@ -75,7 +77,6 @@ class ChangesPointFragment : Fragment(), Injectable {
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
-//        listCpViewModel.setChangePoint()
         try{
             listCpViewModel.setListCp()
         }catch (e: Exception){
@@ -112,6 +113,18 @@ class ChangesPointFragment : Fragment(), Injectable {
                 )
                 it.findNavController().navigate(direction)
             }
+
+            swipe.setOnRefreshListener {
+                swipe.isRefreshing= true
+                try{
+                    listCpViewModel.setListCp()
+                    swipe.isRefreshing  = false
+                }catch (e: Exception){
+                    Timber.e("Error setListCp : $e")
+                    Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
+                }
+
+            }
         }
 
         retrieveDataStatusProposal()
@@ -129,17 +142,14 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get status proposal")
                         }
                         Result.Status.SUCCESS -> {
-                            binding.progressBar.visibility = View.GONE
                             listStatusProposalItem = result.data?.data
                             initComponentStatusProposal()
                             Timber.d("###-- Success get status proposal")
                         }
                         Result.Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -156,17 +166,14 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get Branch")
                         }
                         Result.Status.SUCCESS -> {
-                            binding.progressBar.visibility = View.GONE
                             listBranchItem = result.data?.data
                             initComponentBranch()
                             Timber.d("###-- Success get Branch")
                         }
                         Result.Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -183,17 +190,14 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get sub Branch")
                         }
                         Result.Status.SUCCESS -> {
-                            binding.progressBar.visibility = View.GONE
                             listSubBranchItem = result.data?.data
                             initComponentSubBranch()
                             Timber.d("###-- Success get sub Branch")
                         }
                         Result.Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
                             Timber.d("###-- Error get sub Branch")
                         }
 
@@ -270,22 +274,19 @@ class ChangesPointFragment : Fragment(), Injectable {
                 requireView().findNavController().navigate(direction)
             }
         })
-
-//        listCpViewModel.getChangePoint().observe(viewLifecycleOwner, {
-//            if (it != null) {
-//                adapter.setList(it)
-//            }
-//        })
         listCpViewModel.getListCpItem.observeEvent(this){ resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
                     when (result.status){
                         Result.Status.LOADING -> {
-                            binding.progressBar.visibility = View.VISIBLE
+//                            binding.progressBar.visibility = View.VISIBLE
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
                             Timber.d("###-- Loading get List CP")
                         }
                         Result.Status.SUCCESS -> {
-                            binding.progressBar.visibility = View.GONE
+//                            binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            adapter.clear()
                             adapter.setList(result.data?.data)
 
                             try {
@@ -308,7 +309,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                             Timber.d("###-- Success get List CP")
                         }
                         Result.Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
                             Timber.d("###-- Error get List CP")
                         }
                     }

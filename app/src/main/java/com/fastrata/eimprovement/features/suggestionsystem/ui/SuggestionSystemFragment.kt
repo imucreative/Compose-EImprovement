@@ -108,6 +108,18 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 )
                 it.findNavController().navigate(direction)
             }
+
+            swipe.setOnRefreshListener {
+                swipe.isRefreshing= true
+                try {
+                    val userId = HawkUtils().getDataLogin().USER_ID
+                    listSsViewModel.setListSs(userId)
+                    swipe.isRefreshing= false
+                } catch (e: Exception){
+                    Timber.e("Error setListSs : $e")
+                    Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
@@ -268,11 +280,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
                             Timber.d("###-- Loading get List SS")
                         }
                         Result.Status.SUCCESS -> {
-                            binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            adapter.clear()
                             adapter.setList(result.data?.data)
 
                             try {
@@ -295,7 +308,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             Timber.d("###-- Success get List SS")
                         }
                         Result.Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
                             Timber.d("###-- Error get List SS")
                         }
 

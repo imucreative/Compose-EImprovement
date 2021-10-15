@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.R.layout.simple_list_item_1
+import android.os.Handler
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -109,6 +110,18 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     toolbarTitle = "Create Project Improvement", action = ADD, piNo = "", type = ""
                 )
                 it.findNavController().navigate(direction)
+            }
+
+            swipe.setOnRefreshListener {
+                swipe.isRefreshing = true
+                try {
+                    val userId = HawkUtils().getDataLogin().USER_ID
+                    listPiViewModel.setListPi(userId)
+                    swipe.isRefreshing = false
+                } catch (e: Exception){
+                    Timber.e("Error setListPi : $e")
+                    Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -273,11 +286,12 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
                             Timber.d("###-- Loading get List PI")
                         }
                         Result.Status.SUCCESS -> {
-                            binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            adapter.clear()
                             adapter.setList(result.data?.data)
 
                             try {
@@ -297,7 +311,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             Timber.d("###-- Success get List PI")
                         }
                         Result.Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
                             Timber.d("###-- Error get List PI")
                         }
 
