@@ -15,37 +15,38 @@
 <!--        app:title="Dashboard" />-->
 
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@color/colorPrimary">
-
-    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/world_map" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorMainEImprovement">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_dash"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:padding="@dimen/spacing_small"
-        app:contentInsetStartWithNavigation="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:subtitleTextAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-        app:subtitleTextColor="@color/grey_10"
-        app:title="" />
-
-        <TextView
-            android:id="@+id/text_greetings"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:padding="@dimen/spacing_large"
-            android:text="nama"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorWhiteLight"></TextView>
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/world_map"
+            android:contentDescription="@string/app_name" />
 
-</RelativeLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_dash"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:subtitle="welcome to E-Improvement"
+            app:subtitleTextAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+            app:subtitleTextColor="@color/grey_10"
+            app:title="@string/hi"/>
+
+            <!--<TextView
+                android:id="@+id/text_greetings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:padding="@dimen/spacing_large"
+                tools:text="nama"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorWhiteLight"/>-->
+
+    </RelativeLayout>
 </merge>

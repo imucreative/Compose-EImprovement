@@ -23,6 +23,7 @@ import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
 
 
 import com.fastrata.eimprovement.di.Injectable
+import java.text.MessageFormat
 import javax.inject.Inject
 
 class DashboardFragment: Fragment(), Injectable {
@@ -51,11 +52,8 @@ class DashboardFragment: Fragment(), Injectable {
         )
 
         setHasOptionsMenu(true);
-        if(HawkUtils().getDataLogin().FULL_NAME != null){
-            greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
-        }else{
-            greetings = "${resources.getString(R.string.welcome_user)} Guest"
-        }
+        greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
+
         initToolbar()
         initComponent(requireActivity())
 
@@ -65,8 +63,8 @@ class DashboardFragment: Fragment(), Injectable {
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbarDash
         toolbar.setNavigationIcon(R.drawable.ic_menu)
-        toolbarBinding.textGreetings.text = greetings
-        setToolbar(toolbar, "")
+
+        setToolbar(toolbar, greetings)
     }
 
     private fun initComponent(activity: FragmentActivity) {
@@ -76,7 +74,7 @@ class DashboardFragment: Fragment(), Injectable {
                 notification.showNotification(activity,resources.getString(R.string.point_balanca), "50000")
             }
             saldoTxt.text = "50000"
-            filterActivityDate.setOnClickListener {
+            /*filterActivityDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
@@ -86,7 +84,7 @@ class DashboardFragment: Fragment(), Injectable {
                         Toast.makeText(activity, "$dayStr-$monthStr-$year", Toast.LENGTH_LONG).show()
                     }
                 })
-            }
+            }*/
 
             btnListApproval.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))

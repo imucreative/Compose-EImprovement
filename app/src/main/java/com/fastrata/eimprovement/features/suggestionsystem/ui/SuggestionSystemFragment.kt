@@ -54,6 +54,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private lateinit var selectedSubBranch: SubBranchItem
     lateinit var fromDate: Date
     lateinit var toDate: Date
+    var userId: Int = 0
     val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
@@ -75,7 +76,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         )
 
         try {
-            val userId = HawkUtils().getDataLogin().USER_ID
+            userId = HawkUtils().getDataLogin().USER_ID
             listSsViewModel.setListSs(userId)
         } catch (e: Exception){
             Timber.e("Error setListSs : $e")
@@ -112,7 +113,6 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             swipe.setOnRefreshListener {
                 swipe.isRefreshing= true
                 try {
-                    val userId = HawkUtils().getDataLogin().USER_ID
                     listSsViewModel.setListSs(userId)
                     swipe.isRefreshing= false
                 } catch (e: Exception){

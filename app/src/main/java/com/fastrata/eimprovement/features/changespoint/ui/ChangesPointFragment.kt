@@ -57,6 +57,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     private lateinit var selectedSubBranch: SubBranchItem
     lateinit var fromDate: Date
     lateinit var toDate: Date
+    var userId: Int = 0
     val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
@@ -77,8 +78,10 @@ class ChangesPointFragment : Fragment(), Injectable {
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
+        userId = HawkUtils().getDataLogin().USER_ID
+
         try{
-            listCpViewModel.setListCp()
+            listCpViewModel.setListCp(userId)
         }catch (e: Exception){
             Timber.e("Error setListCp : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
@@ -117,7 +120,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             swipe.setOnRefreshListener {
                 swipe.isRefreshing= true
                 try{
-                    listCpViewModel.setListCp()
+                    listCpViewModel.setListCp(userId)
                     swipe.isRefreshing  = false
                 }catch (e: Exception){
                     Timber.e("Error setListCp : $e")
@@ -279,12 +282,10 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status){
                         Result.Status.LOADING -> {
-//                            binding.progressBar.visibility = View.VISIBLE
                             HelperLoading.displayLoadingWithText(requireContext(),"",false)
                             Timber.d("###-- Loading get List CP")
                         }
                         Result.Status.SUCCESS -> {
-//                            binding.progressBar.visibility = View.GONE
                             HelperLoading.hideLoading()
                             adapter.clear()
                             adapter.setList(result.data?.data)

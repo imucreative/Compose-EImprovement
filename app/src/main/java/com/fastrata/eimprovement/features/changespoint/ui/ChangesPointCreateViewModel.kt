@@ -19,20 +19,7 @@ import javax.inject.Inject
 
 class ChangesPointCreateViewModel @Inject constructor(private val repository: CpRemoteRepository) : ViewModel() {
 
-    private val listChangePoint = MutableLiveData<ArrayList<ChangePointModel>>()
-
     private val listChangePointDetail = MutableLiveData<ChangePointCreateItemModel>()
-
-    fun setChangePoint() {
-//        val data = DataDummySs.generateDummyChangePointList()
-//
-//        listChangePoint.postValue(data)
-    }
-
-    fun getChangePoint(): LiveData<ArrayList<ChangePointModel>> {
-        println("##### getSuggestionSystem $listChangePoint")
-        return listChangePoint
-    }
 
     fun setChangePointDetail(cpNo : String){
         println("# $cpNo")
@@ -49,9 +36,9 @@ class ChangesPointCreateViewModel @Inject constructor(private val repository: Cp
     private val _listCp = MutableLiveData<Event<LiveData<Result<ResultsResponse<ChangePointModel>>>>>()
     val getListCpItem : LiveData<Event<LiveData<Result<ResultsResponse<ChangePointModel>>>>> get() = _listCp
 
-    fun setListCp(){
+    fun setListCp(userId: Int){
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default) { repository.observerListCp(HawkUtils().getDataLogin().USER_ID) }
+            val result = withContext(Dispatchers.Default) { repository.observerListCp(userId) }
             _listCp.value = Event(result)
         }
     }

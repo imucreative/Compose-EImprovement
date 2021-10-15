@@ -57,6 +57,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private lateinit var selectedSubBranch: SubBranchItem
     lateinit var fromDate: Date
     lateinit var toDate: Date
+    var userId: Int = 0
     val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
@@ -77,8 +78,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
+        userId = HawkUtils().getDataLogin().USER_ID
+
         try {
-            val userId = HawkUtils().getDataLogin().USER_ID
             listPiViewModel.setListPi(userId)
         } catch (e: Exception){
             Timber.e("Error setListPi : $e")
@@ -115,7 +117,6 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             swipe.setOnRefreshListener {
                 swipe.isRefreshing = true
                 try {
-                    val userId = HawkUtils().getDataLogin().USER_ID
                     listPiViewModel.setListPi(userId)
                     swipe.isRefreshing = false
                 } catch (e: Exception){

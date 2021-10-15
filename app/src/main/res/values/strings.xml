@@ -62,7 +62,7 @@
     <string name="title_suggestion">Judul Saran</string>
 
     <!-- Navigation -->
-    <string name="list_approval">List Persetujuan</string>
+    <string name="list_approval">Approval</string>
     <string name="suggestion_system">Sistem Saran</string>
     <string name="project_improvement">Project Improvement</string>
     <string name="change_point">Penukaran Point</string>
@@ -183,6 +183,7 @@
     <string name="not_agree">Tolak</string>
     <string name="reject">Revisi</string>
     <string name="loading">Loading</string>
+    <string name="hi">Hi</string>
 
 
 </resources>
