@@ -155,6 +155,8 @@
     <string name="file_ext">Ekstensien Lampiran Tidak Sesuai</string>
     <string name="file_empty">Lampiran Tidak Tersedia</string>
     <string name="log_out">Apakah Anda Yakin Keluar Akun?</string>
+    <string name="no_internet">Gagal Terhubung Server. Silahkan Cek Kembali Koneksi Anda</string>
+    <string name="data_not_found">Data Tidak Tersedia</string>
 
     <!-- Change Point -->
     <string name="tanggal_penukaran">Tanggal Penukaran</string>
@@ -169,7 +171,6 @@
     <string name="category">Kategori</string>
     <string name="created_by">Dibuat Oleh</string>
     <string name="no_proposal">No Proposal</string>
-    <string name="no_internet">No internet access!!!</string>
     <string name="close">Close</string>
     <string name="tap_to_dismiss">Tap to dismiss!</string>
     <string name="are_you_sure">Are you sure?</string>

@@ -285,8 +285,15 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
                         Result.Status.SUCCESS -> {
                             HelperLoading.hideLoading()
-                            adapter.clear()
-                            adapter.setList(result.data?.data)
+                            if(result.data?.data?.size == 0){
+                                binding.rv.visibility = View.GONE
+                                binding.noDataScreen.root.visibility = View.VISIBLE
+                            }else{
+                                binding.rv.visibility = View.VISIBLE
+                                binding.noDataScreen.root.visibility = View.GONE
+                                adapter.clear()
+                                adapter.setList(result.data?.data)
+                            }
 
                             try {
                                 masterDataStatusProposalViewModel.setStatusProposal()

@@ -64,11 +64,10 @@ class LoginActivity : AppCompatActivity(), Injectable {
                 R.drawable.ic_close, R.color.red_500
             )
         } else if (!ConnectivityUtil.isConnected(this)) {
-            SnackBarCustom.snackBarIconInfo(
-                binding.root, layoutInflater, resources, this,
-                "Please check your network connectivity",
-                R.drawable.ic_close, R.color.red_500
-            )
+            HelperNotification().displayNoInternet(this,object : HelperNotification.CallbackRetry{
+                override fun onRetry() {
+                }
+            })
         } else {
             viewModel.processLogin(username, password)
             viewModel.doLiveLogin.observeEvent(this) { loginObserver ->

@@ -42,8 +42,15 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 android:scrollingCache="true"
-                tools:listitem="@layout/item_project_improvment" />
+                tools:listitem="@layout/item_project_improvment"
+                android:visibility="gone"/>
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/no_data_screen"
+            layout="@layout/nodata_screen"
+            android:visibility="visible"/>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_pi"
