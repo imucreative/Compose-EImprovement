@@ -158,6 +158,7 @@
     <string name="log_out">Keluar Akun</string>
     <string name="no_internet">Gagal Terhubung Server. Silahkan Cek Kembali Koneksi Anda</string>
     <string name="data_not_found">Data Tidak Tersedia</string>
+    <string name="leader_required">Anda harus memilih Ketua Tim terlebih dahulu!</string>
 
     <!-- Change Point -->
     <string name="tanggal_penukaran">Tanggal Penukaran</string>

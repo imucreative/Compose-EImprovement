@@ -21,9 +21,13 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     private val _listTeamMemberName = MutableLiveData<Event<LiveData<Result<ResultsResponse<MemberNameItem>>>>>()
     val getTeamMemberName: LiveData<Event<LiveData<Result<ResultsResponse<MemberNameItem>>>>> get() = _listTeamMemberName
 
-    fun setTeamMemberName(branchCode: String) {
+    fun setTeamMemberName(
+        departmentId: Int,
+        orgId: Int,
+        warehouseId: Int,
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(branchCode) }
+            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(departmentId, orgId, warehouseId) }
             _listTeamMemberName.value = Event(result)
         }
     }
@@ -32,9 +36,16 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     private val _listDepartment = MutableLiveData<Event<LiveData<Result<ResultsResponse<MemberDepartmentItem>>>>>()
     val getDepartment: LiveData<Event<LiveData<Result<ResultsResponse<MemberDepartmentItem>>>>> get() = _listDepartment
 
-    fun setDepartment() {
+    fun setDepartment(
+        departmentId: Int,
+        orgId: Int,
+        warehouseId: Int,
+        proposalType: String
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListDepartment() }
+            val result = withContext(Dispatchers.Default) { repository.observeListDepartment(
+                departmentId, orgId, warehouseId, proposalType
+            ) }
             _listDepartment.value = Event(result)
         }
     }

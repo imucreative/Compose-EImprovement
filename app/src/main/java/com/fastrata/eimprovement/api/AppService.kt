@@ -21,11 +21,20 @@ interface AppService {
     @GET("master/category")
     suspend fun listCategory(): Response<ResultsResponse<CategoryImprovementItem>>
 
-    @GET("master/teammember/{BRANCH_CODE}")
-    suspend fun listTeamMember(@Path("BRANCH_CODE") branchCode: String): Response<ResultsResponse<MemberNameItem>>
+    @GET("master/teammember/{DEPARTMENT_ID}/{ORG_ID}/{WAREHOUSE_ID}")
+    suspend fun listTeamMember(
+        @Path("DEPARTMENT_ID") departmentId: Int,
+        @Path("ORG_ID") orgId: Int,
+        @Path("WAREHOUSE_ID") warehouseId: Int,
+    ): Response<ResultsResponse<MemberNameItem>>
 
-    @GET("master/department")
-    suspend fun listDepartment(): Response<ResultsResponse<MemberDepartmentItem>>
+    @GET("master/department/{DEPARTMENT_ID}/{ORG_ID}/{WAREHOUSE_ID}/{PROPOSAL_TYPE}")
+    suspend fun listDepartment(
+        @Path("DEPARTMENT_ID") departmentId: Int,
+        @Path("ORG_ID") orgId: Int,
+        @Path("WAREHOUSE_ID") warehouseId: Int,
+        @Path("PROPOSAL_TYPE") proposalType: String
+    ): Response<ResultsResponse<MemberDepartmentItem>>
 
     @GET("master/teamrole")
     suspend fun listTeamRole(): Response<ResultsResponse<MemberTaskItem>>

@@ -8,13 +8,13 @@ import android.R.layout.simple_list_item_1
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep3Binding
 import android.widget.ArrayAdapter
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import android.widget.AdapterView.OnItemClickListener
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep3Binding
 import com.fastrata.eimprovement.featuresglobal.data.model.MemberDepartmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.MemberNameItem
 import com.fastrata.eimprovement.featuresglobal.data.model.MemberTaskItem
@@ -46,6 +46,9 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private lateinit var selectedDepartment: MemberDepartmentItem
     private lateinit var selectedTask: MemberTaskItem
     private var source: String = SS_CREATE
+    private var departmentId: Int? = 0
+    private var orgId: Int? = 0
+    private var warehouseId: Int? = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,9 +67,15 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
         listTeamMemberViewModel.setSuggestionSystemTeamMember(source)
 
-        data?.branchCode?.let { masterDataTeamMemberViewModel.setTeamMemberName(it) }
-        masterDataTeamMemberViewModel.setDepartment()
+        departmentId = HawkUtils().getDataLogin().DEPARTMENT_ID
+        orgId = HawkUtils().getDataLogin().ORG_ID
+        warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
+        val proposalType = SS
+
         masterDataTeamMemberViewModel.setTeamRole()
+        masterDataTeamMemberViewModel.setDepartment(
+            departmentId!!, orgId!!, warehouseId!!, proposalType
+        )
 
         teamMemberAdapter = TeamMemberAdapter()
         teamMemberAdapter.notifyDataSetChanged()
@@ -222,6 +231,12 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             memberDepartment.setAdapter(adapterMemberDepartment)
             memberDepartment.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
                 selectedDepartment = listDepartmentItem!![i]
+                memberName.setText("")
+                masterDataTeamMemberViewModel.setTeamMemberName(
+                    listDepartmentItem!![i].id,
+                    orgId!!,
+                    warehouseId!!
+                )
                 hideKeyboard()
             }
         }
@@ -280,13 +295,12 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 val task = memberTask.text.toString()
 
                 when {
-                    name.isEmpty() -> {
+                    task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            resources.getString(R.string.name_empty),
+                            resources.getString(R.string.task_empty),
                             R.drawable.ic_close, R.color.red_500)
-                        memberName.requestFocus()
-
+                        memberTask.requestFocus()
                     }
                     department.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
@@ -295,12 +309,12 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         memberDepartment.requestFocus()
                     }
-                    task.isEmpty() -> {
+                    name.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            resources.getString(R.string.task_empty),
+                            resources.getString(R.string.name_empty),
                             R.drawable.ic_close, R.color.red_500)
-                        memberTask.requestFocus()
+                        memberName.requestFocus()
                     }
                     else -> {
                         val memberNameObj = MemberNameItem(
