@@ -154,7 +154,8 @@
     <string name="file_size">Pastikan Ukuran Lampiran tidak 0 MB dan dibawah 2 MB</string>
     <string name="file_ext">Ekstensien Lampiran Tidak Sesuai</string>
     <string name="file_empty">Lampiran Tidak Tersedia</string>
-    <string name="log_out">Apakah Anda Yakin Keluar Akun?</string>
+    <string name="log_out_info">Apakah Anda Yakin Keluar Akun?</string>
+    <string name="log_out">Keluar Akun</string>
     <string name="no_internet">Gagal Terhubung Server. Silahkan Cek Kembali Koneksi Anda</string>
     <string name="data_not_found">Data Tidak Tersedia</string>
 

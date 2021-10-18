@@ -19,6 +19,7 @@ class HelperNotification {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
         dialog.setContentView(R.layout.dialog_error)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
         dialog.setCancelable(true)
@@ -42,6 +43,7 @@ class HelperNotification {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_notification)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
         dialog.setCancelable(true)
@@ -65,6 +67,7 @@ class HelperNotification {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_yesno)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
         dialog.setCancelable(false)
