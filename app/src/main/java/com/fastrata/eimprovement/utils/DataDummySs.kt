@@ -184,21 +184,23 @@ object DataDummySs {
             1,
             "PI-0000/08/2021/0100",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA PI",
-            "Laporan Akhir Di Submit",
+            StatusProposalItem(
+                6, "Implementasi Project"
+            ),
             "PI",
             "User Development",
-            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
-            "2021-08-06 17:19:22",))
+            "2021-08-06 17:19:22"))
         approval.add(ApprovalModel(
             2,
             "SS-0000/08/2021/0002",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
-            "Laporan Akhir Di Submit",
+            StatusProposalItem(
+                6, "Implementasi Project"
+            ),
             "SS",
             "User Development",
-            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
@@ -206,10 +208,11 @@ object DataDummySs {
             3,
             "CP-0001/05/2021/0010",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA CP",
-            "Laporan Akhir Di Submit",
+            StatusProposalItem(
+                6, "Implementasi Project"
+            ),
             "CP",
             "User Development",
-            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
@@ -217,10 +220,11 @@ object DataDummySs {
             4,
             "SS-0000/08/2021/0004",
             "PEMBUATAN SISTEM SARN FASTRATA BUANA",
-            "Laporan Akhir Di Submit",
+            StatusProposalItem(
+                6, "Implementasi Project"
+            ),
             "SS",
             "User Development",
-            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))
@@ -228,10 +232,11 @@ object DataDummySs {
             5,
             "SS-0000/08/2021/0005",
             "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
-            "Laporan Akhir Di Submit",
+            StatusProposalItem(
+                6, "Implementasi Project"
+            ),
             "SS",
             "User Development",
-            "00043087",
             "PUSAT",
             "FBPST - Gd Barang Dagang",
             "2021-08-06 17:19:22"))

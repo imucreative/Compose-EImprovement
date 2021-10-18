@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.api
 
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
@@ -69,4 +70,7 @@ interface AppService {
         @Field("id") id: Int,
         @Field("userId") userId: Int
     ): Response<ResultsResponse<SuggestionSystemCreateModel>>
+
+    @POST("appr/list")
+    suspend fun listApproval(): Response<ResultsResponse<ApprovalModel>>
 }

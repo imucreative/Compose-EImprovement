@@ -28,6 +28,7 @@ import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import timber.log.Timber
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -42,7 +43,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
     private lateinit var masterBranchViewModel: BranchViewModel
 
-    private lateinit var adapterList: ListApprovalAdapter
+    private lateinit var adapter: ListApprovalAdapter
     private lateinit var datePicker: DatePickerCustom
 
     private var listStatusProposalItem: List<StatusProposalItem>? = null
@@ -73,13 +74,15 @@ class ListApprovalFragment : Fragment(), Injectable {
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
-        listApproveViewModel.setApproval()
+        try {
+            listApproveViewModel.setListApproval()
+        } catch (e: Exception){
+            Timber.e("Error setListApproval : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
 
-        masterDataStatusProposalViewModel.setStatusProposal()
-        masterBranchViewModel.setBranch()
-
-        adapterList = ListApprovalAdapter()
-        adapterList.notifyDataSetChanged()
+        adapter = ListApprovalAdapter()
+        adapter.notifyDataSetChanged()
 
         return binding.root
     }
@@ -96,7 +99,18 @@ class ListApprovalFragment : Fragment(), Injectable {
         binding.apply {
             rv.setHasFixedSize(true)
             rv.layoutManager = LinearLayoutManager(activity)
-            rv.adapter = adapterList
+            rv.adapter = adapter
+
+            swipe.setOnRefreshListener {
+                swipe.isRefreshing = true
+                try {
+                    listApproveViewModel.setListApproval()
+                    swipe.isRefreshing = false
+                } catch (e: Exception){
+                    Timber.e("Error setListApproval : $e")
+                    Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
         retrieveDataStatusProposal()
@@ -114,17 +128,17 @@ class ListApprovalFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Loading get status proposal")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtStatusProposal.isEnabled = true
                             listStatusProposalItem = result.data?.data
                             initComponentStatusProposal()
                             Timber.d("###-- Success get status proposal")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -141,17 +155,17 @@ class ListApprovalFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.edtBranch.isEnabled = false
                             Timber.d("###-- Loading get Branch")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtBranch.isEnabled = true
                             listBranchItem = result.data?.data
                             initComponentBranch()
                             Timber.d("###-- Success get Branch")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtBranch.isEnabled = false
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -168,17 +182,17 @@ class ListApprovalFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
+                            binding.edtSubBranch.isEnabled = false
                             Timber.d("###-- Loading get sub Branch")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtSubBranch.isEnabled = true
                             listSubBranchItem = result.data?.data
                             initComponentSubBranch()
                             Timber.d("###-- Success get sub Branch")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            binding.edtSubBranch.isEnabled = false
                             Timber.d("###-- Error get sub Branch")
                         }
 
@@ -246,7 +260,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     }
 
     private fun initComponent() {
-        adapterList.setApprovalCallback(object : ListApprovalCallback {
+        adapter.setApprovalCallback(object : ListApprovalCallback {
             override fun onItemClicked(data: ApprovalModel) {
                 when (data.type) {
                     SS -> {
@@ -256,7 +270,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 action = APPROVE,
                                 idSs = data.id,
                                 ssNo = data.typeNo,
-                                type = ""
+                                type = data.type
                             )
                         requireView().findNavController().navigate(direction)
                     }
@@ -266,7 +280,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 toolbarTitle = "Approve Project Improvement",
                                 action = APPROVE,
                                 piNo = data.typeNo,
-                                type = ""
+                                type = data.type
                             )
                         requireView().findNavController().navigate(direction)
                     }
@@ -276,6 +290,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 toolbarTitle = "Approve Change Point",
                                 action = APPROVE,
                                 cpNo = data.typeNo,
+                                type = data.type
                             )
                         requireView().findNavController().navigate(direction)
                     }
@@ -283,11 +298,53 @@ class ListApprovalFragment : Fragment(), Injectable {
             }
         })
 
-        listApproveViewModel.getApproval().observe(viewLifecycleOwner, {
-            if (it != null) {
-                adapterList.setList(it)
-            }
-        })
+        listApproveViewModel.getListApprovalItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get List Approval")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+                            if(result.data?.data?.size == 0){
+                                adapter.clear()
+                                binding.rv.visibility = View.GONE
+                                binding.noDataScreen.root.visibility = View.VISIBLE
+                            }else{
+                                binding.rv.visibility = View.VISIBLE
+                                binding.noDataScreen.root.visibility = View.GONE
+                                adapter.clear()
+                                adapter.setList(result.data?.data)
+                            }
+
+                            try {
+                                masterDataStatusProposalViewModel.setStatusProposal()
+                            } catch (e: Exception){
+                                Timber.e("Error setStatusProposal : $e")
+                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                            }
+
+                            try {
+                                masterBranchViewModel.setBranch()
+                            } catch (e: Exception){
+                                Timber.e("Error setBranch : $e")
+                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                            }
+
+                            Timber.d("###-- Success get List Approval")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Timber.d("###-- Error get List Approval")
+                        }
+
+                    }
+
+                }
+            })
+        }
     }
 
     private fun initToolbar() {
@@ -298,8 +355,6 @@ class ListApprovalFragment : Fragment(), Injectable {
     }
 
     private fun initNavigationMenu() {
-
-
         binding.apply {
             // open drawer at start
             drawerFilter.openDrawer(GravityCompat.END)

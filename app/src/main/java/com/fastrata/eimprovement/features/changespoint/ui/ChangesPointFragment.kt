@@ -145,14 +145,17 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
+                            binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Loading get status proposal")
                         }
                         Result.Status.SUCCESS -> {
+                            binding.edtStatusProposal.isEnabled = true
                             listStatusProposalItem = result.data?.data
                             initComponentStatusProposal()
                             Timber.d("###-- Success get status proposal")
                         }
                         Result.Status.ERROR -> {
+                            binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -169,14 +172,17 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
+                            binding.edtBranch.isEnabled = false
                             Timber.d("###-- Loading get Branch")
                         }
                         Result.Status.SUCCESS -> {
+                            binding.edtBranch.isEnabled = true
                             listBranchItem = result.data?.data
                             initComponentBranch()
                             Timber.d("###-- Success get Branch")
                         }
                         Result.Status.ERROR -> {
+                            binding.edtBranch.isEnabled = false
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -193,14 +199,17 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
+                            binding.edtSubBranch.isEnabled = false
                             Timber.d("###-- Loading get sub Branch")
                         }
                         Result.Status.SUCCESS -> {
+                            binding.edtSubBranch.isEnabled = true
                             listSubBranchItem = result.data?.data
                             initComponentSubBranch()
                             Timber.d("###-- Success get sub Branch")
                         }
                         Result.Status.ERROR -> {
+                            binding.edtSubBranch.isEnabled = false
                             Timber.d("###-- Error get sub Branch")
                         }
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -88,13 +89,13 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                         if (result != null) {
                             when (result.status) {
                                 Result.Status.LOADING -> {
-                                    binding.progressBar.visibility = VISIBLE
+                                    HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
 
                                     Timber.d("###-- Loading get Branch")
                                 }
                                 Result.Status.SUCCESS -> {
-                                    binding.progressBar.visibility = GONE
+                                    HelperLoading.hideLoading()
                                     binding.bottomNavigationBar.visibility = VISIBLE
 
                                     HawkUtils().setTempDataCreateSs(
@@ -127,7 +128,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     Timber.d("###-- Success get Branch")
                                 }
                                 Result.Status.ERROR -> {
-                                    binding.progressBar.visibility = GONE
+                                    HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
                                     Timber.d("###-- Error get Branch")
                                 }
