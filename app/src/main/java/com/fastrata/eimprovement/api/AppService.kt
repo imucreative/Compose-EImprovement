@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.api
 
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
@@ -17,9 +18,12 @@ import retrofit2.http.*
  * App REST API access points
  */
 interface AppService {
+    // Login
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRemoteRequest): Response<ResultsResponse<LoginEntity>>
 
+
+    // Master
     @GET("master/category")
     suspend fun listCategory(): Response<ResultsResponse<CategoryImprovementItem>>
 
@@ -53,17 +57,11 @@ interface AppService {
     @GET("master/subbranch/{ORG_ID}")
     suspend fun listSubBranch(@Path("ORG_ID") orgId: Int): Response<ResultsResponse<SubBranchItem>>
 
+
+    // Suggestion System
     @FormUrlEncoded
     @POST("ss/list")
     suspend fun listSs(@Field("userId") userId: Int): Response<ResultsResponse<SuggestionSystemModel>>
-
-    @FormUrlEncoded
-    @POST("pi/list")
-    suspend fun listPi(@Field("userId") userId: Int): Response<ResultsResponse<ProjectImprovementModel>>
-
-    @FormUrlEncoded
-    @POST("rp/list")
-    suspend fun listCp(@Field("userId") userId: Int): Response<ResultsResponse<ChangePointModel>>
 
     @FormUrlEncoded
     @POST("ss/detail")
@@ -72,8 +70,11 @@ interface AppService {
         @Field("userId") userId: Int
     ): Response<ResultsResponse<SuggestionSystemCreateModel>>
 
-    @POST("appr/list")
-    suspend fun listApproval(): Response<ResultsResponse<ApprovalModel>>
+
+    // Project Improvement
+    @FormUrlEncoded
+    @POST("pi/list")
+    suspend fun listPi(@Field("userId") userId: Int): Response<ResultsResponse<ProjectImprovementModel>>
 
     @FormUrlEncoded
     @POST("pi/detail")
@@ -81,4 +82,22 @@ interface AppService {
         @Field("id") id: Int,
         @Field("userId") userId: Int
     ): Response<ResultsResponse<ProjectImprovementCreateModel>>
+
+
+    // Reward Point
+    @FormUrlEncoded
+    @POST("rp/list")
+    suspend fun listCp(@Field("userId") userId: Int): Response<ResultsResponse<ChangePointModel>>
+
+    @FormUrlEncoded
+    @POST("rp/detail")
+    suspend fun detailCp(
+        @Field("id") id: Int,
+        @Field("userId") userId: Int
+    ): Response<ResultsResponse<ChangePointCreateItemModel>>
+
+
+    // Approval
+    @POST("appr/list")
+    suspend fun listApproval(): Response<ResultsResponse<ApprovalModel>>
 }

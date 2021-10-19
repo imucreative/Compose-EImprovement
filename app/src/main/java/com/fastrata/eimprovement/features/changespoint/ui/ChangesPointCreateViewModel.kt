@@ -42,5 +42,15 @@ class ChangesPointCreateViewModel @Inject constructor(private val repository: Cp
             _listCp.value = Event(result)
         }
     }
-}
 
+    // === Detail CP
+    private val _detailCp = MutableLiveData<Event<LiveData<Result<ResultsResponse<ChangePointCreateItemModel>>>>>()
+    val getDetailCpItem : LiveData<Event<LiveData<Result<ResultsResponse<ChangePointCreateItemModel>>>>> get() = _detailCp
+
+    fun setDetailCp(id: Int, userId: Int){
+        viewModelScope.launch(Dispatchers.Main){
+            val result = withContext(Dispatchers.Default) { repository.observerDetailCp(id, userId) }
+            _detailCp.value = Event(result)
+        }
+    }
+}

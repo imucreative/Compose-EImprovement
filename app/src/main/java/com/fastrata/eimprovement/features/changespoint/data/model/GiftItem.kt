@@ -11,5 +11,5 @@ data class GiftItem(
     @SerializedName("GIFT_NAME")
     var hadiah: String,
     @SerializedName("GIFT_VALUE")
-    var nilai: String
+    var nilai: Int
 ) : Parcelable

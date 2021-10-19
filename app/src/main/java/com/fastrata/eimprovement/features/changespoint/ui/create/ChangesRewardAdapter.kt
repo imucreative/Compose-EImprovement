@@ -31,7 +31,7 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
 
             binding.apply {
                 reward.text = data.hadiah
-                point.text = data.nilai
+                point.text = data.nilai.toString()
                 desc.text = data.keterangan
             }
         }

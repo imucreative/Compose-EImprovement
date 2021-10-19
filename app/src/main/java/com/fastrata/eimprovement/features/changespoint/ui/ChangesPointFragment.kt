@@ -112,7 +112,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
             createSs.setOnClickListener {
                 val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                    toolbarTitle = "Create Changes Point", action = ADD,cpNo = "", type = ""
+                    toolbarTitle = "Create Changes Point", action = ADD, idCp = 0, cpNo = "", type = CP
                 )
                 it.findNavController().navigate(direction)
             }
@@ -281,7 +281,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             override fun onItemClicked(data: ChangePointModel) {
                 val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                     toolbarTitle = "Edit Changes Point", action = EDIT,
-                    cpNo = data.cpNo, type = ""
+                    idCp = data.idCp, cpNo = data.cpNo, type = CP
                 )
                 requireView().findNavController().navigate(direction)
             }
