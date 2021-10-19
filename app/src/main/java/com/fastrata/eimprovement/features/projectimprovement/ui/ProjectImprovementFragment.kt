@@ -6,7 +6,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.R.layout.simple_list_item_1
-import android.os.Handler
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -109,7 +108,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
             createPi.setOnClickListener {
                 val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                    toolbarTitle = "Create Project Improvement", action = ADD, piNo = "", type = ""
+                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = ""
                 )
                 it.findNavController().navigate(direction)
             }
@@ -276,7 +275,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementModel) {
                 val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                    toolbarTitle = "Edit Project Improvement", action = EDIT, piNo = data.piNo, type = ""
+                    toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
                 )
                 requireView().findNavController().navigate(direction)
             }

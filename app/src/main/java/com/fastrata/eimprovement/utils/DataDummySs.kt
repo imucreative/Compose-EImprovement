@@ -386,33 +386,33 @@ object DataDummySs {
         val attachmentItem = ArrayList<AttachmentItem?>()
         attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
 
-        val sudah = Sudah(
+        val sudah = StatusImplementationPiDoneModel(
             from = "2020-01-21",
             to = "2020-02-21"
         )
 
-        val problem = ArrayList<SebabMasalahItem?>()
-        problem.add(SebabMasalahItem(
+        val problem = ArrayList<SebabMasalahModel?>()
+        problem.add(SebabMasalahModel(
             penyebab = "karena",
             w1 = "xxx", w2 = "", w3 = "", w4 = "", w5 = "",
             prioritas = "test"
         ))
 
-        val akarMasalah = ArrayList<AkarMasalahItem?>()
-        akarMasalah.add(AkarMasalahItem(
+        val akarMasalah = ArrayList<AkarMasalahModel?>()
+        akarMasalah.add(AkarMasalahModel(
             sequence = 1,
             kenapa = "test",
             aksi = "aksi",
             detail_langkah = "test"
         ))
 
-        val estimasi = Estimasi(
+        val estimasi = NqiEstimasiModel(
             benefit = 1000, benefit_keterangan = "testter",
             cost = 500, cost_keterangan = "tested",
             nqi = 1500
         )
 
-        val aktual = Aktual(
+        val aktual = NqiAktualModel(
             benefit = 2000, benefit_keterangan = "terrr",
             cost = 1000, cost_keterangan = "testerre",
             nqi = 3000
@@ -430,7 +430,7 @@ object DataDummySs {
             branch = "PUSAT",
             subBranch = "FBPST",
             title = "Implementasi system dengan robust dan S.O.L.I.D",
-            statusImplementation = StatusImplementationPi(
+            statusImplementationModel = StatusImplementationPiModel(
                 sudah = sudah,
                 akan = null
             ),
@@ -439,7 +439,7 @@ object DataDummySs {
             sebabMasalah = problem,
             akarMasalah = akarMasalah,
             nilaiOutput = "Menggunakan pattern dan membuat pola yang mudah untuk dipelajari",
-            nqi = nqi,
+            nqiModel = nqi,
             teamMember = teamMemberItem,
             categoryFixing = categorySuggestionItem,
             implementationResult = "implementasi result",

@@ -7,4 +7,8 @@ class PiRemoteRepository @Inject constructor(private val remoteDataSource: PiRem
     fun observeListPi(userId: Int) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestListPi(userId) }
     )
+
+    fun observeDetailPi(id: Int, userId: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestDetailPi(id, userId) }
+    )
 }

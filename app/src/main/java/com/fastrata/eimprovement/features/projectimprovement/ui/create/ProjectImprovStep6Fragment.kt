@@ -261,17 +261,17 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
             if (data?.nilaiOutput != null) {
                 outputValue.setText(data?.nilaiOutput.toString())
 
-                data?.nqi?.estimasi?.benefit?.let { estimasiBenefit.setText(it.toString()) }
-                data?.nqi?.estimasi?.benefit_keterangan?.let { estimasiBenefitKeterangan.setText(it) }
-                data?.nqi?.estimasi?.cost?.let { estimasiCost.setText(it.toString()) }
-                data?.nqi?.estimasi?.cost_keterangan?.let { estimasiCostKeterangan.setText(it) }
-                data?.nqi?.estimasi?.nqi?.let { estimasiNqiTotal.setText(it.toString()) }
+                data?.nqiModel?.estimasiModel?.benefit?.let { estimasiBenefit.setText(it.toString()) }
+                data?.nqiModel?.estimasiModel?.benefit_keterangan?.let { estimasiBenefitKeterangan.setText(it) }
+                data?.nqiModel?.estimasiModel?.cost?.let { estimasiCost.setText(it.toString()) }
+                data?.nqiModel?.estimasiModel?.cost_keterangan?.let { estimasiCostKeterangan.setText(it) }
+                data?.nqiModel?.estimasiModel?.nqi?.let { estimasiNqiTotal.setText(it.toString()) }
 
-                data?.nqi?.aktual?.benefit?.let { aktualBenefit.setText(it.toString()) }
-                data?.nqi?.aktual?.benefit_keterangan?.let { aktualBenefitKeterangan.setText(it) }
-                data?.nqi?.aktual?.cost?.let { aktualCost.setText(it.toString()) }
-                data?.nqi?.aktual?.cost_keterangan?.let { aktualCostKeterangan.setText(it) }
-                data?.nqi?.aktual?.nqi?.let { aktualNqiTotal.setText(it.toString()) }
+                data?.nqiModel?.aktualModel?.benefit?.let { aktualBenefit.setText(it.toString()) }
+                data?.nqiModel?.aktualModel?.benefit_keterangan?.let { aktualBenefitKeterangan.setText(it) }
+                data?.nqiModel?.aktualModel?.cost?.let { aktualCost.setText(it.toString()) }
+                data?.nqiModel?.aktualModel?.cost_keterangan?.let { aktualCostKeterangan.setText(it) }
+                data?.nqiModel?.aktualModel?.nqi?.let { aktualNqiTotal.setText(it.toString()) }
             }
         }
     }
@@ -374,8 +374,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             stat = false
                         }
                         else -> {
-                            var estimasi: Estimasi? = null
-                            var aktual: Aktual? = null
+                            var estimasiModel: NqiEstimasiModel? = null
+                            var aktualModel: NqiAktualModel? = null
 
                             val estimasiBenefit = estimasiBenefit.text.toString()
                             val estimasiBenefitKeterangan = estimasiBenefitKeterangan.text.toString()
@@ -383,7 +383,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             val estimasiCostKeterangan = estimasiCostKeterangan.text.toString()
                             val estimasiNqiTotal = estimasiNqiTotal.text.toString()
 
-                            estimasi = Estimasi(
+                            estimasiModel = NqiEstimasiModel(
                                 benefit = if (estimasiBenefit.isNotEmpty()) estimasiBenefit.toInt() else null,
                                 benefit_keterangan = if (estimasiBenefitKeterangan.isNotEmpty()) estimasiBenefitKeterangan else null,
                                 cost = if (estimasiCost.isNotEmpty()) estimasiCost.toInt() else null,
@@ -397,7 +397,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             val aktualCostKeterangan = aktualCostKeterangan.text.toString()
                             val aktualNqiTotal = aktualNqiTotal.text.toString()
 
-                            aktual = Aktual(
+                            aktualModel = NqiAktualModel(
                                 benefit = if (aktualBenefit.isNotEmpty()) aktualBenefit.toInt() else null,
                                 benefit_keterangan = if (aktualBenefitKeterangan.isNotEmpty()) aktualBenefitKeterangan else null,
                                 cost = if (aktualCost.isNotEmpty()) aktualCost.toInt() else null,
@@ -406,8 +406,8 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             )
 
                             val nqi = NqiModel(
-                                estimasi = estimasi,
-                                aktual = aktual
+                                estimasiModel = estimasiModel,
+                                aktualModel = aktualModel
                             )
 
                             HawkUtils().setTempDataCreatePi(
@@ -419,13 +419,13 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 department = data?.department,
                                 years = data?.years,
-                                statusImplementation = data?.statusImplementation,
+                                statusImplementationModel = data?.statusImplementationModel,
                                 identification = data?.identification,
                                 target = data?.target,
                                 sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
                                 nilaiOutput = outputValue.text.toString(),
-                                nqi = nqi,
+                                nqiModel = nqi,
                                 teamMember = data?.teamMember,
                                 categoryFixing = data?.categoryFixing,
                                 hasilImplementasi = data?.implementationResult,

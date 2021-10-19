@@ -7,18 +7,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemAkarMasalahPiBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.utils.APPROVE
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahItem: AkarMasalahItem, index: Int) -> Unit) : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
+class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahModel: AkarMasalahModel, index: Int) -> Unit) : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
 
-    private var list = ArrayList<AkarMasalahItem?>()
+    private var list = ArrayList<AkarMasalahModel?>()
     private var timer: Timer? = null
     private var action: String? = action
 
-    fun setList(data : ArrayList<AkarMasalahItem?>){
+    fun setList(data : ArrayList<AkarMasalahModel?>){
         list.clear()
         list.addAll(data)
         notifyDataSetChanged()
@@ -30,7 +30,7 @@ class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahI
     }
 
     inner class AkarMasalahViewHolder(private val binding: ItemAkarMasalahPiBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: AkarMasalahItem){
+        fun bind(data: AkarMasalahModel){
             binding.root.setOnClickListener {
                 akarmslhcallback.onItemClicked(data)
             }
@@ -102,7 +102,7 @@ class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahI
             timer = Timer()
             timer!!.schedule(object : TimerTask() {
                 override fun run() {
-                    val akarMasalahItem = AkarMasalahItem(
+                    val akarMasalahItem = AkarMasalahModel(
                         index+1,
                         whyTerakhir.text.toString(),
                         imprvementDilakukan.text.toString(),

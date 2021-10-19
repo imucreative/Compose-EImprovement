@@ -279,6 +279,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                             ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
                                 toolbarTitle = "Approve Project Improvement",
                                 action = APPROVE,
+                                idPi = data.id,
                                 piNo = data.typeNo,
                                 type = data.type
                             )

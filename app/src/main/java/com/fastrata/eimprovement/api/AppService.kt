@@ -5,6 +5,7 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointMod
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
@@ -73,4 +74,11 @@ interface AppService {
 
     @POST("appr/list")
     suspend fun listApproval(): Response<ResultsResponse<ApprovalModel>>
+
+    @FormUrlEncoded
+    @POST("pi/detail")
+    suspend fun detailPi(
+        @Field("id") id: Int,
+        @Field("userId") userId: Int
+    ): Response<ResultsResponse<ProjectImprovementCreateModel>>
 }

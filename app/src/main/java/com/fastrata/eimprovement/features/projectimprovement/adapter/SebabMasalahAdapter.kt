@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemSebabMasalahPiBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
 import com.fastrata.eimprovement.utils.Tools
 import com.fastrata.eimprovement.utils.ViewAnimation
 
 class SebabMasalahAdapter : RecyclerView.Adapter<SebabMasalahAdapter.SebabMasalahViewHolder>() {
 
-    private var list = ArrayList<SebabMasalahItem?>()
+    private var list = ArrayList<SebabMasalahModel?>()
 
-    fun setList(data : ArrayList<SebabMasalahItem?>?){
+    fun setList(data : ArrayList<SebabMasalahModel?>?){
         list.clear()
         if (data != null) {
             list.addAll(data)
@@ -38,7 +38,7 @@ class SebabMasalahAdapter : RecyclerView.Adapter<SebabMasalahAdapter.SebabMasala
     }
 
     inner class SebabMasalahViewHolder(private val binding: ItemSebabMasalahPiBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(data: SebabMasalahItem, position: Int) {
+        fun bind(data: SebabMasalahModel, position: Int) {
 
             binding.root.setOnClickListener {
                 sebabmslhcallback.onItemClicked(data)

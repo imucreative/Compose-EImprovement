@@ -8,4 +8,8 @@ class PiRemoteDataSource @Inject constructor(private val service: AppService) : 
     suspend fun requestListPi(userId: Int) = getResult {
         service.listPi(userId)
     }
+
+    suspend fun requestDetailPi(id: Int, userId: Int) = getResult {
+        service.detailPi(id, userId)
+    }
 }

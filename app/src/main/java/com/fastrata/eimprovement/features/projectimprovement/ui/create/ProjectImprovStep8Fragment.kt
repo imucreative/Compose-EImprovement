@@ -15,7 +15,6 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementAdapter
 import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementCallback
 import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
@@ -68,7 +67,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
         binding.apply {
-            if (data?.statusImplementation?.sudah == null) {
+            if (data?.statusImplementationModel?.sudah == null) {
                 cardViewHasilImplementasi.visibility = View.GONE
             } else {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
@@ -209,7 +208,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementation?.sudah != null -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah != null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.result_empty),
@@ -234,13 +233,13 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 department = data?.department,
                                 years = data?.years,
-                                statusImplementation = data?.statusImplementation,
+                                statusImplementationModel = data?.statusImplementationModel,
                                 identification = data?.identification,
                                 target = data?.target,
                                 sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
                                 nilaiOutput = data?.nilaiOutput,
-                                nqi = data?.nqi,
+                                nqiModel = data?.nqiModel,
                                 teamMember = data?.teamMember,
                                 categoryFixing = listCategory,
                                 hasilImplementasi = hasilImplementasiImprovement.text.toString(),

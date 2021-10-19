@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +14,13 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.SebabMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.SebabMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import javax.inject.Inject
 import android.view.LayoutInflater
 import com.fastrata.eimprovement.databinding.DialogFormCreateSebabMasalahBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 
@@ -39,7 +38,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
     private var piNo: String? = ""
     private var action: String? = ""
     private var source: String = PI_CREATE
-    private var updateAkarMasalah: ArrayList<AkarMasalahItem?>? = null
+    private var updateAkarMasalah: ArrayList<AkarMasalahModel?>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,13 +98,13 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
         }
     }
 
-    private fun initList(sebabMasalah: ArrayList<SebabMasalahItem?>?) {
+    private fun initList(sebabMasalah: ArrayList<SebabMasalahModel?>?) {
         adapter.setSebabMslhCallback(object : SebabMasalahCallback{
-            override fun onItemClicked(data: SebabMasalahItem) {
+            override fun onItemClicked(data: SebabMasalahModel) {
 
             }
 
-            override fun onItemRemoved(data: SebabMasalahItem, position: Int) {
+            override fun onItemRemoved(data: SebabMasalahModel, position: Int) {
                 binding.apply {
                     if (action != APPROVE) {
                         activity?.let { activity ->
@@ -206,7 +205,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                 }
                 else -> {
 
-                    val addData = SebabMasalahItem(
+                    val addData = SebabMasalahModel(
                         penyebab = penyebab,
                         w1 = valueW1,
                         w2 = valueW2,
@@ -236,7 +235,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                     }
 
                     data?.akarMasalah?.size?.plus(1)?.let {
-                        val dataSaranAkarMasalah = AkarMasalahItem(
+                        val dataSaranAkarMasalah = AkarMasalahModel(
                             sequence = it,
                             kenapa = kenapa,
                             aksi = "",
@@ -282,13 +281,13 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                             subBranch = data?.subBranch,
                             department = data?.department,
                             years = data?.years,
-                            statusImplementation = data?.statusImplementation,
+                            statusImplementationModel = data?.statusImplementationModel,
                             identification = data?.identification,
                             target = data?.target,
                             sebabMasalah = data?.sebabMasalah,
                             akarMasalah = updateAkarMasalah,
                             nilaiOutput = data?.nilaiOutput,
-                            nqi = data?.nqi,
+                            nqiModel = data?.nqiModel,
                             teamMember = data?.teamMember,
                             categoryFixing = data?.categoryFixing,
                             hasilImplementasi = data?.implementationResult,

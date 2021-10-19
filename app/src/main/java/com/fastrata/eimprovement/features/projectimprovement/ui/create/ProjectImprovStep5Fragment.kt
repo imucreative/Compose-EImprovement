@@ -14,7 +14,7 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.AkarMasalahAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.utils.*
@@ -75,7 +75,7 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
         }
 
         adapter.setAkarMslhCallback(object : AkarMasalahCallback {
-            override fun onItemClicked(data: AkarMasalahItem) {
+            override fun onItemClicked(data: AkarMasalahModel) {
 
             }
         })
@@ -87,8 +87,8 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
         })
     }
 
-    private fun changeItemListener(akarMasalahItem: AkarMasalahItem, index: Int) {
-        viewModel.updateAkarMasalah(akarMasalahItem, index, source)
+    private fun changeItemListener(akarMasalahModel: AkarMasalahModel, index: Int) {
+        viewModel.updateAkarMasalah(akarMasalahModel, index, source)
     }
 
     private fun setValidation() {
@@ -113,13 +113,13 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
                             subBranch = data?.subBranch,
                             department = data?.department,
                             years = data?.years,
-                            statusImplementation = data?.statusImplementation,
+                            statusImplementationModel = data?.statusImplementationModel,
                             identification = data?.identification,
                             target = data?.target,
                             sebabMasalah = data?.sebabMasalah,
                             akarMasalah = data?.akarMasalah,
                             nilaiOutput = data?.nilaiOutput,
-                            nqi = data?.nqi,
+                            nqiModel = data?.nqiModel,
                             teamMember = data?.teamMember,
                             categoryFixing = data?.categoryFixing,
                             hasilImplementasi = data?.implementationResult,

@@ -167,6 +167,10 @@
             app:argType="string" />
 
         <argument
+            android:name="idPi"
+            app:argType="integer" />
+
+        <argument
             android:name="type"
             android:defaultValue=""
             app:argType="string" />
