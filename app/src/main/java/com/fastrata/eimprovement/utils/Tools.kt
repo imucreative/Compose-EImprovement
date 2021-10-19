@@ -494,4 +494,17 @@ object Tools {
         val data : String = value.substring(0, length);
         return "$data..."
     }
+
+    fun doubleToRupiah(rupiah: Double, decimal: Int): String {
+        val format = NumberFormat.getCurrencyInstance(Locale.GERMAN)
+        format.minimumFractionDigits = decimal
+        val decimalFormatSymbols = (format as DecimalFormat).decimalFormatSymbols
+        decimalFormatSymbols.currencySymbol = ""
+        (format as DecimalFormat).decimalFormatSymbols = decimalFormatSymbols
+        var ts = format.format(rupiah).trim { it <= ' ' }
+        ts = ts.substring(0, ts.length - 1)
+        val tsa = ts.split(",").toTypedArray()
+        if (tsa.size > 1 && tsa[1] == "00") ts = tsa[0]
+        return if (decimal == 0) tsa[0] + ",-" else "Rp. $ts"
+    }
 }
