@@ -290,6 +290,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                             ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
                                 toolbarTitle = "Approve Change Point",
                                 action = APPROVE,
+                                idCp = data.id,
                                 cpNo = data.typeNo,
                                 type = data.type
                             )

@@ -29,6 +29,7 @@
             android:paddingBottom="?attr/actionBarSize"/>
 
         <LinearLayout
+            android:id="@+id/bottom_navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentBottom="true"

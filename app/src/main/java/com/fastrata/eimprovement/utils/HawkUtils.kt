@@ -187,7 +187,6 @@ internal class HawkUtils {
         date: String? = null,
         keterangan: String? = null,
         rewardData: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
-        riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null,
         source: String = CP_CREATE
     ){
         val data = ChangePointCreateItemModel(
@@ -203,7 +202,6 @@ internal class HawkUtils {
             date = date?: if(source == CP_CREATE) getDataCreateCp?.date else getDataDetailCp?.date,
             description = keterangan?: if(source == CP_CREATE) getDataCreateCp?.description else getDataDetailCp?.description,
             reward = rewardData?: if(source == CP_CREATE) getDataCreateCp?.reward else getDataDetailCp?.reward,
-            history = riwayat?: if(source == CP_CREATE) getDataCreateCp?.history else getDataDetailCp?.history
         )
         if (source == CP_CREATE) {
             Hawk.put(CP_CREATE, data)

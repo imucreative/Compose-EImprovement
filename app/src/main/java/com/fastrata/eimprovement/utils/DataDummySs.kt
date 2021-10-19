@@ -128,10 +128,9 @@ object DataDummySs {
 
    fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
        val rewardArray = ArrayList<RewardItem?>()
-       rewardArray.add(RewardItem(no = 1,hadiah = "PULSA 100K",nilai = "10000",keterangan = "Penukaran"))
-       val riwayatArray = ArrayList<RiwayatItem?>()
-       riwayatArray.add(RiwayatItem(no = 1,pic = "Bpk Test",status = "Active",komentar = "Baik",tanggal = "2021-08-06 17:19:22"))
-      return ChangePointCreateItemModel(
+       rewardArray.add(RewardItem(hadiahId = 1,hadiah = "PULSA 100K",nilai = 10000,keterangan = "Penukaran"))
+
+       return ChangePointCreateItemModel(
           id = 1,
           saldo = 2000,
           cpNo = "CP-0000/08/2021/0100",
@@ -143,8 +142,8 @@ object DataDummySs {
           position = "STAFF",
           date = "2021-08-06",
           description = "Test Data",
-          reward = rewardArray,
-          history = riwayatArray)
+          reward = rewardArray
+       )
    }
 
     /*fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
@@ -506,9 +505,9 @@ object DataDummySs {
 
     fun generateDummyReward(): ArrayList<GiftItem> {
         val data = ArrayList<GiftItem>()
-        data.add(GiftItem(1, hadiah = "PULSA 50K","1000"))
-        data.add(GiftItem(2, hadiah = "PULSA 100K","5000"))
-        data.add(GiftItem(3, hadiah = "IPHONE 13","10000"))
+        data.add(GiftItem(1, hadiah = "PULSA 50K",1000))
+        data.add(GiftItem(2, hadiah = "PULSA 100K",5000))
+        data.add(GiftItem(3, hadiah = "IPHONE 13",10000))
         return data
     }
 

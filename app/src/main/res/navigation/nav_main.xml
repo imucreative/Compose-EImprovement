@@ -197,6 +197,10 @@
             app:argType="string" />
 
         <argument
+            android:name="idCp"
+            app:argType="integer" />
+
+        <argument
             android:name="type"
             android:defaultValue=""
             app:argType="string" />

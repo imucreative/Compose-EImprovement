@@ -136,7 +136,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
     private val onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
         binding.apply {
-            nilaiCp.setText(listRewardItem!![i].nilai)
+            nilaiCp.setText(listRewardItem!![i].nilai.toString())
             selectedReward = listRewardItem!![i]
         }
         hideKeyboard()
@@ -187,7 +187,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private fun checkBalance(): Int {
         if(data?.reward != null){
             val itemCount = data?.reward!!.map { values ->
-                values!!.nilai.toInt()
+                values!!.nilai
             }.sum()
             intTotal = itemCount
             Timber.i("Total : $intTotal")
@@ -220,7 +220,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                     }
                     else -> {
                         val add = RewardItem(
-                            no = selectedReward.id,
+                            hadiahId = selectedReward.id,
                             hadiah = selectedReward.hadiah,
                             nilai = selectedReward.nilai,
                             keterangan = desc
