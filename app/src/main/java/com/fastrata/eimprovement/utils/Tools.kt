@@ -481,4 +481,15 @@ object Tools {
         val nums = int1 + int2
         return nums.toString()
     }
+
+    fun textLimitReplaceToDots(value: String, length : Int = 15): String{
+        if(value == null){
+            return ""
+        }
+        if (value.length <= length){
+            return  value
+        }
+        val data : String = value.substring(0, length);
+        return "$data..."
+    }
 }
