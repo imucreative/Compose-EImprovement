@@ -23,6 +23,7 @@ import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
 
 
 import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.utils.Tools
 import java.text.MessageFormat
 import javax.inject.Inject
 
@@ -73,7 +74,7 @@ class DashboardFragment: Fragment(), Injectable {
             linearSaldo.setOnClickListener {
                 notification.showNotification(activity,resources.getString(R.string.point_balanca), "50000")
             }
-            saldoTxt.text = "50000"
+            saldoTxt.text = Tools.doubleToRupiah("500000".toDouble(),2)
             /*filterActivityDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {

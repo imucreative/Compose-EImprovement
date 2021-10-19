@@ -37,6 +37,8 @@ import java.lang.Exception
 import java.lang.StringBuilder
 import java.net.URI
 import java.net.URISyntaxException
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -480,5 +482,18 @@ object Tools {
         println("vlint : ${int1.toString()}+ ${int2.toString()}")
         val nums = int1 + int2
         return nums.toString()
+    }
+
+    fun doubleToRupiah(rupiah: Double, decimal: Int): String {
+        val format = NumberFormat.getCurrencyInstance(Locale.GERMAN)
+        format.minimumFractionDigits = decimal
+        val decimalFormatSymbols = (format as DecimalFormat).decimalFormatSymbols
+        decimalFormatSymbols.currencySymbol = ""
+        (format as DecimalFormat).decimalFormatSymbols = decimalFormatSymbols
+        var ts = format.format(rupiah).trim { it <= ' ' }
+        ts = ts.substring(0, ts.length - 1)
+        val tsa = ts.split(",").toTypedArray()
+        if (tsa.size > 1 && tsa[1] == "00") ts = tsa[0]
+        return if (decimal == 0) tsa[0] + ",-" else "Rp. $ts"
     }
 }
