@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName
 data class LoginEntity(
     @SerializedName("USER_ID")
     val USER_ID: Int,
+    @SerializedName("ROLE_ID")
+    val ROLE_ID: Int,
+    @SerializedName("ROLE_NAME")
+    val ROLE_NAME: String,
     @SerializedName("NIK")
     val NIK: String,
     @SerializedName("USER_NAME")

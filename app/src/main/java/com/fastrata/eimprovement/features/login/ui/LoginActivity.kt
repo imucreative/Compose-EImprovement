@@ -88,6 +88,8 @@ class LoginActivity : AppCompatActivity(), Injectable {
                                 // saved into hawk
                                 val loginEntity = LoginEntity(
                                     USER_ID = result.data.data[0].USER_ID,
+                                    ROLE_ID = result.data.data[0].ROLE_ID,
+                                    ROLE_NAME = result.data.data[0].ROLE_NAME,
                                     NIK = result.data.data[0].NIK,
                                     USER_NAME = result.data.data[0].USER_NAME,
                                     FULL_NAME = result.data.data[0].FULL_NAME,
