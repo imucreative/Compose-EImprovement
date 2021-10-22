@@ -10,6 +10,7 @@ import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import retrofit2.Response
@@ -121,4 +122,10 @@ interface AppService {
     suspend fun getBalance(
         @Field("userId") id: Int
     ): Response<ResultsResponse<BalanceModel>>
+
+    @FormUrlEncoded
+    @POST("saldo/detail")
+    suspend fun getBalancedetail(
+        @Field("userId") id: Int
+    ): Response<ResultsResponse<MutasiModel>>
 }

@@ -26,18 +26,42 @@
             <include layout="@layout/toolbar"/>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_mutasi"
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rv_mutasi"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:scrollbars="vertical"-->
+<!--            android:scrollingCache="true"-->
+<!--            android:layout_margin="@dimen/spacing_medium"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"-->
+<!--            tools:listitem="@layout/item_mutasi" />-->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scrollbars="vertical"
-            android:scrollingCache="true"
             android:layout_margin="@dimen/spacing_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
-            tools:listitem="@layout/item_mutasi" />
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_mutasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:scrollingCache="true"
+                tools:listitem="@layout/item_mutasi"
+                android:visibility="gone"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/no_data_screen"
+            layout="@layout/nodata_screen"
+            android:visibility="visible"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

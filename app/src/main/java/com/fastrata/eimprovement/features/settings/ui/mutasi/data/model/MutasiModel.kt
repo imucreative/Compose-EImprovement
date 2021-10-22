@@ -6,20 +6,20 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MutasiModel(
-    @SerializedName("tanggal")
+    @SerializedName("INPUT_DATE")
     val date: String,
-    @SerializedName("tipe")
+    @SerializedName("REWARD_TYPE")
     val tipe: String,
-    @SerializedName("no_doc")
+    @SerializedName("DOC_NO")
     val document_no: String,
-    @SerializedName("status")
+    @SerializedName("STATUS_PROPOSAL_NAME")
     val stat: String,
-    @SerializedName("keterangan")
+    @SerializedName("REMARK")
     val desc: String,
-    @SerializedName("pembuat")
+    @SerializedName("PEMBUAT")
     val created_by : String,
-    @SerializedName("nominal")
-    val nominal: Int,
-    @SerializedName("tipe_point")
-    val tipe_point : String
+    @SerializedName("AMOUNT_DEBIT")
+    val nominal_debit: Int,
+    @SerializedName("AMOUNT_KREDIT")
+    val nominal_kredit : Int
 ):Parcelable

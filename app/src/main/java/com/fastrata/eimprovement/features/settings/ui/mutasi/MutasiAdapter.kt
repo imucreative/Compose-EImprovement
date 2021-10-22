@@ -12,9 +12,16 @@ class MutasiAdapter : RecyclerView.Adapter<MutasiAdapter.MutasiAdapterViewHolder
 
     private var list = ArrayList<MutasiModel>()
 
-    fun setList(data: ArrayList<MutasiModel>){
+    fun setList(data: List<MutasiModel>){
+        val convertToArrayList = Tools.listToArrayList(data)
+        if (convertToArrayList != null){
+            list.addAll(convertToArrayList)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun clear(){
         list.clear()
-        list.addAll(data)
         notifyDataSetChanged()
     }
 
@@ -23,20 +30,19 @@ class MutasiAdapter : RecyclerView.Adapter<MutasiAdapter.MutasiAdapterViewHolder
 
             binding.apply {
                 date.text  = data.date
-
                 noReward.text = data.document_no
                 status.text = data.stat
                 type.text = data.tipe
                 created.text = data.created_by
                 desc.text = data.desc
-                if (data.tipe_point == "KR"){
-                    typeReward.text = data.tipe_point
-                    typeReward.setTextColor(Color.GREEN)
-                    point.text = Tools.doubleToRupiah(data.nominal.toDouble(),2)
+                if (data.nominal_debit == 0){
+                    point.text = Tools.doubleToRupiah(data.nominal_kredit.toDouble(),2)
                     point.setTextColor(Color.GREEN)
+                    typeReward.text = "KR"
+                    typeReward.setTextColor(Color.GREEN)
                 }else{
-                    point.text = Tools.doubleToRupiah(data.nominal.toDouble(),2)
-                    typeReward.text = data.tipe_point
+                    point.text = Tools.doubleToRupiah(data.nominal_debit.toDouble(),2)
+                    typeReward.text = "DB"
                 }
             }
         }
