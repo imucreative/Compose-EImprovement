@@ -34,6 +34,7 @@ class SettingsFragment : Fragment(), Injectable {
     ): View {
         binding = FragmentSettingsBinding.inflate(layoutInflater)
         toolbarBinding = ToolbarBinding.bind(binding.root)
+        context ?: return binding.root
 
         setHasOptionsMenu(true);
 
@@ -60,6 +61,12 @@ class SettingsFragment : Fragment(), Injectable {
                 it.findNavController().navigate(directions)
             }
 
+            btnChangePassword.setOnClickListener {
+                //Navigation.findNavController(it).navigate(R.id.action_settingsFragment_to_changesPasswordFragment)
+                val directions = SettingsFragmentDirections.actionSettingsToChangePasswordFragment(resources.getString(R.string.change_password))
+                it.findNavController().navigate(directions)
+            }
+
             btnLogout.setOnClickListener {
                 notification.shownotificationyesno(activity,resources.getString(R.string.info),resources.getString(R.string.log_out),
                 object  :CallBackNotificationYesNo {
@@ -81,7 +88,7 @@ class SettingsFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Setting")
+        setToolbar(toolbar, resources.getString(R.string.setting))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

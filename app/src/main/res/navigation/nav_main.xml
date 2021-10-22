@@ -83,7 +83,11 @@
 
         <action
             android:id="@+id/action_settings_to_mutasiFragment"
-            app:destination="@id/MutasiFragment"></action>
+            app:destination="@id/MutasiFragment"/>
+
+        <action
+            android:id="@+id/action_settings_to_changePasswordFragment"
+            app:destination="@id/ChangesPasswordFragment"/>
 
     </fragment>
 
@@ -99,10 +103,18 @@
             app:argType="string"
             app:nullable="true" />
 
-        <action
-            android:id="@+id/action_mutasiFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"></action>
+    </fragment>
 
+    <fragment
+        android:id="@+id/ChangesPasswordFragment"
+        android:name="com.fastrata.eimprovement.features.settings.ui.ChangePasswordFragment"
+        android:label="ChangesPassword"
+        tools:layout="@layout/fragment_change_password">
+        <argument
+            android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
