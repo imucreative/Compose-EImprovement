@@ -55,6 +55,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     lateinit var fromDate: Date
     lateinit var toDate: Date
     var userId: Int = 0
+    var limit: Int = 10
+    var page: Int = 1
+    var roleName: String = ""
     val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
@@ -77,7 +80,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
         try {
             userId = HawkUtils().getDataLogin().USER_ID
-            listSsViewModel.setListSs(userId)
+            roleName = HawkUtils().getDataLogin().ROLE_NAME
+            listSsViewModel.setListSs(userId, limit, page, roleName)
         } catch (e: Exception){
             Timber.e("Error setListSs : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
@@ -113,7 +117,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             swipe.setOnRefreshListener {
                 swipe.isRefreshing= true
                 try {
-                    listSsViewModel.setListSs(userId)
+                    listSsViewModel.setListSs(userId, limit, page, roleName)
                     swipe.isRefreshing= false
                 } catch (e: Exception){
                     Timber.e("Error setListSs : $e")

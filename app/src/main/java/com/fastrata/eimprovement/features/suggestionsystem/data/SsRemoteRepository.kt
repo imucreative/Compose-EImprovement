@@ -6,8 +6,13 @@ import javax.inject.Singleton
 
 @Singleton
 class SsRemoteRepository @Inject constructor(private val remoteDataSource: SsRemoteDataSource){
-    fun observeListSs(userId: Int) = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.requestListSs(userId) }
+    fun observeListSs(
+        userId: Int,
+        limit: Int,
+        page: Int,
+        roleName: String
+    ) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestListSs(userId, limit, page, roleName) }
     )
 
     fun observeDetailSs(id: Int, userId: Int) = resultMutableLiveDataRemote(

@@ -61,7 +61,12 @@ interface AppService {
     // Suggestion System
     @FormUrlEncoded
     @POST("ss/list")
-    suspend fun listSs(@Field("userId") userId: Int): Response<ResultsResponse<SuggestionSystemModel>>
+    suspend fun listSs(
+        @Field("userId") userId: Int,
+        @Field("limit") limit: Int,
+        @Field("page") page: Int,
+        @Field("roleName") roleName: String
+    ): Response<ResultsResponse<SuggestionSystemModel>>
 
     @FormUrlEncoded
     @POST("ss/detail")

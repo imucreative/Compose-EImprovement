@@ -38,9 +38,14 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
     private val _listSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemModel>>>>>()
     val getListSsItem: LiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemModel>>>>> get() = _listSs
 
-    fun setListSs(userId: Int) {
+    fun setListSs(
+        userId: Int,
+        limit: Int,
+        page: Int,
+        roleName: String
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListSs(userId) }
+            val result = withContext(Dispatchers.Default) { repository.observeListSs(userId, limit, page, roleName) }
             _listSs.value = Event(result)
         }
     }
