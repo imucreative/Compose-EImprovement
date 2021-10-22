@@ -121,7 +121,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
                 println("### Testing path attachment : ${data.uri}")
-                if (data.uri.isEmpty()){
+                if (data.uri.isNullOrEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,

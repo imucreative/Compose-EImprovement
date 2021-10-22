@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesRewardBinding
 import com.fastrata.eimprovement.features.changespoint.data.model.RewardItem
+import com.fastrata.eimprovement.utils.Tools
 
 class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRewardAdapterViewHolder>() {
 
@@ -31,7 +32,7 @@ class ChangesRewardAdapter : RecyclerView.Adapter<ChangesRewardAdapter.ChangesRe
 
             binding.apply {
                 reward.text = data.hadiah
-                point.text = data.nilai.toString()
+                point.text = Tools.doubleToRupiah(data.nilai.toDouble(),2)
                 desc.text = data.keterangan
             }
         }

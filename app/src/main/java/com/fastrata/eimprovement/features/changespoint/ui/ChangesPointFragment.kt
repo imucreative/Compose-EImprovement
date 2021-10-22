@@ -58,6 +58,9 @@ class ChangesPointFragment : Fragment(), Injectable {
     lateinit var fromDate: Date
     lateinit var toDate: Date
     var userId: Int = 0
+    var limit: Int = 10
+    var page: Int = 1
+    var roleName: String = ""
     val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
@@ -81,7 +84,10 @@ class ChangesPointFragment : Fragment(), Injectable {
         userId = HawkUtils().getDataLogin().USER_ID
 
         try{
-            listCpViewModel.setListCp(userId)
+           userId = HawkUtils().getDataLogin().USER_ID
+            roleName  = HawkUtils().getDataLogin().ROLE_NAME
+            listCpViewModel.setListCp(userId, limit, page, roleName)
+
         }catch (e: Exception){
             Timber.e("Error setListCp : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
@@ -120,7 +126,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             swipe.setOnRefreshListener {
                 swipe.isRefreshing= true
                 try{
-                    listCpViewModel.setListCp(userId)
+                    listCpViewModel.setListCp(userId, limit, page, roleName)
                     swipe.isRefreshing  = false
                 }catch (e: Exception){
                     Timber.e("Error setListCp : $e")

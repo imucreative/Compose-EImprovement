@@ -40,7 +40,7 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
             binding.apply {
                 nopenukaran.text = data.cpNo
                 statusCp.text = data.status.status
-                descCp.text = data.desc
+                createdBy.text = data.created
                 branch.text = data.branch
                 subBranch.text = data.branch
                 date.text = data.date

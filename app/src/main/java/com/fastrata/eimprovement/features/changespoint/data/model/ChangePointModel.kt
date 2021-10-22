@@ -11,8 +11,6 @@ data class ChangePointModel(
     val idCp: Int,
     @SerializedName("NO_REEDEM_POINT")
     val cpNo: String,
-    @SerializedName("DESCRIPTION")
-    val desc: String,
     @SerializedName("STATUS_PROPOSAL")
     val status: StatusProposalItem,
     @SerializedName("BRANCH")

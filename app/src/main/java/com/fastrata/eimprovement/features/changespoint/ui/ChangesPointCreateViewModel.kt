@@ -36,9 +36,14 @@ class ChangesPointCreateViewModel @Inject constructor(private val repository: Cp
     private val _listCp = MutableLiveData<Event<LiveData<Result<ResultsResponse<ChangePointModel>>>>>()
     val getListCpItem : LiveData<Event<LiveData<Result<ResultsResponse<ChangePointModel>>>>> get() = _listCp
 
-    fun setListCp(userId: Int){
+    fun setListCp(
+        userId: Int,
+        limit: Int,
+        page: Int,
+        roleName: String
+    ){
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default) { repository.observerListCp(userId) }
+            val result = withContext(Dispatchers.Default) { repository.observerListCp(userId, limit, page, roleName) }
             _listCp.value = Event(result)
         }
     }

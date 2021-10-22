@@ -261,9 +261,14 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
     private val _listPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>>()
     val getListPiItem: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>> get() = _listPi
 
-    fun setListPi(userId: Int) {
+    fun setListPi(
+        userId: Int,
+        limit: Int,
+        page: Int,
+        roleName: String
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListPi(userId) }
+            val result = withContext(Dispatchers.Default) { repository.observeListPi(userId, limit, page, roleName) }
             _listPi.value = Event(result)
         }
     }

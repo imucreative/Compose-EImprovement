@@ -58,9 +58,10 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             }!!
 
             if(data?.saldo == null){
-                saldo.text = "0"
+                saldo.text = Tools.doubleToRupiah("0".toDouble(),2)
             }else{
-                saldo.text = data?.saldo.toString()
+//                saldo.text = data?.saldo.toString()
+                saldo.text = Tools.doubleToRupiah(data?.saldo.toString().toDouble(),2)
             }
 
             cpNo.setText(data?.cpNo)

@@ -9,8 +9,13 @@ class CpRemoteDataSource @Inject constructor(private val service: AppService) : 
         service.listGift()
     }
 
-    suspend fun requestListCp(userId: Int) = getResult {
-        service.listCp(userId)
+    suspend fun requestListCp(
+        userId: Int,
+        limit: Int,
+        page: Int,
+        roleName: String
+    ) = getResult {
+        service.listCp(userId, limit, page, roleName)
     }
 
     suspend fun requestDetailCp(id: Int, userId: Int) = getResult {

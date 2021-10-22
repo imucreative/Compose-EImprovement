@@ -79,7 +79,12 @@ interface AppService {
     // Project Improvement
     @FormUrlEncoded
     @POST("pi/list")
-    suspend fun listPi(@Field("userId") userId: Int): Response<ResultsResponse<ProjectImprovementModel>>
+    suspend fun listPi(
+        @Field("userId") userId: Int,
+        @Field("limit") limit: Int,
+        @Field("page") page: Int,
+        @Field("roleName") roleName: String
+    ): Response<ResultsResponse<ProjectImprovementModel>>
 
     @FormUrlEncoded
     @POST("pi/detail")
@@ -92,7 +97,12 @@ interface AppService {
     // Reward Point
     @FormUrlEncoded
     @POST("rp/list")
-    suspend fun listCp(@Field("userId") userId: Int): Response<ResultsResponse<ChangePointModel>>
+    suspend fun listCp(
+        @Field("userId") userId: Int,
+        @Field("limit") limit: Int,
+        @Field("page") page: Int,
+        @Field("roleName") roleName: String
+    ): Response<ResultsResponse<ChangePointModel>>
 
     @FormUrlEncoded
     @POST("rp/detail")

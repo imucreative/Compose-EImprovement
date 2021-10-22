@@ -16,6 +16,7 @@ import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.utils.HelperNotification.CallBackNotificationYesNo
+import com.fastrata.eimprovement.utils.Tools
 import javax.inject.Inject
 
 class SettingsFragment : Fragment(), Injectable {
@@ -45,7 +46,7 @@ class SettingsFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            tvSaldo.text = "50000"
+            tvSaldo.text = Tools.doubleToRupiah("500000".toDouble(),2)
             tvName.text = HawkUtils().getDataLogin().FULL_NAME
             tvNik.text = HawkUtils().getDataLogin().NIK
             tvBranch.text = HawkUtils().getDataLogin().BRANCH

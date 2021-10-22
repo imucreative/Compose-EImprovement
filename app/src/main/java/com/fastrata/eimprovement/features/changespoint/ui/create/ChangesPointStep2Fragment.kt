@@ -79,7 +79,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             rvChangereward.layoutManager = LinearLayoutManager(context)
             rvChangereward.adapter = rewardAdapter
 
-            totalReward.text = intTotal.toString()
+            totalReward.text = Tools.doubleToRupiah(intTotal.toDouble(),2)
         }
 
         retrieveDataGift()

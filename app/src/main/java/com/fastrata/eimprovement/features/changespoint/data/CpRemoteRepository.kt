@@ -8,8 +8,13 @@ class CpRemoteRepository @Inject constructor(private val remoteDataSource: CpRem
         networkCall = { remoteDataSource.requestListGift() }
     )
 
-    fun observerListCp(userId: Int) = resultMutableLiveDataRemote(
-        networkCall = {remoteDataSource.requestListCp(userId) }
+    fun observerListCp(
+        userId: Int,
+        limit: Int,
+        page: Int,
+        roleName: String
+    ) = resultMutableLiveDataRemote(
+        networkCall = {remoteDataSource.requestListCp(userId, limit, page, roleName) }
     )
 
     fun observerDetailCp(id: Int, userId: Int) = resultMutableLiveDataRemote(

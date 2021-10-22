@@ -57,6 +57,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     lateinit var fromDate: Date
     lateinit var toDate: Date
     var userId: Int = 0
+    var limit: Int = 10
+    var page: Int = 1
+    var roleName: String = ""
     val sdf = SimpleDateFormat("dd-MM-yyyy")
 
     override fun onCreateView(
@@ -80,7 +83,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         userId = HawkUtils().getDataLogin().USER_ID
 
         try {
-            listPiViewModel.setListPi(userId)
+            userId = HawkUtils().getDataLogin().USER_ID
+            roleName = HawkUtils().getDataLogin().ROLE_NAME
+            listPiViewModel.setListPi(userId, limit, page, roleName)
         } catch (e: Exception){
             Timber.e("Error setListPi : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
@@ -116,7 +121,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             swipe.setOnRefreshListener {
                 swipe.isRefreshing = true
                 try {
-                    listPiViewModel.setListPi(userId)
+                    listPiViewModel.setListPi(userId, limit, page, roleName)
                     swipe.isRefreshing = false
                 } catch (e: Exception){
                     Timber.e("Error setListPi : $e")

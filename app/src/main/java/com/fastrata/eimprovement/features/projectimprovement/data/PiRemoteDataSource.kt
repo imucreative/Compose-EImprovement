@@ -5,8 +5,13 @@ import com.fastrata.eimprovement.api.BaseDataSource
 import javax.inject.Inject
 
 class PiRemoteDataSource @Inject constructor(private val service: AppService) : BaseDataSource() {
-    suspend fun requestListPi(userId: Int) = getResult {
-        service.listPi(userId)
+    suspend fun requestListPi(
+        userId: Int,
+        limit: Int,
+        page:Int,
+        roleName: String
+    ) = getResult {
+        service.listPi(userId,limit,page, roleName)
     }
 
     suspend fun requestDetailPi(id: Int, userId: Int) = getResult {
