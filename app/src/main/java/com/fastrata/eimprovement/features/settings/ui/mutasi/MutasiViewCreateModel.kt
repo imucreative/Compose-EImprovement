@@ -21,10 +21,12 @@ class MutasiViewCreateModel @Inject constructor(private val repository : MutasiR
     val getListMutasi : LiveData<Event<LiveData<Result<ResultsResponse<MutasiModel>>>>> get() = _listMutasi
 
     fun setMutasi(
-        userId : Int
+        userId : Int,
+        limit : Int,
+        page: Int
     ){
       viewModelScope.launch(Dispatchers.Main){
-          val result = withContext(Dispatchers.Default) { repository.observeListMutasi(userId)}
+          val result = withContext(Dispatchers.Default) { repository.observeListMutasi(userId,limit,page)}
           _listMutasi.value = Event(result)
       }
     }

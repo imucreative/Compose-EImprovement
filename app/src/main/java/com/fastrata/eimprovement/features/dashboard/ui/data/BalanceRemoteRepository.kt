@@ -9,5 +9,5 @@ class BalanceRemoteRepository @Inject constructor(private val remoteDataSource: 
         userId: Int
     ) = resultMutableLiveDataRemote (
         networkCall = {remoteDataSource.requestBalance(userId)}
-            )
+    )
 }

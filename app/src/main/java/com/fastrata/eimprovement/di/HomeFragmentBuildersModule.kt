@@ -4,7 +4,7 @@ import com.fastrata.eimprovement.features.approval.ui.ListApprovalFragment
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragment
 import com.fastrata.eimprovement.features.dashboard.ui.DashboardFragment
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementFragment
-import com.fastrata.eimprovement.features.settings.ui.ChangePasswordFragment
+import com.fastrata.eimprovement.features.settings.ui.changepassword.ChangePasswordFragment
 import com.fastrata.eimprovement.features.settings.ui.SettingsFragment
 import com.fastrata.eimprovement.features.settings.ui.mutasi.MutasiFragment
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemFragment

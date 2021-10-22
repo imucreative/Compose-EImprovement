@@ -1,4 +1,4 @@
-package com.fastrata.eimprovement.features.settings.ui
+package com.fastrata.eimprovement.features.settings.ui.changepassword
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,38 +7,49 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentChangePasswordBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordCreateViewModel
 import com.fastrata.eimprovement.ui.setToolbar
-import com.fastrata.eimprovement.utils.HelperNotification
-import com.fastrata.eimprovement.utils.SnackBarCustom
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
+import javax.inject.Inject
 
 class ChangePasswordFragment : Fragment(), Injectable {
 
-
+    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var notification: HelperNotification
+    private lateinit var viewModel : ChangePasswordCreateViewModel
 
     private var old_password: String? = ""
     private var new_password: String? = ""
     private var conf_password: String? = ""
+    private var userId : Int = 0
+    private var userName : String = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentChangePasswordBinding.inflate(inflater,container,false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
+
+        viewModel = injectViewModel(viewModelFactory)
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
         context ?: return binding.root
         setHasOptionsMenu(true);
         return binding.root
@@ -105,7 +116,27 @@ class ChangePasswordFragment : Fragment(), Injectable {
     }
 
     private fun sendData(oldPassword: String, newPassword: String) {
-        if (!findNavController().popBackStack()) activity?.finish()
+        viewModel.setChangePassword(userId,userName,oldPassword,newPassword)
+        viewModel.getChangePassword.observeEvent(this){resultObserve ->
+            resultObserve.observe(viewLifecycleOwner,{ result->
+                if (result != null){
+                    when(result.status){
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading Change Password")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+                            if (!findNavController().popBackStack()) activity?.finish()
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Timber.d("###-- Error Change Password")
+                        }
+                    }
+                }
+            })
+        }
     }
 
     private fun initToolbar() {

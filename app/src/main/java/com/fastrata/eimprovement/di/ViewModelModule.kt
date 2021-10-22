@@ -8,6 +8,7 @@ import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesRewardVi
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
 import com.fastrata.eimprovement.features.login.ui.LoginViewModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordCreateViewModel
 import com.fastrata.eimprovement.features.settings.ui.mutasi.MutasiViewCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateAttachmentViewModel
@@ -101,6 +102,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MutasiViewCreateModel::class)
     abstract fun bindViewMutasiFragmentViewModel(viewModel: MutasiViewCreateModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChangePasswordCreateViewModel::class)
+    abstract fun bindViewChangePasswordViewModel(viewModel : ChangePasswordCreateViewModel): ViewModel
 
 
     @Binds

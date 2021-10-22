@@ -107,7 +107,7 @@
 
     <fragment
         android:id="@+id/ChangesPasswordFragment"
-        android:name="com.fastrata.eimprovement.features.settings.ui.ChangePasswordFragment"
+        android:name="com.fastrata.eimprovement.features.settings.ui.changepassword.ChangePasswordFragment"
         android:label="ChangesPassword"
         tools:layout="@layout/fragment_change_password">
         <argument

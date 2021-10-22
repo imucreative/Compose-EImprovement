@@ -6,8 +6,10 @@ import javax.inject.Inject
 class MutasiRemoteRepository @Inject constructor(private val remoteDataSource : MutasiRemoteDataSource) {
 
     fun observeListMutasi(
-        userId : Int
+        userId : Int,
+        limit: Int,
+        page: Int
     )= resultMutableLiveDataRemote (
-        networkCall = { remoteDataSource.requestListMutasi(userId)}
+        networkCall = { remoteDataSource.requestListMutasi(userId,limit,page)}
     )
 }

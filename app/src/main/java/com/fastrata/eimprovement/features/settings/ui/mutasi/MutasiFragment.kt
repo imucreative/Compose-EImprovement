@@ -46,16 +46,15 @@ class MutasiFragment : Fragment(),Injectable {
     ): View {
         _binding = FragmentMutasiBinding.inflate(inflater,container,false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
-        context ?: return binding.root
-
         listMutasiModel = injectViewModel(viewModelFactory)
 
+        context ?: return binding.root
         setHasOptionsMenu(true);
 
         try {
             userId = HawkUtils().getDataLogin().USER_ID
             roleName = HawkUtils().getDataLogin().ROLE_NAME
-            listMutasiModel.setMutasi(userId)
+            listMutasiModel.setMutasi(userId,limit,page)
         }catch (e :Exception){
             Timber.e("Error setListCp : $e")
             Toast.makeText(requireContext(),"Error : $e", Toast.LENGTH_LONG).show()
@@ -83,7 +82,7 @@ class MutasiFragment : Fragment(),Injectable {
             swipe.setOnRefreshListener {
                 swipe.isRefreshing  = true
                 try {
-                    listMutasiModel.setMutasi(userId)
+                    listMutasiModel.setMutasi(userId,limit,page)
                     swipe.isRefreshing = false
                 }catch (e: Exception){
                     Timber.e("Error setListCp : $e")

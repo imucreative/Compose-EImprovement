@@ -10,6 +10,7 @@ import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordModel
 import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
@@ -126,6 +127,19 @@ interface AppService {
     @FormUrlEncoded
     @POST("saldo/detail")
     suspend fun getBalancedetail(
-        @Field("userId") id: Int
+        @Field("userId") id: Int,
+        @Field("limit") limit:Int,
+        @Field("page") page: Int
     ): Response<ResultsResponse<MutasiModel>>
+
+    @FormUrlEncoded
+    @POST("auth/changepassword")
+    suspend fun changePassword(
+        @Field("user_id") id: Int,
+        @Field("user_name") userName: String,
+        @Field("user_password") userPassword: String,
+        @Field("new password") newPassword: String
+    ): Response<ResultsResponse<ChangePasswordModel>>
+
+
 }

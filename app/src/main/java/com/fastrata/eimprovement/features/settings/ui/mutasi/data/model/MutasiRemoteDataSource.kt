@@ -6,8 +6,10 @@ import javax.inject.Inject
 
 class MutasiRemoteDataSource @Inject constructor(private val service : AppService): BaseDataSource(){
     suspend fun requestListMutasi(
-        userId:Int
+        userId:Int,
+        limit: Int,
+        page: Int
     ) = getResult {
-        service.getBalancedetail(userId)
+        service.getBalancedetail(userId,limit,page)
     }
 }
