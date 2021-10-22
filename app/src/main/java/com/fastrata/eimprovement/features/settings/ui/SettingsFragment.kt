@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
@@ -53,6 +54,11 @@ class SettingsFragment : Fragment(), Injectable {
             tvSubBranch.text = HawkUtils().getDataLogin().SUB_BRANCH
             tvDepartment.text = HawkUtils().getDataLogin().DEPARTMENT
             tvPosition.text = HawkUtils().getDataLogin().POSITION
+
+            btnMutasi.setOnClickListener {
+                val directions = SettingsFragmentDirections.actionSettingsToMutasiFragment(resources.getString(R.string.detail_balance))
+                it.findNavController().navigate(directions)
+            }
 
             btnLogout.setOnClickListener {
                 notification.shownotificationyesno(activity,resources.getString(R.string.info),resources.getString(R.string.log_out),

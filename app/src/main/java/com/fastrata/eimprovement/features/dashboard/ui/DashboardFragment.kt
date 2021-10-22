@@ -72,7 +72,7 @@ class DashboardFragment: Fragment(), Injectable {
         binding.apply {
             welcome.text = greetings
             linearSaldo.setOnClickListener {
-                notification.showNotification(activity,resources.getString(R.string.point_balanca), "50000")
+                notification.showNotification(activity,resources.getString(R.string.point_balanca), Tools.doubleToRupiah("500000".toDouble(),2))
             }
             saldoTxt.text = Tools.doubleToRupiah("500000".toDouble(),2)
             /*filterActivityDate.setOnClickListener {

@@ -48,18 +48,20 @@
                 app:cardElevation="2dp">
 
                 <LinearLayout
+                    android:id="@+id/btn_mutasi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/spacing_middle"
-                    android:paddingTop="@dimen/spacing_middle">
+                    android:paddingTop="@dimen/spacing_middle"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <LinearLayout
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/spacing_xxlarge"
                         android:orientation="horizontal"
@@ -83,7 +85,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text=""
+                            android:text="5000"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 

@@ -5,9 +5,8 @@ import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragment
 import com.fastrata.eimprovement.features.dashboard.ui.DashboardFragment
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementFragment
 import com.fastrata.eimprovement.features.settings.ui.SettingsFragment
+import com.fastrata.eimprovement.features.settings.ui.mutasi.MutasiFragment
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemFragment
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateWizard
-import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemStep1Fragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -19,6 +18,9 @@ abstract class HomeFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSettingFragment(): SettingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMutasiFragment() : MutasiFragment
 
     @ContributesAndroidInjector
     abstract fun contributeListApprovalFragment(): ListApprovalFragment

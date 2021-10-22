@@ -16,6 +16,7 @@
     <string name="app_version">App Version</string>
     <string name="version_unknown">Version Unknown</string>
     <string name="change_password">Ganti Password</string>
+    <string name="detail_balance">Detail Saldo Akhir</string>
     <string name="configuration">PENGATURAN</string>
     <string name="position">Posisi</string>
     <string name="department">Departement</string>

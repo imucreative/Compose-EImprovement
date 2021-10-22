@@ -5,6 +5,7 @@ import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistorySta
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
+import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
@@ -367,6 +368,71 @@ object DataDummySs {
                 "John"
             ))
         return projectimprov
+    }
+
+    fun generateMutasiDummy(): ArrayList<MutasiModel>{
+        val mutasiData = ArrayList<MutasiModel>()
+
+        mutasiData.add(
+            MutasiModel(
+            "28-August-21",
+            "PI",
+            "PI-0001/08/2021/0005",
+            "Proposal Disubmit\"",
+            "Proposal Disubmit",
+            "Setyo Wira Pratomo",
+            50000,
+            "DB"
+        ))
+
+        mutasiData.add(
+            MutasiModel(
+                "28-August-21",
+                "RP",
+                "RP-0000/08/2021/0001",
+                "Selesai",
+                "Oke pulsa akan dikirimkan ke nomor bapak[PULSA 10K]",
+                "Setyo Wira Pratomo",
+                10000,
+                "KR"
+            ))
+
+        mutasiData.add(
+            MutasiModel(
+                "28-August-21",
+                "PI",
+                "PI-0001/08/2021/0005",
+                "Laporan Akhir disubmit",
+                "Laporan Akhir disubmit",
+                "Tyas Febriatmoko",
+                10000,
+                "DB"
+            ))
+
+        mutasiData.add(
+            MutasiModel(
+                "29-August-21",
+                "PI",
+                "PI-0001/08/2021/0008",
+                "Revisi Laporan Akhir",
+                "revv",
+                "Tyas Febriatmoko",
+                50000,
+                "DB"
+            ))
+
+        mutasiData.add(
+            MutasiModel(
+                "30-August-21",
+                "PI",
+                "PI-0001/08/2021/0005",
+                "Project Valid",
+                "ok",
+                "Tyas Febriatmoko",
+                100,
+                "DB"
+            ))
+        return mutasiData
     }
 
     fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
