@@ -4,6 +4,7 @@ import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
+import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
@@ -21,7 +22,6 @@ interface AppService {
     // Login
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRemoteRequest): Response<ResultsResponse<LoginEntity>>
-
 
     // Master
     @GET("master/category")
@@ -115,4 +115,10 @@ interface AppService {
     // Approval
     @POST("appr/list")
     suspend fun listApproval(): Response<ResultsResponse<ApprovalModel>>
+
+    @FormUrlEncoded
+    @POST("saldo/balance")
+    suspend fun getBalance(
+        @Field("userId") id: Int
+    ): Response<ResultsResponse<BalanceModel>>
 }

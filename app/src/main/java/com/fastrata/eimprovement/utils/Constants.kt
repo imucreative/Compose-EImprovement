@@ -15,6 +15,7 @@ const val HAWK_USER = "user"
 const val HAWK_DEVICE_UID = "device_uid"
 const val HAWK_DEVICE_NAME = "device_name"
 const val HAWK_SUCCESS_LOGIN = "succes"
+const val HAWK_BALANCE = "balance"
 
 
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------

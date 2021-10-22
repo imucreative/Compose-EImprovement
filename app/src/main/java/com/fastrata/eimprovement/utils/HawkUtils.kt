@@ -109,6 +109,14 @@ internal class HawkUtils {
         return Hawk.get(HAWK_USER)
     }
 
+    fun setDataBalance(value : Int){
+        Hawk.put(HAWK_BALANCE,value)
+    }
+
+    fun getDataBalance(): Int {
+        return Hawk.get(HAWK_BALANCE)
+    }
+
     fun setTempDataCreatePi(
         id : Int? = 0,
         piNo : String? = null,

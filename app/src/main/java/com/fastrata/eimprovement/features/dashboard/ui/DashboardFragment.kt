@@ -9,21 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.fastrata.eimprovement.R
 
-import com.fastrata.eimprovement.utils.DatePickerCustom
-import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentDashboardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
 
 
 import com.fastrata.eimprovement.di.Injectable
-import com.fastrata.eimprovement.utils.Tools
+import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 import java.text.MessageFormat
 import javax.inject.Inject
 
@@ -35,6 +37,8 @@ class DashboardFragment: Fragment(), Injectable {
     private lateinit var notification: HelperNotification
     private lateinit var datePicker: DatePickerCustom
     private var greetings: String = ""
+    private var totalBalance: String = "0"
+    private lateinit var balanceViewModel : BalanceCreateViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +48,8 @@ class DashboardFragment: Fragment(), Injectable {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarDashboardBinding.bind(binding.root)
         context ?: return binding.root
+
+        balanceViewModel = injectViewModel(viewModelFactory)
 
         notification = HelperNotification()
 
@@ -55,9 +61,37 @@ class DashboardFragment: Fragment(), Injectable {
         setHasOptionsMenu(true);
         greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
 
+        try {
+            balanceViewModel.setBalance(45)
+            balanceViewModel.getbalance.observeEvent(this){resultObserve->
+                resultObserve.observe(viewLifecycleOwner,{ result->
+                    if (result != null){
+                        when(result.status){
+                            Result.Status.LOADING  -> {
+                                HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                                Timber.d("###-- Loading get balance")
+                            }
+                            Result.Status.SUCCESS ->{
+                                HelperLoading.hideLoading()
+                                if (result.data?.data?.size == 0){
+                                    HawkUtils().setDataBalance(0)
+                                    binding.saldoTxt.text = Tools.doubleToRupiah("0".toDouble(),2)
+                                }else{
+                                    HawkUtils().setDataBalance(result.data!!.data[0].total)
+                                    binding.saldoTxt.text = Tools.doubleToRupiah(result.data!!.data[0].total.toDouble(),2)
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+        }catch (e : Exception){
+            Timber.e("Error balance : $e")
+            Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
+        }
+
         initToolbar()
         initComponent(requireActivity())
-
         return binding.root
     }
 
@@ -68,13 +102,13 @@ class DashboardFragment: Fragment(), Injectable {
         setToolbar(toolbar, greetings)
     }
 
+
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {
             welcome.text = greetings
-            linearSaldo.setOnClickListener {
-                notification.showNotification(activity,resources.getString(R.string.point_balanca), Tools.doubleToRupiah("500000".toDouble(),2))
-            }
-            saldoTxt.text = Tools.doubleToRupiah("500000".toDouble(),2)
+//            linearSaldo.setOnClickListener {
+//                notification.showNotification(activity,resources.getString(R.string.point_balanca), Tools.doubleToRupiah("500000".toDouble(),2))
+//            }
             /*filterActivityDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {

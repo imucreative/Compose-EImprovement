@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalViewModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesRewardViewModel
+import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
 import com.fastrata.eimprovement.features.login.ui.LoginViewModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
@@ -89,6 +90,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(BranchViewModel::class)
     abstract fun bindListMasterDataBranchViewModel(viewModel: BranchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BalanceCreateViewModel::class)
+    abstract fun bindViewBalanceViewModel(viewModel: BalanceCreateViewModel): ViewModel
 
 
     @Binds

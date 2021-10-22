@@ -47,7 +47,7 @@ class SettingsFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            tvSaldo.text = Tools.doubleToRupiah("500000".toDouble(),2)
+            tvSaldo.text = Tools.doubleToRupiah(HawkUtils().getDataBalance().toDouble(),2)
             tvName.text = HawkUtils().getDataLogin().FULL_NAME
             tvNik.text = HawkUtils().getDataLogin().NIK
             tvBranch.text = HawkUtils().getDataLogin().BRANCH
