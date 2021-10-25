@@ -109,13 +109,14 @@ class ChangePasswordFragment : Fragment(), Injectable {
                     confirmPassword.requestFocus()
                 }
                 else->{
-                    sendData(old_password!!, new_password!!)
+                    sendData(oldPassword.text.toString(),newPassword.text.toString())
                 }
             }
         }
     }
 
     private fun sendData(oldPassword: String, newPassword: String) {
+        Timber.d("message Req:"+oldPassword+"/"+newPassword+"/"+userId+"/"+userName)
         viewModel.setChangePassword(userId,userName,oldPassword,newPassword)
         viewModel.getChangePassword.observeEvent(this){resultObserve ->
             resultObserve.observe(viewLifecycleOwner,{ result->
@@ -127,7 +128,13 @@ class ChangePasswordFragment : Fragment(), Injectable {
                         }
                         Result.Status.SUCCESS -> {
                             HelperLoading.hideLoading()
-                            if (!findNavController().popBackStack()) activity?.finish()
+                            if(result.data?.code != 200){
+                                HelperNotification().showErrorDialog(requireActivity(),resources.getString(R.string.error)+" "+result.data?.code.toString(),
+                                    result.data?.message.toString()
+                                )
+                            }else{
+                                HelperNotification().showNotification(requireActivity(),resources.getString(R.string.succes),"Password berhasil terganti")
+                            }
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()

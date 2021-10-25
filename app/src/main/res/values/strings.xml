@@ -117,6 +117,7 @@
     <string name="setting">Pengaturan</string>
     <!---notification -->
     <string name="error">Error</string>
+    <string name="succes">Sukses</string>
     <string name="please_fill_the_form_to_create_project_improvement">Silahkan Isi Untuk Membuat Project Improvement.</string>
     <string name="wrong_field">Pastikan data sudah terisi dengan benar</string>
     <string name="filter">Filter</string>
