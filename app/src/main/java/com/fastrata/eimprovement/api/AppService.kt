@@ -138,7 +138,7 @@ interface AppService {
         @Field("user_id") id: Int,
         @Field("user_name") userName: String,
         @Field("user_password") userPassword: String,
-        @Field("new password") newPassword: String
+        @Field("new_password") newPassword: String
     ): Response<ResultsResponse<ChangePasswordModel>>
 
 

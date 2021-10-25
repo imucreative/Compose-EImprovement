@@ -38,6 +38,7 @@ class DashboardFragment: Fragment(), Injectable {
     private lateinit var datePicker: DatePickerCustom
     private var greetings: String = ""
     private var totalBalance: String = "0"
+    private var userId : Int = 0
     private lateinit var balanceViewModel : BalanceCreateViewModel
 
     override fun onCreateView(
@@ -52,8 +53,10 @@ class DashboardFragment: Fragment(), Injectable {
         balanceViewModel = injectViewModel(viewModelFactory)
 
         notification = HelperNotification()
+        userId = HawkUtils().getDataLogin().USER_ID
 
         datePicker = DatePickerCustom(
+
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = true, parentFragmentManager
         )
@@ -62,7 +65,7 @@ class DashboardFragment: Fragment(), Injectable {
         greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
 
         try {
-            balanceViewModel.setBalance(45)
+            balanceViewModel.setBalance(userId)
             balanceViewModel.getbalance.observeEvent(this){resultObserve->
                 resultObserve.observe(viewLifecycleOwner,{ result->
                     if (result != null){

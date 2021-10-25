@@ -133,7 +133,11 @@ class ChangePasswordFragment : Fragment(), Injectable {
                                     result.data?.message.toString()
                                 )
                             }else{
-                                HelperNotification().showNotification(requireActivity(),resources.getString(R.string.succes),"Password berhasil terganti")
+                                HelperNotification().showNotificationDismisAction(requireActivity(),resources.getString(R.string.succes),"Password berhasil terganti",object  : HelperNotification.CallbackDismis{
+                                    override fun onDismiss(){
+                                        if (!findNavController().popBackStack()) activity?.finish()
+                                    }
+                                })
                             }
                         }
                         Result.Status.ERROR -> {

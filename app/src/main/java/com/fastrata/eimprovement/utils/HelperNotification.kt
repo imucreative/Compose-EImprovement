@@ -15,6 +15,19 @@ import com.fastrata.eimprovement.R
 
 class HelperNotification {
 
+    interface CallBackNotificationYesNo {
+        fun onNotificationYes()
+        fun onNotificationNo()
+    }
+
+    interface CallbackRetry{
+        fun onRetry()
+    }
+
+    interface CallbackDismis{
+        fun onDismiss()
+    }
+
     fun showErrorDialog(activity: Activity, header :String, content : String) {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
@@ -53,13 +66,24 @@ class HelperNotification {
         dialog.show()
     }
 
-    interface CallBackNotificationYesNo {
-        fun onNotificationYes()
-        fun onNotificationNo()
-    }
-
-    interface CallbackRetry{
-        fun onRetry()
+    fun showNotificationDismisAction(activity: Activity, header: String,content: String,listener : CallbackDismis){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_notification)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
+        (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        (dialog.findViewById<View>(R.id.btn_dismiss) as TextView).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onDismiss()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
     }
 
 
