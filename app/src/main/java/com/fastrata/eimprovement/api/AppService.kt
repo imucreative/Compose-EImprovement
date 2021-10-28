@@ -12,6 +12,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.Suggestion
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordModel
 import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import retrofit2.Response
@@ -61,13 +62,9 @@ interface AppService {
 
 
     // Suggestion System
-    @FormUrlEncoded
     @POST("ss/list")
     suspend fun listSs(
-        @Field("userId") userId: Int,
-        @Field("limit") limit: Int,
-        @Field("page") page: Int,
-        @Field("roleName") roleName: String
+        @Body listSuggestionSystemRemoteRequest: SuggestionSystemRemoteRequest
     ): Response<ResultsResponse<SuggestionSystemModel>>
 
     @FormUrlEncoded

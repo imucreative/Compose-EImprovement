@@ -12,12 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
@@ -54,11 +56,15 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private lateinit var selectedSubBranch: SubBranchItem
     lateinit var fromDate: Date
     lateinit var toDate: Date
-    var userId: Int = 0
-    var limit: Int = 10
-    var page: Int = 1
-    var roleName: String = ""
-    val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private var userId: Int = 0
+    private var userName: String = ""
+    private var limit: Int = 10
+    private var page: Int = 1
+    private var totalPage: Int = 1
+    private var isLoading = false
+    private var roleName: String = ""
+    private val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,10 +86,31 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
         try {
             userId = HawkUtils().getDataLogin().USER_ID
+            userName = HawkUtils().getDataLogin().USER_NAME
             roleName = HawkUtils().getDataLogin().ROLE_NAME
-            listSsViewModel.setListSs(userId, limit, page, roleName)
+
+            val listSsRemoteRequest = SuggestionSystemRemoteRequest(
+                userId, limit, page, roleName,
+                userName = userName, statusId = 0, title = "", orgId = 0, warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listSsViewModel.setListSs(listSsRemoteRequest)
         } catch (e: Exception){
             Timber.e("Error setListSs : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
+
+        try {
+            masterDataStatusProposalViewModel.setStatusProposal()
+        } catch (e: Exception){
+            Timber.e("Error setStatusProposal : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
+
+        try {
+            masterBranchViewModel.setBranch()
+        } catch (e: Exception){
+            Timber.e("Error setBranch : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
@@ -103,9 +130,35 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         initComponent()
 
         binding.apply {
+            layoutManager = LinearLayoutManager(activity)
             rv.setHasFixedSize(true)
-            rv.layoutManager = LinearLayoutManager(activity)
+            rv.layoutManager = layoutManager
             rv.adapter = adapter
+
+            rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val visibleItemCount = layoutManager.childCount
+                    val pastVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                    val total  = adapter.itemCount
+
+                    if (!isLoading && page < totalPage){
+                        if (visibleItemCount + pastVisibleItem >= total){
+                            page++
+
+                            val listSsRemoteRequest = SuggestionSystemRemoteRequest(
+                                userId, limit, page, roleName,
+                                userName = userName, statusId = 0, title = "", orgId = 0, warehouseId = 0, startDate = "", endDate = ""
+                            )
+
+                            listSsViewModel.setListSs(listSsRemoteRequest)
+                            getListSs()
+                        }
+                    }
+
+                }
+            })
 
             create.setOnClickListener {
                 val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
@@ -116,8 +169,17 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
             swipe.setOnRefreshListener {
                 swipe.isRefreshing= true
+                page = 1
+
                 try {
-                    listSsViewModel.setListSs(userId, limit, page, roleName)
+                    adapter.clear()
+
+                    val listSsRemoteRequest = SuggestionSystemRemoteRequest(
+                        userId, limit, page, roleName,
+                        userName = userName, statusId = 0, title = "", orgId = 0, warehouseId = 0, startDate = "", endDate = ""
+                    )
+
+                    listSsViewModel.setListSs(listSsRemoteRequest)
                     swipe.isRefreshing= false
                 } catch (e: Exception){
                     Timber.e("Error setListSs : $e")
@@ -130,6 +192,58 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getListSs() {
+        isLoading = true
+
+        listSsViewModel.getListSsItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get List SS")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+                            val listResponse = result.data?.data
+                            if (listResponse != null) {
+                                if (page == 0 && listResponse.isEmpty()) {
+                                    binding.rv.visibility = View.GONE
+                                    binding.noDataScreen.root.visibility = View.VISIBLE
+                                } else {
+                                    totalPage = result.data.totalPage
+
+                                    binding.rv.visibility = View.VISIBLE
+                                    binding.noDataScreen.root.visibility = View.GONE
+
+                                    adapter.setList(listResponse)
+                                }
+                            }
+
+                            /*if (page >= totalPage){
+                                binding.progressBar.visibility = View.GONE
+                            }else{
+                                binding.progressBar.visibility = View.INVISIBLE
+                            }*/
+
+                            retrieveDataStatusProposal()
+                            retrieveDataBranch()
+                            isLoading = false
+                            Timber.d("###-- Success get List SS")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            isLoading = false
+                            Timber.d("###-- Error get List SS")
+                        }
+
+                    }
+
+                }
+            })
+        }
     }
 
     private fun retrieveDataStatusProposal(){
@@ -279,55 +393,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             }
         })
 
-        listSsViewModel.getListSsItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get List SS")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-                            if(result.data?.data?.size == 0){
-                                binding.rv.visibility = View.GONE
-                                binding.noDataScreen.root.visibility = View.VISIBLE
-                            }else{
-                                binding.rv.visibility = View.VISIBLE
-                                binding.noDataScreen.root.visibility = View.GONE
-                                adapter.clear()
-                                adapter.setList(result.data?.data)
-                            }
-
-                            try {
-                                masterDataStatusProposalViewModel.setStatusProposal()
-                            } catch (e: Exception){
-                                Timber.e("Error setStatusProposal : $e")
-                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-                            }
-
-                            try {
-                                masterBranchViewModel.setBranch()
-                            } catch (e: Exception){
-                                Timber.e("Error setBranch : $e")
-                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-                            }
-
-                            retrieveDataStatusProposal()
-                            retrieveDataBranch()
-
-                            Timber.d("###-- Success get List SS")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Timber.d("###-- Error get List SS")
-                        }
-
-                    }
-
-                }
-            })
-        }
+        getListSs()
     }
 
     private fun initToolbar() {

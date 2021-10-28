@@ -7,13 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.suggestionsystem.data.SsRemoteRepository
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.utils.DataDummySs
-import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -38,14 +37,9 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
     private val _listSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemModel>>>>>()
     val getListSsItem: LiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemModel>>>>> get() = _listSs
 
-    fun setListSs(
-        userId: Int,
-        limit: Int,
-        page: Int,
-        roleName: String
-    ) {
+    fun setListSs(listSuggestionSystemRemoteRequest: SuggestionSystemRemoteRequest) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListSs(userId, limit, page, roleName) }
+            val result = withContext(Dispatchers.Default) { repository.observeListSs(listSuggestionSystemRemoteRequest) }
             _listSs.value = Event(result)
         }
     }
