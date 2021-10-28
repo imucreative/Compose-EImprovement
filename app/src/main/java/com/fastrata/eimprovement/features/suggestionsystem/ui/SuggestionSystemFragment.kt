@@ -210,6 +210,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
                         Result.Status.SUCCESS -> {
                             HelperLoading.hideLoading()
+
                             val listResponse = result.data?.data
                             if (listResponse != null) {
                                 if (page == 0 && listResponse.isEmpty()) {
@@ -224,12 +225,6 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                     adapter.setList(listResponse)
                                 }
                             }
-
-                            /*if (page >= totalPage){
-                                binding.progressBar.visibility = View.GONE
-                            }else{
-                                binding.progressBar.visibility = View.INVISIBLE
-                            }*/
 
                             retrieveDataStatusProposal()
                             retrieveDataBranch()

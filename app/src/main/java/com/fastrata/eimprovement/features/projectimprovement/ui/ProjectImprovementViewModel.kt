@@ -9,10 +9,7 @@ import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
@@ -261,14 +258,9 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
     private val _listPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>>()
     val getListPiItem: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>> get() = _listPi
 
-    fun setListPi(
-        userId: Int,
-        limit: Int,
-        page: Int,
-        roleName: String
-    ) {
+    fun setListPi(listProjectImprovementRemoteRequest: ProjectImprovementRemoteRequest) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListPi(userId, limit, page, roleName) }
+            val result = withContext(Dispatchers.Default) { repository.observeListPi(listProjectImprovementRemoteRequest) }
             _listPi.value = Event(result)
         }
     }

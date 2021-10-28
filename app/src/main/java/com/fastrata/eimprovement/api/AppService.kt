@@ -10,6 +10,7 @@ import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementRemoteRequest
 import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordModel
 import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
@@ -76,13 +77,9 @@ interface AppService {
 
 
     // Project Improvement
-    @FormUrlEncoded
     @POST("pi/list")
     suspend fun listPi(
-        @Field("userId") userId: Int,
-        @Field("limit") limit: Int,
-        @Field("page") page: Int,
-        @Field("roleName") roleName: String
+        @Body listProjectImprovementRemoteRequest: ProjectImprovementRemoteRequest
     ): Response<ResultsResponse<ProjectImprovementModel>>
 
     @FormUrlEncoded
