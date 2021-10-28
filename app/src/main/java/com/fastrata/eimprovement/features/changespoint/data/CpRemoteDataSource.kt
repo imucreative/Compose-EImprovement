@@ -2,6 +2,7 @@ package com.fastrata.eimprovement.features.changespoint.data
 
 import com.fastrata.eimprovement.api.AppService
 import com.fastrata.eimprovement.api.BaseDataSource
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
 import javax.inject.Inject
 
 class CpRemoteDataSource @Inject constructor(private val service: AppService) : BaseDataSource(){
@@ -9,13 +10,8 @@ class CpRemoteDataSource @Inject constructor(private val service: AppService) : 
         service.listGift()
     }
 
-    suspend fun requestListCp(
-        userId: Int,
-        limit: Int,
-        page: Int,
-        roleName: String
-    ) = getResult {
-        service.listCp(userId, limit, page, roleName)
+    suspend fun requestListCp(listChangePointRemoteRequest: ChangePointRemoteRequest) = getResult {
+        service.listCp(listChangePointRemoteRequest)
     }
 
     suspend fun requestDetailCp(id: Int, userId: Int) = getResult {

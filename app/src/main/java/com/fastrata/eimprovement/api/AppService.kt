@@ -3,6 +3,7 @@ package com.fastrata.eimprovement.api
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
 import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
@@ -91,13 +92,9 @@ interface AppService {
 
 
     // Reward Point
-    @FormUrlEncoded
     @POST("rp/list")
     suspend fun listCp(
-        @Field("userId") userId: Int,
-        @Field("limit") limit: Int,
-        @Field("page") page: Int,
-        @Field("roleName") roleName: String
+        @Body listChangePointRemoteRequest: ChangePointRemoteRequest
     ): Response<ResultsResponse<ChangePointModel>>
 
     @FormUrlEncoded

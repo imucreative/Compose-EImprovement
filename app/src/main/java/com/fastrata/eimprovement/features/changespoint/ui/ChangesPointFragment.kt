@@ -6,23 +6,21 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.R.layout.simple_list_item_1
-import android.os.Handler
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
@@ -57,11 +55,15 @@ class ChangesPointFragment : Fragment(), Injectable {
     private lateinit var selectedSubBranch: SubBranchItem
     lateinit var fromDate: Date
     lateinit var toDate: Date
-    var userId: Int = 0
-    var limit: Int = 10
-    var page: Int = 1
-    var roleName: String = ""
-    val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private var userId: Int = 0
+    private var userName: String = ""
+    private var limit: Int = 10
+    private var page: Int = 1
+    private var totalPage: Int = 1
+    private var isLoading = false
+    private var roleName: String = ""
+    private val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,20 +83,37 @@ class ChangesPointFragment : Fragment(), Injectable {
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
-        userId = HawkUtils().getDataLogin().USER_ID
-
         try{
-           userId = HawkUtils().getDataLogin().USER_ID
+            userId = HawkUtils().getDataLogin().USER_ID
+            userName = HawkUtils().getDataLogin().USER_NAME
             roleName  = HawkUtils().getDataLogin().ROLE_NAME
-            listCpViewModel.setListCp(userId, limit, page, roleName)
+
+            val listChangePointRemoteRequest = ChangePointRemoteRequest(
+                userId, limit, page, roleName,
+                userName = userName, cpNo = "", statusId = 0, title = "", orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listCpViewModel.setListCp(listChangePointRemoteRequest)
 
         }catch (e: Exception){
             Timber.e("Error setListCp : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
         }
 
-        masterDataStatusProposalViewModel.setStatusProposal()
-        masterBranchViewModel.setBranch()
+        try {
+            masterDataStatusProposalViewModel.setStatusProposal()
+        } catch (e: java.lang.Exception){
+            Timber.e("Error setStatusProposal : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
+
+        try {
+            masterBranchViewModel.setBranch()
+        } catch (e: java.lang.Exception){
+            Timber.e("Error setBranch : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
 
         adapter = ChangesPointAdapter()
         adapter.notifyDataSetChanged()
@@ -112,9 +131,36 @@ class ChangesPointFragment : Fragment(), Injectable {
         initComponent()
 
         binding.apply {
+            layoutManager = LinearLayoutManager(activity)
             rv.setHasFixedSize(true)
-            rv.layoutManager = LinearLayoutManager(activity)
+            rv.layoutManager = layoutManager
             rv.adapter = adapter
+
+            rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val visibleItemCount = layoutManager.childCount
+                    val pastVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                    val total  = adapter.itemCount
+
+                    if (!isLoading && page < totalPage){
+                        if (visibleItemCount + pastVisibleItem >= total){
+                            page++
+
+                            val listChangePointRemoteRequest = ChangePointRemoteRequest(
+                                userId, limit, page, roleName,
+                                userName = userName, cpNo = "", statusId = 0, title = "", orgId = 0,
+                                warehouseId = 0, startDate = "", endDate = ""
+                            )
+
+                            listCpViewModel.setListCp(listChangePointRemoteRequest)
+                            getListCp()
+                        }
+                    }
+
+                }
+            })
 
             createSs.setOnClickListener {
                 val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
@@ -125,8 +171,18 @@ class ChangesPointFragment : Fragment(), Injectable {
 
             swipe.setOnRefreshListener {
                 swipe.isRefreshing= true
+                page = 1
+
                 try{
-                    listCpViewModel.setListCp(userId, limit, page, roleName)
+                    adapter.clear()
+
+                    val listChangePointRemoteRequest = ChangePointRemoteRequest(
+                        userId, limit, page, roleName,
+                        userName = userName, cpNo = "", statusId = 0, title = "", orgId = 0,
+                        warehouseId = 0, startDate = "", endDate = ""
+                    )
+
+                    listCpViewModel.setListCp(listChangePointRemoteRequest)
                     swipe.isRefreshing  = false
                 }catch (e: Exception){
                     Timber.e("Error setListCp : $e")
@@ -143,6 +199,51 @@ class ChangesPointFragment : Fragment(), Injectable {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getListCp() {
+        isLoading = true
+
+        listCpViewModel.getListCpItem.observeEvent(this){ resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status){
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get List CP")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            val listResponse = result.data?.data
+                            if (listResponse != null) {
+                                if (page == 0 && listResponse.isEmpty()) {
+                                    binding.rv.visibility = View.GONE
+                                    binding.noDataScreen.root.visibility = View.VISIBLE
+                                } else {
+                                    totalPage = result.data.totalPage
+
+                                    binding.rv.visibility = View.VISIBLE
+                                    binding.noDataScreen.root.visibility = View.GONE
+
+                                    adapter.setList(listResponse)
+                                }
+                            }
+
+                            retrieveDataStatusProposal()
+                            retrieveDataBranch()
+                            isLoading = false
+                            Timber.d("###-- Success get List CP")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            isLoading = false
+                            Timber.d("###-- Error get List CP")
+                        }
+                    }
+                }
+            })
+        }
     }
 
     private fun retrieveDataStatusProposal(){
@@ -292,56 +393,8 @@ class ChangesPointFragment : Fragment(), Injectable {
                 requireView().findNavController().navigate(direction)
             }
         })
-        listCpViewModel.getListCpItem.observeEvent(this){ resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status){
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get List CP")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
 
-                            if(result.data?.data?.size == 0){
-                                binding.rv.visibility = View.GONE
-                                binding.noDataScreen.root.visibility = View.VISIBLE
-                            }else{
-                                binding.rv.visibility = View.VISIBLE
-                                binding.noDataScreen.root.visibility = View.GONE
-                                adapter.clear()
-                                adapter.setList(result.data?.data)
-                            }
-
-
-                            try {
-                                masterDataStatusProposalViewModel.setStatusProposal()
-                            }catch (e: Exception){
-                                Timber.e("Error setStatusProposal  : $e")
-                                Toast.makeText(requireContext(),"Error : $e", Toast.LENGTH_LONG).show()
-                            }
-
-                            try {
-                                masterBranchViewModel.setBranch()
-                            }catch (e: Exception){
-                                Timber.e("Error setBranch : $e")
-                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-                            }
-
-                            retrieveDataStatusProposal()
-                            retrieveDataBranch()
-
-                            Timber.d("###-- Success get List CP")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Timber.d("###-- Error get List CP")
-                        }
-                    }
-                }
-
-            })
-        }
+        getListCp()
     }
 
     private fun initToolbar() {

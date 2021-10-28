@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class ChangePointModel(
     @SerializedName("RP_H_ID")
     val idCp: Int,
-    @SerializedName("NO_REEDEM_POINT")
+    @SerializedName("RP_NO")
     val cpNo: String,
     @SerializedName("STATUS_PROPOSAL")
     val status: StatusProposalItem,
