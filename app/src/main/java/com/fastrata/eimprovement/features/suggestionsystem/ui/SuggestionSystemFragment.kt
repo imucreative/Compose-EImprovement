@@ -91,7 +91,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                 userId, limit, page, roleName,
-                userName = userName, statusId = 0, title = "", orgId = 0, warehouseId = 0, startDate = "", endDate = ""
+                userName = userName, ssNo = "", statusId = 0, title = "", orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
             )
 
             listSsViewModel.setListSs(listSsRemoteRequest)
@@ -149,7 +150,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                                 userId, limit, page, roleName,
-                                userName = userName, statusId = 0, title = "", orgId = 0, warehouseId = 0, startDate = "", endDate = ""
+                                userName = userName, ssNo = "", statusId = 0, title = "", orgId = 0,
+                                warehouseId = 0, startDate = "", endDate = ""
                             )
 
                             listSsViewModel.setListSs(listSsRemoteRequest)
@@ -176,7 +178,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                     val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                         userId, limit, page, roleName,
-                        userName = userName, statusId = 0, title = "", orgId = 0, warehouseId = 0, startDate = "", endDate = ""
+                        userName = userName, ssNo = "", statusId = 0, title = "", orgId = 0,
+                        warehouseId = 0, startDate = "", endDate = ""
                     )
 
                     listSsViewModel.setListSs(listSsRemoteRequest)

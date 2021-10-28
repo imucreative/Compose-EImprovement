@@ -14,6 +14,8 @@ data class SuggestionSystemRemoteRequest(
 
     @SerializedName("userName")
     val userName: String,
+    @SerializedName("ssNo")
+    val ssNo: String,
     @SerializedName("statusId")
     val statusId: Int,
     @SerializedName("title")
