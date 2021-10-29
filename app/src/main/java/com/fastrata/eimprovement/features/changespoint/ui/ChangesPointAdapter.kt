@@ -37,13 +37,13 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
             }
 
             binding.apply {
-                nopenukaran.text = data.cpNo
+                noDoc.text = data.cpNo
                 statusCp.text = data.status.status
                 createdBy.text = data.created
                 branch.text = data.branch
-                subBranch.text = data.branch
+                subBranch.text = data.subBranch
                 date.text = data.date
-                total.text = data.total
+                total.text = Tools.doubleToRupiah(data.total.toString().toDouble(),2)
             }
         }
     }

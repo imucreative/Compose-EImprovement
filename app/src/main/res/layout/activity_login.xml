@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:theme="@style/Theme.MaterialComponents.Light"
-        android:background="@color/grey_5">
+        android:background="@color/colorWhiteLight">
 
         <View
             android:id="@+id/view1"
@@ -21,7 +21,7 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey_5"
+            android:background="@color/colorWhiteLight"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
                     android:layout_marginBottom="@dimen/spacing_middle"
                     android:text="@string/sign_in_to_continue"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorMainEImprovement"
                     android:textStyle="bold" />
 
                 <View

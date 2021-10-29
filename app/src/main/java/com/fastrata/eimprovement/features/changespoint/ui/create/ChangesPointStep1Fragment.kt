@@ -13,7 +13,6 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCre
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.textLimitReplaceToDots
-import timber.log.Timber
 import javax.inject.Inject
 
 class ChangesPointStep1Fragment: Fragment(), Injectable {
@@ -60,7 +59,6 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             if(data?.saldo == null){
                 saldo.text = Tools.doubleToRupiah("0".toDouble(),2)
             }else{
-//                saldo.text = data?.saldo.toString()
                 saldo.text = Tools.doubleToRupiah(data?.saldo.toString().toDouble(),2)
             }
 

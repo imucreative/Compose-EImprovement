@@ -22,5 +22,5 @@ data class ChangePointModel(
     @SerializedName("CREATED_BY")
     val created : String,
     @SerializedName("TOTAL")
-    val total: String
+    val total: Int
 ):Parcelable

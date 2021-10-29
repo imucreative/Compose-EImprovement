@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/nopenukaran"
+            android:id="@+id/no_doc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_large"
@@ -29,25 +29,36 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/grey_80" />
 
-        <TextView
-            android:id="@+id/status_cp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginVertical="@dimen/spacing_medium"
-            tools:text="Aktif"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/grey_80" />
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/created_by"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:layout_marginVertical="@dimen/spacing_medium"
-            tools:text="John Doe"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/grey_80" />
+            <TextView
+                android:id="@+id/status_cp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Aktif"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/grey_80" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/grey_80" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -61,6 +72,36 @@
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginVertical="@dimen/spacing_medium"
             android:layout_marginTop="@dimen/spacing_medium"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/created_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="John Doe"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/grey_40" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wed, 20 Jan 19, 05:08 PM"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/grey_40" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:orientation="horizontal">
 
             <TextView
@@ -81,40 +122,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="FBPST - Gd Barang Dagang"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Wed, 20 Jan 19, 05:08 PM"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="1000"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/grey_40" />
 
         </LinearLayout>
+
+
 
 
     </LinearLayout>
