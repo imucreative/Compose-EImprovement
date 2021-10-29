@@ -3,34 +3,29 @@ package com.fastrata.eimprovement.features.projectimprovement.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.SebabMasalahItem
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
-import com.fastrata.eimprovement.ui.model.*
+import androidx.lifecycle.viewModelScope
+import com.fastrata.eimprovement.api.ResultsResponse
+import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
+import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
+import com.fastrata.eimprovement.wrapper.Event
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
-    private val listProjectImprovement = MutableLiveData<ArrayList<ProjectImprovementModel>>()
+class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository): ViewModel(){
     private val detailProjectImprovement = MutableLiveData<ProjectImprovementCreateModel>()
-    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahItem?>?>()
-    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahItem?>?>()
+    private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahModel?>?>()
+    private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahModel?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
-    private val listCategory = MutableLiveData<ArrayList<CategoryImprovementItem?>?>()
-
-    fun setProjectImprovement () {
-        val data = DataDummySs.generateDummyProjectImprovementList()
-        listProjectImprovement.postValue(data)
-    }
-
-    fun getProjectImprovement(): LiveData<ArrayList<ProjectImprovementModel>> {
-        return listProjectImprovement
-    }
 
     fun setProjectImprovementDetail(piNo: String) {
         // koneksi ke DB
@@ -49,11 +44,11 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         listSebabMasalah.postValue(data)
     }
 
-    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahItem?>?>{
+    fun getSebabMasalah(): LiveData<ArrayList<SebabMasalahModel?>?>{
         return listSebabMasalah
     }
 
-    fun addSebabMasalah(add: SebabMasalahItem, current: ArrayList<SebabMasalahItem?>?, source: String) {
+    fun addSebabMasalah(add: SebabMasalahModel, current: ArrayList<SebabMasalahModel?>?, source: String) {
         current?.add(add)
 
         listSebabMasalah.postValue(current)
@@ -69,13 +64,13 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
             subBranch = data?.subBranch,
             department = data?.department,
             years = data?.years,
-            statusImplementation = data?.statusImplementation,
+            statusImplementationModel = data?.statusImplementationModel,
             identification = data?.identification,
             target = data?.target,
             sebabMasalah = current,
             akarMasalah = data?.akarMasalah,
             nilaiOutput = data?.nilaiOutput,
-            nqi = data?.nqi,
+            nqiModel = data?.nqiModel,
             teamMember = data?.teamMember,
             categoryFixing = data?.categoryFixing,
             hasilImplementasi = data?.implementationResult,
@@ -85,7 +80,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
-    fun updateSebabMasalah(add: ArrayList<SebabMasalahItem?>?, source: String) {
+    fun updateSebabMasalah(add: ArrayList<SebabMasalahModel?>?, source: String) {
         listSebabMasalah.postValue(add)
 
         val data = HawkUtils().getTempDataCreatePi(source)
@@ -99,13 +94,13 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
             subBranch = data?.subBranch,
             department = data?.department,
             years = data?.years,
-            statusImplementation = data?.statusImplementation,
+            statusImplementationModel = data?.statusImplementationModel,
             identification = data?.identification,
             target = data?.target,
             sebabMasalah = add,
             akarMasalah = data?.akarMasalah,
             nilaiOutput = data?.nilaiOutput,
-            nqi = data?.nqi,
+            nqiModel = data?.nqiModel,
             teamMember = data?.teamMember,
             categoryFixing = data?.categoryFixing,
             hasilImplementasi = data?.implementationResult,
@@ -122,11 +117,11 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         listAkarMasalah.postValue(data)
     }
 
-    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahItem?>?>{
+    fun getAkarMasalah() : LiveData<ArrayList<AkarMasalahModel?>?>{
         return listAkarMasalah
     }
 
-    fun updateAkarMasalah(add: AkarMasalahItem, index: Int, source: String): ArrayList<AkarMasalahItem?>? {
+    fun updateAkarMasalah(add: AkarMasalahModel, index: Int, source: String): ArrayList<AkarMasalahModel?>? {
         val data = HawkUtils().getTempDataCreatePi(source)
 
         // != -1 = add
@@ -146,7 +141,7 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         return convertToArrayList
     }
 
-    fun removeAkarMasalah(index: Int, current: ArrayList<AkarMasalahItem?>?, source: String) {
+    fun removeAkarMasalah(index: Int, current: ArrayList<AkarMasalahModel?>?, source: String) {
         current?.removeAt(index)
 
         HawkUtils().setTempDataCreatePi(
@@ -184,13 +179,13 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
             subBranch = data?.subBranch,
             department = data?.department,
             years = data?.years,
-            statusImplementation = data?.statusImplementation,
+            statusImplementationModel = data?.statusImplementationModel,
             identification = data?.identification,
             target = data?.target,
             sebabMasalah = data?.sebabMasalah,
             akarMasalah = data?.akarMasalah,
             nilaiOutput = data?.nilaiOutput,
-            nqi = data?.nqi,
+            nqiModel = data?.nqiModel,
             teamMember = current,
             categoryFixing = data?.categoryFixing,
             hasilImplementasi = data?.implementationResult,
@@ -214,13 +209,13 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
             subBranch = data?.subBranch,
             department = data?.department,
             years = data?.years,
-            statusImplementation = data?.statusImplementation,
+            statusImplementationModel = data?.statusImplementationModel,
             identification = data?.identification,
             target = data?.target,
             sebabMasalah = data?.sebabMasalah,
             akarMasalah = data?.akarMasalah,
             nilaiOutput = data?.nilaiOutput,
-            nqi = data?.nqi,
+            nqiModel = data?.nqiModel,
             teamMember = add,
             categoryFixing = data?.categoryFixing,
             hasilImplementasi = data?.implementationResult,
@@ -259,17 +254,26 @@ class ProjectImprovementViewModel @Inject constructor(): ViewModel(){
         )
     }
 
-    fun setCategorySuggestion() {
-        // koneksi ke hawk
-        val data = DataDummySs.generateDummyCategorySuggestion()
+    // === List PI
+    private val _listPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>>()
+    val getListPiItem: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementModel>>>>> get() = _listPi
 
-        println("### category suggestion : $data")
-
-        listCategory.postValue(data)
+    fun setListPi(listProjectImprovementRemoteRequest: ProjectImprovementRemoteRequest) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeListPi(listProjectImprovementRemoteRequest) }
+            _listPi.value = Event(result)
+        }
     }
 
-    fun getCategorySuggestion(): LiveData<ArrayList<CategoryImprovementItem?>?> {
-        return listCategory
+    // === Detail PI
+    private val _detailPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementCreateModel>>>>>()
+    val getDetailPiItem: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementCreateModel>>>>> get() = _detailPi
+
+    fun setDetailPi(id: Int, userId: Int) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeDetailPi(id, userId) }
+            _detailPi.value = Event(result)
+        }
     }
 
 }

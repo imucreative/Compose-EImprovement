@@ -1,19 +1,17 @@
 package com.fastrata.eimprovement.features.changespoint.data.model
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RewardItem(
-    val no : Int?,
+    @SerializedName("GIFT_ID")
+    val hadiahId: Int,
+    @SerializedName("GIFT_NAME")
     val hadiah: String,
-    val nilai: String,
+    @SerializedName("AMOUNT")
+    val nilai: Int,
+    @SerializedName("REMARK")
     val keterangan: String
 ):Parcelable
-
-@Parcelize
-data class HadiahItem(
-    var hadiah: String,
-    var id: Int,
-    var nilai: String
-) : Parcelable

@@ -284,7 +284,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="@string/nqi"
+                                android:text="@string/nqiModel"
                                 android:textStyle="bold"
                                 android:gravity="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
@@ -508,7 +508,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="@string/nqi"
+                                android:text="@string/nqiModel"
                                 android:textStyle="bold"
                                 android:gravity="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>

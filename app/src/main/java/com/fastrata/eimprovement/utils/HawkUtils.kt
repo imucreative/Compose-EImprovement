@@ -1,10 +1,13 @@
 package com.fastrata.eimprovement.utils
 
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
-import com.fastrata.eimprovement.ui.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
@@ -26,6 +29,7 @@ internal class HawkUtils {
         listCategory: ArrayList<CategoryImprovementItem?>? = if (getDataCreateSs?.categoryImprovement == null) arrayListOf() else null,
         name: String? = null,
         nik: String? = null,
+        branchCode: String? = null,
         branch: String? = null,
         subBranch: String? = null,
         department: String? = null,
@@ -35,7 +39,7 @@ internal class HawkUtils {
         statusImplementation: StatusImplementation? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreateSs?.teamMember == null) arrayListOf() else null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null,
-        statusProposal: StatusProposal? = null,
+        statusProposal: StatusProposalItem? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -45,6 +49,7 @@ internal class HawkUtils {
             categoryImprovement = listCategory ?: if (source == SS_CREATE) getDataCreateSs?.categoryImprovement else getDataDetailSs?.categoryImprovement,
             name = name ?: if (source == SS_CREATE) getDataCreateSs?.name else getDataDetailSs?.name,
             nik = nik ?: if (source == SS_CREATE) getDataCreateSs?.nik else getDataDetailSs?.nik,
+            branchCode = branchCode ?: if (source == SS_CREATE) getDataCreateSs?.branchCode else getDataDetailSs?.branchCode,
             branch = branch ?: if (source == SS_CREATE) getDataCreateSs?.branch else getDataDetailSs?.branch,
             subBranch = subBranch ?: if (source == SS_CREATE) getDataCreateSs?.subBranch else getDataDetailSs?.subBranch,
             department = department ?: if (source == SS_CREATE) getDataCreateSs?.department else getDataDetailSs?.department,
@@ -104,27 +109,36 @@ internal class HawkUtils {
         return Hawk.get(HAWK_USER)
     }
 
+    fun setDataBalance(value : Int){
+        Hawk.put(HAWK_BALANCE,value)
+    }
+
+    fun getDataBalance(): Int {
+        return Hawk.get(HAWK_BALANCE)
+    }
+
     fun setTempDataCreatePi(
         id : Int? = 0,
         piNo : String? = null,
         date: String? = null,
         title: String? = null,
+        branchCode: String? = null,
         branch: String? = null,
         subBranch: String? = null,
         department: String? = null,
         years: String? = null,
-        statusImplementation: StatusImplementationPi? = null,
+        statusImplementationModel: StatusImplementationPiModel? = null,
         identification: String? = null,
         target: String? = null,
-        sebabMasalah: ArrayList<SebabMasalahItem?>? = if(getDataCreatePi?.sebabMasalah == null) arrayListOf() else null,
-        akarMasalah: ArrayList<AkarMasalahItem?>? = if (getDataCreatePi?.akarMasalah == null) arrayListOf() else null,
+        sebabMasalah: ArrayList<SebabMasalahModel?>? = if(getDataCreatePi?.sebabMasalah == null) arrayListOf() else null,
+        akarMasalah: ArrayList<AkarMasalahModel?>? = if (getDataCreatePi?.akarMasalah == null) arrayListOf() else null,
         nilaiOutput : String? = null,
-        nqi : NqiModel? = null,
+        nqiModel : NqiModel? = null,
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreatePi?.teamMember == null) arrayListOf() else null,
         categoryFixing: ArrayList<CategoryImprovementItem?>? = if (getDataCreatePi?.categoryFixing == null) arrayListOf() else null,
         hasilImplementasi : String? = null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null,
-        statusProposal: StatusProposal? = null,
+        statusProposal: StatusProposalItem? = null,
         source: String = PI_CREATE
     ){
         val data = ProjectImprovementCreateModel(
@@ -132,17 +146,18 @@ internal class HawkUtils {
             piNo = piNo ?: if (source == PI_CREATE) getDataCreatePi?.piNo else getDataDetailPi?.piNo,
             date = date ?: if (source == PI_CREATE) getDataCreatePi?.date else getDataDetailPi?.date,
             title = title ?: if (source == PI_CREATE) getDataCreatePi?.title else getDataDetailPi?.title,
+            branchCode = branchCode ?: if (source == PI_CREATE) getDataCreatePi?.branchCode else getDataDetailPi?.branchCode,
             branch = branch ?: if (source == PI_CREATE) getDataCreatePi?.branch else getDataDetailPi?.branch,
             subBranch = subBranch?: if (source == PI_CREATE) getDataCreatePi?.subBranch else getDataDetailPi?.subBranch,
             department = department?: if (source == PI_CREATE) getDataCreatePi?.department else getDataDetailPi?.department,
             years = years?: if (source == PI_CREATE) getDataCreatePi?.years else getDataDetailPi?.years,
-            statusImplementation = statusImplementation ?: if (source == PI_CREATE) getDataCreatePi?.statusImplementation else getDataDetailPi?.statusImplementation,
+            statusImplementationModel = statusImplementationModel ?: if (source == PI_CREATE) getDataCreatePi?.statusImplementationModel else getDataDetailPi?.statusImplementationModel,
             identification = identification ?: if (source == PI_CREATE) getDataCreatePi?.identification else getDataDetailPi?.identification,
             target = target ?: if (source == PI_CREATE) getDataCreatePi?.target else getDataDetailPi?.target,
             sebabMasalah = sebabMasalah ?: if (source == PI_CREATE) getDataCreatePi?.sebabMasalah else getDataDetailPi?.sebabMasalah,
             akarMasalah = akarMasalah ?: if (source == PI_CREATE) getDataCreatePi?.akarMasalah else getDataDetailPi?.akarMasalah,
             nilaiOutput = nilaiOutput ?: if (source == PI_CREATE) getDataCreatePi?.nilaiOutput else getDataDetailPi?.nilaiOutput,
-            nqi = nqi ?: if (source == PI_CREATE) getDataCreatePi?.nqi else getDataDetailPi?.nqi,
+            nqiModel = nqiModel ?: if (source == PI_CREATE) getDataCreatePi?.nqiModel else getDataDetailPi?.nqiModel,
             teamMember = teamMember ?: if (source == PI_CREATE) getDataCreatePi?.teamMember else getDataDetailPi?.teamMember,
             categoryFixing = categoryFixing ?: if (source == PI_CREATE) getDataCreatePi?.categoryFixing else getDataDetailPi?.categoryFixing,
             implementationResult = hasilImplementasi ?: if (source == PI_CREATE) getDataCreatePi?.implementationResult else getDataDetailPi?.implementationResult,
@@ -180,7 +195,6 @@ internal class HawkUtils {
         date: String? = null,
         keterangan: String? = null,
         rewardData: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
-        riwayat: ArrayList<RiwayatItem?>? = if (getDataCreateCp?.history == null) arrayListOf() else null,
         source: String = CP_CREATE
     ){
         val data = ChangePointCreateItemModel(
@@ -196,7 +210,6 @@ internal class HawkUtils {
             date = date?: if(source == CP_CREATE) getDataCreateCp?.date else getDataDetailCp?.date,
             description = keterangan?: if(source == CP_CREATE) getDataCreateCp?.description else getDataDetailCp?.description,
             reward = rewardData?: if(source == CP_CREATE) getDataCreateCp?.reward else getDataDetailCp?.reward,
-            history = riwayat?: if(source == CP_CREATE) getDataCreateCp?.history else getDataDetailCp?.history
         )
         if (source == CP_CREATE) {
             Hawk.put(CP_CREATE, data)

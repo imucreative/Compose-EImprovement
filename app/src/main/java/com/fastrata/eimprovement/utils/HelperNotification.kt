@@ -2,6 +2,8 @@ package com.fastrata.eimprovement.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -13,10 +15,24 @@ import com.fastrata.eimprovement.R
 
 class HelperNotification {
 
+    interface CallBackNotificationYesNo {
+        fun onNotificationYes()
+        fun onNotificationNo()
+    }
+
+    interface CallbackRetry{
+        fun onRetry()
+    }
+
+    interface CallbackDismis{
+        fun onDismiss()
+    }
+
     fun showErrorDialog(activity: Activity, header :String, content : String) {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
         dialog.setContentView(R.layout.dialog_error)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
         dialog.setCancelable(true)
@@ -40,6 +56,7 @@ class HelperNotification {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_notification)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
         dialog.setCancelable(true)
@@ -49,9 +66,24 @@ class HelperNotification {
         dialog.show()
     }
 
-    interface CallBackNotificationYesNo {
-        fun onNotificationYes()
-        fun onNotificationNo()
+    fun showNotificationDismisAction(activity: Activity, header: String,content: String,listener : CallbackDismis){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_notification)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
+        (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        (dialog.findViewById<View>(R.id.btn_dismiss) as TextView).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onDismiss()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
     }
 
 
@@ -59,6 +91,7 @@ class HelperNotification {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_yesno)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
         (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
         dialog.setCancelable(false)
@@ -73,6 +106,24 @@ class HelperNotification {
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationNo()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
+    fun displayNoInternet(activity: Activity,listener: CallbackRetry){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.nointernet_screen)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        (dialog.findViewById<View>(R.id.bt_retry)as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onRetry()
         }
         dialog.show()
         dialog.window!!.attributes = lp

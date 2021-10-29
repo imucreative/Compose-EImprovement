@@ -7,7 +7,7 @@
     <string name="username">USERNAME</string>
     <string name="sign_in_to_continue">Sign in to continue</string>
     <string name="welcome">Selamat Datang di E-Improvement</string>
-    <string name="welcome_user">Selamat Datang</string>
+    <string name="welcome_user">Hi,</string>
     <string name="back">KEMBALI</string>
     <string name="next">LANJUT</string>
     <string name="getStarted">MULAI</string>
@@ -16,6 +16,7 @@
     <string name="app_version">App Version</string>
     <string name="version_unknown">Version Unknown</string>
     <string name="change_password">Ganti Password</string>
+    <string name="detail_balance">Detail Saldo Akhir</string>
     <string name="configuration">PENGATURAN</string>
     <string name="position">Posisi</string>
     <string name="department">Departement</string>
@@ -64,7 +65,7 @@
     <string name="title_suggestion">Judul Saran</string>
 
     <!-- Navigation -->
-    <string name="list_approval">List Persetujuan</string>
+    <string name="list_approval">Approval</string>
     <string name="suggestion_system">Sistem Saran</string>
     <string name="project_improvement">Project Improvement</string>
     <string name="change_point">Penukaran Point</string>
@@ -107,7 +108,7 @@
     <string name="keterangan">Keterangan</string>
     <string name="rp">Rp.</string>
     <string name="cost">Cost</string>
-    <string name="nqi">NQI</string>
+    <string name="nqiModel">NQI</string>
     <string name="aktual">Aktual</string>
     <string name="f_kategori_perbaikan">F. Kategori Perbaikan</string>
     <string name="pilihlah_pilihan_yang_menurut_anda_sesuai">Pilihlah - pilihan yang menurut anda sesuai</string>
@@ -116,6 +117,7 @@
     <string name="setting">Pengaturan</string>
     <!---notification -->
     <string name="error">Error</string>
+    <string name="succes">Sukses</string>
     <string name="please_fill_the_form_to_create_project_improvement">Silahkan Isi Untuk Membuat Project Improvement.</string>
     <string name="wrong_field">Pastikan data sudah terisi dengan benar</string>
     <string name="filter">Filter</string>
@@ -139,7 +141,8 @@
     <string name="delete">Hapus</string>
     <string name="delete_confirmation">Apakah Anda Yakin Menghapus Data Ini?</string>
     <string name="problem_reason">Silahkan Isi Kolom Penyebab Masalah Dengan Sesuai</string>
-    <string name="why">Why 1 harus diisi</string>
+    <string name="why">Why</string>
+    <string name="why_required">Why 1 harus diisi</string>
     <string name="problem_root">Silahkan Isi Kolom Akar Masalah Dengan Sesuai</string>
     <string name="problem_root_reason">Silahkan Tambah Sebab/Akar Masalah</string>
     <string name="problem_suggest">Silahkan Isi Kolom Saran/Akar Masalah Dengan Sesuai</string>
@@ -154,11 +157,18 @@
     <string name="file_size">Pastikan Ukuran Lampiran tidak 0 MB dan dibawah 2 MB</string>
     <string name="file_ext">Ekstensien Lampiran Tidak Sesuai</string>
     <string name="file_empty">Lampiran Tidak Tersedia</string>
-    <string name="log_out">Apakah Anda Yakin Keluar Akun?</string>
+
+    <string name="log_out_info">Apakah Anda Yakin Keluar Akun?</string>
+    <string name="log_out">Keluar Akun</string>
+    <string name="no_internet">Gagal Terhubung Server. Silahkan Cek Kembali Koneksi Anda</string>
+    <string name="data_not_found">Data Tidak Tersedia</string>
+    <string name="leader_required">Anda harus memilih Ketua Tim terlebih dahulu!</string>
+
     <string name="old_pass_empty">Masukan Password Lama Anda</string>
     <string name="new_pass_empty">Masukan Password Baru Anda</string>
     <string name="conf_pass_empty">Masukan Password Konfirmasi Anda</string>
     <string name="not_match_conf_password">Pastikan Password Konfirmasi sama dengan Password Baru Anda</string>
+
 
     <!-- Change Point -->
     <string name="tanggal_penukaran">Tanggal Penukaran</string>
@@ -171,6 +181,22 @@
     <string name="total">Total :</string>
     <string name="status">Status</string>
     <string name="category">Kategori</string>
+    <string name="created_by">Dibuat Oleh</string>
+    <string name="no_proposal">No Proposal</string>
+    <string name="close">Close</string>
+    <string name="tap_to_dismiss">Tap to dismiss!</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="ok">OK</string>
+    <string name="no">NO</string>
+    <string name="poin_anda">Poin Anda</string>
+    <string name="recent_activity">Recent Activity</string>
+    <string name="see_more">See More</string>
+    <string name="menu">MENU</string>
+    <string name="agree">Setuju</string>
+    <string name="not_agree">Tolak</string>
+    <string name="reject">Revisi</string>
+    <string name="loading">Loading</string>
+    <string name="hi">Hi</string>
 
 
 </resources>

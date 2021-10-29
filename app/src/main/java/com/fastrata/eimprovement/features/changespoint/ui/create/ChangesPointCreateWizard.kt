@@ -11,16 +11,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.ActivityChangesPointSystemCreateWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -62,7 +63,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
         val argsTitle   = args.toolbarTitle!!
         val argsAction  = args.action
+        val argsIdCp    = args.idCp
         val argsCpNo    = args.cpNo
+        val userId      = HawkUtils().getDataLogin().USER_ID
 
         action = argsAction
 
@@ -75,28 +78,51 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
-                viewModel.setChangePointDetail(cpNo)
-                viewModel.getChangePointDetail().observe(this, { detailData ->
-                        HawkUtils().setTempDataCreateCp(
-                            id = detailData.id,
-                            cpNo = detailData.cpNo,
-                            saldo = detailData.saldo,
-                            name = detailData.name,
-                            nik = detailData.nik,
-                            branch = detailData.branch,
-                            subBranch = detailData.subBranch,
-                            departement = detailData.department,
-                            position = detailData.position,
-                            date = detailData.date,
-                            keterangan = detailData.description,
-                            rewardData = detailData.reward,
-                            riwayat = detailData.history,
-                            source = CP_DETAIL_DATA
-                        )
+                viewModel.setDetailCp(argsIdCp, userId)
+                viewModel.getDetailCpItem.observeEvent(this) { resultObserve ->
+                    resultObserve.observe(this, { result ->
+                        if (result != null) {
+                            when (result.status) {
+                                Result.Status.LOADING -> {
+                                    HelperLoading.displayLoadingWithText(this,"",false)
+                                    binding.bottomNavigationBar.visibility = View.GONE
 
-                    initToolbar(argsTitle)
-                    initComponent()
+                                    Timber.d("###-- Loading get Branch")
+                                }
+                                Result.Status.SUCCESS -> {
+                                    HelperLoading.hideLoading()
+                                    binding.bottomNavigationBar.visibility = View.VISIBLE
+
+                                    HawkUtils().setTempDataCreateCp(
+                                        id = result.data?.data?.get(0)?.id,
+                                        cpNo = result.data?.data?.get(0)?.cpNo,
+                                        saldo = result.data?.data?.get(0)?.saldo,
+                                        name = result.data?.data?.get(0)?.name,
+                                        nik = result.data?.data?.get(0)?.nik,
+                                        branch = result.data?.data?.get(0)?.branch,
+                                        subBranch = result.data?.data?.get(0)?.subBranch,
+                                        departement = result.data?.data?.get(0)?.department,
+                                        position = result.data?.data?.get(0)?.position,
+                                        date = result.data?.data?.get(0)?.date,
+                                        keterangan = result.data?.data?.get(0)?.description,
+                                        rewardData = result.data?.data?.get(0)?.reward,
+                                        source = CP_DETAIL_DATA
+                                    )
+
+                                    initToolbar(argsTitle)
+                                    initComponent()
+                                    Timber.d("###-- Success get Branch")
+                                }
+                                Result.Status.ERROR -> {
+                                    HelperLoading.displayLoadingWithText(this,"",false)
+                                    binding.bottomNavigationBar.visibility = View.GONE
+                                    Timber.d("###-- Error get Branch")
+                                }
+
+                            }
+                        }
                     })
+                }
             }
             ADD -> {
                 cpNo = ""
@@ -136,7 +162,6 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                         date = detailData.date,
                         keterangan = detailData.description,
                         rewardData = detailData.reward,
-                        riwayat = detailData.history,
                         source = CP_DETAIL_DATA
                     )
 

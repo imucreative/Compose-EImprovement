@@ -64,11 +64,10 @@ class LoginActivity : AppCompatActivity(), Injectable {
                 R.drawable.ic_close, R.color.red_500
             )
         } else if (!ConnectivityUtil.isConnected(this)) {
-            SnackBarCustom.snackBarIconInfo(
-                binding.root, layoutInflater, resources, this,
-                "Please check your network connectivity",
-                R.drawable.ic_close, R.color.red_500
-            )
+            HelperNotification().displayNoInternet(this,object : HelperNotification.CallbackRetry{
+                override fun onRetry() {
+                }
+            })
         } else {
             viewModel.processLogin(username, password)
             viewModel.doLiveLogin.observeEvent(this) { loginObserver ->
@@ -89,17 +88,28 @@ class LoginActivity : AppCompatActivity(), Injectable {
                                 // saved into hawk
                                 val loginEntity = LoginEntity(
                                     USER_ID = result.data.data[0].USER_ID,
+                                    ROLE_ID = result.data.data[0].ROLE_ID,
+                                    ROLE_NAME = result.data.data[0].ROLE_NAME,
+                                    NIK = result.data.data[0].NIK,
                                     USER_NAME = result.data.data[0].USER_NAME,
+                                    FULL_NAME = result.data.data[0].FULL_NAME,
+                                    DIRECT_MANAGER_ID = result.data.data[0].DIRECT_MANAGER_ID,
+                                    DIRECT_MANAGER = result.data.data[0].DIRECT_MANAGER,
+                                    EMAIL = result.data.data[0].EMAIL,
+                                    ORG_ID = result.data.data[0].ORG_ID,
+                                    WAREHOUSE_ID = result.data.data[0].WAREHOUSE_ID,
+                                    BRANCH_CODE = result.data.data[0].BRANCH_CODE,
+                                    BRANCH = result.data.data[0].BRANCH,
+                                    SUB_BRANCH = result.data.data[0].SUB_BRANCH,
+                                    DEPARTMENT_ID = result.data.data[0].DEPARTMENT_ID,
+                                    DEPARTMENT = result.data.data[0].DEPARTMENT,
+                                    POSITION_ID = result.data.data[0].POSITION_ID,
+                                    POSITION = result.data.data[0].POSITION,
+                                    JOB_TITLE_ID = result.data.data[0].JOB_TITLE_ID,
+                                    JOB_TITLE = result.data.data[0].JOB_TITLE,
                                     TOKEN = result.data.data[0].TOKEN,
                                     API_KEY = result.data.data[0].API_KEY,
                                     ROLES = result.data.data[0].ROLES,
-                                    NIK = "11210012",
-                                    BRANCH = "PUSAT",
-                                    SUB_BRANCH = "FBPST - Gd Barang Dagang",
-                                    DEPARTMENT = "ICT",
-                                    POSITION = "STAFF",
-                                    DIRECT_MANAGER = "Pak Ahmad",
-                                    SALDO = "50000"
                                 )
                                 HawkUtils().setDataLogin(loginEntity = loginEntity)
                                 HawkUtils().setStatusLogin(true)
@@ -124,6 +134,5 @@ class LoginActivity : AppCompatActivity(), Injectable {
             }
         }
     }
-
 
 }

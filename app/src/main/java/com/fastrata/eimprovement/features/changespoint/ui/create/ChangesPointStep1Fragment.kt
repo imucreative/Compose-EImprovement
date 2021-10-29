@@ -10,9 +10,9 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateCallback
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.fastrata.eimprovement.utils.Tools.textLimitReplaceToDots
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -58,18 +58,19 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             }!!
 
             if(data?.saldo == null){
-                saldo.text = "0"
+                saldo.text = Tools.doubleToRupiah("0".toDouble(),2)
             }else{
-                saldo.text = data?.saldo.toString()
+//                saldo.text = data?.saldo.toString()
+                saldo.text = Tools.doubleToRupiah(data?.saldo.toString().toDouble(),2)
             }
 
             cpNo.setText(data?.cpNo)
-            name.setText(data?.name)
+            name.setText(data?.name?.let { textLimitReplaceToDots(it) })
             nik.setText(data?.nik)
-            branch.setText(data?.branch)
-            subBranch.setText(data?.subBranch)
-            department.setText(data?.department)
-            position.setText(data?.position)
+            branch.setText(data?.branch?.let { textLimitReplaceToDots(it) })
+            subBranch.setText(data?.subBranch?.let { textLimitReplaceToDots(it) })
+            department.setText(data?.department?.let { textLimitReplaceToDots(it) })
+            position.setText(data?.position?.let { textLimitReplaceToDots(it) })
 
             date.setText(data?.date)
             date.setOnClickListener {

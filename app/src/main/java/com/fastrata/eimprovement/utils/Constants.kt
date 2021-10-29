@@ -15,6 +15,7 @@ const val HAWK_USER = "user"
 const val HAWK_DEVICE_UID = "device_uid"
 const val HAWK_DEVICE_NAME = "device_name"
 const val HAWK_SUCCESS_LOGIN = "succes"
+const val HAWK_BALANCE = "balance"
 
 
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------
@@ -31,8 +32,8 @@ const val PI_CREATE = "project_improvement"
 const val PI_DETAIL_DATA = "detail_data_pi"
 const val PI_STATUS_IMPLEMENTATION = "status_implement"
 
-// Change point (CP) --------------------------------------------------------------------------
-const val CP = "CP"
+// Change point/ Reward Point (CP/ RP) --------------------------------------------------------------------------
+const val CP = "RP"
 const val CP_CREATE = "change_point"
 const val CP_DETAIL_DATA = "detail_data_cp"
 

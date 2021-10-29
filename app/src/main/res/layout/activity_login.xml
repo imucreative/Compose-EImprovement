@@ -123,7 +123,7 @@
 
                         <View
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/spacing_mlarge" />
+                            android:layout_height="@dimen/spacing_medium" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -138,7 +138,7 @@
                                 android:id="@+id/edt_password"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="numberPassword"
+                                android:inputType="text"
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:maxLength="20"
@@ -175,16 +175,6 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:textColor="@android:color/white" />
         </com.balysv.materialripple.MaterialRippleLayout>
-
-        <include
-            android:id="@+id/progressbar"
-            layout="@layout/progressbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

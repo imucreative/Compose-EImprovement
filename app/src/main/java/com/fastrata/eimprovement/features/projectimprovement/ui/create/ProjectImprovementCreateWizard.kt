@@ -11,10 +11,12 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.ActivityProjectImprovementWizardBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
@@ -63,7 +65,9 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
         val argsTitle   = args.toolbarTitle!!
         val argsAction  = args.action
+        val argsIdPi    = args.idPi
         val argsPiNo    = args.piNo
+        val userId      = HawkUtils().getDataLogin().USER_ID
 
         action = argsAction
 
@@ -76,36 +80,73 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
-                viewModel.setProjectImprovementDetail(argsPiNo)
-                viewModel.getProjectImprovementDetail().observe(this, { detailData ->
-                    println("### data :"+detailData)
-                    HawkUtils().setTempDataCreatePi(
-                        id = detailData.id,
-                        piNo = detailData.piNo,
-                        department = detailData.department,
-                        years = detailData.years,
-                        date = detailData.date,
-                        branch = detailData.branch,
-                        subBranch = detailData.subBranch,
-                        title = detailData.title,
-                        statusImplementation = detailData.statusImplementation,
-                        identification = detailData.identification,
-                        target = detailData.target,
-                        sebabMasalah = detailData.sebabMasalah,
-                        akarMasalah = detailData.akarMasalah,
-                        nilaiOutput = detailData.nilaiOutput,
-                        nqi = detailData.nqi,
-                        teamMember = detailData.teamMember,
-                        categoryFixing = detailData.categoryFixing,
-                        hasilImplementasi = detailData.implementationResult,
-                        attachment = detailData.attachment,
-                        statusProposal = detailData.statusProposal,
-                        source = PI_DETAIL_DATA
-                    )
+                viewModel.setDetailPi(argsIdPi, userId)
 
-                    initToolbar(argsTitle)
-                    initComponent()
-                })
+                viewModel.getDetailPiItem.observeEvent(this) { resultObserve ->
+                    resultObserve.observe(this, { result ->
+                        if (result != null) {
+                            when (result.status) {
+                                Result.Status.LOADING -> {
+                                    HelperLoading.displayLoadingWithText(this,"",false)
+                                    binding.bottomNavigationBar.visibility = View.GONE
+
+                                    Timber.d("###-- Loading getDetailPiItem")
+                                }
+                                Result.Status.SUCCESS -> {
+                                    HelperLoading.hideLoading()
+                                    binding.bottomNavigationBar.visibility = View.VISIBLE
+
+                                    HawkUtils().setTempDataCreatePi(
+                                        id = result.data?.data?.get(0)?.id,
+                                        piNo = result.data?.data?.get(0)?.piNo,
+                                        department = result.data?.data?.get(0)?.department,
+                                        years = result.data?.data?.get(0)?.years,
+                                        date = result.data?.data?.get(0)?.date,
+                                        branchCode = result.data?.data?.get(0)?.branchCode,
+                                        branch = result.data?.data?.get(0)?.branch,
+                                        subBranch = result.data?.data?.get(0)?.subBranch,
+                                        title = result.data?.data?.get(0)?.title,
+                                        statusImplementationModel = result.data?.data?.get(0)?.statusImplementationModel,
+                                        identification = result.data?.data?.get(0)?.identification?.let {
+                                            HtmlCompat.fromHtml(
+                                                it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                                        },
+                                        target = result.data?.data?.get(0)?.target?.let {
+                                            HtmlCompat.fromHtml(
+                                                it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                                        },
+                                        sebabMasalah = result.data?.data?.get(0)?.sebabMasalah,
+                                        akarMasalah = result.data?.data?.get(0)?.akarMasalah,
+                                        nilaiOutput = result.data?.data?.get(0)?.nilaiOutput?.let {
+                                            HtmlCompat.fromHtml(
+                                                it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                                        },
+                                        nqiModel = result.data?.data?.get(0)?.nqiModel,
+                                        teamMember = result.data?.data?.get(0)?.teamMember,
+                                        categoryFixing = result.data?.data?.get(0)?.categoryFixing,
+                                        hasilImplementasi = result.data?.data?.get(0)?.implementationResult?.let {
+                                            HtmlCompat.fromHtml(
+                                                it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                                        },
+                                        attachment = result.data?.data?.get(0)?.attachment,
+                                        statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                        source = PI_DETAIL_DATA
+                                    )
+
+                                    initToolbar(argsTitle)
+                                    initComponent()
+                                    Timber.d("###-- Success getDetailPiItem")
+                                }
+                                Result.Status.ERROR -> {
+                                    HelperLoading.displayLoadingWithText(this,"",false)
+                                    binding.bottomNavigationBar.visibility = View.GONE
+                                    Timber.d("###-- Error getDetailPiItem")
+                                }
+
+                            }
+                        }
+                    })
+                }
             }
             ADD -> {
                 piNo = ""
@@ -113,6 +154,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 source = PI_CREATE
                 HawkUtils().setTempDataCreatePi(
                     piNo = "",
+                    branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
@@ -134,16 +176,17 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         department = detailData.department,
                         years = detailData.years,
                         date = detailData.date,
+                        branchCode = detailData.branchCode,
                         branch = detailData.branch,
                         subBranch = detailData.subBranch,
                         title = detailData.title,
-                        statusImplementation = detailData.statusImplementation,
+                        statusImplementationModel = detailData.statusImplementationModel,
                         identification = detailData.identification,
                         target = detailData.target,
                         sebabMasalah = detailData.sebabMasalah,
                         akarMasalah = detailData.akarMasalah,
                         nilaiOutput = detailData.nilaiOutput,
-                        nqi = detailData.nqi,
+                        nqiModel = detailData.nqiModel,
                         teamMember = detailData.teamMember,
                         categoryFixing = detailData.categoryFixing,
                         hasilImplementasi = detailData.implementationResult,

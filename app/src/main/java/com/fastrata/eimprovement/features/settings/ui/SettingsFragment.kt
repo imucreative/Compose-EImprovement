@@ -6,7 +6,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.R
@@ -18,6 +17,7 @@ import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.utils.HelperNotification.CallBackNotificationYesNo
+import com.fastrata.eimprovement.utils.Tools
 import javax.inject.Inject
 
 class SettingsFragment : Fragment(), Injectable {
@@ -48,20 +48,23 @@ class SettingsFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            tvSaldo.text = HawkUtils().getDataLogin().SALDO
-            tvName.text = HawkUtils().getDataLogin().USER_NAME
+            tvSaldo.text = Tools.doubleToRupiah(HawkUtils().getDataBalance().toDouble(),2)
+            tvName.text = HawkUtils().getDataLogin().FULL_NAME
             tvNik.text = HawkUtils().getDataLogin().NIK
             tvBranch.text = HawkUtils().getDataLogin().BRANCH
             tvSubBranch.text = HawkUtils().getDataLogin().SUB_BRANCH
             tvDepartment.text = HawkUtils().getDataLogin().DEPARTMENT
             tvPosition.text = HawkUtils().getDataLogin().POSITION
 
-
+            btnMutasi.setOnClickListener {
+                val directions = SettingsFragmentDirections.actionSettingsToMutasiFragment(resources.getString(R.string.detail_balance))
+                it.findNavController().navigate(directions)
+            }
 
             btnChangePassword.setOnClickListener {
-//                val directions = SettingsFragmentDirections.actionSettingsFragmentToChangesPasswordFragment(resources.getString(R.string.change_password))
-//                                it.findNavController().navigate(directions)
-                Navigation.findNavController(it).navigate(R.id.action_settingsFragment_to_changesPasswordFragment)
+                //Navigation.findNavController(it).navigate(R.id.action_settingsFragment_to_changesPasswordFragment)
+                val directions = SettingsFragmentDirections.actionSettingsToChangePasswordFragment(resources.getString(R.string.change_password))
+                it.findNavController().navigate(directions)
             }
 
             btnLogout.setOnClickListener {

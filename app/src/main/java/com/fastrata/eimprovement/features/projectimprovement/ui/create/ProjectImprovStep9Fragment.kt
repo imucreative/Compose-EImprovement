@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +17,8 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.ui.adapter.*
-import com.fastrata.eimprovement.ui.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.adapter.*
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -122,7 +121,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
                 println("### Testing path attachment : ${data.uri}")
-                if (data.uri.isEmpty()){
+                if (data.uri.isNullOrEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
@@ -242,13 +241,13 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             subBranch = data?.subBranch,
                             department = data?.department,
                             years = data?.years,
-                            statusImplementation = data?.statusImplementation,
+                            statusImplementationModel = data?.statusImplementationModel,
                             identification = data?.identification,
                             target = data?.target,
                             sebabMasalah = data?.sebabMasalah,
                             akarMasalah = data?.akarMasalah,
                             nilaiOutput = data?.nilaiOutput,
-                            nqi = data?.nqi,
+                            nqiModel = data?.nqiModel,
                             teamMember = data?.teamMember,
                             categoryFixing = data?.categoryFixing,
                             hasilImplementasi = data?.implementationResult,

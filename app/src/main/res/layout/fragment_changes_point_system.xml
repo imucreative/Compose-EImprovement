@@ -26,18 +26,30 @@
             <include layout="@layout/toolbar"/>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_ss"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scrollbars="vertical"
-            android:scrollingCache="true"
             android:layout_margin="@dimen/spacing_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
-            tools:listitem="@layout/item_changes_point" />
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:scrollingCache="true"
+                tools:listitem="@layout/item_changes_point"
+                android:visibility="gone"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/no_data_screen"
+            layout="@layout/nodata_screen"
+            android:visibility="visible"/>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_ss"
@@ -51,20 +63,9 @@
             app:backgroundTint="@color/colorPrimary"
             app:icon="@drawable/ic_pencil"
             app:iconTint="@android:color/white"
-            app:layout_anchor="@id/rv_ss"
+            app:layout_anchor="@id/swipe"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,22 +151,25 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_xmlarge"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:background="@android:color/white"
-                        android:orientation="vertical">
+                        android:layout_height="@dimen/spacing_xxlarge"
+                        app:boxBackgroundColor="@color/colorWhiteLight"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_no_cp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/transparent"
-                            android:paddingLeft="@dimen/spacing_middle"
-                            android:paddingRight="@dimen/spacing_middle"
-                            tools:text="Lorem Ipsum" />
+                            android:imeOptions="actionNext"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:padding="0dp"
+                            android:textColor="@color/colorPrimary"
+                            tools:text="" />
 
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <View
                         android:layout_width="0dp"
@@ -178,35 +182,28 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:background="@android:color/white"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_height="@dimen/spacing_xxlarge"
+                        app:boxBackgroundColor="@color/colorWhiteLight"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/spacing_large"
-                            android:layout_marginRight="@dimen/spacing_large"
-                            android:text="@string/select" />
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/edt_status_proposal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
+                            android:maxLines="1"
+                            android:padding="0dp"
+                            android:singleLine="true"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:textColor="@color/colorPrimary"
+                            tools:text="@string/select" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_margin="@dimen/spacing_middle"
-                            app:tint="@color/blue_500"
-                            app:srcCompat="@drawable/ic_arrow_right_black"
-                            android:contentDescription="@string/app_name" />
-
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <View
                         android:layout_width="0dp"
@@ -215,26 +212,29 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title"
+                        android:text="@string/keterangan"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_xmlarge"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:background="@android:color/white"
-                        android:orientation="vertical">
+                        android:layout_height="@dimen/spacing_xxlarge"
+                        app:boxBackgroundColor="@color/colorWhiteLight"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_keterangan"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/transparent"
-                            android:paddingLeft="@dimen/spacing_middle"
-                            android:paddingRight="@dimen/spacing_middle"
-                            tools:text="Lorem Ipsum" />
+                            android:imeOptions="actionNext"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:padding="0dp"
+                            android:textColor="@color/colorPrimary"
+                            tools:text="" />
 
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <View
                         android:layout_width="0dp"
@@ -243,26 +243,29 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/category"
+                        android:text="@string/created_by"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/grey_80" />
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_xmlarge"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:background="@android:color/white"
-                        android:orientation="vertical">
+                        android:layout_height="@dimen/spacing_xxlarge"
+                        app:boxBackgroundColor="@color/colorWhiteLight"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_created_by"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/transparent"
-                            android:paddingLeft="@dimen/spacing_middle"
-                            android:paddingRight="@dimen/spacing_middle"
-                            tools:text="Lorem Ipsum" />
+                            android:imeOptions="actionNext"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:padding="0dp"
+                            android:textColor="@color/colorPrimary"
+                            tools:text="" />
 
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <View
                         android:layout_width="0dp"
@@ -278,70 +281,62 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:background="@android:color/white"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            app:boxBackgroundColor="@color/colorWhiteLight"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_large"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:text="@string/branch" />
+                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                android:id="@+id/edt_branch"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:singleLine="true"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:textColor="@color/colorPrimary"
+                                android:hint="@string/branch"
+                                tools:text="@string/select" />
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                            <ImageView
-                                android:layout_width="@dimen/spacing_mxlarge"
-                                android:layout_height="@dimen/spacing_mxlarge"
-                                android:layout_margin="@dimen/spacing_middle"
-                                app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_arrow_right_black"
-                                android:contentDescription="@string/app_name" />
-
-                        </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/grey_5" />
 
-                        <LinearLayout
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            app:boxBackgroundColor="@color/colorWhiteLight"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_large"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:text="@string/sub_branch" />
+                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                android:id="@+id/edt_sub_branch"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:singleLine="true"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:textColor="@color/colorPrimary"
+                                android:hint="@string/sub_branch"
+                                tools:text="@string/select" />
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                            <ImageView
-                                android:layout_width="@dimen/spacing_mxlarge"
-                                android:layout_height="@dimen/spacing_mxlarge"
-                                android:layout_margin="@dimen/spacing_middle"
-                                app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_arrow_right_black"
-                                android:contentDescription="@string/app_name" />
-
-                        </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -359,78 +354,60 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:background="@android:color/white"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/filter_start_date"
-                            android:clickable="true"
-                            android:focusable="true"
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            app:boxBackgroundColor="@color/colorWhiteLight"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <TextView
-                                android:id="@+id/tv_start_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_large"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:text="@string/start" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_from_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:singleLine="true"
+                                android:textColor="@color/colorPrimary"
+                                android:hint="@string/from"
+                                tools:text="@string/select"/>
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                            <ImageView
-                                android:layout_width="@dimen/spacing_mxlarge"
-                                android:layout_height="@dimen/spacing_mxlarge"
-                                android:layout_margin="@dimen/spacing_middle"
-                                app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_calendar"
-                                android:contentDescription="@string/app_name" />
-
-                        </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/grey_5" />
 
-                        <LinearLayout
-                            android:id="@+id/filter_end_date"
-                            android:clickable="true"
-                            android:focusable="true"
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="@dimen/spacing_xxlarge"
+                            app:boxBackgroundColor="@color/colorWhiteLight"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <TextView
-                                android:id="@+id/tv_end_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_large"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:text="@string/end" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_to_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:singleLine="true"
+                                android:textColor="@color/colorPrimary"
+                                android:hint="@string/to"
+                                tools:text="@string/select"/>
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                            <ImageView
-                                android:layout_width="@dimen/spacing_mxlarge"
-                                android:layout_height="@dimen/spacing_mxlarge"
-                                android:layout_margin="@dimen/spacing_middle"
-                                app:tint="@color/blue_500"
-                                app:srcCompat="@drawable/ic_calendar"
-                                android:contentDescription="@string/app_name" />
-
-                        </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 

@@ -1,26 +1,28 @@
 package com.fastrata.eimprovement.features.projectimprovement.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.ui.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProjectImprovementModel(
-    @SerializedName("no_pi")
+    @SerializedName("PI_H_ID")
+    val idPi: Int,
+    @SerializedName("PI_NO")
     val piNo: String,
-    @SerializedName("status")
-    val status: StatusProposal,
-    @SerializedName("judul")
+    @SerializedName("STATUS_PROPOSAL")
+    val status: StatusProposalItem,
+    @SerializedName("TITLE")
     val title: String,
-    @SerializedName("kategori")
+    @SerializedName("CATEGORY")
     val category: String,
-    @SerializedName("cabang")
+    @SerializedName("BRANCH")
     val branch: String,
-    @SerializedName("subcabang")
+    @SerializedName("SUBBRANCH")
     val subBranch: String,
-    @SerializedName("tgl_dibuat")
+    @SerializedName("CREATED_DATE")
     val date : String,
-    @SerializedName("dibuat_oleh")
+    @SerializedName("CREATED_BY")
     val createdBy : String
 ): Parcelable

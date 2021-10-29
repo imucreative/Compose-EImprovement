@@ -6,30 +6,28 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ChangePointCreateItemModel(
-    @SerializedName("id")
+    @SerializedName("REEDEM_POINT_H_ID")
     var id : Int?,
-    @SerializedName("saldo")
+    @SerializedName("TOTAL")
     var saldo : Int?,
-    @SerializedName("no_penukaran")
+    @SerializedName("NO_REEDEM_POINT")
     var cpNo : String?,
-    @SerializedName("nama_pembuat")
+    @SerializedName("FULL_NAME")
     var name: String?,
-    @SerializedName("nik")
+    @SerializedName("NIK")
     var nik : String?,
-    @SerializedName("cabang")
+    @SerializedName("BRANCH")
     var branch : String?,
-    @SerializedName("sub_cabang")
+    @SerializedName("SUBBRANCH")
     var subBranch : String?,
-    @SerializedName("department")
+    @SerializedName("DEPARTMENT")
     var department : String?,
-    @SerializedName("jabatan")
+    @SerializedName("JOBLEVEL_NAME")
     var position : String?,
-    @SerializedName("tgl_penukaran")
+    @SerializedName("INPUT_DATE")
     var date : String?,
-    @SerializedName("keterangan")
+    @SerializedName("DESCRIPTION")
     var description: String?,
-    @SerializedName("penukaran_hadiah")
+    @SerializedName("REDEEM_GIFT")
     var reward : ArrayList<RewardItem?>?,
-    @SerializedName("riwayat")
-    var history : ArrayList<RiwayatItem?>?
 ): Parcelable

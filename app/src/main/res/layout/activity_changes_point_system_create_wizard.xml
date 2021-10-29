@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/grey_10"
     android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".features.changespoint.ui.create.ChangesPointCreateWizard">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,6 +29,7 @@
             android:paddingBottom="?attr/actionBarSize"/>
 
         <LinearLayout
+            android:id="@+id/bottom_navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentBottom="true"
@@ -49,7 +51,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_arrow_left_black" />
+                    app:srcCompat="@drawable/ic_arrow_left_black"
+                    android:contentDescription="@string/app_name" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,7 +95,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_arrow_right_black" />
+                    app:srcCompat="@drawable/ic_arrow_right_black"
+                    android:contentDescription="@string/app_name" />
 
             </LinearLayout>
 

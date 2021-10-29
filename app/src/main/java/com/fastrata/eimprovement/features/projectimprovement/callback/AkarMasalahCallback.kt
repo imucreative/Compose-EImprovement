@@ -1,8 +1,8 @@
 package com.fastrata.eimprovement.features.projectimprovement.callback
 
-import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahItem
+import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 
 interface AkarMasalahCallback {
-    fun onItemClicked(data: AkarMasalahItem )
+    fun onItemClicked(data: AkarMasalahModel )
 }
 

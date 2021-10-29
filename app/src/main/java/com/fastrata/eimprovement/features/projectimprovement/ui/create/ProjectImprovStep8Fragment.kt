@@ -9,17 +9,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.R
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep8Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.ui.adapter.CategoryImprovementAdapter
-import com.fastrata.eimprovement.ui.adapter.CategoryImprovementCallback
-import com.fastrata.eimprovement.ui.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementAdapter
+import com.fastrata.eimprovement.featuresglobal.adapter.CategoryImprovementCallback
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovStep8Fragment : Fragment(), Injectable {
@@ -29,7 +31,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var categoryAdapter: CategoryImprovementAdapter
     private val listCategory = ArrayList<CategoryImprovementItem?>()
-    private lateinit var categoryViewModel: ProjectImprovementViewModel
+    private lateinit var masterDataCategoryViewModel: CategoryViewModel
     private var data : ProjectImprovementCreateModel? = null
     private var piNo: String? = ""
     private var action: String? = ""
@@ -42,7 +44,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectImprovementStep8Binding.inflate(inflater, container, false)
-        categoryViewModel = injectViewModel(viewModelFactory)
+        masterDataCategoryViewModel = injectViewModel(viewModelFactory)
 
         piNo = arguments?.getString(PI_DETAIL_DATA)
         action = arguments?.getString(ACTION_DETAIL_DATA)
@@ -51,7 +53,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         data = HawkUtils().getTempDataCreatePi(source)
 
-        categoryViewModel.setCategorySuggestion()
+        masterDataCategoryViewModel.setCategory()
         categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
@@ -65,7 +67,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
         binding.apply {
-            if (data?.statusImplementation?.sudah == null) {
+            if (data?.statusImplementationModel?.sudah == null) {
                 cardViewHasilImplementasi.visibility = View.GONE
             } else {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
@@ -128,20 +130,38 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             }
         })
 
-        categoryViewModel.getCategorySuggestion().observe(viewLifecycleOwner, {
-            if (it != null) {
-                categoryAdapter.setListCategoryImprovement(it, listCategory, action!!)
-                listCategory.map { checkList ->
-                    if (checkList?.id == 0) {
-                        binding.apply {
-                            checkboxOther.isChecked = !checkboxOther.isChecked
-                            edtLayoutLainLain.visibility = View.VISIBLE
-                            edtLainLain.setText(checkList.category)
+        masterDataCategoryViewModel.getCategory.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            Timber.d("###-- Loading get SS item getCategory")
                         }
+                        Result.Status.SUCCESS -> {
+                            categoryAdapter.setListCategoryImprovement(result.data?.data, listCategory, action!!)
+                            listCategory.map { checkList ->
+                                if (checkList?.id == 0) {
+                                    binding.apply {
+                                        checkboxOther.isChecked = !checkboxOther.isChecked
+                                        edtLayoutLainLain.visibility = View.VISIBLE
+                                        edtLainLain.setText(checkList.category)
+                                    }
+                                }
+                            }
+
+                            Timber.d("###-- Success get master item getCategory")
+                        }
+                        Result.Status.ERROR -> {
+                            //binding.progressBar.visibility = View.GONE
+                            Timber.d("###-- Error get master item getCategory")
+                        }
+
                     }
+
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun setData() {
@@ -188,7 +208,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementation?.sudah != null -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah != null -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.result_empty),
@@ -213,13 +233,13 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 department = data?.department,
                                 years = data?.years,
-                                statusImplementation = data?.statusImplementation,
+                                statusImplementationModel = data?.statusImplementationModel,
                                 identification = data?.identification,
                                 target = data?.target,
                                 sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
                                 nilaiOutput = data?.nilaiOutput,
-                                nqi = data?.nqi,
+                                nqiModel = data?.nqiModel,
                                 teamMember = data?.teamMember,
                                 categoryFixing = listCategory,
                                 hasilImplementasi = hasilImplementasiImprovement.text.toString(),

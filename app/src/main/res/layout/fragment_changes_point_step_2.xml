@@ -88,6 +88,9 @@
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:focusable="false"
                             android:textColor="@color/colorPrimary"
                             android:hint="@string/penukaran_hadiah"/>
 
@@ -182,5 +185,7 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

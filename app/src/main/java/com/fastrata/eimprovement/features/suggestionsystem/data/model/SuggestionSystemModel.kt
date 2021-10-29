@@ -1,24 +1,26 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.ui.model.StatusProposal
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SuggestionSystemModel(
-    @SerializedName("no_ss")
+    @SerializedName("SS_H_ID")
+    val idSs: Int,
+    @SerializedName("SS_NO")
     val ssNo: String,
-    @SerializedName("tgl_dibuat")
+    @SerializedName("CREATED_DATE")
     val date: String,
-    @SerializedName("judul")
+    @SerializedName("TITLE")
     val title: String,
-    @SerializedName("status")
-    val status: StatusProposal,
-    @SerializedName("kategori")
+    @SerializedName("STATUS_PROPOSAL")
+    val status: StatusProposalItem,
+    @SerializedName("CATEGORY")
     val categoryRepairment: String,
-    @SerializedName("cabang")
+    @SerializedName("BRANCH")
     val branch: String,
-    @SerializedName("subcabang")
+    @SerializedName("SUBBRANCH")
     val subBranch: String
 ) : Parcelable

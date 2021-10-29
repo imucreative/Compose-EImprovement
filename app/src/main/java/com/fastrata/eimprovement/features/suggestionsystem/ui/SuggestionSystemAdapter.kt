@@ -5,17 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemSuggestionSystemBinding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.utils.Tools
 
 class SuggestionSystemAdapter : RecyclerView.Adapter<SuggestionSystemAdapter.SuggestionSystemViewHolder>() {
 
     private var list = ArrayList<SuggestionSystemModel>()
 
-    fun setList(data: ArrayList<SuggestionSystemModel>) {
-        list.clear()
-        list.addAll(data)
+    fun setList(data: List<SuggestionSystemModel>?) {
+        val convertToArrayList = Tools.listToArrayList(data)
+        if (convertToArrayList != null) {
+            list.addAll(convertToArrayList)
+        }
         notifyDataSetChanged()
     }
 
+    fun clear(){
+        list.clear()
+        notifyDataSetChanged()
+    }
     private lateinit var suggestionSystemCallback: SuggestionSystemCallback
     fun setSuggestionSystemCallback(suggestionSystemCallback: SuggestionSystemCallback) {
         this.suggestionSystemCallback = suggestionSystemCallback

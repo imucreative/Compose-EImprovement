@@ -3,12 +3,13 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastrata.eimprovement.ui.model.TeamMemberItem
+import com.fastrata.eimprovement.features.suggestionsystem.data.SsRemoteRepository
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
 import javax.inject.Inject
 
-class SsCreateTeamMemberViewModel @Inject constructor(): ViewModel() {
+class SsCreateTeamMemberViewModel @Inject constructor(private val repository: SsRemoteRepository): ViewModel() {
     private val list = MutableLiveData<ArrayList<TeamMemberItem?>?>()
 
     fun setSuggestionSystemTeamMember(source: String) {
@@ -42,4 +43,5 @@ class SsCreateTeamMemberViewModel @Inject constructor(): ViewModel() {
             source = source
         )
     }
+
 }

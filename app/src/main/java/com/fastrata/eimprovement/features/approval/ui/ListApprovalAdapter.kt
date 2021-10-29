@@ -5,14 +5,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemListApprovalBinding
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.utils.Tools
 
 class ListApprovalAdapter : RecyclerView.Adapter<ListApprovalAdapter.ApprovalViewHolder>() {
 
     private var list = ArrayList<ApprovalModel>()
 
-    fun setList(data: ArrayList<ApprovalModel>) {
+    fun setList(data: List<ApprovalModel>?) {
+        val convertToArrayList = Tools.listToArrayList(data)
+        if (convertToArrayList != null) {
+            list.addAll(convertToArrayList)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun clear(){
         list.clear()
-        list.addAll(data)
         notifyDataSetChanged()
     }
 
@@ -31,7 +39,7 @@ class ListApprovalAdapter : RecyclerView.Adapter<ListApprovalAdapter.ApprovalVie
             binding.apply {
                 typeNo.text = data.typeNo
                 title.text = data.title
-                status.text = data.status
+                status.text = data.status.status
                 branch.text = data.branch
                 subBranch.text = data.subBranch
                 type.text = data.type

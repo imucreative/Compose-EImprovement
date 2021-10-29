@@ -5,14 +5,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemChangesPointBinding
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
+import com.fastrata.eimprovement.utils.Tools
 
 class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPointViewHolder>() {
 
     private var list = ArrayList<ChangePointModel>()
 
-    fun setList(data: ArrayList<ChangePointModel>) {
+    fun setList(data: List<ChangePointModel>?) {
+        val convertToArrayList = Tools.listToArrayList(data)
+        if (convertToArrayList != null){
+            list.addAll(convertToArrayList)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun clear(){
         list.clear()
-        list.addAll(data)
         notifyDataSetChanged()
     }
 
@@ -30,8 +38,8 @@ class ChangesPointAdapter : RecyclerView.Adapter<ChangesPointAdapter.ChangesPoin
 
             binding.apply {
                 nopenukaran.text = data.cpNo
-                statusCp.text = data.status
-                descCp.text = data.desc
+                statusCp.text = data.status.status
+                createdBy.text = data.created
                 branch.text = data.branch
                 subBranch.text = data.branch
                 date.text = data.date

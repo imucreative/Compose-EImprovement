@@ -79,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Why"
+                android:text="@string/why"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/grey_80" />
 
@@ -89,7 +89,8 @@
                 android:layout_height="@dimen/spacing_xlarge"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:tint="@color/grey_60"
-                app:srcCompat="@drawable/ic_arrow_down_black" />
+                app:srcCompat="@drawable/ic_arrow_down_black"
+                android:contentDescription="@string/app_name" />
 
         </LinearLayout>
 

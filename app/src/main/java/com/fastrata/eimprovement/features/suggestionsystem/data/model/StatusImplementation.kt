@@ -6,10 +6,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class StatusImplementation(
-    @SerializedName("status")
-    var status: String,
-    @SerializedName("sampai")
-    var to: String,
-    @SerializedName("dari")
-    var from: String
+    @SerializedName("IS_IMP")
+    var status: Int,
+    @SerializedName("IMP_START")
+    var from: String,
+    @SerializedName("IMP_END")
+    var to: String
 ) : Parcelable

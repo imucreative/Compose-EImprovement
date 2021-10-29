@@ -15,7 +15,6 @@ import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImp
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -109,13 +108,13 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
                                 subBranch = subBranch.text.toString(),
                                 department = department.text.toString(),
                                 years = year.text.toString(),
-                                statusImplementation = data?.statusImplementation,
+                                statusImplementationModel = data?.statusImplementationModel,
                                 identification = data?.identification,
                                 target = data?.target,
                                 sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
                                 nilaiOutput = data?.nilaiOutput,
-                                nqi = data?.nqi,
+                                nqiModel = data?.nqiModel,
                                 teamMember = data?.teamMember,
                                 categoryFixing = data?.categoryFixing,
                                 hasilImplementasi = data?.implementationResult,

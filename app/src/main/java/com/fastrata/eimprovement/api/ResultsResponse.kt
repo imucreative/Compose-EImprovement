@@ -9,6 +9,8 @@ data class ResultsResponse<T>(
     val code: Int,
     @SerializedName("message")
     val message: String,
+    @SerializedName("totalPage")
+    val totalPage: Int,
     @SerializedName("data")
     val data: List<T>
 )

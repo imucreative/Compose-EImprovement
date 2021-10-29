@@ -1,39 +1,47 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.ui.model.*
+import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
+import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SuggestionSystemCreateModel(
-    @SerializedName("no_ss")
+    @SerializedName("SS_NO")
 	var ssNo: String?,
+    @SerializedName("CREATED_BY")
     var date: String?,
-    @SerializedName("nama_pembuat")
+    @SerializedName("FULL_NAME")
 	var name: String?,
-    @SerializedName("nik")
+    @SerializedName("NIK")
 	var nik: String?,
-    @SerializedName("status_implementasi")
+    @SerializedName("STATUS_IMPLEMENTATION")
 	var statusImplementation: StatusImplementation?,
-    @SerializedName("judul")
+    @SerializedName("TITLE")
 	var title: String?,
-    @SerializedName("cabang")
-	var branch: String?,
+    @SerializedName("BRANCH_CODE")
+	var branchCode: String?,
+    @SerializedName("BRANCH")
+    var branch: String?,
+    @SerializedName("SUBBRANCH")
     var subBranch: String?,
-    @SerializedName("nama_atasan")
+    @SerializedName("HEAD_NAME")
 	var directMgr: String?,
-    @SerializedName("identifikasi")
+    @SerializedName("PROBLEM")
 	var problem: String?,
-    @SerializedName("saran_ide")
+    @SerializedName("SUGGESTION")
 	var suggestion: String?,
-    @SerializedName("lampiran")
+    @SerializedName("ATTACHMENTS")
 	var attachment: ArrayList<AttachmentItem?>?,
-    @SerializedName("kategori")
+    @SerializedName("CATEGORY_SUGGESTION")
 	var categoryImprovement: ArrayList<CategoryImprovementItem?>?,
-    @SerializedName("department")
+    @SerializedName("DEPARTMENT")
 	var department: String?,
-    @SerializedName("anggota_tim")
+    @SerializedName("TEAM_MEMBER")
 	var teamMember: ArrayList<TeamMemberItem?>?,
-	var statusProposal: StatusProposal?
+    @SerializedName("STATUS_PROPOSAL")
+    var statusProposal: StatusProposalItem?
 ) : Parcelable

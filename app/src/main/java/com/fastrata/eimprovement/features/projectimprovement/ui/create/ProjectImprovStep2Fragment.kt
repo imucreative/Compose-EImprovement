@@ -441,13 +441,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun getData() {
         binding.apply {
-            if (data?.statusImplementation?.akan == null) {
+            if (data?.statusImplementationModel?.akan == null) {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
 
 
-                etFromStatus1.setText(data?.statusImplementation?.sudah?.from)
-                etToStatus1.setText(data?.statusImplementation?.sudah?.to)
+                etFromStatus1.setText(data?.statusImplementationModel?.sudah?.from)
+                etToStatus1.setText(data?.statusImplementationModel?.sudah?.to)
 
                 linearLayoutAkan.visibility = View.GONE
             } else {
@@ -459,23 +459,23 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                 etFromStatus1.setText("")
                 etToStatus1.setText("")
 
-                etFromIdentifikasi.setText(data?.statusImplementation?.akan?.identifikasiMasalah?.from)
-                etToIdentifikasi.setText(data?.statusImplementation?.akan?.identifikasiMasalah?.to)
+                etFromIdentifikasi.setText(data?.statusImplementationModel?.akan?.startIdentifikasiMasalah)
+                etToIdentifikasi.setText(data?.statusImplementationModel?.akan?.endIdentifikasiMasalah)
 
-                etFromAnalisaData.setText(data?.statusImplementation?.akan?.analisaData?.from)
-                etToAnalisaData.setText(data?.statusImplementation?.akan?.analisaData?.to)
+                etFromAnalisaData.setText(data?.statusImplementationModel?.akan?.startAnalisaData)
+                etToAnalisaData.setText(data?.statusImplementationModel?.akan?.endAnalisaData)
 
-                etFromAnalisaAkarMasalah.setText(data?.statusImplementation?.akan?.analisaAkarMasalah?.from)
-                etToAnalisaAkarMasalah.setText(data?.statusImplementation?.akan?.analisaAkarMasalah?.to)
+                etFromAnalisaAkarMasalah.setText(data?.statusImplementationModel?.akan?.startAnalisaAkarMasalah)
+                etToAnalisaAkarMasalah.setText(data?.statusImplementationModel?.akan?.endAnalisaAkarMasalah)
 
-                etFromMenyusunRencanaPenanggulanganMasalah.setText(data?.statusImplementation?.akan?.menyusunRencana?.from)
-                etToMenyusunRencanaPenanggulanganMasalah.setText(data?.statusImplementation?.akan?.menyusunRencana?.to)
+                etFromMenyusunRencanaPenanggulanganMasalah.setText(data?.statusImplementationModel?.akan?.startMenyusunRencana)
+                etToMenyusunRencanaPenanggulanganMasalah.setText(data?.statusImplementationModel?.akan?.endMenyusunRencana)
 
-                etFromImplementasiRencanaPerbaikan.setText(data?.statusImplementation?.akan?.implementasiRencana?.from)
-                etToImplementasiRencanaPerbaikan.setText(data?.statusImplementation?.akan?.implementasiRencana?.to)
+                etFromImplementasiRencanaPerbaikan.setText(data?.statusImplementationModel?.akan?.startImplementasiRencana)
+                etToImplementasiRencanaPerbaikan.setText(data?.statusImplementationModel?.akan?.endImplementasiRencana)
 
-                etFromAnalisaPeriksaDanEvaluasi.setText(data?.statusImplementation?.akan?.analisPeriksaEvaluasi?.from)
-                etToAnalisaPeriksaDanEvaluasi.setText(data?.statusImplementation?.akan?.analisPeriksaEvaluasi?.to)
+                etFromAnalisaPeriksaDanEvaluasi.setText(data?.statusImplementationModel?.akan?.startAnalisPeriksaEvaluasi)
+                etToAnalisaPeriksaDanEvaluasi.setText(data?.statusImplementationModel?.akan?.endAnalisPeriksaEvaluasi)
             }
 
         }
@@ -487,45 +487,37 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    var sudah: Sudah? = null
-                    var akan: Akan? = null
+                    var sudah: StatusImplementationPiDoneModel? = null
+                    var akan: StatusImplementationPiWantModel? = null
 
                     if (rbStatus1.isChecked) {
-                        sudah = Sudah(
+                        sudah = StatusImplementationPiDoneModel(
                             from = etFromStatus1.text.toString(),
                             to = etToStatus1.text.toString()
                         )
                     } else {
-                        akan = Akan(
-                            identifikasiMasalah = IdentifikasiMasalah(
-                                from = etFromIdentifikasi.text.toString(),
-                                to = etToIdentifikasi.text.toString()
-                            ),
-                            analisaData = AnalisaData(
-                                from = etFromAnalisaData.text.toString(),
-                                to = etToAnalisaData.text.toString()
-                            ),
-                            analisaAkarMasalah = AnalisaAkarMasalah(
-                                from = etFromAnalisaAkarMasalah.text.toString(),
-                                to = etToAnalisaAkarMasalah.text.toString()
-                            ),
-                            menyusunRencana = MenyusunRencana(
-                                from = etFromMenyusunRencanaPenanggulanganMasalah.text.toString(),
-                                to = etToMenyusunRencanaPenanggulanganMasalah.text.toString()
-                            ),
-                            implementasiRencana = ImplementasiRencana(
-                                from = etFromImplementasiRencanaPerbaikan.text.toString(),
-                                to = etToImplementasiRencanaPerbaikan.text.toString()
-                            ),
-                            analisPeriksaEvaluasi = AnalisPeriksaEvaluasi(
-                                from = etFromAnalisaPeriksaDanEvaluasi.text.toString(),
-                                to = etToAnalisaPeriksaDanEvaluasi.text.toString()
-                            )
+                        akan = StatusImplementationPiWantModel(
+                            startIdentifikasiMasalah = etFromIdentifikasi.text.toString(),
+                            endIdentifikasiMasalah = etToIdentifikasi.text.toString(),
 
+                            startAnalisaData = etFromAnalisaData.text.toString(),
+                            endAnalisaData = etToAnalisaData.text.toString(),
+
+                            startAnalisaAkarMasalah = etFromAnalisaAkarMasalah.text.toString(),
+                            endAnalisaAkarMasalah = etToAnalisaAkarMasalah.text.toString(),
+
+                            startMenyusunRencana = etFromMenyusunRencanaPenanggulanganMasalah.text.toString(),
+                            endMenyusunRencana = etToMenyusunRencanaPenanggulanganMasalah.text.toString(),
+
+                            startImplementasiRencana = etFromImplementasiRencanaPerbaikan.text.toString(),
+                            endImplementasiRencana = etToImplementasiRencanaPerbaikan.text.toString(),
+
+                            startAnalisPeriksaEvaluasi = etFromAnalisaPeriksaDanEvaluasi.text.toString(),
+                            endAnalisPeriksaEvaluasi = etToAnalisaPeriksaDanEvaluasi.text.toString()
                         )
                     }
 
-                    val statusImplementation = StatusImplementationPi(
+                    val statusImplementation = StatusImplementationPiModel(
                         sudah = sudah,
                         akan = akan
                     )
@@ -572,13 +564,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 department = data?.department,
                                 years = data?.years,
-                                statusImplementation = statusImplementation,
+                                statusImplementationModel = statusImplementation,
                                 identification = data?.identification,
                                 target = data?.target,
                                 sebabMasalah = data?.sebabMasalah,
                                 akarMasalah = data?.akarMasalah,
                                 nilaiOutput = data?.nilaiOutput,
-                                nqi = data?.nqi,
+                                nqiModel = data?.nqiModel,
                                 teamMember = data?.teamMember,
                                 categoryFixing = data?.categoryFixing,
                                 hasilImplementasi = data?.implementationResult,
