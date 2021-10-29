@@ -9,6 +9,7 @@ import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.approval.data.ApprovalRemoteRepository
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.wrapper.Event
@@ -33,9 +34,9 @@ class ListApprovalViewModel @Inject constructor(private val repository: Approval
     private val _listApproval = MutableLiveData<Event<LiveData<Result<ResultsResponse<ApprovalModel>>>>>()
     val getListApprovalItem: LiveData<Event<LiveData<Result<ResultsResponse<ApprovalModel>>>>> get() = _listApproval
 
-    fun setListApproval() {
+    fun setListApproval(listApprovalRemoteRequest: ApprovalRemoteRequest) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListApproval() }
+            val result = withContext(Dispatchers.Default) { repository.observeListApproval(listApprovalRemoteRequest) }
             _listApproval.value = Event(result)
         }
     }

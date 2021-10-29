@@ -1,8 +1,8 @@
-package com.fastrata.eimprovement.features.changespoint.data.model
+package com.fastrata.eimprovement.features.approval.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ChangePointRemoteRequest(
+data class ApprovalRemoteRequest (
     @SerializedName("userId")
     val userId: Int,
     @SerializedName("limit")
@@ -14,14 +14,12 @@ data class ChangePointRemoteRequest(
 
     @SerializedName("userName")
     val userName: String,
-    @SerializedName("rpNo")
-    val cpNo: String,
+    @SerializedName("docNo")
+    val docNo: String,
     @SerializedName("statusId")
     val statusId: Int,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("createdBy")
-    val createdBy: String,
+    @SerializedName("title")
+    val title: String,
     @SerializedName("orgId")
     val orgId: Int,
     @SerializedName("warehouseId")

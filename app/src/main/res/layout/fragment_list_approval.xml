@@ -148,7 +148,7 @@
                         app:boxStrokeColor="@color/colorPrimary">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edt_no_ss"
+                            android:id="@+id/edt_no_doc"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:imeOptions="actionNext"
@@ -186,6 +186,8 @@
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
+                            android:editable="false"
+                            android:enabled="false"
                             android:textColor="@color/colorPrimary"
                             tools:text="@string/select" />
 
@@ -254,6 +256,8 @@
                                 android:maxLines="1"
                                 android:padding="0dp"
                                 android:singleLine="true"
+                                android:editable="false"
+                                android:enabled="false"
                                 android:textColor="@color/colorPrimary"
                                 android:hint="@string/branch"
                                 tools:text="@string/select" />
@@ -281,6 +285,8 @@
                                 android:maxLines="1"
                                 android:padding="0dp"
                                 android:singleLine="true"
+                                android:editable="false"
+                                android:enabled="false"
                                 android:textColor="@color/colorPrimary"
                                 android:hint="@string/sub_branch"
                                 tools:text="@string/select" />

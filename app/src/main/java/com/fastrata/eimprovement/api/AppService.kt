@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.api
 
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
@@ -107,7 +108,9 @@ interface AppService {
 
     // Approval
     @POST("appr/list")
-    suspend fun listApproval(): Response<ResultsResponse<ApprovalModel>>
+    suspend fun listApproval(
+        @Body listApprovalRemoteRequest: ApprovalRemoteRequest
+    ): Response<ResultsResponse<ApprovalModel>>
 
     @FormUrlEncoded
     @POST("saldo/balance")

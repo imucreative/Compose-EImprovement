@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentListApprovalBinding
@@ -19,6 +20,8 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
@@ -52,9 +55,20 @@ class ListApprovalFragment : Fragment(), Injectable {
     private lateinit var selectedStatusProposal: StatusProposalItem
     private lateinit var selectedBranch: BranchItem
     private lateinit var selectedSubBranch: SubBranchItem
+    private var statusProposalId = 0
+    private var branchId = 0
+    private var subBranchId = 0
     lateinit var fromDate: Date
     lateinit var toDate: Date
-    val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private var userId: Int = 0
+    private var userName: String = ""
+    private var limit: Int = 10
+    private var page: Int = 1
+    private var totalPage: Int = 1
+    private var isLoading = false
+    private var roleName: String = ""
+    private val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,13 +85,37 @@ class ListApprovalFragment : Fragment(), Injectable {
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
-            minDateIsCurrentDate = true, parentFragmentManager
+            minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
         try {
-            listApproveViewModel.setListApproval()
+            userId = HawkUtils().getDataLogin().USER_ID
+            userName = HawkUtils().getDataLogin().USER_NAME
+            roleName  = HawkUtils().getDataLogin().ROLE_NAME
+
+            val listApprovalRemoteRequest = ApprovalRemoteRequest(
+                userId, limit, page, roleName,
+                userName = userName, docNo = "", statusId = 0, title = "", orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listApproveViewModel.setListApproval(listApprovalRemoteRequest)
         } catch (e: Exception){
             Timber.e("Error setListApproval : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
+
+        try {
+            masterDataStatusProposalViewModel.setStatusProposal()
+        } catch (e: java.lang.Exception){
+            Timber.e("Error setStatusProposal : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
+
+        try {
+            masterBranchViewModel.setBranch()
+        } catch (e: java.lang.Exception){
+            Timber.e("Error setBranch : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
@@ -95,16 +133,69 @@ class ListApprovalFragment : Fragment(), Injectable {
 
         initToolbar()
         initComponent()
+        initNavigationMenu()
 
         binding.apply {
+            layoutManager = LinearLayoutManager(activity)
             rv.setHasFixedSize(true)
-            rv.layoutManager = LinearLayoutManager(activity)
+            rv.layoutManager = layoutManager
             rv.adapter = adapter
+
+            rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val visibleItemCount = layoutManager.childCount
+                    val pastVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                    val total  = adapter.itemCount
+
+                    if (!isLoading && page < totalPage){
+                        if (visibleItemCount + pastVisibleItem >= total){
+                            page++
+
+                            if (!edtStatusProposal.text.isNullOrEmpty()) {
+                                statusProposalId = selectedStatusProposal.id
+                            }
+
+                            if (!edtBranch.text.isNullOrEmpty()) {
+                                branchId = selectedBranch.orgId
+                            }
+
+                            if (!edtSubBranch.text.isNullOrEmpty()) {
+                                subBranchId = selectedSubBranch.warehouseId
+                            }
+
+                            val listApprovalRemoteRequest = ApprovalRemoteRequest(
+                                userId, limit, page, roleName,
+                                userName = userName, docNo = edtNoDoc.text.toString(), statusId = statusProposalId,
+                                title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
+                                startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
+                            )
+
+                            listApproveViewModel.setListApproval(listApprovalRemoteRequest)
+                            getListApproval()
+                        }
+                    }
+
+                }
+            })
 
             swipe.setOnRefreshListener {
                 swipe.isRefreshing = true
+                page = 1
+
+                clearFormFilter()
+
                 try {
-                    listApproveViewModel.setListApproval()
+                    adapter.clear()
+
+                    val listApprovalRemoteRequest = ApprovalRemoteRequest(
+                        userId, limit, page, roleName,
+                        userName = userName, docNo = "", statusId = 0, title = "", orgId = 0,
+                        warehouseId = 0, startDate = "", endDate = ""
+                    )
+
+                    listApproveViewModel.setListApproval(listApprovalRemoteRequest)
                     swipe.isRefreshing = false
                 } catch (e: Exception){
                     Timber.e("Error setListApproval : $e")
@@ -120,6 +211,66 @@ class ListApprovalFragment : Fragment(), Injectable {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun clearFormFilter() {
+        binding.apply {
+            edtNoDoc.setText("")
+            edtStatusProposal.setText("")
+            edtTitle.setText("")
+            edtBranch.setText("")
+            edtSubBranch.setText("")
+            edtFromDate.setText("")
+            edtToDate.setText("")
+            statusProposalId = 0
+            branchId = 0
+            subBranchId = 0
+        }
+    }
+
+    private fun getListApproval() {
+        isLoading = true
+
+        listApproveViewModel.getListApprovalItem.observeEvent(this){ resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status){
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get List CP")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            val listResponse = result.data?.data
+                            if (listResponse != null) {
+                                if (page == 0 && listResponse.isEmpty()) {
+                                    binding.rv.visibility = View.GONE
+                                    binding.noDataScreen.root.visibility = View.VISIBLE
+                                } else {
+                                    totalPage = result.data.totalPage
+
+                                    binding.rv.visibility = View.VISIBLE
+                                    binding.noDataScreen.root.visibility = View.GONE
+
+                                    adapter.setList(listResponse)
+                                }
+                            }
+
+                            retrieveDataStatusProposal()
+                            retrieveDataBranch()
+                            isLoading = false
+                            Timber.d("###-- Success get List CP")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            isLoading = false
+                            Timber.d("###-- Error get List CP")
+                        }
+                    }
+                }
+            })
+        }
     }
 
     private fun retrieveDataStatusProposal(){
@@ -300,53 +451,7 @@ class ListApprovalFragment : Fragment(), Injectable {
             }
         })
 
-        listApproveViewModel.getListApprovalItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get List Approval")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-                            if(result.data?.data?.size == 0){
-                                adapter.clear()
-                                binding.rv.visibility = View.GONE
-                                binding.noDataScreen.root.visibility = View.VISIBLE
-                            }else{
-                                binding.rv.visibility = View.VISIBLE
-                                binding.noDataScreen.root.visibility = View.GONE
-                                adapter.clear()
-                                adapter.setList(result.data?.data)
-                            }
-
-                            try {
-                                masterDataStatusProposalViewModel.setStatusProposal()
-                            } catch (e: Exception){
-                                Timber.e("Error setStatusProposal : $e")
-                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-                            }
-
-                            try {
-                                masterBranchViewModel.setBranch()
-                            } catch (e: Exception){
-                                Timber.e("Error setBranch : $e")
-                                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-                            }
-
-                            Timber.d("###-- Success get List Approval")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Timber.d("###-- Error get List Approval")
-                        }
-
-                    }
-
-                }
-            })
-        }
+        getListApproval()
     }
 
     private fun initToolbar() {
@@ -359,15 +464,13 @@ class ListApprovalFragment : Fragment(), Injectable {
     private fun initNavigationMenu() {
         binding.apply {
             // open drawer at start
-            drawerFilter.openDrawer(GravityCompat.END)
-
             edtFromDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtFromDate.setText("$dayStr-$monthStr-$year")
+                        edtFromDate.setText("$year-$monthStr-$dayStr")
                         fromDate = sdf.parse(edtFromDate.text.toString())
                         edtToDate.text!!.clear()
                     }
@@ -380,7 +483,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtToDate.setText("$dayStr-$monthStr-$year")
+                        edtToDate.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(edtToDate.text.toString())
                         if (edtFromDate.text.isNullOrEmpty()){
                             SnackBarCustom.snackBarIconInfo(
@@ -407,8 +510,44 @@ class ListApprovalFragment : Fragment(), Injectable {
             }
 
             btnApply.setOnClickListener {
-                Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
-                drawerFilter.closeDrawer(GravityCompat.END)
+                if (!edtFromDate.text.isNullOrEmpty() && edtToDate.text.isNullOrEmpty()) {
+                    SnackBarCustom.snackBarIconInfo(
+                        root, layoutInflater, resources, root.context,
+                        resources.getString(R.string.date_empty),
+                        R.drawable.ic_close, R.color.red_500)
+                } else {
+                    if (!edtStatusProposal.text.isNullOrEmpty()) {
+                        statusProposalId = selectedStatusProposal.id
+                    }
+
+                    if (!edtBranch.text.isNullOrEmpty()) {
+                        branchId = selectedBranch.orgId
+                    }
+
+                    if (!edtSubBranch.text.isNullOrEmpty()) {
+                        subBranchId = selectedSubBranch.warehouseId
+                    }
+
+                    page = 1
+
+                    try {
+                        adapter.clear()
+
+                        val listApprovalRemoteRequest = ApprovalRemoteRequest(
+                            userId, limit, page, roleName,
+                            userName = userName, docNo = edtNoDoc.text.toString(), statusId = statusProposalId,
+                            title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
+                            startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
+                        )
+
+                        listApproveViewModel.setListApproval(listApprovalRemoteRequest)
+                    } catch (e: Exception){
+                        Timber.e("Error setListSs : $e")
+                        Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                    }
+
+                    drawerFilter.closeDrawer(GravityCompat.END)
+                }
             }
         }
     }
@@ -424,7 +563,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                 if (!findNavController().popBackStack()) activity?.finish()
             }
             R.id.filter_menu -> {
-                initNavigationMenu()
+                binding.drawerFilter.openDrawer(GravityCompat.END)
             }
         }
         return super.onOptionsItemSelected(item)
