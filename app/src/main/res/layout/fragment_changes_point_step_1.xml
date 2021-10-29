@@ -61,7 +61,9 @@
                         android:text="@string/saldo_anda"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/red_700"
+                        android:layout_marginEnd="@dimen/spacing_medium"
                         android:textStyle="bold"/>
+
                     <TextView
                         android:id="@+id/saldo"
                         android:layout_width="wrap_content"
