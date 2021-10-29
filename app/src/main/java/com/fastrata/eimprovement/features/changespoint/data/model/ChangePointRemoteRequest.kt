@@ -19,7 +19,10 @@ data class ChangePointRemoteRequest(
     @SerializedName("statusId")
     val statusId: Int,
     @SerializedName("description")
-    val title: String,
+    val description: String,
+
+    @SerializedName("createdBy")
+    val createdBy: String,
     @SerializedName("orgId")
     val orgId: Int,
     @SerializedName("warehouseId")

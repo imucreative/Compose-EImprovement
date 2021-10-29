@@ -53,6 +53,9 @@ class ChangesPointFragment : Fragment(), Injectable {
     private lateinit var selectedStatusProposal: StatusProposalItem
     private lateinit var selectedBranch: BranchItem
     private lateinit var selectedSubBranch: SubBranchItem
+    private var statusProposalId = 0
+    private var branchId = 0
+    private var subBranchId = 0
     lateinit var fromDate: Date
     lateinit var toDate: Date
     private var userId: Int = 0
@@ -80,7 +83,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
-            minDateIsCurrentDate = true, parentFragmentManager
+            minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
         try{
@@ -90,7 +93,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
             val listChangePointRemoteRequest = ChangePointRemoteRequest(
                 userId, limit, page, roleName,
-                userName = userName, cpNo = "", statusId = 0, title = "", orgId = 0,
+                userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 
@@ -129,6 +132,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
         initToolbar()
         initComponent()
+        initNavigationMenu()
 
         binding.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -148,10 +152,24 @@ class ChangesPointFragment : Fragment(), Injectable {
                         if (visibleItemCount + pastVisibleItem >= total){
                             page++
 
+                            if (!edtStatusProposal.text.isNullOrEmpty()) {
+                                statusProposalId = selectedStatusProposal.id
+                            }
+
+                            if (!edtBranch.text.isNullOrEmpty()) {
+                                branchId = selectedBranch.orgId
+                            }
+
+                            if (!edtSubBranch.text.isNullOrEmpty()) {
+                                subBranchId = selectedSubBranch.warehouseId
+                            }
+
                             val listChangePointRemoteRequest = ChangePointRemoteRequest(
                                 userId, limit, page, roleName,
-                                userName = userName, cpNo = "", statusId = 0, title = "", orgId = 0,
-                                warehouseId = 0, startDate = "", endDate = ""
+                                userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
+                                description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
+                                orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
+                                endDate = edtToDate.text.toString()
                             )
 
                             listCpViewModel.setListCp(listChangePointRemoteRequest)
@@ -173,12 +191,14 @@ class ChangesPointFragment : Fragment(), Injectable {
                 swipe.isRefreshing= true
                 page = 1
 
+                clearFormFilter()
+
                 try{
                     adapter.clear()
 
                     val listChangePointRemoteRequest = ChangePointRemoteRequest(
                         userId, limit, page, roleName,
-                        userName = userName, cpNo = "", statusId = 0, title = "", orgId = 0,
+                        userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
 
@@ -199,6 +219,21 @@ class ChangesPointFragment : Fragment(), Injectable {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun clearFormFilter() {
+        binding.apply {
+            edtNoCp.setText("")
+            edtStatusProposal.setText("")
+            edtKeterangan.setText("")
+            edtBranch.setText("")
+            edtSubBranch.setText("")
+            edtFromDate.setText("")
+            edtToDate.setText("")
+            statusProposalId = 0
+            branchId = 0
+            subBranchId = 0
+        }
     }
 
     private fun getListCp() {
@@ -405,18 +440,15 @@ class ChangesPointFragment : Fragment(), Injectable {
     }
 
     private fun initNavigationMenu() {
-
         binding.apply {
             // open drawer at start
-            drawerFilter.openDrawer(GravityCompat.END)
-
             edtFromDate.setOnClickListener {
                 datePicker.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtFromDate.setText("$dayStr-$monthStr-$year")
+                        edtFromDate.setText("$year-$monthStr-$dayStr")
                         fromDate = sdf.parse(edtFromDate.text.toString())
                         edtToDate.text!!.clear()
                     }
@@ -429,7 +461,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtToDate.setText("$dayStr-$monthStr-$year")
+                        edtToDate.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(edtToDate.text.toString())
                         if (edtFromDate.text.isNullOrEmpty()){
                             SnackBarCustom.snackBarIconInfo(
@@ -455,8 +487,45 @@ class ChangesPointFragment : Fragment(), Injectable {
             }
 
             btnApply.setOnClickListener {
-                Toast.makeText(activity,  "Apply filter", Toast.LENGTH_LONG).show()
-                drawerFilter.closeDrawer(GravityCompat.END)
+                if (!edtFromDate.text.isNullOrEmpty() && edtToDate.text.isNullOrEmpty()) {
+                    SnackBarCustom.snackBarIconInfo(
+                        root, layoutInflater, resources, root.context,
+                        resources.getString(R.string.date_empty),
+                        R.drawable.ic_close, R.color.red_500)
+                } else {
+                    if (!edtStatusProposal.text.isNullOrEmpty()) {
+                        statusProposalId = selectedStatusProposal.id
+                    }
+
+                    if (!edtBranch.text.isNullOrEmpty()) {
+                        branchId = selectedBranch.orgId
+                    }
+
+                    if (!edtSubBranch.text.isNullOrEmpty()) {
+                        subBranchId = selectedSubBranch.warehouseId
+                    }
+
+                    page = 1
+
+                    try {
+                        adapter.clear()
+
+                        val listCpRemoteRequest = ChangePointRemoteRequest(
+                            userId, limit, page, roleName,
+                            userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
+                            description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
+                            orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
+                            endDate = edtToDate.text.toString()
+                        )
+
+                        listCpViewModel.setListCp(listCpRemoteRequest)
+                    } catch (e: Exception){
+                        Timber.e("Error setListSs : $e")
+                        Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                    }
+
+                    drawerFilter.closeDrawer(GravityCompat.END)
+                }
             }
         }
     }
@@ -472,7 +541,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                 if (!findNavController().popBackStack()) activity?.finish()
             }
             R.id.filter_menu -> {
-                initNavigationMenu()
+                binding.drawerFilter.openDrawer(GravityCompat.END)
             }
         }
         return super.onOptionsItemSelected(item)
