@@ -197,6 +197,8 @@
                             android:maxLines="1"
                             android:padding="0dp"
                             android:singleLine="true"
+                            android:enabled="false"
+                            android:editable="false"
                             android:textColor="@color/colorPrimary"
                             tools:text="@string/select" />
 
@@ -296,6 +298,8 @@
                                 android:maxLines="1"
                                 android:padding="0dp"
                                 android:singleLine="true"
+                                android:enabled="false"
+                                android:editable="false"
                                 android:textColor="@color/colorPrimary"
                                 android:hint="@string/branch"
                                 tools:text="@string/select" />
@@ -323,6 +327,8 @@
                                 android:maxLines="1"
                                 android:padding="0dp"
                                 android:singleLine="true"
+                                android:enabled="false"
+                                android:editable="false"
                                 android:textColor="@color/colorPrimary"
                                 android:hint="@string/sub_branch"
                                 tools:text="@string/select" />
