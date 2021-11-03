@@ -125,48 +125,68 @@ class DashboardFragment: Fragment(), Injectable {
             }*/
 
             btnListApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
-                it.findNavController().navigate(direction)
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu, MENU_LIST_APPROVAL)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
+                    it.findNavController().navigate(direction)
+                }
             }
 
             btnSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
-                it.findNavController().navigate(direction)
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu,MENU_SS)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
+                    it.findNavController().navigate(direction)
+                }
             }
 
             btnProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
-                it.findNavController().navigate(direction)
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu, MENU_PI)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
+                    it.findNavController().navigate(direction)
+                }
             }
 
             btnChangePoint.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
-                it.findNavController().navigate(direction)
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu, MENU_CP)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
+                    it.findNavController().navigate(direction)
+                }
             }
 
             // action menu
             menuApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
-                it.findNavController().navigate(direction)
-
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu, MENU_LIST_APPROVAL)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
+                    it.findNavController().navigate(direction)
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
-                it.findNavController().navigate(direction)
-
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu,MENU_SS)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
+                    it.findNavController().navigate(direction)
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
-                it.findNavController().navigate(direction)
-
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu,MENU_PI)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
+                    it.findNavController().navigate(direction)
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuPointExchange.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
-                it.findNavController().navigate(direction)
-
+                val menu = HawkUtils().getDataLogin().ROLES
+                if (Tools.isMenuEligible(activity,menu, MENU_CP)){
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
+                    it.findNavController().navigate(direction)
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
 
