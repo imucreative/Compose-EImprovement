@@ -33,6 +33,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private var data : ProjectImprovementCreateModel? = null
     private var piNo: String? = ""
     private var action: String? = ""
+    private var userName: String = ""
     private lateinit var viewModel: ProjectImprovementViewModel
     private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
@@ -54,6 +55,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
         piNo = arguments?.getString(PI_DETAIL_DATA)
         action = arguments?.getString(ACTION_DETAIL_DATA)
+
+        userName = HawkUtils().getDataLogin().USER_NAME
 
         source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
 
@@ -120,8 +123,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
-                println("### Testing path attachment : ${data.uri}")
-                if (data.uri.isNullOrEmpty()){
+                println("### Testing path attachment : ${data.fileLocation}")
+                if (data.fileLocation.isNullOrEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
@@ -132,7 +135,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                     val intent = Intent()
                         .setType("*/*")
                         .setAction(Intent.ACTION_GET_CONTENT)
-                    startActivityForResult(Intent.createChooser(intent, data.uri), 111)
+                    startActivityForResult(Intent.createChooser(intent, data.fileLocation), 111)
                 }
             }
         })
@@ -160,10 +163,10 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         if (requestCode == pickFromGallery && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 uri = data.data!!
-                val fileData = FileUtils().from(requireContext(),uri)
-                val file_size: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
-                Timber.e("###FILE SIZE: $file_size")
-                if (file_size == 0 || file_size >= 2048){
+                val fileData = FileUtils.getFile(requireContext(),uri)
+                val fileSize: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
+                Timber.e("###FILE SIZE: $fileSize")
+                if (fileSize == 0 || fileSize >= 2048){
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
                         resources.getString(R.string.file_size),
@@ -205,9 +208,12 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 } else {
 
                     val addData = AttachmentItem(
+                        id = 0,
                         name = initFileName,
-                        uri = uri.toString(),
-                        size = initFileSize
+                        type = PI,
+                        group = PROPOSAL,
+                        createdBy = userName,
+                        fileLocation = uri.toString()
                     )
 
                     viewModel.addAttachment(addData, data?.attachment)

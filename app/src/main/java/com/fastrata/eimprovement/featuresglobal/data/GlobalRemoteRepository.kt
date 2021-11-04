@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.featuresglobal.data
 
 import com.fastrata.eimprovement.data.resultMutableLiveDataRemote
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: GlobalRemoteDataSource){
@@ -39,5 +40,9 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
 
     fun observeListSubBranch(orgId: Int) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestListSubBranch(orgId) }
+    )
+
+    fun observeUploadAttachment(file: MultipartBody.Part, type: String, group: String, createdBy: String) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.uploadAttachment(file, type, group, createdBy) }
     )
 }

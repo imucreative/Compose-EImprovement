@@ -18,6 +18,7 @@ import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiMo
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -135,5 +136,12 @@ interface AppService {
         @Field("new_password") newPassword: String
     ): Response<ResultsResponse<ChangePasswordModel>>
 
-
+    @Multipart
+    @POST("transaction/upload-files/{type}/{group}/{createdBy}")
+    suspend fun uploadAttachment(
+        @Part file: MultipartBody.Part,
+        @Path("type") type: String,
+        @Path("group") group: String,
+        @Path("createdBy") createdBy: String
+    ): Response<ResultsResponse<AttachmentItem>>
 }

@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,31 +9,45 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep4Binding
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.stetho.server.http.HttpStatus
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
+import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.featuresglobal.adapter.AttachmentAdapter
 import com.fastrata.eimprovement.featuresglobal.adapter.AttachmentCallback
 import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.viewmodel.AttachmentViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
+import androidx.core.app.ActivityCompat
+
+
+
 
 class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentSuggestionSystemStep4Binding? = null
     private val binding get() = _binding!!
-    private val pickFromGallery = 101
     private var data: SuggestionSystemCreateModel? = null
     private var ssNo: String? = ""
     private var ssAction: String? = ""
-    private lateinit var viewModelAttachment: SsCreateAttachmentViewModel
+    private var userName: String = ""
+    private lateinit var ssCreateAttachmentViewModel: SsCreateAttachmentViewModel
+    private lateinit var attachmentViewModel: AttachmentViewModel
     private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
@@ -49,7 +64,8 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     ): View {
         _binding = FragmentSuggestionSystemStep4Binding.inflate(layoutInflater, container, false)
 
-        viewModelAttachment = injectViewModel(viewModelFactory)
+        ssCreateAttachmentViewModel = injectViewModel(viewModelFactory)
+        attachmentViewModel = injectViewModel(viewModelFactory)
 
         ssNo = arguments?.getString(SS_DETAIL_DATA)
         ssAction = arguments?.getString(ACTION_DETAIL_DATA)
@@ -57,7 +73,9 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
-        viewModelAttachment.setSuggestionSystemAttachment(source)
+        ssCreateAttachmentViewModel.setSuggestionSystemAttachment(source)
+
+        userName = HawkUtils().getDataLogin().USER_NAME
 
         attachmentAdapter = AttachmentAdapter()
         attachmentAdapter.notifyDataSetChanged()
@@ -69,7 +87,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
-        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SsCreateAttachmentViewModel::class.java)
 
         binding.apply {
             rvSsAttachment.setHasFixedSize(true)
@@ -77,12 +94,40 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
             rvSsAttachment.adapter = attachmentAdapter
 
             getAttachment.setOnClickListener {
-                openFolder()
+                val permission = ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    // We don't have permission so prompt the user
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        PERMISSIONS_STORAGE,
+                        REQUEST_EXTERNAL_STORAGE
+                    )
+                } else {
+                    openFolder()
+                }
+            }
+
+            addAttachment.setOnClickListener {
+                when {
+                    fileName.text.isEmpty() -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500
+                        )
+                    }
+                    else -> {
+                        uploadAttachment(uri)
+                    }
+                }
             }
         }
 
         initList(data?.attachment)
-        setData()
         setValidation()
 
         if (ssAction == APPROVE) {
@@ -108,8 +153,8 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                 if (ssAction != APPROVE) {
                     attachment?.remove(data)
 
-                    viewModelAttachment.updateAttachment(attachment)
-                    viewModelAttachment.getSuggestionSystemAttachment()
+                    ssCreateAttachmentViewModel.updateAttachment(attachment)
+                    ssCreateAttachmentViewModel.getSuggestionSystemAttachment()
                         .observe(viewLifecycleOwner, {
                             if (it != null) {
                                 attachmentAdapter.setList(it)
@@ -120,8 +165,8 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
 
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
-                println("### Testing path attachment : ${data.uri}")
-                if (data.uri.isNullOrEmpty()){
+                println("### Testing path attachment : ${data.fileLocation}")
+                if (data.fileLocation.isEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
@@ -132,46 +177,68 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     val intent = Intent()
                         .setType("*/*")
                         .setAction(Intent.ACTION_GET_CONTENT)
-                    startActivityForResult(Intent.createChooser(intent, data.uri), 111)
+                    startActivityForResult(Intent.createChooser(intent, data.fileLocation), 111)
                 }
             }
         })
 
-        viewModelAttachment.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
                 attachmentAdapter.setList(it)
             }
         })
     }
 
+    private val REQUEST_EXTERNAL_STORAGE = 1
+    private val PERMISSIONS_STORAGE = arrayOf<String>(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
     private fun openFolder() {
         val intent = Intent()
         intent.type = "*/*"
         intent.action = Intent.ACTION_GET_CONTENT
+
+        /*
+        val mimeTypes = arrayOf("image/bmp", "image/jpeg", "image/jpg", "image/png", "text/comma-separated-values",
+        "application/msword", "application/pdf", "text/plain","application/vnd.ms-excel", "text/csv",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        */
         intent.putExtra("return-data", true)
         startActivityForResult(
             Intent.createChooser(intent, "Complete action using"),
-            pickFromGallery
+            FILE_PICKER_REQUEST_CODE
         )
+
+//        Intent(Intent.ACTION_PICK).also {
+//            it.type = "image/*"
+//            val mimeTypes = arrayOf("image/jpeg", "image/png")
+//            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+//            startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == pickFromGallery && resultCode == RESULT_OK) {
+        if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null) {
-                uri = data.data!!
-                val fileData = FileUtils().from(requireContext(),uri)
-                val file_size: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
-                Timber.e("###FILE SIZE: $file_size")
-                if (file_size == 0 || file_size >= 2048){
+                uri = data.data as Uri
+
+                val fileData = FileUtils.getFile(requireContext(),uri)
+                val fileSize: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
+                Timber.e("###FILE SIZE: $fileSize")
+                if (fileSize == 0 || fileSize >= 2048){
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
                         resources.getString(R.string.file_size),
                         R.drawable.ic_close, R.color.red_500)
                 }else{
-                    initFileName = context?.let { FileInformation().getName(it, uri) }.toString()
-                    initFileSize = context?.let { FileInformation().getSize(it, uri) }.toString()
-                    initFilePath = context?.let { FileInformation().getPath(it, uri) }.toString()
+                    initFileName = FileInformation().getName(requireContext(), uri).toString()
+                    initFileSize = FileInformation().getSize(requireContext(), uri).toString()
+                    initFilePath = FileInformation().getPath(requireContext(), uri).toString()
                     if(initFileName.contains(".")){
                         ext = initFileName.substring(initFileName.lastIndexOf("."))
                         Timber.e("###EXT : $ext")
@@ -194,30 +261,72 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         }
     }
 
-    private fun setData() {
+    private fun setData(id: Int, type: String, fileLocation: String) {
         binding.apply {
-            addAttachment.setOnClickListener {
-                when {
-                    fileName.text.isEmpty() -> {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            resources.getString(R.string.file_empty),
-                            R.drawable.ic_close, R.color.red_500)
+            val addData = AttachmentItem(
+                id = id,
+                name = initFileName,
+                type = type,
+                group = PROPOSAL,
+                createdBy = userName,
+                fileLocation = fileLocation
+            )
+
+            ssCreateAttachmentViewModel.addAttachment(addData, data?.attachment)
+            fileName.text = ""
+        }
+    }
+
+    private fun uploadAttachment(imageUri: Uri?) {
+        val file: File = FileUtils.getFile(requireContext(), imageUri)
+        val requestBodyFile: RequestBody = RequestBody.create("*/*".toMediaType(), file)
+        val body: MultipartBody.Part = MultipartBody.Part.createFormData("file_images", file.name, requestBodyFile)
+
+        //val descriptionString = "Capture photo file desc"
+        //val description = RequestBody.create(MultipartBody.FORM, descriptionString)
+
+            attachmentViewModel.file = body
+            attachmentViewModel.type = SS
+            attachmentViewModel.group = PROPOSAL
+            attachmentViewModel.createdBy = userName
+
+        try {
+            attachmentViewModel.processSubmitAttachment()
+
+            attachmentViewModel.doSubmitAttachment.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    Timber.e("### -- $result")
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                                Timber.d("###-- Loading get upload loading")
+                            }
+                            Result.Status.SUCCESS -> {
+                                val response = result.data
+                                if (response?.code == HttpStatus.HTTP_OK) {
+                                    HelperLoading.hideLoading()
+
+                                    setData(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
+                                }
+
+                                Timber.d("###-- Success get Upload sukses $response")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Timber.d("###-- Error get Upload Error $result")
+                            }
+                        }
                     }
-                    else -> {
-
-                        val addData = AttachmentItem(
-                            name = initFileName,
-                            uri = uri.toString(),
-                            size = initFileSize
-                        )
-
-                        viewModelAttachment.addAttachment(addData, data?.attachment)
-
-                        fileName.text = ""
-                    }
-                }
+                })
             }
+        } catch (err: Exception) {
+            Snackbar.make(
+                binding.root,
+                "Error doSubmitAttachment : ${err.message}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            Timber.e("### Error doSubmitAttachment : ${err.message}")
         }
     }
 

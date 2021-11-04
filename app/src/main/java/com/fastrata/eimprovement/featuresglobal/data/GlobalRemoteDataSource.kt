@@ -2,6 +2,7 @@ package com.fastrata.eimprovement.featuresglobal.data
 
 import com.fastrata.eimprovement.api.AppService
 import com.fastrata.eimprovement.api.BaseDataSource
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class GlobalRemoteDataSource @Inject constructor(private val service: AppService) : BaseDataSource(){
@@ -40,5 +41,9 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
 
     suspend fun requestListSubBranch(orgId: Int) = getResult {
         service.listSubBranch(orgId)
+    }
+
+    suspend fun uploadAttachment(file: MultipartBody.Part, type: String, group: String, createdBy: String) = getResult {
+        service.uploadAttachment(file, type, group, createdBy)
     }
 }

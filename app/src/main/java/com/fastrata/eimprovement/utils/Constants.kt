@@ -46,3 +46,8 @@ const val ACTION_DETAIL_DATA = "action_detail_data"
 
 // status proposal
 const val STATUS_IMPLEMENTASI = 6
+
+// provide attachment
+const val FILE_PICKER_REQUEST_CODE = 101
+const val PROPOSAL = "Proposal"
+const val IMPLEMENTASI = "Implementasi"

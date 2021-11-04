@@ -56,6 +56,9 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         categoryAdapter = CategoryImprovementAdapter()
         categoryAdapter.notifyDataSetChanged()
 
+        setInitCategory()
+        setData()
+
         return binding.root
     }
 
@@ -76,8 +79,6 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             data?.categoryImprovement?.let { category -> listCategory.addAll(category) }
 
             Timber.w("##### $data")
-            setInitCategory()
-            setData()
 
             if (ssAction == APPROVE) {
                 disableForm()

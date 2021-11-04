@@ -97,7 +97,7 @@ object DataDummySs {
         teamMemberItem.add(TeamMemberItem(name = memberNameItem, department = memberDepartmentItem, task = memberTaskItem))
 
         val attachmentItem = ArrayList<AttachmentItem?>()
-        attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
+        //attachmentItem.add(AttachmentItem(id = 0, name = "asd.png", uri = "", size = "1Mb"))
 
         return SuggestionSystemCreateModel(
             ssNo = "SS-0000/08/2021/0041",
@@ -449,7 +449,7 @@ object DataDummySs {
         teamMemberItem.add(TeamMemberItem(name = memberNameItem, department = memberDepartmentItem, task = memberTaskItem))
 
         val attachmentItem = ArrayList<AttachmentItem?>()
-        attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
+        //attachmentItem.add(AttachmentItem(name = "asd.png", uri = "", size = "1Mb"))
 
         val sudah = StatusImplementationPiDoneModel(
             from = "2020-01-21",
