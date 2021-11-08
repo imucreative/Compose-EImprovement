@@ -32,4 +32,15 @@ class AttachmentViewModel @Inject constructor(private val repository: GlobalRemo
             _doSubmitAttachment.value = Event(result)
         }
     }
+
+    // === remove attachment
+    private val _doRemoveAttachment = MutableLiveData<Event<LiveData<Result<ResultsResponse<String>>>>>()
+    val doRemoveAttachment: LiveData<Event<LiveData<Result<ResultsResponse<String>>>>> get() = _doRemoveAttachment
+
+    fun processRemoveAttachment(attachmentId: Int, fileName: String, typeAttachment: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeRemoveAttachment(attachmentId, fileName, typeAttachment) }
+            _doRemoveAttachment.value = Event(result)
+        }
+    }
 }

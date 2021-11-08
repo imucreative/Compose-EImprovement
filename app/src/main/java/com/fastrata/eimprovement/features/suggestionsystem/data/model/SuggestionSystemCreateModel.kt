@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 data class SuggestionSystemCreateModel(
     @SerializedName("SS_NO")
 	var ssNo: String?,
-    @SerializedName("CREATED_BY")
+    @SerializedName("CREATED_DATE")
     var date: String?,
     @SerializedName("FULL_NAME")
 	var name: String?,

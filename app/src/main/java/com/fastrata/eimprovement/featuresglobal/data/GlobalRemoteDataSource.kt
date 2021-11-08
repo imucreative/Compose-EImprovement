@@ -46,4 +46,8 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
     suspend fun uploadAttachment(file: MultipartBody.Part, type: String, group: String, createdBy: String) = getResult {
         service.uploadAttachment(file, type, group, createdBy)
     }
+
+    suspend fun removeAttachment(attachmentId: Int, fileName: String, type: String) = getResult {
+        service.removeAttachment(attachmentId, fileName, type)
+    }
 }

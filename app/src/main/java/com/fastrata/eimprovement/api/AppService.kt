@@ -144,4 +144,12 @@ interface AppService {
         @Path("group") group: String,
         @Path("createdBy") createdBy: String
     ): Response<ResultsResponse<AttachmentItem>>
+
+    @DELETE("transaction/deletefiles")
+    suspend fun removeAttachment(
+        //@Body attachment: AttachmentItem,
+        @Query("attach_id") attachmentId: Int,
+        @Query("file_name") fileName: String,
+        @Query("type") type: String
+    ): Response<ResultsResponse<String>>
 }

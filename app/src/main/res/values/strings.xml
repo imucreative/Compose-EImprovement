@@ -140,6 +140,7 @@
     <string name="set_target_empty">Silahkan Isi Kolom Menetapkan Target Dengan Sesuai</string>
     <string name="delete">Hapus</string>
     <string name="delete_confirmation">Apakah Anda Yakin Menghapus Data Ini?</string>
+    <string name="delete_confirmation_file_attachment">Apakah Anda Yakin Menghapus File Lampiran Ini?</string>
     <string name="problem_reason">Silahkan Isi Kolom Penyebab Masalah Dengan Sesuai</string>
     <string name="why">Why</string>
     <string name="why_required">Why 1 harus diisi</string>

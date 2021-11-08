@@ -45,4 +45,8 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     fun observeUploadAttachment(file: MultipartBody.Part, type: String, group: String, createdBy: String) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.uploadAttachment(file, type, group, createdBy) }
     )
+
+    fun observeRemoveAttachment(attachmentId: Int, fileName: String, type: String) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.removeAttachment(attachmentId, fileName, type) }
+    )
 }
