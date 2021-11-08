@@ -34,9 +34,6 @@ import java.io.File
 import javax.inject.Inject
 import androidx.core.app.ActivityCompat
 
-
-
-
 class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -189,11 +186,6 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         })
     }
 
-    private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf<String>(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
     private fun openFolder() {
         val intent = Intent()
         intent.type = "*/*"
