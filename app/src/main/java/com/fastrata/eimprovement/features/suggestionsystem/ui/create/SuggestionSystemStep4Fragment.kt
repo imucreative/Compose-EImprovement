@@ -180,7 +180,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     binding.root, layoutInflater, resources, binding.root.context,
                     data.name,
                     R.drawable.ic_close, R.color.red_500)
-                
+
                 /**if (data.fileLocation.isEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
@@ -271,7 +271,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         }
     }
 
-    private fun setDataAttachmentFromHawk(id: Int, type: String, fileLocation: String) {
+    private fun setDataAttachmentToHawk(id: Int, type: String, fileLocation: String) {
         binding.apply {
             val addData = AttachmentItem(
                 id = id,
@@ -328,7 +328,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                                 if (response?.code == HttpStatus.HTTP_OK) {
                                     HelperLoading.hideLoading()
 
-                                    setDataAttachmentFromHawk(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
+                                    setDataAttachmentToHawk(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
                                 }
 
                                 Timber.d("###-- Success get Upload sukses $response")

@@ -54,6 +54,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private var source: String = PI_CREATE
     private lateinit var ext : String
     private val fileNameExt = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
+    private lateinit var notification: HelperNotification
+    private lateinit var selectedAttachmentItem: AttachmentItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,15 +70,17 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         piNo = arguments?.getString(PI_DETAIL_DATA)
         action = arguments?.getString(ACTION_DETAIL_DATA)
 
-        userName = HawkUtils().getDataLogin().USER_NAME
-
         source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreatePi(source)
         piCreateAttachmentViewModel.setAttachment(source)
 
+        userName = HawkUtils().getDataLogin().USER_NAME
+
         attachmentAdapter = AttachmentAdapter()
         attachmentAdapter.notifyDataSetChanged()
+
+        notification = HelperNotification()
 
         return binding.root
     }
@@ -145,26 +149,34 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         }
     }
 
-    private fun initList(attachment: ArrayList<AttachmentItem?>?) {
+    private fun initList(listAttachment: ArrayList<AttachmentItem?>?) {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
                 if (action != APPROVE) {
-                    attachment?.remove(data)
+                    activity?.let { activity ->
+                        notification.shownotificationyesno(
+                            activity,
+                            resources.getString(R.string.delete),
+                            resources.getString(R.string.delete_confirmation_file_attachment),
+                            object : HelperNotification.CallBackNotificationYesNo {
+                                override fun onNotificationNo() {
 
-                    piCreateAttachmentViewModel.updateAttachment(attachment)
-                    piCreateAttachmentViewModel.getAttachment()
-                        .observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                attachmentAdapter.setList(it)
+                                }
+
+                                override fun onNotificationYes() {
+                                    selectedAttachmentItem = data
+                                    removeAttachment(listAttachment)
+                                }
                             }
-                        })
+                        )
+                    }
                 }
             }
 
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
                 println("### Testing path attachment : ${data.fileLocation}")
-                if (data.fileLocation.isEmpty()){
+                /*if (data.fileLocation.isEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
@@ -172,11 +184,11 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         R.drawable.ic_close, R.color.red_500)
                 }else{
                     println("### FILE EXIST : EXIST")
-                    val intent = Intent()
-                        .setType("*/*")
-                        .setAction(Intent.ACTION_GET_CONTENT)
+                    val intent = Intent()*/
+                //        .setType("*/*")
+                /*        .setAction(Intent.ACTION_GET_CONTENT)
                     startActivityForResult(Intent.createChooser(intent, data.fileLocation), 111)
-                }
+                }*/
             }
         })
 
@@ -253,7 +265,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         }
     }
 
-    private fun setData(id: Int, type: String, fileLocation: String) {
+    private fun setDataAttachmentToHawk(id: Int, type: String, fileLocation: String) {
         binding.apply {
             val addData = AttachmentItem(
                 id = id,
@@ -264,9 +276,20 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 fileLocation = fileLocation
             )
 
-            piCreateAttachmentViewModel.addAttachment(addData, data?.attachment)
+            piCreateAttachmentViewModel.addAttachment(addData, data?.attachment, data, source)
             fileName.text = ""
         }
+    }
+
+    private fun removeDataAttachmentFromHawk(listAttachment: ArrayList<AttachmentItem?>?) {
+        listAttachment?.remove(selectedAttachmentItem)
+
+        piCreateAttachmentViewModel.updateAttachment(listAttachment, data, source)
+        piCreateAttachmentViewModel.getAttachment().observe(viewLifecycleOwner, {
+            if (it != null) {
+                attachmentAdapter.setList(it)
+            }
+        })
     }
 
     private fun uploadAttachment(imageUri: Uri?) {
@@ -299,7 +322,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                                 if (response?.code == HttpStatus.HTTP_OK) {
                                     HelperLoading.hideLoading()
 
-                                    setData(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
+                                    setDataAttachmentToHawk(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
                                 }
 
                                 Timber.d("###-- Success get Upload sukses $response")
@@ -319,6 +342,49 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 Snackbar.LENGTH_SHORT
             ).show()
             Timber.e("### Error doSubmitAttachment : ${err.message}")
+        }
+    }
+
+    private fun removeAttachment(listAttachment: ArrayList<AttachmentItem?>?) {
+        try {
+            attachmentViewModel.processRemoveAttachment(selectedAttachmentItem.id, selectedAttachmentItem.name, SS)
+
+            attachmentViewModel.doRemoveAttachment.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    Timber.e("### -- $result")
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                                Timber.d("###-- Loading get doRemoveAttachment loading")
+                            }
+                            Result.Status.SUCCESS -> {
+
+                                HelperLoading.hideLoading()
+
+                                removeDataAttachmentFromHawk(listAttachment)
+
+                                result.data?.let {
+                                    Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT).show()
+                                    Timber.d("###-- Success get doRemoveAttachment sukses $it")
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Snackbar.make(binding.root, result.data?.message.toString(), Snackbar.LENGTH_SHORT).show()
+                                Timber.d("###-- Error get doRemoveAttachment Error ${result.data}")
+                            }
+                        }
+                    }
+                })
+            }
+        } catch (err: Exception) {
+            Snackbar.make(
+                binding.root,
+                "Error doRemoveAttachment : ${err.message}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            Timber.e("### Error doRemoveAttachment : ${err.message}")
         }
     }
 
