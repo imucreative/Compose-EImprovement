@@ -22,5 +22,11 @@ data class SuggestionSystemModel(
     @SerializedName("BRANCH")
     val branch: String,
     @SerializedName("SUBBRANCH")
-    val subBranch: String
+    val subBranch: String,
+    @SerializedName("IS_EDIT")
+    val isEdit: Boolean,
+    @SerializedName("IS_DELETE")
+    val isDelete: Boolean,
+    @SerializedName("IS_VIEW")
+    val isView: Boolean
 ) : Parcelable

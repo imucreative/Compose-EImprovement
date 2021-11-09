@@ -71,6 +71,9 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         val argsIdSs    = args.idSs
         val argsSsNo    = args.ssNo
         val userId      = HawkUtils().getDataLogin().USER_ID
+        val orgId       = HawkUtils().getDataLogin().ORG_ID
+        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
+        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
 
         ssAction = argsAction
 
@@ -79,7 +82,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         }
 
         when (argsAction) {
-            EDIT -> {
+            EDIT, DETAIL -> {
                 ssNo = argsSsNo
 
                 source = SS_DETAIL_DATA
@@ -120,6 +123,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         teamMember = result.data?.data?.get(0)?.teamMember,
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                        headId = headId,
+                                        userId = userId,
+                                        orgId = orgId,
+                                        warehouseId = warehouseId,
                                         source = SS_DETAIL_DATA
                                     )
 
@@ -320,10 +327,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 currentStepCondition(currentStep)
 
                 binding.apply {
-                    lytBack.visibility = View.VISIBLE
-                    lytNext.visibility = View.VISIBLE
+                    lytBack.visibility = VISIBLE
+                    lytNext.visibility = VISIBLE
 
-                    if (ssAction == APPROVE) {
+                    if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
                         }

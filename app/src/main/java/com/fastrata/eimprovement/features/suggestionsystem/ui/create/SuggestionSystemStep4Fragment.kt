@@ -85,7 +85,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (ssAction == APPROVE) {
+        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
     }
@@ -105,7 +105,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     private fun initList(attachment: ArrayList<AttachmentItem?>?) {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                if (ssAction != APPROVE) {
+                if ((ssAction != APPROVE) && (ssAction != DETAIL)) {
                     attachment?.remove(data)
 
                     viewModelAttachment.updateAttachment(attachment)

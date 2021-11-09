@@ -19,7 +19,6 @@ import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragmentDirections
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
@@ -425,16 +424,17 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 //                    toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
 //                )
 //                requireView().findNavController().navigate(direction)
-                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),true,true,object : HelperNotification.CallbackList{
+                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select), data.isEdit, data.isDelete, object : HelperNotification.CallbackList{
                     override fun onView() {
                         val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                            toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                            toolbarTitle = "Detail Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = SS
                         )
                         requireView().findNavController().navigate(direction)
                     }
+
                     override fun onEdit() {
                         val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                            toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                            toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = SS
                         )
                         requireView().findNavController().navigate(direction)
                     }

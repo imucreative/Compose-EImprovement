@@ -9,7 +9,7 @@ import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiMo
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
-    fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
+    /*fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
 
         val suggestionSystem = ArrayList<SuggestionSystemModel>()
 
@@ -81,7 +81,7 @@ object DataDummySs {
             "FBPST - Gd Barang Dagang"))
 
         return suggestionSystem
-    }
+    }*/
 
     fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
@@ -123,7 +123,11 @@ object DataDummySs {
             statusProposal = StatusProposalItem(
                 id = 1,
                 status = "Proposal Dibuat"
-            )
+            ),
+            headId = 30,
+            userId = 5,
+            orgId = 84,
+            warehouseId = 89
         )
     }
 

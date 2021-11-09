@@ -103,7 +103,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (ssAction == APPROVE) {
+        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
     }
@@ -259,9 +259,10 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     }
 
     private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
+        Timber.e(ssAction)
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
-                if (ssAction != APPROVE) {
+                if ((ssAction != APPROVE) && (ssAction != DETAIL)) {
                     teamMember?.remove(data)
 
                     listTeamMemberViewModel.updateTeamMember(teamMember, source)

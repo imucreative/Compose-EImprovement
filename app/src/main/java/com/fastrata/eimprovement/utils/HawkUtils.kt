@@ -40,6 +40,10 @@ internal class HawkUtils {
         teamMember: ArrayList<TeamMemberItem?>? = if (getDataCreateSs?.teamMember == null) arrayListOf() else null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreateSs?.attachment == null) arrayListOf() else null,
         statusProposal: StatusProposalItem? = null,
+        userId: Int? = null,
+        headId: Int? = null,
+        orgId: Int? = null,
+        warehouseId: Int? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -59,7 +63,12 @@ internal class HawkUtils {
             statusImplementation = statusImplementation ?: if (source == SS_CREATE) getDataCreateSs?.statusImplementation else getDataDetailSs?.statusImplementation,
             teamMember = teamMember ?: if (source == SS_CREATE) getDataCreateSs?.teamMember else getDataDetailSs?.teamMember,
             attachment = attachment ?: if (source == SS_CREATE) getDataCreateSs?.attachment else getDataDetailSs?.attachment,
-            statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal
+            statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal,
+
+            headId = headId ?: if (source == SS_CREATE) getDataCreateSs?.headId else getDataDetailSs?.headId,
+            userId = userId ?: if (source == SS_CREATE) getDataCreateSs?.userId else getDataDetailSs?.userId,
+            orgId = orgId ?: if (source == SS_CREATE) getDataCreateSs?.orgId else getDataDetailSs?.orgId,
+            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId
         )
 
         if (source == SS_CREATE) {

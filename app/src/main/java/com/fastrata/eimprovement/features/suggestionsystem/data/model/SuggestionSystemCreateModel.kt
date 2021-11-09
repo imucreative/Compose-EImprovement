@@ -16,18 +16,26 @@ data class SuggestionSystemCreateModel(
     var date: String?,
     @SerializedName("FULL_NAME")
 	var name: String?,
+    @SerializedName("USER_ID")
+    var userId: Int?,
     @SerializedName("NIK")
 	var nik: String?,
     @SerializedName("STATUS_IMPLEMENTATION")
 	var statusImplementation: StatusImplementation?,
     @SerializedName("TITLE")
 	var title: String?,
+    @SerializedName("ORG_ID")
+    var orgId: Int?,
+    @SerializedName("WAREHOUSE_ID")
+    var warehouseId: Int?,
     @SerializedName("BRANCH_CODE")
 	var branchCode: String?,
     @SerializedName("BRANCH")
     var branch: String?,
     @SerializedName("SUBBRANCH")
     var subBranch: String?,
+    @SerializedName("HEAD_ID")
+	var headId: Int?,
     @SerializedName("HEAD_NAME")
 	var directMgr: String?,
     @SerializedName("PROBLEM")

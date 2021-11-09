@@ -79,7 +79,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             setInitCategory()
             setData()
 
-            if (ssAction == APPROVE) {
+            if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                 disableForm()
             }
         }
