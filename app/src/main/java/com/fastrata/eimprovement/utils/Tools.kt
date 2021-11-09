@@ -248,14 +248,8 @@ object Tools {
     }
 
     fun isMenuEligible(activity: Activity, list: List<RoleEntity>?, menuApps: String): Boolean{
-        return if (list!!.any {
+        return list!!.any {
                 it.MENU_NAME == menuApps }
-        ){
-            true
-        }else{
-            HelperNotification().showErrorDialog(activity,activity.resources.getString(R.string.error),activity.resources.getString(R.string.menu_not_eligible))
-            false
-        }
     }
 
     @JvmOverloads
