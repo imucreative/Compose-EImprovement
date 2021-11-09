@@ -236,21 +236,61 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         return listAttachment
     }
 
-    fun addAttachment(add: AttachmentItem, current: ArrayList<AttachmentItem?>?) {
+    fun addAttachment(add: AttachmentItem, current: ArrayList<AttachmentItem?>?, data: ProjectImprovementCreateModel?, source: String) {
         current?.add(add)
 
         listAttachment.postValue(current)
 
         HawkUtils().setTempDataCreatePi(
-            attachment = current
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementationModel = data?.statusImplementationModel,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = data?.sebabMasalah,
+            akarMasalah = data?.akarMasalah,
+            nilaiOutput = data?.nilaiOutput,
+            nqiModel = data?.nqiModel,
+            teamMember = data?.teamMember,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = current,
+            statusProposal = data?.statusProposal,
+            source = source
         )
     }
 
-    fun updateAttachment(add: ArrayList<AttachmentItem?>?) {
+    fun updateAttachment(add: ArrayList<AttachmentItem?>?, data: ProjectImprovementCreateModel?, source: String) {
         listAttachment.postValue(add)
 
         HawkUtils().setTempDataCreatePi(
-            attachment = add
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementationModel = data?.statusImplementationModel,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = data?.sebabMasalah,
+            akarMasalah = data?.akarMasalah,
+            nilaiOutput = data?.nilaiOutput,
+            nqiModel = data?.nqiModel,
+            teamMember = data?.teamMember,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = add,
+            statusProposal = data?.statusProposal,
+            source = source
         )
     }
 

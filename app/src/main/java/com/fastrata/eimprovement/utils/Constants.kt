@@ -1,5 +1,7 @@
 package com.fastrata.eimprovement.utils
 
+import android.Manifest
+
 /**
  * Constants used throughout the app.
  */
@@ -46,3 +48,13 @@ const val ACTION_DETAIL_DATA = "action_detail_data"
 
 // status proposal
 const val STATUS_IMPLEMENTASI = 6
+
+// provide attachment
+const val FILE_PICKER_REQUEST_CODE = 101
+const val PROPOSAL = "Proposal"
+const val IMPLEMENTASI = "Implementasi"
+const val REQUEST_EXTERNAL_STORAGE = 1
+val PERMISSIONS_STORAGE = arrayOf(
+    Manifest.permission.READ_EXTERNAL_STORAGE,
+    Manifest.permission.WRITE_EXTERNAL_STORAGE
+)

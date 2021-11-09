@@ -13,10 +13,7 @@ import com.fastrata.eimprovement.features.settings.ui.mutasi.MutasiViewCreateMod
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateAttachmentViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SsCreateTeamMemberViewModel
-import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
-import com.fastrata.eimprovement.featuresglobal.viewmodel.CategoryViewModel
-import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
-import com.fastrata.eimprovement.featuresglobal.viewmodel.TeamMemberViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -107,6 +104,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChangePasswordCreateViewModel::class)
     abstract fun bindViewChangePasswordViewModel(viewModel : ChangePasswordCreateViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AttachmentViewModel::class)
+    abstract fun bindAttachmentViewModel(viewModel : AttachmentViewModel): ViewModel
 
 
     @Binds
