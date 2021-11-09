@@ -19,6 +19,7 @@ import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointFragmentDirections
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
@@ -420,10 +421,28 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
-                val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
-                )
-                requireView().findNavController().navigate(direction)
+//                val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+//                    toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+//                )
+//                requireView().findNavController().navigate(direction)
+                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),true,true,object : HelperNotification.CallbackList{
+                    override fun onView() {
+                        val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                            toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                        )
+                        requireView().findNavController().navigate(direction)
+                    }
+                    override fun onEdit() {
+                        val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                            toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                        )
+                        requireView().findNavController().navigate(direction)
+                    }
+
+                    override fun onDelete() {
+                        Toast.makeText(requireContext(),"Data belum terhapus",Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         })
 

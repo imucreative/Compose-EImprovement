@@ -421,11 +421,29 @@ class ChangesPointFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
-                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+//                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+//                    toolbarTitle = "Edit Changes Point", action = EDIT,
+//                    idCp = data.idCp, cpNo = data.cpNo, type = CP
+//                )
+//                requireView().findNavController().navigate(direction)
+                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),true,true,object : HelperNotification.CallbackList{
+                    override fun onView() {
+                        val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                     toolbarTitle = "Edit Changes Point", action = EDIT,
-                    idCp = data.idCp, cpNo = data.cpNo, type = CP
-                )
+                    idCp = data.idCp, cpNo = data.cpNo, type = CP)
                 requireView().findNavController().navigate(direction)
+                    }
+                    override fun onEdit() {
+                        val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                            toolbarTitle = "Edit Changes Point", action = EDIT,
+                            idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                        requireView().findNavController().navigate(direction)
+                    }
+
+                    override fun onDelete() {
+                       Toast.makeText(requireContext(),"Data belum terhapus",Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         })
 

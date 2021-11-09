@@ -198,6 +198,9 @@
     <string name="reject">Revisi</string>
     <string name="loading">Loading</string>
     <string name="hi">Hi</string>
+    <string name="look">Lihat</string>
+    <string name="edit">Edit</string>
+
 
 
 </resources>
