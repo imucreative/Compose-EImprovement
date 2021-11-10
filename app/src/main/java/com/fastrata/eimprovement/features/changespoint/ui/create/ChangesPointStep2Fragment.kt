@@ -90,7 +90,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (action == APPROVE) {
+        if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
     }
@@ -160,7 +160,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private fun initList(reward: ArrayList<RewardItem?>?) {
         rewardAdapter.setChangeRewardCallback(object : ChangesRewardCallback {
             override fun removeClicked(data: RewardItem) {
-                if (action != APPROVE) {
+                if ((action != APPROVE) && (action != DETAIL)) {
 
                     reward?.remove(data)
                     changesRewardViewModel.updateReward(reward)
@@ -280,6 +280,11 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
+                                statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
                                 source = source)
                                 stat = true
                             }

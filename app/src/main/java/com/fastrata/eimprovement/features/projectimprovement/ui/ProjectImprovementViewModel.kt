@@ -10,7 +10,6 @@ import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
-import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
 import com.fastrata.eimprovement.wrapper.Event
@@ -21,22 +20,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository): ViewModel(){
-    private val detailProjectImprovement = MutableLiveData<ProjectImprovementCreateModel>()
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahModel?>?>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahModel?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
     private val listAttachment = MutableLiveData<ArrayList<AttachmentItem?>?>()
-
-    fun setProjectImprovementDetail(piNo: String) {
-        // koneksi ke DB
-        println("# $piNo")
-        val data = DataDummySs.generateDummyDetailProjectImprovementList()
-        detailProjectImprovement.postValue(data)
-    }
-
-    fun getProjectImprovementDetail(): LiveData<ProjectImprovementCreateModel> {
-        return detailProjectImprovement
-    }
 
     // Sebab Masalah
     fun setSebabMasalah(source: String){

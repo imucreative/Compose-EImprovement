@@ -87,7 +87,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
 
             setData()
 
-            if(action == APPROVE){
+            if ((action == APPROVE) || (action == DETAIL)) {
                 disableForm()
             }
         }
@@ -142,6 +142,11 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
+                                statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
                                 source = source
                             )
                             stat = true

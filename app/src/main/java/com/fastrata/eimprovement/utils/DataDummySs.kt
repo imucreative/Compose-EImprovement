@@ -9,7 +9,7 @@ import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiMo
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
-    fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
+    /*fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
         categorySuggestionItem.add(CategoryImprovementItem(id = 6, category = "Meningkatkan Penjualan", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 8, category = "Menurunkan Biaya", checked = true))
@@ -55,9 +55,9 @@ object DataDummySs {
             orgId = 84,
             warehouseId = 89
         )
-    }
+    }*/
 
-    fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
+    /*fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
        val rewardArray = ArrayList<RewardItem?>()
        rewardArray.add(RewardItem(hadiahId = 1,hadiah = "PULSA 100K",nilai = 10000,keterangan = "Penukaran"))
 
@@ -73,11 +73,15 @@ object DataDummySs {
           position = "STAFF",
           date = "2021-08-06",
           description = "Test Data",
-          reward = rewardArray
+          reward = rewardArray,
+           headId = 30,
+           userId = 5,
+           orgId = 84,
+           warehouseId = 89
        )
-   }
+   }*/
 
-    fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
+    /*fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
         categorySuggestionItem.add(CategoryImprovementItem(id = 6, category = "Meningkatkan Penjualan", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 8, category = "Menurunkan Biaya", checked = true))
@@ -161,7 +165,7 @@ object DataDummySs {
             warehouseId = 89,
             nik = "devl"
         )
-    }
+    }*/
 
     fun generateDummyApprovalHistoryStatus(): ArrayList<ApprovalHistoryStatusModel> {
         val data = ArrayList<ApprovalHistoryStatusModel>()

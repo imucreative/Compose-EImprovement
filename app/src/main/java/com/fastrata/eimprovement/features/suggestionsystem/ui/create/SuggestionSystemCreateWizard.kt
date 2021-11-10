@@ -3,7 +3,6 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -82,7 +80,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         }
 
         when (argsAction) {
-            EDIT, DETAIL -> {
+            EDIT, DETAIL, APPROVE -> {
                 ssNo = argsSsNo
 
                 source = SS_DETAIL_DATA
@@ -163,36 +161,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                 initToolbar(argsTitle)
                 initComponent()
-            }
-            APPROVE -> {
-                ssNo = argsSsNo
-
-                source = SS_DETAIL_DATA
-                viewModel.setSuggestionSystemDetail(argsSsNo)
-                viewModel.getSuggestionSystemDetail().observe(this, { detailData ->
-                    Timber.e("### ambil dari getSuggestionSystemDetail $detailData")
-                    HawkUtils().setTempDataCreateSs(
-                        ssNo = detailData.ssNo,
-                        title = detailData.title,
-                        listCategory = detailData.categoryImprovement,
-                        name = detailData.name,
-                        nik = detailData.nik,
-                        branchCode = detailData.branchCode,
-                        branch = detailData.branch,
-                        department = detailData.department,
-                        directMgr = detailData.directMgr,
-                        suggestion = detailData.suggestion,
-                        problem = detailData.problem,
-                        statusImplementation = detailData.statusImplementation,
-                        teamMember = detailData.teamMember,
-                        attachment = detailData.attachment,
-                        statusProposal = detailData.statusProposal,
-                        source = SS_DETAIL_DATA
-                    )
-
-                    initToolbar(argsTitle)
-                    initComponent()
-                })
             }
         }
 

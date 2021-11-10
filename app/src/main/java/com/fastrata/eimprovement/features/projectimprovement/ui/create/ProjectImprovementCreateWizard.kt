@@ -80,7 +80,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         }
 
         when (argsAction) {
-            EDIT, DETAIL -> {
+            EDIT, DETAIL, APPROVE -> {
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
@@ -172,41 +172,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                 initToolbar(argsTitle)
                 initComponent()
-            }
-            APPROVE -> {
-                piNo = argsPiNo
-
-                source = PI_DETAIL_DATA
-                viewModel.setProjectImprovementDetail(argsPiNo)
-                viewModel.getProjectImprovementDetail().observe(this, { detailData ->
-                    HawkUtils().setTempDataCreatePi(
-                        id = detailData.id,
-                        piNo = detailData.piNo,
-                        department = detailData.department,
-                        years = detailData.years,
-                        date = detailData.date,
-                        branchCode = detailData.branchCode,
-                        branch = detailData.branch,
-                        subBranch = detailData.subBranch,
-                        title = detailData.title,
-                        statusImplementationModel = detailData.statusImplementationModel,
-                        identification = detailData.identification,
-                        target = detailData.target,
-                        sebabMasalah = detailData.sebabMasalah,
-                        akarMasalah = detailData.akarMasalah,
-                        nilaiOutput = detailData.nilaiOutput,
-                        nqiModel = detailData.nqiModel,
-                        teamMember = detailData.teamMember,
-                        categoryFixing = detailData.categoryFixing,
-                        hasilImplementasi = detailData.implementationResult,
-                        attachment = detailData.attachment,
-                        statusProposal = detailData.statusProposal,
-                        source = PI_DETAIL_DATA
-                    )
-
-                    initToolbar(argsTitle)
-                    initComponent()
-                })
             }
         }
 

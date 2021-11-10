@@ -421,17 +421,12 @@ class ChangesPointFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
-//                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-//                    toolbarTitle = "Edit Changes Point", action = EDIT,
-//                    idCp = data.idCp, cpNo = data.cpNo, type = CP
-//                )
-//                requireView().findNavController().navigate(direction)
-                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),true,true,object : HelperNotification.CallbackList{
+                HelperNotification().showListEdit(requireActivity(), resources.getString(R.string.select), data.isEdit, data.isDelete, object : HelperNotification.CallbackList{
                     override fun onView() {
                         val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                    toolbarTitle = "Edit Changes Point", action = EDIT,
-                    idCp = data.idCp, cpNo = data.cpNo, type = CP)
-                requireView().findNavController().navigate(direction)
+                            toolbarTitle = "Detail Changes Point", action = DETAIL,
+                            idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                        requireView().findNavController().navigate(direction)
                     }
                     override fun onEdit() {
                         val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(

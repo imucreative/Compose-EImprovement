@@ -10,8 +10,6 @@ import com.fastrata.eimprovement.features.changespoint.data.CpRemoteRepository
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
-import com.fastrata.eimprovement.utils.DataDummySs
-import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,19 +17,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ChangesPointCreateViewModel @Inject constructor(private val repository: CpRemoteRepository) : ViewModel() {
-
-    private val listChangePointDetail = MutableLiveData<ChangePointCreateItemModel>()
-
-    fun setChangePointDetail(cpNo : String){
-        println("# $cpNo")
-        val data = DataDummySs.generateDummyDetailChangePoint()
-        listChangePointDetail.postValue(data)
-    }
-
-    fun getChangePointDetail(): MutableLiveData<ChangePointCreateItemModel> {
-        return listChangePointDetail
-    }
-
 
     // === List CP
     private val _listCp = MutableLiveData<Event<LiveData<Result<ResultsResponse<ChangePointModel>>>>>()
