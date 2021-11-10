@@ -53,7 +53,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateCP(source)
-        intSaldo = data?.saldo!!
+        intSaldo = HawkUtils().getDataBalance()
 
         if (data?.reward != null){
             totalBalance()
@@ -204,7 +204,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             addReward.setOnClickListener {
                 val reward = hadiahCp.text.toString()
                 val desc = keteranganCp.text.toString()
-
+                Timber.e("saldo & total : $intSaldo / $intTotal")
                 when{
                     reward.isEmpty() ->{
                         SnackBarCustom.snackBarIconInfo(
@@ -219,6 +219,12 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                             resources.getString(R.string.desc_empty),
                             R.drawable.ic_close, R.color.red_500)
                         keteranganCp.requestFocus()
+                    }
+                    intSaldo <= intTotal ->{
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            "Saldo Kurang",
+                            R.drawable.ic_close, R.color.red_500)
                     }
                     else -> {
                         val add = RewardItem(
@@ -252,14 +258,16 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                     override fun onDataPass(): Boolean {
                     var stat : Boolean
                     binding.apply {
-                        stat = if (data?.reward?.size == 0) {
-                            SnackBarCustom.snackBarIconInfo(
+                        when{
+                            data?.reward?.size == 0 ->{
+                                SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.desc_empty),
                                 R.drawable.ic_close, R.color.red_500)
-                            false
-                        } else {
-                            HawkUtils().setTempDataCreateCp(
+                                stat = false
+                            }
+                            else -> {
+                                HawkUtils().setTempDataCreateCp(
                                 cpNo = data?.cpNo,
                                 name = data?.name,
                                 nik = data?.nik,
@@ -272,9 +280,9 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
-                                source = source
-                            )
-                            true
+                                source = source)
+                                stat = true
+                            }
                         }
                     }
               return stat
