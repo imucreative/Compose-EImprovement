@@ -148,6 +148,11 @@ internal class HawkUtils {
         hasilImplementasi : String? = null,
         attachment: ArrayList<AttachmentItem?>? = if (getDataCreatePi?.attachment == null) arrayListOf() else null,
         statusProposal: StatusProposalItem? = null,
+        nik: String? = null,
+        userId: Int? = null,
+        headId: Int? = null,
+        orgId: Int? = null,
+        warehouseId: Int? = null,
         source: String = PI_CREATE
     ){
         val data = ProjectImprovementCreateModel(
@@ -171,7 +176,13 @@ internal class HawkUtils {
             categoryFixing = categoryFixing ?: if (source == PI_CREATE) getDataCreatePi?.categoryFixing else getDataDetailPi?.categoryFixing,
             implementationResult = hasilImplementasi ?: if (source == PI_CREATE) getDataCreatePi?.implementationResult else getDataDetailPi?.implementationResult,
             attachment = attachment ?: if (source == PI_CREATE) getDataCreatePi?.attachment else getDataDetailPi?.attachment,
-            statusProposal = statusProposal ?: if (source == PI_CREATE) getDataCreatePi?.statusProposal else getDataDetailPi?.statusProposal
+            statusProposal = statusProposal ?: if (source == PI_CREATE) getDataCreatePi?.statusProposal else getDataDetailPi?.statusProposal,
+
+            nik = nik ?: if (source == SS_CREATE) getDataCreateSs?.nik else getDataDetailSs?.nik,
+            headId = headId ?: if (source == SS_CREATE) getDataCreateSs?.headId else getDataDetailSs?.headId,
+            userId = userId ?: if (source == SS_CREATE) getDataCreateSs?.userId else getDataDetailSs?.userId,
+            orgId = orgId ?: if (source == SS_CREATE) getDataCreateSs?.orgId else getDataDetailSs?.orgId,
+            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId
         )
 
         if (source == PI_CREATE) {

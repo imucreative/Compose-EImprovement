@@ -123,7 +123,7 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_list)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.txt_title) as TextView).setText(header)
+        (dialog.findViewById<View>(R.id.txt_title) as TextView).text = header
         if (!viewEdit){
             (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).visibility = View.GONE
         }
@@ -131,10 +131,7 @@ class HelperNotification {
             (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
         }
         dialog.setCancelable(true)
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+
         (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onView()
@@ -147,6 +144,12 @@ class HelperNotification {
             dialog.dismiss()
             if (listener != null)listener.onDelete()
         }
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
         dialog.show()
         dialog.window!!.attributes = lp
     }

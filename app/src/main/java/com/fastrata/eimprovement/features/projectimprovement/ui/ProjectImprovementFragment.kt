@@ -426,22 +426,22 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 //                    toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
 //                )
 //                requireView().findNavController().navigate(direction)
-                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),true,true,object : HelperNotification.CallbackList{
+                HelperNotification().showListEdit(requireActivity(), resources.getString(R.string.select), data.isEdit, data.isDelete, object : HelperNotification.CallbackList{
                     override fun onView() {
                         val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                            toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
+                            toolbarTitle = "Detail Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = PI
                         )
                         requireView().findNavController().navigate(direction)
                     }
                     override fun onEdit() {
                         val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                            toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
+                            toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = PI
                         )
                         requireView().findNavController().navigate(direction)
                     }
 
                     override fun onDelete() {
-                        Toast.makeText(requireContext(),"Data belum terhapus",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),"Data ${data.piNo} belum terhapus",Toast.LENGTH_SHORT).show()
                     }
                 })
 

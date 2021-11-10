@@ -81,7 +81,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         setInitCategory()
         setData()
 
-        if (action == APPROVE) {
+        if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
     }
