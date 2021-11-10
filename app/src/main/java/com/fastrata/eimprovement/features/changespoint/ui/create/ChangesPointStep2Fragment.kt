@@ -35,6 +35,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private var action: String? = ""
     private var cpNo: String? = ""
     var intTotal : Int = 0
+    var intSaldo : Int = 0
     private var listRewardItem : List<GiftItem>? = null
     private lateinit var selectedReward: GiftItem
 
@@ -52,9 +53,10 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateCP(source)
+        intSaldo = data?.saldo!!
 
         if (data?.reward != null){
-            checkBalance()
+            totalBalance()
         }
 
         changesRewardViewModel.setChangeRewardPoint(source)
@@ -168,7 +170,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         }
                     })
 
-                    val total = checkBalance()
+                    val total = totalBalance()
                     changesRewardViewModel.setTotalReward(total)
                     changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner, {
                         binding.totalReward.text = it.toString()
@@ -184,7 +186,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         })
     }
 
-    private fun checkBalance(): Int {
+    private fun totalBalance(): Int {
         if(data?.reward != null){
             val itemCount = data?.reward!!.map { values ->
                 values!!.nilai
@@ -228,7 +230,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
                         changesRewardViewModel.addReward(add, data?.reward)
 
-                        val total = checkBalance()
+                        val total = totalBalance()
                         changesRewardViewModel.setTotalReward(total)
                         changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner,{
                             totalReward.text = it.toString()
