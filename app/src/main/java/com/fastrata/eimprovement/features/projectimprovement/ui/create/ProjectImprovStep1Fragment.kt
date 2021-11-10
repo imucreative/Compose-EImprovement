@@ -65,7 +65,7 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
 
             setData()
 
-            if (action == APPROVE) {
+            if ((action == APPROVE) || (action == DETAIL)) {
                 disableForm()
             }
         }

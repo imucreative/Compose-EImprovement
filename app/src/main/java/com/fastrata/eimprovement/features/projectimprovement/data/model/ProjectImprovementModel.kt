@@ -24,5 +24,11 @@ data class ProjectImprovementModel(
     @SerializedName("CREATED_DATE")
     val date : String,
     @SerializedName("CREATED_BY")
-    val createdBy : String
+    val createdBy : String,
+    @SerializedName("IS_EDIT")
+    val isEdit: Boolean,
+    @SerializedName("IS_DELETE")
+    val isDelete: Boolean,
+    @SerializedName("IS_VIEW")
+    val isView: Boolean
 ): Parcelable

@@ -9,6 +9,7 @@ import com.fastrata.eimprovement.databinding.ItemAkarMasalahPiBinding
 import com.fastrata.eimprovement.features.projectimprovement.callback.AkarMasalahCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.AkarMasalahModel
 import com.fastrata.eimprovement.utils.APPROVE
+import com.fastrata.eimprovement.utils.DETAIL
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,7 +41,7 @@ class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahM
                 imprvementDilakukan.setText(data.aksi)
                 detilLangkah.setText(data.detail_langkah)
 
-                if (action == APPROVE) {
+                if ((action == APPROVE) || (action == DETAIL)) {
                     whyTerakhir.isEnabled = false
                     imprvementDilakukan.isEnabled = false
                     detilLangkah.isEnabled = false

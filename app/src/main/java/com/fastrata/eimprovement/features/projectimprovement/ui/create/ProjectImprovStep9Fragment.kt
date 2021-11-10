@@ -85,7 +85,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (action == APPROVE) {
+        if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
     }
@@ -105,7 +105,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private fun initList(attachment: ArrayList<AttachmentItem?>?) {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                if (action != APPROVE) {
+                if ((action != APPROVE) && (action != DETAIL)) {
                     attachment?.remove(data)
 
                     viewModel.updateAttachment(attachment)

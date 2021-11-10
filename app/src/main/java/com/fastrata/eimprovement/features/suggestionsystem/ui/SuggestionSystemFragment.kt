@@ -440,7 +440,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     }
 
                     override fun onDelete() {
-                        Toast.makeText(requireContext(),"Data belum terhapus",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),"Data ${data.ssNo} belum terhapus",Toast.LENGTH_SHORT).show()
                     }
                 })
             }

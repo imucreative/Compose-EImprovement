@@ -67,7 +67,11 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         val argsAction  = args.action
         val argsIdPi    = args.idPi
         val argsPiNo    = args.piNo
+        val nik         = HawkUtils().getDataLogin().NIK
         val userId      = HawkUtils().getDataLogin().USER_ID
+        val orgId       = HawkUtils().getDataLogin().ORG_ID
+        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
+        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
 
         action = argsAction
 
@@ -76,7 +80,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         }
 
         when (argsAction) {
-            EDIT -> {
+            EDIT, DETAIL -> {
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
@@ -130,6 +134,11 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                         },
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                        nik = nik,
+                                        headId = headId,
+                                        userId = userId,
+                                        orgId = orgId,
+                                        warehouseId = warehouseId,
                                         source = PI_DETAIL_DATA
                                     )
 
@@ -401,7 +410,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if (action == APPROVE) {
+                    if ((action == APPROVE) || (action == DETAIL)) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
                         }
