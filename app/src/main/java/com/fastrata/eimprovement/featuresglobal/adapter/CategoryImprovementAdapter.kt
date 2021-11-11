@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.databinding.ItemCategorySuggestionBinding
 import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
 import com.fastrata.eimprovement.utils.APPROVE
+import com.fastrata.eimprovement.utils.DETAIL
 import com.fastrata.eimprovement.utils.Tools
 
 class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapter.CategoryViewHolder>() {
@@ -58,7 +59,7 @@ class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapte
                 tvCategorySuggestion.text = data.category
                 chbxCategorySuggestion.isChecked = data.checked
 
-                if (action == APPROVE) {
+                if ((action == APPROVE) || (action == DETAIL)) {
                     chbxCategorySuggestion.isEnabled = false
                     tvCategorySuggestion.isClickable = false
                 } else {

@@ -10,7 +10,6 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.SsRemoteReposito
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
-import com.fastrata.eimprovement.utils.DataDummySs
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,20 +17,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SuggestionSystemViewModel @Inject constructor(private val repository: SsRemoteRepository): ViewModel() {
-    private val detailSuggestionSystem = MutableLiveData<SuggestionSystemCreateModel>()
-
-    fun setSuggestionSystemDetail(ssNo: String) {
-        // koneksi ke DB
-        println("# $ssNo")
-        val data = DataDummySs.generateDummyDetailSuggestionSystem()
-        println("##### setSuggestionSystemDetail in viewModel : $detailSuggestionSystem")
-        detailSuggestionSystem.postValue(data)
-    }
-
-    fun getSuggestionSystemDetail(): LiveData<SuggestionSystemCreateModel> {
-        println("##### getSuggestionSystemDetail $detailSuggestionSystem")
-        return detailSuggestionSystem
-    }
 
     // === List SS
     private val _listSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemModel>>>>>()

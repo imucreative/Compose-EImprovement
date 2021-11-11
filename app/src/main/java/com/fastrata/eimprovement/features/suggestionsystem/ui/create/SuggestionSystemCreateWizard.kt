@@ -3,7 +3,6 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -71,6 +69,9 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         val argsIdSs    = args.idSs
         val argsSsNo    = args.ssNo
         val userId      = HawkUtils().getDataLogin().USER_ID
+        val orgId       = HawkUtils().getDataLogin().ORG_ID
+        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
+        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
 
         ssAction = argsAction
 
@@ -79,7 +80,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         }
 
         when (argsAction) {
-            EDIT -> {
+            EDIT, DETAIL, APPROVE -> {
                 ssNo = argsSsNo
 
                 source = SS_DETAIL_DATA
@@ -120,6 +121,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         teamMember = result.data?.data?.get(0)?.teamMember,
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                        headId = headId,
+                                        userId = userId,
+                                        orgId = orgId,
+                                        warehouseId = warehouseId,
                                         source = SS_DETAIL_DATA
                                     )
 
@@ -156,36 +161,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                 initToolbar(argsTitle)
                 initComponent()
-            }
-            APPROVE -> {
-                ssNo = argsSsNo
-
-                source = SS_DETAIL_DATA
-                viewModel.setSuggestionSystemDetail(argsSsNo)
-                viewModel.getSuggestionSystemDetail().observe(this, { detailData ->
-                    Timber.e("### ambil dari getSuggestionSystemDetail $detailData")
-                    HawkUtils().setTempDataCreateSs(
-                        ssNo = detailData.ssNo,
-                        title = detailData.title,
-                        listCategory = detailData.categoryImprovement,
-                        name = detailData.name,
-                        nik = detailData.nik,
-                        branchCode = detailData.branchCode,
-                        branch = detailData.branch,
-                        department = detailData.department,
-                        directMgr = detailData.directMgr,
-                        suggestion = detailData.suggestion,
-                        problem = detailData.problem,
-                        statusImplementation = detailData.statusImplementation,
-                        teamMember = detailData.teamMember,
-                        attachment = detailData.attachment,
-                        statusProposal = detailData.statusProposal,
-                        source = SS_DETAIL_DATA
-                    )
-
-                    initToolbar(argsTitle)
-                    initComponent()
-                })
             }
         }
 
@@ -320,10 +295,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 currentStepCondition(currentStep)
 
                 binding.apply {
-                    lytBack.visibility = View.VISIBLE
-                    lytNext.visibility = View.VISIBLE
+                    lytBack.visibility = VISIBLE
+                    lytNext.visibility = VISIBLE
 
-                    if (ssAction == APPROVE) {
+                    if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
                         }

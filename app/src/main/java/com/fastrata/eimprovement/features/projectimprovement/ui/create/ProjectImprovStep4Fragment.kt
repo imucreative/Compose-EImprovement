@@ -82,7 +82,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
         initList(data?.sebabMasalah)
         setValidation()
 
-        if (action == APPROVE) {
+        if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
     }
@@ -106,7 +106,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
             override fun onItemRemoved(data: SebabMasalahModel, position: Int) {
                 binding.apply {
-                    if (action != APPROVE) {
+                    if ((action != APPROVE) && (action != DETAIL)) {
                         activity?.let { activity ->
                             notification.shownotificationyesno(
                                 activity,
@@ -161,7 +161,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
             btnClose.setOnClickListener { dialog.dismiss() }
 
             btnSave.setOnClickListener {
-                if (action != APPROVE) {
+                if ((action != APPROVE) && (action != DETAIL)) {
                     setData()
                 }
             }

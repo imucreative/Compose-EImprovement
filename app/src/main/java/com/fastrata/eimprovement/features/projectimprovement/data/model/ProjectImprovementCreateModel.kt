@@ -15,11 +15,21 @@ data class ProjectImprovementCreateModel(
     var id : Int?,
     @SerializedName("PI_NO")
     var piNo: String?,
+    @SerializedName("USER_ID")
+    var userId: Int?,
+    @SerializedName("NIK")
+    var nik: String?,
+    @SerializedName("ORG_ID")
+    var orgId: Int?,
+    @SerializedName("WAREHOUSE_ID")
+    var warehouseId: Int?,
+    @SerializedName("HEAD_ID")
+    var headId: Int?,
     @SerializedName("DEPARTMENT")
     var department: String?,
-    @SerializedName("tahun")
+    @SerializedName("TAHUN")
     var years: String?,
-    @SerializedName("tgl_pengajuan")
+    @SerializedName("CREATED_DATE")
     var date: String?,
     @SerializedName("BRANCH_CODE")
     var branchCode: String?,
@@ -51,5 +61,6 @@ data class ProjectImprovementCreateModel(
     var implementationResult : String?,
     @SerializedName("ATTACHMENTS")
     var attachment: ArrayList<AttachmentItem?>?,
+    @SerializedName("STATUS_PROPOSAL")
     var statusProposal: StatusProposalItem?
 ) : Parcelable

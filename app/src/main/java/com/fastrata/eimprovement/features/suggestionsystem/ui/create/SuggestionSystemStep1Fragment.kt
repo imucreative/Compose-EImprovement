@@ -80,7 +80,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
             Timber.w("##### $data")
 
-            if (ssAction == APPROVE) {
+            if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                 disableForm()
             }
         }

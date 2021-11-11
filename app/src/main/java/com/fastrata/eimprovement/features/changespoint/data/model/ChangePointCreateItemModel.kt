@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.features.changespoint.data.model
 
 import android.os.Parcelable
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -16,6 +17,14 @@ data class ChangePointCreateItemModel(
     var name: String?,
     @SerializedName("NIK")
     var nik : String?,
+    @SerializedName("USER_ID")
+    var userId: Int?,
+    @SerializedName("ORG_ID")
+    var orgId: Int?,
+    @SerializedName("WAREHOUSE_ID")
+    var warehouseId: Int?,
+    @SerializedName("HEAD_ID")
+    var headId: Int?,
     @SerializedName("BRANCH")
     var branch : String?,
     @SerializedName("SUBBRANCH")
@@ -30,4 +39,6 @@ data class ChangePointCreateItemModel(
     var description: String?,
     @SerializedName("REDEEM_GIFT")
     var reward : ArrayList<RewardItem?>?,
+    @SerializedName("STATUS_PROPOSAL")
+    var statusProposal: StatusProposalItem?
 ): Parcelable

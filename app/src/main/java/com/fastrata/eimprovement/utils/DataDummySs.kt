@@ -9,81 +9,7 @@ import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiMo
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 
 object DataDummySs {
-    fun generateDummySuggestionSystem(): ArrayList<SuggestionSystemModel> {
-
-        val suggestionSystem = ArrayList<SuggestionSystemModel>()
-
-        suggestionSystem.add(SuggestionSystemModel(
-            1,
-            "SS-0000/08/2021/0041",
-            "17-08-2021",
-            "Membuat ide baru",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            2,
-            "SS-0000/08/2021/0042",
-            "17-08-2021",
-            "Membuat ide baru new",
-            StatusProposalItem(
-                3, "Proposal Dalam Pengecekan"
-            ),
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            3,
-            "SS-0000/08/2021/0043",
-            "17-08-2021",
-            "Membuat ide baru new",
-            StatusProposalItem(
-                1, "Proposal Dibuat"
-            ),
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            4,
-            "SS-0000/08/2021/0044",
-            "17-08-2021",
-            "Membuat ide baru new",
-            StatusProposalItem(
-                10, "Project Valid"
-            ),
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            5,
-            "SS-0000/08/2021/0045",
-            "17-08-2021",
-            "Membuat ide baru new",
-            StatusProposalItem(
-                2, "Proposal Disubmit"
-            ),
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-        suggestionSystem.add(SuggestionSystemModel(
-            6,
-            "SS-0000/08/2021/0046",
-            "17-08-2021",
-            "Membuat ide baru new",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "test",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang"))
-
-        return suggestionSystem
-    }
-
-    fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
+    /*fun generateDummyDetailSuggestionSystem(): SuggestionSystemCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
         categorySuggestionItem.add(CategoryImprovementItem(id = 6, category = "Meningkatkan Penjualan", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 8, category = "Menurunkan Biaya", checked = true))
@@ -123,11 +49,15 @@ object DataDummySs {
             statusProposal = StatusProposalItem(
                 id = 1,
                 status = "Proposal Dibuat"
-            )
+            ),
+            headId = 30,
+            userId = 5,
+            orgId = 84,
+            warehouseId = 89
         )
-    }
+    }*/
 
-   fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
+    /*fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
        val rewardArray = ArrayList<RewardItem?>()
        rewardArray.add(RewardItem(hadiahId = 1,hadiah = "PULSA 100K",nilai = 10000,keterangan = "Penukaran"))
 
@@ -143,299 +73,15 @@ object DataDummySs {
           position = "STAFF",
           date = "2021-08-06",
           description = "Test Data",
-          reward = rewardArray
+          reward = rewardArray,
+           headId = 30,
+           userId = 5,
+           orgId = 84,
+           warehouseId = 89
        )
-   }
+   }*/
 
-    /*fun generateDummyTeamMember(): ArrayList<TeamMemberItem> {
-
-        val suggestionSystem = ArrayList<TeamMemberItem>()
-
-        suggestionSystem.add(TeamMemberItem(
-            "Jery",
-            "ICT",
-            "Membuat dokumentasi"))
-        suggestionSystem.add(TeamMemberItem(
-            "Tom",
-            "ICT",
-            "Implementasi Project"))
-        suggestionSystem.add(TeamMemberItem(
-            "Budi",
-            "ICT",
-            "Menyiapkan peralatan"))
-        suggestionSystem.add(TeamMemberItem(
-            "Anto",
-            "ICT",
-            "Menyiapkan peralatan"))
-        suggestionSystem.add(TeamMemberItem(
-            "User",
-            "ICT",
-            "Menyiapkan peralatan"))
-
-
-        return suggestionSystem
-    }*/
-
-    fun generateDummyApproval(): ArrayList<ApprovalModel> {
-
-        val approval = ArrayList<ApprovalModel>()
-
-        approval.add(ApprovalModel(
-            1,
-            "PI-0000/08/2021/0100",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA PI",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "PI",
-            "User Development",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "2021-08-06 17:19:22"))
-        approval.add(ApprovalModel(
-            2,
-            "SS-0000/08/2021/0002",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "SS",
-            "User Development",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "2021-08-06 17:19:22"))
-        approval.add(ApprovalModel(
-            3,
-            "CP-0001/05/2021/0010",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA CP",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "CP",
-            "User Development",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "2021-08-06 17:19:22"))
-        approval.add(ApprovalModel(
-            4,
-            "SS-0000/08/2021/0004",
-            "PEMBUATAN SISTEM SARN FASTRATA BUANA",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "SS",
-            "User Development",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "2021-08-06 17:19:22"))
-        approval.add(ApprovalModel(
-            5,
-            "SS-0000/08/2021/0005",
-            "PEMBUATAN SISTEM SARAN FASTRATA BUANA",
-            StatusProposalItem(
-                6, "Implementasi Project"
-            ),
-            "SS",
-            "User Development",
-            "PUSAT",
-            "FBPST - Gd Barang Dagang",
-            "2021-08-06 17:19:22"))
-
-        return approval
-    }
-
-    fun generateDummyChangePointList(): ArrayList<ChangePointModel>{
-        val changepoint = ArrayList<ChangePointModel>()
-
-
-
-        return changepoint
-    }
-
-    fun generateDummyProjectImprovementList(): ArrayList<ProjectImprovementModel>{
-        val projectimprov = ArrayList<ProjectImprovementModel>()
-
-        projectimprov.add(
-            ProjectImprovementModel(
-                1,
-            "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    6, "Implementasi Project"
-                ),
-            "Aktif",
-            "Perbaikan",
-            "Pusat",
-            "FDTB",
-            "2021-08-06 17:19:22",
-            "John"
-        ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                2,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    10, "Project Valid"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                3,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    6, "Implementasi Project"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                4,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    3, "Proposal Dalam Pengecekan"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                5,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    6, "Implementasi Project"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                6,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    6, "Implementasi Project"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                7,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    6, "Implementasi Project"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        projectimprov.add(
-            ProjectImprovementModel(
-                8,
-                "PI-0001/08/2021/0005",
-                StatusProposalItem(
-                    6, "Implementasi Project"
-                ),
-                "Aktif",
-                "Perbaikan",
-                "Pusat",
-                "FDTB",
-                "2021-08-06 17:19:22",
-                "John"
-            ))
-        return projectimprov
-    }
-
-//    fun generateMutasiDummy(): ArrayList<MutasiModel>{
-//        val mutasiData = ArrayList<MutasiModel>()
-//
-//        mutasiData.add(
-//            MutasiModel(
-//            "28-August-21",
-//            "PI",
-//            "PI-0001/08/2021/0005",
-//            "Proposal Disubmit\"",
-//            "Proposal Disubmit",
-//            "Setyo Wira Pratomo",
-//            50000,
-//            "DB"
-//        ))
-//
-//        mutasiData.add(
-//            MutasiModel(
-//                "28-August-21",
-//                "RP",
-//                "RP-0000/08/2021/0001",
-//                "Selesai",
-//                "Oke pulsa akan dikirimkan ke nomor bapak[PULSA 10K]",
-//                "Setyo Wira Pratomo",
-//                10000,
-//                "KR"
-//            ))
-//
-//        mutasiData.add(
-//            MutasiModel(
-//                "28-August-21",
-//                "PI",
-//                "PI-0001/08/2021/0005",
-//                "Laporan Akhir disubmit",
-//                "Laporan Akhir disubmit",
-//                "Tyas Febriatmoko",
-//                10000,
-//                "DB"
-//            ))
-//
-//        mutasiData.add(
-//            MutasiModel(
-//                "29-August-21",
-//                "PI",
-//                "PI-0001/08/2021/0008",
-//                "Revisi Laporan Akhir",
-//                "revv",
-//                "Tyas Febriatmoko",
-//                50000,
-//                "DB"
-//            ))
-//
-//        mutasiData.add(
-//            MutasiModel(
-//                "30-August-21",
-//                "PI",
-//                "PI-0001/08/2021/0005",
-//                "Project Valid",
-//                "ok",
-//                "Tyas Febriatmoko",
-//                100,
-//                "DB"
-//            ))
-//        return mutasiData
-//    }
-
-    fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
+    /*fun generateDummyDetailProjectImprovementList(): ProjectImprovementCreateModel {
         val categorySuggestionItem = ArrayList<CategoryImprovementItem?>()
         categorySuggestionItem.add(CategoryImprovementItem(id = 6, category = "Meningkatkan Penjualan", checked = true))
         categorySuggestionItem.add(CategoryImprovementItem(id = 8, category = "Menurunkan Biaya", checked = true))
@@ -512,70 +158,14 @@ object DataDummySs {
             statusProposal = StatusProposalItem(
                 id = 7,
                 status = "Laporan Akhir Di Submit"
-            )
+            ),
+            headId = 30,
+            userId = 5,
+            orgId = 84,
+            warehouseId = 89,
+            nik = "devl"
         )
-    }
-
-    fun generateDummyNameMember(): ArrayList<MemberNameItem> {
-        val data = ArrayList<MemberNameItem>()
-        data.add(MemberNameItem(name = "budi", id = 1))
-        data.add(MemberNameItem(name = "Jerry", id = 2))
-        data.add(MemberNameItem(name = "Tom", id = 3))
-        data.add(MemberNameItem(name = "Ali", id = 4))
-        data.add(MemberNameItem(name = "Ahmad", id = 5))
-        return data
-    }
-
-    fun generateDummyDepartmentMember(): ArrayList<MemberDepartmentItem> {
-        val data = ArrayList<MemberDepartmentItem>()
-        data.add(MemberDepartmentItem(department = "ICT", id = 1))
-        data.add(MemberDepartmentItem(department = "Accounting", id = 2))
-        data.add(MemberDepartmentItem(department = "HR", id = 3))
-        data.add(MemberDepartmentItem(department = "Tax", id = 4))
-        data.add(MemberDepartmentItem(department = "Marketing", id = 5))
-        return data
-    }
-
-    fun generateDummyTaskMember(): ArrayList<MemberTaskItem> {
-        val data = ArrayList<MemberTaskItem>()
-        data.add(MemberTaskItem(task = "Ketua", id = 1))
-        data.add(MemberTaskItem(task = "Dokumentasi", id = 2))
-        data.add(MemberTaskItem(task = "Anggota", id = 3))
-        return data
-    }
-
-    fun generateDummyCategorySuggestion(): ArrayList<CategoryImprovementItem?> {
-        val data = ArrayList<CategoryImprovementItem?>()
-        data.add(
-            CategoryImprovementItem(
-            id = 1, category = "Meningkatkan Penjualan", false
-        )
-        )
-        data.add(
-            CategoryImprovementItem(
-            id = 2, category = "Menurunkan Biaya", false
-        )
-        )
-        data.add(
-            CategoryImprovementItem(
-            id = 3, category = "Mencegah Pelanggaran atau Kecurangan", false
-        )
-        )
-        data.add(
-            CategoryImprovementItem(
-            id = 4, category = "Menyederhanakan Proses Kerja", false
-        )
-        )
-        return data
-    }
-
-    fun generateDummyReward(): ArrayList<GiftItem> {
-        val data = ArrayList<GiftItem>()
-        data.add(GiftItem(1, hadiah = "PULSA 50K",1000))
-        data.add(GiftItem(2, hadiah = "PULSA 100K",5000))
-        data.add(GiftItem(3, hadiah = "IPHONE 13",10000))
-        return data
-    }
+    }*/
 
     fun generateDummyApprovalHistoryStatus(): ArrayList<ApprovalHistoryStatusModel> {
         val data = ArrayList<ApprovalHistoryStatusModel>()

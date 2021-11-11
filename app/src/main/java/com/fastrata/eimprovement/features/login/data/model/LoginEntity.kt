@@ -16,7 +16,7 @@ data class LoginEntity(
     @SerializedName("FULL_NAME")
     val FULL_NAME: String,
     @SerializedName("HEAD_ID")
-    val DIRECT_MANAGER_ID: String?,
+    val DIRECT_MANAGER_ID: Int?,
     @SerializedName("HEAD_NAME")
     val DIRECT_MANAGER: String?,
     @SerializedName("EMAIL")

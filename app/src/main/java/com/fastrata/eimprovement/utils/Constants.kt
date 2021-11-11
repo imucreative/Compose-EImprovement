@@ -19,6 +19,12 @@ const val HAWK_DEVICE_NAME = "device_name"
 const val HAWK_SUCCESS_LOGIN = "succes"
 const val HAWK_BALANCE = "balance"
 
+// MENU --------------------------------------------------------------------------
+const val MENU_DASHBOARD = "DASHBOARD"
+const val MENU_LIST_APPROVAL = "DAFTAR PERSETUJUAN"
+const val MENU_SS = "SISTEM SARAN (SS)"
+const val MENU_PI = "PROJECT IMPROVEMENT (PI)"
+const val MENU_CP = "PENUKARAN POIN"
 
 // SUGGESTION SYSTEM (SS) --------------------------------------------------------------------------
 const val SS = "SS"

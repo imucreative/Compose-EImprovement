@@ -35,6 +35,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private var action: String? = ""
     private var cpNo: String? = ""
     var intTotal : Int = 0
+    var intSaldo : Int = 0
     private var listRewardItem : List<GiftItem>? = null
     private lateinit var selectedReward: GiftItem
 
@@ -52,9 +53,10 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateCP(source)
+        intSaldo = HawkUtils().getDataBalance()
 
         if (data?.reward != null){
-            checkBalance()
+            totalBalance()
         }
 
         changesRewardViewModel.setChangeRewardPoint(source)
@@ -88,7 +90,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (action == APPROVE) {
+        if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
     }
@@ -158,7 +160,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private fun initList(reward: ArrayList<RewardItem?>?) {
         rewardAdapter.setChangeRewardCallback(object : ChangesRewardCallback {
             override fun removeClicked(data: RewardItem) {
-                if (action != APPROVE) {
+                if ((action != APPROVE) && (action != DETAIL)) {
 
                     reward?.remove(data)
                     changesRewardViewModel.updateReward(reward)
@@ -168,7 +170,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         }
                     })
 
-                    val total = checkBalance()
+                    val total = totalBalance()
                     changesRewardViewModel.setTotalReward(total)
                     changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner, {
                         binding.totalReward.text = it.toString()
@@ -184,7 +186,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         })
     }
 
-    private fun checkBalance(): Int {
+    private fun totalBalance(): Int {
         if(data?.reward != null){
             val itemCount = data?.reward!!.map { values ->
                 values!!.nilai
@@ -202,7 +204,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             addReward.setOnClickListener {
                 val reward = hadiahCp.text.toString()
                 val desc = keteranganCp.text.toString()
-
+                Timber.e("saldo & total : $intSaldo / $intTotal")
                 when{
                     reward.isEmpty() ->{
                         SnackBarCustom.snackBarIconInfo(
@@ -218,6 +220,12 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         keteranganCp.requestFocus()
                     }
+                    intSaldo <= intTotal ->{
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            "Saldo Kurang",
+                            R.drawable.ic_close, R.color.red_500)
+                    }
                     else -> {
                         val add = RewardItem(
                             hadiahId = selectedReward.id,
@@ -228,7 +236,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
                         changesRewardViewModel.addReward(add, data?.reward)
 
-                        val total = checkBalance()
+                        val total = totalBalance()
                         changesRewardViewModel.setTotalReward(total)
                         changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner,{
                             totalReward.text = it.toString()
@@ -250,14 +258,16 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                     override fun onDataPass(): Boolean {
                     var stat : Boolean
                     binding.apply {
-                        stat = if (data?.reward?.size == 0) {
-                            SnackBarCustom.snackBarIconInfo(
+                        when{
+                            data?.reward?.size == 0 ->{
+                                SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.desc_empty),
                                 R.drawable.ic_close, R.color.red_500)
-                            false
-                        } else {
-                            HawkUtils().setTempDataCreateCp(
+                                stat = false
+                            }
+                            else -> {
+                                HawkUtils().setTempDataCreateCp(
                                 cpNo = data?.cpNo,
                                 name = data?.name,
                                 nik = data?.nik,
@@ -270,9 +280,14 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
-                                source = source
-                            )
-                            true
+                                statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
+                                source = source)
+                                stat = true
+                            }
                         }
                     }
               return stat

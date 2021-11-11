@@ -1,5 +1,7 @@
 package com.fastrata.eimprovement.features.dashboard.ui
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -37,7 +39,6 @@ class DashboardFragment: Fragment(), Injectable {
     private lateinit var notification: HelperNotification
     private lateinit var datePicker: DatePickerCustom
     private var greetings: String = ""
-    private var totalBalance: String = "0"
     private var userId : Int = 0
     private lateinit var balanceViewModel : BalanceCreateViewModel
 
@@ -94,6 +95,7 @@ class DashboardFragment: Fragment(), Injectable {
         }
 
         initToolbar()
+        initData(requireActivity())
         initComponent(requireActivity())
         return binding.root
     }
@@ -103,6 +105,55 @@ class DashboardFragment: Fragment(), Injectable {
         toolbar.setNavigationIcon(R.drawable.ic_menu)
 
         setToolbar(toolbar, greetings)
+    }
+
+    private fun initData(activity: FragmentActivity){
+        val menu = HawkUtils().getDataLogin().ROLES
+        when {
+            !Tools.isMenuEligible(activity,menu, MENU_LIST_APPROVAL) -> {
+                binding.btnListApproval.isEnabled = false
+                binding.btnListApproval.isClickable = false
+                binding.btnListApproval.isFocusable = false
+                binding.btnListApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                binding.menuApproval.isEnabled = false
+                binding.menuApproval.isClickable = false
+                binding.menuApproval.isFocusable = false
+                binding.menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+            }
+            !Tools.isMenuEligible(activity,menu,MENU_SS) -> {
+                binding.btnSuggestionSystem.isEnabled = false
+                binding.btnSuggestionSystem.isClickable = false
+                binding.btnSuggestionSystem.isFocusable = false
+                binding.btnSuggestionSystem.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                binding.menuSuggestionSystem.isEnabled = false
+                binding.menuSuggestionSystem.isClickable = false
+                binding.menuSuggestionSystem.isFocusable = false
+                binding.menuSuggestionSystem.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+            }
+            !Tools.isMenuEligible(activity,menu, MENU_PI) -> {
+                binding.btnProjectImprovement.isEnabled = false
+                binding.btnProjectImprovement.isClickable = false
+                binding.btnProjectImprovement.isFocusable = false
+                binding.btnProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                binding.menuProjectImprovement.isEnabled = false
+                binding.menuProjectImprovement.isClickable = false
+                binding.menuProjectImprovement.isFocusable = false
+                binding.menuProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+            }
+            !Tools.isMenuEligible(activity,menu, MENU_CP) -> {
+                binding.btnChangePoint.isEnabled = false
+                binding.btnChangePoint.isClickable = false
+                binding.btnChangePoint.isFocusable = false
+                binding.btnChangePoint.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                binding.menuPointExchange.isEnabled = false
+                binding.menuPointExchange.isClickable = false
+                binding.menuPointExchange.isFocusable = false
+                binding.menuPointExchange.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+            }
+
+
+
+        }
     }
 
 
@@ -123,7 +174,6 @@ class DashboardFragment: Fragment(), Injectable {
                     }
                 })
             }*/
-
             btnListApproval.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
                 it.findNavController().navigate(direction)
@@ -148,26 +198,19 @@ class DashboardFragment: Fragment(), Injectable {
             menuApproval.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
                 it.findNavController().navigate(direction)
-
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuSuggestionSystem.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
                 it.findNavController().navigate(direction)
-
-                drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuProjectImprovement.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
                 it.findNavController().navigate(direction)
-
-                drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuPointExchange.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
                 it.findNavController().navigate(direction)
-
-                drawerLayout.closeDrawer(GravityCompat.START)
             }
 
         }

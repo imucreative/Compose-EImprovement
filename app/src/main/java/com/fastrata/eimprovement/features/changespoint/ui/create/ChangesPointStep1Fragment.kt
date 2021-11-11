@@ -25,6 +25,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     private var action: String? = ""
     private var cpNo: String? = ""
     private lateinit var datePicker: DatePickerCustom
+    private var intSaldo : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +40,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateCP(source)
+        intSaldo = HawkUtils().getDataBalance()
 
         return binding.root
     }
@@ -59,7 +61,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             if(data?.saldo == null){
                 saldo.text = Tools.doubleToRupiah("0".toDouble(),2)
             }else{
-                saldo.text = Tools.doubleToRupiah(data?.saldo.toString().toDouble(),2)
+                saldo.text = Tools.doubleToRupiah(intSaldo.toString().toDouble(),2)
             }
 
             cpNo.setText(data?.cpNo)
@@ -85,7 +87,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
 
             setData()
 
-            if(action == APPROVE){
+            if ((action == APPROVE) || (action == DETAIL)) {
                 disableForm()
             }
         }
@@ -140,6 +142,11 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                                 subBranch = data?.subBranch,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
+                                statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
                                 source = source
                             )
                             stat = true

@@ -105,7 +105,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         setData()
         setValidation()
 
-        if (action == APPROVE) {
+        if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
     }
@@ -263,7 +263,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
-                if (action != APPROVE) {
+                if ((action != APPROVE) && (action != DETAIL)) {
                     teamMember?.remove(data)
 
                     listTeamMemberViewModel.updateTeamMember(teamMember, source)

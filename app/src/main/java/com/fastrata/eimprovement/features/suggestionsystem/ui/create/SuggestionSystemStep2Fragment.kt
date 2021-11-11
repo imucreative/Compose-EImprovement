@@ -62,7 +62,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
         initComponent(binding)
 
-        if (ssAction == APPROVE) {
+        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
     }

@@ -131,7 +131,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
         initList(data?.attachment)
         setValidation()
 
-        if (ssAction == APPROVE) {
+        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
     }
@@ -151,7 +151,7 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
     private fun initList(listAttachment: ArrayList<AttachmentItem?>?) {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                if (ssAction != APPROVE) {
+                if ((ssAction != APPROVE)&&(ssAction != DETAIL)) {
                     activity?.let { activity ->
                         notification.shownotificationyesno(
                             activity,

@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
@@ -26,6 +27,13 @@ class HelperNotification {
 
     interface CallbackDismis{
         fun onDismiss()
+    }
+
+    interface CallbackList {
+        fun onView()
+        fun onEdit()
+        fun onImplementation()
+        fun onDelete()
     }
 
     fun showErrorDialog(activity: Activity, header :String, content : String) {
@@ -107,6 +115,52 @@ class HelperNotification {
             dialog.dismiss()
             if (listener != null)listener.onNotificationNo()
         }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
+    fun showListEdit(activity: Activity,header: String,view: Boolean,viewEdit : Boolean,viewImplementation : Boolean,viewDelete : Boolean,listener: CallbackList){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_list)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        (dialog.findViewById<View>(R.id.txt_title) as TextView).text = header
+        if (!view){
+            (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewEdit){
+            (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewImplementation){
+            (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewDelete){
+            (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
+        }
+        dialog.setCancelable(true)
+        (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onView()
+        }
+        (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onEdit()
+        }
+        (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onImplementation()
+        }
+
+        (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onDelete()
+        }
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
         dialog.show()
         dialog.window!!.attributes = lp
     }

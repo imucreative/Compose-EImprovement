@@ -66,6 +66,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         val argsIdCp    = args.idCp
         val argsCpNo    = args.cpNo
         val userId      = HawkUtils().getDataLogin().USER_ID
+        val orgId       = HawkUtils().getDataLogin().ORG_ID
+        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
+        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
 
         action = argsAction
 
@@ -74,7 +77,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         }
 
         when(argsAction) {
-            EDIT -> {
+            EDIT, DETAIL, APPROVE -> {
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
@@ -106,6 +109,11 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                         date = result.data?.data?.get(0)?.date,
                                         keterangan = result.data?.data?.get(0)?.description,
                                         rewardData = result.data?.data?.get(0)?.reward,
+                                        statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                        headId = headId,
+                                        userId = userId,
+                                        orgId = orgId,
+                                        warehouseId = warehouseId,
                                         source = CP_DETAIL_DATA
                                     )
 
@@ -142,32 +150,6 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 )
                 initToolbar(argsTitle)
                 initComponent()
-            }
-            APPROVE -> {
-                cpNo = argsCpNo
-
-                source = CP_DETAIL_DATA
-                viewModel.setChangePointDetail(argsCpNo)
-                viewModel.getChangePointDetail().observe(this,{ detailData ->
-                    HawkUtils().setTempDataCreateCp(
-                        id = detailData.id,
-                        cpNo = detailData.cpNo,
-                        saldo = detailData.saldo,
-                        name = detailData.name,
-                        nik = detailData.nik,
-                        branch = detailData.branch,
-                        subBranch = detailData.subBranch,
-                        departement = detailData.department,
-                        position = detailData.position,
-                        date = detailData.date,
-                        keterangan = detailData.description,
-                        rewardData = detailData.reward,
-                        source = CP_DETAIL_DATA
-                    )
-
-                    initToolbar(argsTitle)
-                    initComponent()
-                })
             }
         }
 
@@ -279,7 +261,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if (action == APPROVE) {
+                    if ((action == APPROVE) || (action == DETAIL)) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
                         }
