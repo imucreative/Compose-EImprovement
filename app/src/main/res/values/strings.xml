@@ -170,6 +170,8 @@
     <string name="new_pass_empty">Masukan Password Baru Anda</string>
     <string name="conf_pass_empty">Masukan Password Konfirmasi Anda</string>
     <string name="not_match_conf_password">Pastikan Password Konfirmasi sama dengan Password Baru Anda</string>
+    <string name="ketua_not_found">Pastikan Task Ketua ditambahkan di awal</string>
+    <string name="maximal_team">Maksimal anggota hanya 2 orang</string>
 
 
     <!-- Change Point -->
