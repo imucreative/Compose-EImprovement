@@ -32,6 +32,7 @@ class HelperNotification {
     interface CallbackList {
         fun onView()
         fun onEdit()
+        fun onImplementation()
         fun onDelete()
     }
 
@@ -118,20 +119,25 @@ class HelperNotification {
         dialog.window!!.attributes = lp
     }
 
-    fun showListEdit(activity: Activity,header: String,viewEdit : Boolean,viewDelete : Boolean,listener: CallbackList){
+    fun showListEdit(activity: Activity,header: String,view: Boolean,viewEdit : Boolean,viewImplementation : Boolean,viewDelete : Boolean,listener: CallbackList){
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_list)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.txt_title) as TextView).text = header
+        if (!view){
+            (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).visibility = View.GONE
+        }
         if (!viewEdit){
             (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewImplementation){
+            (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).visibility = View.GONE
         }
         if (!viewDelete){
             (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
         }
         dialog.setCancelable(true)
-
         (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onView()
@@ -140,6 +146,11 @@ class HelperNotification {
             dialog.dismiss()
             if (listener != null)listener.onEdit()
         }
+        (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onImplementation()
+        }
+
         (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onDelete()
