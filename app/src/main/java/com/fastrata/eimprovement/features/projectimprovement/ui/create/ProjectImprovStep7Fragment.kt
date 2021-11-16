@@ -320,6 +320,20 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
                     }
+                    data?.teamMember.isNullOrEmpty() && task != "Ketua"->{
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.ketua_not_found),
+                            R.drawable.ic_close, R.color.red_500)
+                        memberTask.requestFocus()
+                    }
+                    data?.teamMember?.size.isGreaterThan(1) ->{
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.maximal_team),
+                            R.drawable.ic_close, R.color.red_500)
+                        memberTask.requestFocus()
+                    }
                     else -> {
                         val memberNameObj = MemberNameItem(
                             id = selectedMember.id, name = selectedMember.name
