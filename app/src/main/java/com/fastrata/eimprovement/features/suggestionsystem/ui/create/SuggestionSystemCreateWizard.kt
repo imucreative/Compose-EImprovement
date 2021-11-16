@@ -68,6 +68,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         val argsAction  = args.action
         val argsIdSs    = args.idSs
         val argsSsNo    = args.ssNo
+        val statusProposal = args.statusProposal
+
         val userId      = HawkUtils().getDataLogin().USER_ID
         val orgId       = HawkUtils().getDataLogin().ORG_ID
         val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
@@ -156,6 +158,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,
+                    statusProposal = statusProposal,
                     source = SS_CREATE
                 )
 

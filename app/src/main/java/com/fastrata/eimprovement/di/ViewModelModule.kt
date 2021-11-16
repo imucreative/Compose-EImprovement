@@ -84,6 +84,12 @@ abstract class ViewModelModule {
     @ViewModelKey(StatusProposalViewModel::class)
     abstract fun bindListMasterDataStatusProposalViewModel(viewModel: StatusProposalViewModel): ViewModel
 
+    // Master Check Period
+    @Binds
+    @IntoMap
+    @ViewModelKey(CheckPeriodViewModel::class)
+    abstract fun bindCheckPeriodViewModel(viewModel: CheckPeriodViewModel): ViewModel
+
     // Master Branch
     @Binds
     @IntoMap

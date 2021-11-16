@@ -14,15 +14,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class StatusProposalViewModel @Inject constructor(private val repository: GlobalRemoteRepository): ViewModel() {
-    // === Status proposal
-    private val _listStatusProposal = MutableLiveData<Event<LiveData<Result<ResultsResponse<StatusProposalItem>>>>>()
-    val getStatusProposalItem: LiveData<Event<LiveData<Result<ResultsResponse<StatusProposalItem>>>>> get() = _listStatusProposal
+class CheckPeriodViewModel @Inject constructor(private val repository: GlobalRemoteRepository): ViewModel() {
+    // === Check Period for Status proposal
+    private val _checkPeriod = MutableLiveData<Event<LiveData<Result<ResultsResponse<StatusProposalItem>>>>>()
+    val getCheckPeriodItem: LiveData<Event<LiveData<Result<ResultsResponse<StatusProposalItem>>>>> get() = _checkPeriod
 
-    fun setStatusProposal() {
+    fun setCheckPeriod(typeProposal: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListStatusProposal() }
-            _listStatusProposal.value = Event(result)
+            val result = withContext(Dispatchers.Default) { repository.observeCheckPeriod(typeProposal) }
+            _checkPeriod.value = Event(result)
         }
     }
 }

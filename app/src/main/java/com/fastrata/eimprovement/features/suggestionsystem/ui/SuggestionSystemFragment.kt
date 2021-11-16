@@ -25,6 +25,7 @@ import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
 import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckPeriodViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -43,6 +44,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var listSsViewModel: SuggestionSystemViewModel
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
+    private lateinit var checkPeriodViewModel: CheckPeriodViewModel
     private lateinit var masterBranchViewModel: BranchViewModel
 
     private lateinit var adapter: SuggestionSystemAdapter
@@ -68,6 +70,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private var roleName: String = ""
     private val sdf = SimpleDateFormat("dd-MM-yyyy")
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var notification: HelperNotification
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +84,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         listSsViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
         masterBranchViewModel = injectViewModel(viewModelFactory)
+        checkPeriodViewModel = injectViewModel(viewModelFactory)
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
@@ -181,10 +185,14 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             })
 
             create.setOnClickListener {
-                val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                    toolbarTitle = "Create Suggestion System", action = ADD, idSs = 0, ssNo = "", type = ""
-                )
-                it.findNavController().navigate(direction)
+                try {
+                    checkPeriodViewModel.setCheckPeriod(SS)
+
+                    getStatusCheckPeriod()
+                } catch (e: Exception){
+                    Timber.e("Error setCheckPeriod : $e")
+                    Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                }
             }
 
             swipe.setOnRefreshListener {
@@ -298,6 +306,58 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         Result.Status.ERROR -> {
                             binding.edtStatusProposal.isEnabled = false
                             Timber.d("###-- Error get status proposal")
+                        }
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun getStatusCheckPeriod(){
+        notification = HelperNotification()
+        checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get CheckPeriod")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+                            val statusProposal = result.data?.data?.get(0)
+                            if (statusProposal?.id == 11) {
+                                notification.shownotificationyesno(
+                                    requireActivity(),
+                                    "",
+                                    resources.getString(R.string.title_past_period),
+                                    object : HelperNotification.CallBackNotificationYesNo {
+                                        override fun onNotificationNo() {
+
+                                        }
+
+                                        override fun onNotificationYes() {
+                                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                                toolbarTitle = "Create Suggestion System", action = ADD, idSs = 0, ssNo = "", type = "", statusProposal = statusProposal
+                                            )
+                                            requireView().findNavController().navigate(direction)
+                                        }
+                                    }
+                                )
+                            } else {
+                                val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                    toolbarTitle = "Create Suggestion System", action = ADD, idSs = 0, ssNo = "", type = "", statusProposal = statusProposal
+                                )
+                                requireView().findNavController().navigate(direction)
+                            }
+
+                            Timber.d("###-- Success get CheckPeriod")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Timber.d("###-- Error get CheckPeriod")
                         }
 
                     }
@@ -428,21 +488,21 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     viewDelete = true,object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                                toolbarTitle = "View Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onImplementation() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = ""
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }

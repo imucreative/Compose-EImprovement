@@ -50,4 +50,8 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
     suspend fun removeAttachment(attachmentId: Int, fileName: String, type: String) = getResult {
         service.removeAttachment(attachmentId, fileName, type)
     }
+
+    suspend fun requestCheckPeriod(typeProposal: String) = getResult {
+        service.checkPeriod(typeProposal)
+    }
 }

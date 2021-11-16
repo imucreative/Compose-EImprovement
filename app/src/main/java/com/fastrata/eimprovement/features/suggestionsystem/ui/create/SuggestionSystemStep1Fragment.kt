@@ -137,11 +137,9 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
                             categoryAdapter.setListCategoryImprovement(result.data?.data, listCategory, ssAction!!)
                             listCategory.map { checkList ->
                                 if (checkList?.id == 0) {
@@ -156,7 +154,6 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                             Timber.d("###-- Success get master item getCategory")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
                             Timber.d("###-- Error get master item getCategory")
                         }
 
@@ -233,6 +230,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                                 listCategory = listCategory,
                                 name = name.text.toString(),
                                 nik = nik.text.toString(),
+                                branchCode = data?.branchCode,
                                 branch = branch.text.toString(),
                                 subBranch = data?.subBranch,
                                 department = department.text.toString(),

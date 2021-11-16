@@ -64,6 +64,9 @@ interface AppService {
     @GET("master/subbranch/{ORG_ID}")
     suspend fun listSubBranch(@Path("ORG_ID") orgId: Int): Response<ResultsResponse<SubBranchItem>>
 
+    @GET("transaction/checkperiod/{TYPE_PROPOSAL}")
+    suspend fun checkPeriod(@Path("TYPE_PROPOSAL") typeProposal: String): Response<ResultsResponse<StatusProposalItem>>
+
 
     // Suggestion System
     @POST("ss/list")
@@ -147,7 +150,6 @@ interface AppService {
 
     @DELETE("transaction/deletefiles")
     suspend fun removeAttachment(
-        //@Body attachment: AttachmentItem,
         @Query("attach_id") attachmentId: Int,
         @Query("file_name") fileName: String,
         @Query("type") type: String

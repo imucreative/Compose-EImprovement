@@ -133,6 +133,7 @@
     <string name="title_empty">Silahkan Isi Kolom Judul Dengan Sesuai</string>
     <string name="reward_empty">Silahkan Tambahkan Hadiah yang ingin Di Tukarkan</string>
     <string name="submit">Simpan</string>
+    <string name="title_past_period">Proposal Dibuat telah melewati periode</string>
     <string name="submit_desc">Apakah Data yang Anda Kirim Sudah Sesuai?</string>
     <string name="pi_saved">Data Project Improvement Tersimpan</string>
     <string name="ss_saved">Data Sistem Saran Tersimpan</string>
@@ -170,7 +171,7 @@
     <string name="new_pass_empty">Masukan Password Baru Anda</string>
     <string name="conf_pass_empty">Masukan Password Konfirmasi Anda</string>
     <string name="not_match_conf_password">Pastikan Password Konfirmasi sama dengan Password Baru Anda</string>
-    <string name="ketua_not_found">Pastikan Task Ketua ditambahkan di awal</string>
+    <string name="ketua_not_found">Pastikan Ketua ditambahkan di awal</string>
     <string name="maximal_team">Maksimal anggota hanya 2 orang</string>
 
 

@@ -49,4 +49,8 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     fun observeRemoveAttachment(attachmentId: Int, fileName: String, type: String) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.removeAttachment(attachmentId, fileName, type) }
     )
+
+    fun observeCheckPeriod(typeProposal: String) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestCheckPeriod(typeProposal) }
+    )
 }

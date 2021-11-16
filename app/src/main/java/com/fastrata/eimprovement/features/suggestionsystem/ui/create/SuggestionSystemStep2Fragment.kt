@@ -325,6 +325,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                 listCategory = data?.categoryImprovement,
                                 name = data?.name,
                                 nik = data?.nik,
+                                branchCode = data?.branchCode,
                                 branch = data?.branch,
                                 subBranch = data?.subBranch,
                                 department = data?.department,
