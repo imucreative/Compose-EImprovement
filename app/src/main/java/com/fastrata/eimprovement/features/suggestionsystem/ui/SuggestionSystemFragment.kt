@@ -91,22 +91,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
-        try {
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName = HawkUtils().getDataLogin().ROLE_NAME
-
-            val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                userId, limit, page, roleName,
-                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
-                warehouseId = 0, startDate = "", endDate = ""
-            )
-
-            listSsViewModel.setListSs(listSsRemoteRequest)
-        } catch (e: Exception){
-            Timber.e("Error setListSs : $e")
-            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-        }
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName = HawkUtils().getDataLogin().ROLE_NAME
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -126,6 +113,23 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.notifyDataSetChanged()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            adapter.clear()
+            val listSsRemoteRequest = SuggestionSystemRemoteRequest(
+                userId, limit, page, roleName,
+                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listSsViewModel.setListSs(listSsRemoteRequest)
+        } catch (e: Exception){
+            Timber.e("Error setListSs : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -241,6 +245,11 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getListSs()
+    }
+
     private fun getListSs() {
         isLoading = true
 
@@ -280,9 +289,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             isLoading = false
                             Timber.d("###-- Error get List SS")
                         }
-
                     }
-
                 }
             })
         }

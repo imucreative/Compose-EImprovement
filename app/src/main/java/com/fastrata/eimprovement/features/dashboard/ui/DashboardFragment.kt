@@ -1,7 +1,5 @@
 package com.fastrata.eimprovement.features.dashboard.ui
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -10,7 +8,6 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.fastrata.eimprovement.R
-
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
 import androidx.lifecycle.ViewModelProvider
@@ -18,17 +15,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentDashboardBinding
-import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
-
-
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
-import java.text.MessageFormat
 import javax.inject.Inject
 
 class DashboardFragment: Fragment(), Injectable {
@@ -57,7 +50,6 @@ class DashboardFragment: Fragment(), Injectable {
         userId = HawkUtils().getDataLogin().USER_ID
 
         datePicker = DatePickerCustom(
-
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = true, parentFragmentManager
         )
@@ -75,15 +67,20 @@ class DashboardFragment: Fragment(), Injectable {
                                 HelperLoading.displayLoadingWithText(requireContext(),"",false)
                                 Timber.d("###-- Loading get balance")
                             }
-                            Result.Status.SUCCESS ->{
+                            Result.Status.SUCCESS -> {
                                 HelperLoading.hideLoading()
                                 if (result.data?.data?.size == 0){
                                     HawkUtils().setDataBalance(0)
                                     binding.saldoTxt.text = Tools.doubleToRupiah("0".toDouble(),2)
                                 }else{
                                     HawkUtils().setDataBalance(result.data!!.data[0].total)
-                                    binding.saldoTxt.text = Tools.doubleToRupiah(result.data!!.data[0].total.toDouble(),2)
+                                    binding.saldoTxt.text = Tools.doubleToRupiah(result.data.data[0].total.toDouble(),2)
                                 }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(requireContext(),"Error : ${result.data?.message}",Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Loading error balance")
                             }
                         }
                     }
@@ -160,20 +157,7 @@ class DashboardFragment: Fragment(), Injectable {
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {
             welcome.text = greetings
-//            linearSaldo.setOnClickListener {
-//                notification.showNotification(activity,resources.getString(R.string.point_balanca), Tools.doubleToRupiah("500000".toDouble(),2))
-//            }
-            /*filterActivityDate.setOnClickListener {
-                datePicker.showDialog(object : DatePickerCustom.Callback {
-                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
-                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-                        val mon = month + 1
-                        val monthStr = if (mon < 10) "0$mon" else "$mon"
 
-                        Toast.makeText(activity, "$dayStr-$monthStr-$year", Toast.LENGTH_LONG).show()
-                    }
-                })
-            }*/
             btnListApproval.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
                 it.findNavController().navigate(direction)

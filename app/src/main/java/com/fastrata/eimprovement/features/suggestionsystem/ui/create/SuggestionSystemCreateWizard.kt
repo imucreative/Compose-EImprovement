@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -24,6 +22,7 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusSsFragment
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -34,6 +33,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 import javax.inject.Inject
+import android.view.View.*
 
 class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
     @Inject
@@ -123,10 +123,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         teamMember = result.data?.data?.get(0)?.teamMember,
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                        headId = headId,
-                                        userId = userId,
-                                        orgId = orgId,
-                                        warehouseId = warehouseId,
+                                        headId = result.data?.data?.get(0)?.headId,
+                                        userId = result.data?.data?.get(0)?.userId,
+                                        orgId = result.data?.data?.get(0)?.orgId,
+                                        warehouseId = result.data?.data?.get(0)?.warehouseId,
                                         source = SS_DETAIL_DATA
                                     )
 
@@ -159,6 +159,10 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,
                     statusProposal = statusProposal,
+                    headId = headId,
+                    userId = userId,
+                    orgId = orgId,
+                    warehouseId = warehouseId,
                     source = SS_CREATE
                 )
 
@@ -184,7 +188,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
             }
 
             if (currentStep == 1) {
-                lytBack.visibility = View.INVISIBLE
+                lytBack.visibility = INVISIBLE
             }
 
             bottomProgressDots(currentStep)
@@ -322,20 +326,65 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                             override fun onNotificationYes() {
                                 val gson = Gson()
-                                val data = gson.toJson(HawkUtils().getTempDataCreateSs(source))
-                                println("### Data form input : $data")
-                                Toast.makeText(
-                                    this@SuggestionSystemCreateWizard,
-                                    resources.getString(R.string.ss_saved),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                finish()
+                                val data = HawkUtils().getTempDataCreateSs(source)
+                                val convertToJson = gson.toJson(data)
+
+                                println("### Data form input : $convertToJson")
+
+                                submit(data!!)
                             }
                         }
                     )
                 }
                 // }
             }
+        }
+    }
+
+    private fun submit(data: SuggestionSystemCreateModel){
+        viewModel.setPostSubmitCreateSs(data)
+
+        viewModel.postSubmitCreateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
+            resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@SuggestionSystemCreateWizard,"",false)
+                            Timber.d("###-- Loading postSubmitCreateSs")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@SuggestionSystemCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateSs(source)
+
+                            Timber.d("###-- Success postSubmitCreateSs")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@SuggestionSystemCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error postSubmitCreateSs")
+                        }
+
+                    }
+                }
+            })
         }
     }
 

@@ -429,7 +429,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     viewDelete = true,object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Edit Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -443,7 +443,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onImplementation() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Edit Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
                             )
                             requireView().findNavController().navigate(direction)
                         }

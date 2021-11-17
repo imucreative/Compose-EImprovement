@@ -96,7 +96,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        binding.etFromStatus1.setText("$dayStr-$monthStr-$year")
+                        binding.etFromStatus1.setText("$year-$monthStr-$dayStr")
                         fromDate = sdf.parse(etFromStatus1.text.toString())
                         etToStatus1.text!!.clear()
                     }
@@ -108,7 +108,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        binding.etToStatus1.setText("$dayStr-$monthStr-$year")
+                        binding.etToStatus1.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(etToStatus1.text.toString())
                         if (etFromStatus1.text.isNullOrEmpty()){
                             SnackBarCustom.snackBarIconInfo(
@@ -134,7 +134,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        binding.etFromStatus2.setText("$dayStr-$monthStr-$year")
+                        binding.etFromStatus2.setText("$year-$monthStr-$dayStr")
                         fromDate = sdf.parse(etFromStatus2.text.toString())
                         etToStatus2.text!!.clear()
                     }
@@ -146,7 +146,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        binding.etToStatus2.setText("$dayStr-$monthStr-$year")
+                        binding.etToStatus2.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(etToStatus2.text.toString())
                         if (etFromStatus2.text.isNullOrEmpty()){
                             SnackBarCustom.snackBarIconInfo(
@@ -336,6 +336,10 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                 teamMember = data?.teamMember,
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
                                 source = source
                             )
                             stat = true

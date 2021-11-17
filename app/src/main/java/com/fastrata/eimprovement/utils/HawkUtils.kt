@@ -258,4 +258,8 @@ internal class HawkUtils {
             getDataDetailCp
         }
     }
+
+    fun removeDataCreateSs(source: String){
+        Hawk.delete(source)
+    }
 }

@@ -391,6 +391,10 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             teamMember = data?.teamMember,
                             attachment = data?.attachment,
                             statusProposal = data?.statusProposal,
+                            headId = data?.headId,
+                            userId = data?.userId,
+                            orgId = data?.orgId,
+                            warehouseId = data?.warehouseId,
                             source = source
                         )
                         true

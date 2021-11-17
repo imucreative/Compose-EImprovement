@@ -10,6 +10,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.SsRemoteReposito
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemResponseModel
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +38,17 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
         viewModelScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.Default) { repository.observeDetailSs(idSs, userId) }
             _detailSs.value = Event(result)
+        }
+    }
+
+    // === Post Submit Create SS
+    private val _postSubmitCreateSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemResponseModel>>>>>()
+    val postSubmitCreateSs: LiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemResponseModel>>>>> get() = _postSubmitCreateSs
+
+    fun setPostSubmitCreateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreateSs(suggestionSystemCreateModel) }
+            _postSubmitCreateSs.value = Event(result)
         }
     }
 }
