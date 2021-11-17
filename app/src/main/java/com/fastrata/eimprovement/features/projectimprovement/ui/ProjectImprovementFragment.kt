@@ -423,13 +423,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementModel) {
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
-                    view = true,
-                    viewEdit = true,
-                    viewImplementation = true,
-                    viewDelete = true,object : HelperNotification.CallbackList{
+                    view = data.isView,
+                    viewEdit = data.isEdit,
+                    viewImplementation = data.isView,
+                    viewDelete = data.isDelete,
+                    object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Edit Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -443,7 +444,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onImplementation() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Edit Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Implement Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -452,8 +453,6 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
                         }
                     })
-
-
             }
         })
 

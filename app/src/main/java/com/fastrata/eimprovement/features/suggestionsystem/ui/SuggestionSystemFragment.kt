@@ -489,10 +489,11 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             override fun onItemClicked(data: SuggestionSystemModel) {
 
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
-                    view = true,
-                    viewEdit = true,
-                    viewImplementation = true,
-                    viewDelete = true,object : HelperNotification.CallbackList{
+                    view = data.isView,
+                    viewEdit = data.isEdit,
+                    viewImplementation = data.isView,
+                    viewDelete = data.isDelete,
+                    object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
                                 toolbarTitle = "View Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
