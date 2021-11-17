@@ -387,7 +387,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ProjectImprovementCreateWizard,
-                        resources.getString(R.string.submit),
+                        resources.getString(R.string.simpan),
                         resources.getString(R.string.submit_desc),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {

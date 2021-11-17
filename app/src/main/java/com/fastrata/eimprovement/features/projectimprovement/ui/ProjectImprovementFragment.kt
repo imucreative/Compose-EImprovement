@@ -425,9 +425,13 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
                     view = data.isView,
                     viewEdit = data.isEdit,
-                    viewImplementation = data.isView,
+                    viewSubmit = data.isSubmit,
+                    viewImplementation = data.isImplementation,
+                    viewCheck = data.isCheck,
+                    viewSubmitLaporan = data.isSubmitlaporan,
+                    viewReview = data.isReview,
                     viewDelete = data.isDelete,
-                    object : HelperNotification.CallbackList{
+                    listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
                                 toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
@@ -437,14 +441,42 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onEdit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onSubmit() {
+                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onCheck() {
+                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onImplementation() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Implement Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onSubmitLaporan() {
+                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onReview() {
+                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
                             )
                             requireView().findNavController().navigate(direction)
                         }

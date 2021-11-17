@@ -487,23 +487,38 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
-
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
                     view = data.isView,
                     viewEdit = data.isEdit,
-                    viewImplementation = data.isView,
+                    viewSubmit = data.isSubmit,
+                    viewImplementation = data.isImplementation,
+                    viewCheck = data.isCheck,
+                    viewSubmitLaporan = data.isSubmitlaporan,
+                    viewReview = data.isReview,
                     viewDelete = data.isDelete,
-                    object : HelperNotification.CallbackList{
+                    listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "View Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)                        }
+
+                        override fun onEdit() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)                        }
+
+                        override fun onSubmit() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
-                        override fun onEdit() {
+                        override fun onCheck() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -515,9 +530,24 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             requireView().findNavController().navigate(direction)
                         }
 
+                        override fun onSubmitLaporan() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onReview() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
                         override fun onDelete() {
                             Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
                         }
+
                     })
             }
         })

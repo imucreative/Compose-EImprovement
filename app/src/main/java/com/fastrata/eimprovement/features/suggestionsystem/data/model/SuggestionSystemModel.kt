@@ -28,5 +28,15 @@ data class SuggestionSystemModel(
     @SerializedName("IS_DELETE")
     val isDelete: Boolean,
     @SerializedName("IS_VIEW")
-    val isView: Boolean
+    val isView: Boolean,
+    @SerializedName("IS_IMPLEMENTATION")
+    val isImplementation: Boolean,
+    @SerializedName("IS_SUBMIT")
+    val isSubmit : Boolean,
+    @SerializedName("IS_CHECK")
+    val isCheck : Boolean,
+    @SerializedName("IS_SUBMIT_LAPORAN")
+    val isSubmitlaporan : Boolean,
+    @SerializedName("IS_REVIEW")
+    val isReview : Boolean
 ) : Parcelable

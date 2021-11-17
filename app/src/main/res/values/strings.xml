@@ -132,7 +132,7 @@
     <string name="desc_empty">Silahkan Isi Kolom keterangan Dengan Sesuai</string>
     <string name="title_empty">Silahkan Isi Kolom Judul Dengan Sesuai</string>
     <string name="reward_empty">Silahkan Tambahkan Hadiah yang ingin Di Tukarkan</string>
-    <string name="submit">Simpan</string>
+    <string name="simpan">Simpan</string>
     <string name="title_past_period">Proposal Dibuat telah melewati periode</string>
     <string name="submit_desc">Apakah Data yang Anda Kirim Sudah Sesuai?</string>
     <string name="pi_saved">Data Project Improvement Tersimpan</string>
@@ -205,6 +205,10 @@
     <string name="look">Lihat</string>
     <string name="edit">Edit</string>
     <string name="implementation">Implementasi</string>
+    <string name="submit">Submit</string>
+    <string name="check">Check</string>
+    <string name="submit_laporan">Submit Laporan Akhir</string>
+    <string name="review">Review</string>
 
 
     <string name="internal_storage">Internal Storage</string>

@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
@@ -272,8 +271,12 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ChangesPointCreateWizard,
-                        resources.getString(R.string.submit),
+                        applicationContext,
+                        R.color.blue_500,
+                        resources.getString(R.string.simpan),
                         resources.getString(R.string.submit_desc),
+                        resources.getString(R.string.agree),
+                        resources.getString(R.string.not_agree),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 

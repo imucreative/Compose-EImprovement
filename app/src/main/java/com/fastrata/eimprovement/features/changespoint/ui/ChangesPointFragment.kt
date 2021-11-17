@@ -422,10 +422,15 @@ class ChangesPointFragment : Fragment(), Injectable {
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
-                    view = true,
-                    viewEdit = true,
-                    viewImplementation = true,
-                    viewDelete = true,object : HelperNotification.CallbackList{
+                    view = data.isView,
+                    viewEdit = data.isEdit,
+                    viewSubmit = data.isSubmit,
+                    viewImplementation = data.isImplementation,
+                    viewCheck = data.isCheck,
+                    viewSubmitLaporan = data.isSubmitlaporan,
+                    viewReview = data.isReview,
+                    viewDelete = data.isDelete,
+                    listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                                 toolbarTitle = "Detail Changes Point", action = DETAIL,
@@ -440,7 +445,35 @@ class ChangesPointFragment : Fragment(), Injectable {
                             requireView().findNavController().navigate(direction)
                         }
 
+                        override fun onSubmit() {
+                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onCheck() {
+                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                            requireView().findNavController().navigate(direction)
+                        }
+
                         override fun onImplementation() {
+                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onSubmitLaporan() {
+                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onReview() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                                 toolbarTitle = "Detail Changes Point", action = DETAIL,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP)
