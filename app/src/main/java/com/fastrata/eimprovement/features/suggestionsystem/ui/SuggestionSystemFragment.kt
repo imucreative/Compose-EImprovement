@@ -338,8 +338,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             if (statusProposal?.id == 11) {
                                 notification.shownotificationyesno(
                                     requireActivity(),
-                                    "",
+                                    requireContext(),
+                                    resources.getColor(R.color.blue_500),
                                     resources.getString(R.string.title_past_period),
+                                    "",
+                                    resources.getString(R.string.agree),
+                                    resources.getString(R.string.not_agree),
                                     object : HelperNotification.CallBackNotificationYesNo {
                                         override fun onNotificationNo() {
 

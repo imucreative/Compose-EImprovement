@@ -155,8 +155,12 @@ class SuggestionSystemStep4Fragment: Fragment(), Injectable {
                     activity?.let { activity ->
                         notification.shownotificationyesno(
                             activity,
+                            requireContext(),
+                            resources.getColor(R.color.blue_500),
                             resources.getString(R.string.delete),
                             resources.getString(R.string.delete_confirmation_file_attachment),
+                            resources.getString(R.string.agree),
+                            resources.getString(R.string.not_agree),
                             object : HelperNotification.CallBackNotificationYesNo {
                                 override fun onNotificationNo() {
 
