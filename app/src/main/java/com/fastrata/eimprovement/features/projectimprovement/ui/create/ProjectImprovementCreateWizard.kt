@@ -388,7 +388,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     notification.shownotificationyesno(
                         this@ProjectImprovementCreateWizard,
                         applicationContext,
-                        resources.getColor(R.color.blue_500),
+                        R.color.blue_500,
                         resources.getString(R.string.simpan),
                         resources.getString(R.string.submit_desc),
                         resources.getString(R.string.agree),

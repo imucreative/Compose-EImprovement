@@ -143,64 +143,64 @@ class HelperNotification {
         dialog.setContentView(R.layout.dialog_list)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.txt_title) as TextView).text = header
-        when {
-            !view ->{
+
+        if (!view){
                 (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onView()
-                }
-            }
-            !viewEdit ->{
-                (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onEdit()
-                }
-            }
-            !viewSubmit -> {
-                (dialog.findViewById<View>(R.id.btn_submit) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_submit) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if(listener != null)listener.onSubmit()
-                }
-            }
-            !viewCheck -> {
-                (dialog.findViewById<View>(R.id.btn_check) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_check) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onCheck()
-                }
-            }
-            !viewImplementation -> {
-                (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onImplementation()
-                }
-            }
-            !viewSubmitLaporan -> {
-                (dialog.findViewById<View>(R.id.btn_submit_laporan) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_submit_laporan) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onSubmitLaporan()
-                }
-            }
-            !viewReview -> {
-                (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onReview()
-                }
-            }
-            !viewDelete -> {
-                (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
-                (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).setOnClickListener {
-                    dialog.dismiss()
-                    if (listener != null)listener.onDelete()
-                }
-            }
         }
+        if (!viewEdit){
+                (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewSubmit){
+                (dialog.findViewById<View>(R.id.btn_submit) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewCheck){
+                (dialog.findViewById<View>(R.id.btn_check) as LinearLayout).visibility = View.GONE
+        }
+        if(!viewImplementation){
+                (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).visibility = View.GONE
+        }
+        if(!viewSubmitLaporan){
+                (dialog.findViewById<View>(R.id.btn_submit_laporan) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewReview){
+                (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewDelete){
+                (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
+        }
+        (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onView()
+        }
+        (dialog.findViewById<View>(R.id.btn_edit) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onEdit()
+        }
+        (dialog.findViewById<View>(R.id.btn_submit) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if(listener != null)listener.onSubmit()
+        }
+        (dialog.findViewById<View>(R.id.btn_check) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onCheck()
+        }
+        (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onImplementation()
+        }
+        (dialog.findViewById<View>(R.id.btn_submit_laporan) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onSubmitLaporan()
+        }
+        (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onReview()
+        }
+        (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onDelete()
+        }
+
         dialog.setCancelable(true)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
@@ -221,7 +221,7 @@ class HelperNotification {
         lp.copyFrom(dialog.window!!.attributes)
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        (dialog.findViewById<View>(R.id.bt_retry)as AppCompatButton).setOnClickListener { v ->
+        (dialog.findViewById<View>(R.id.bt_retry)as AppCompatButton).setOnClickListener {
             dialog.dismiss()
             if (listener != null)listener.onRetry()
         }

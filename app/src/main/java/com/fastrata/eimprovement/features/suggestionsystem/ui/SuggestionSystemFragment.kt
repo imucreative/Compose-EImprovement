@@ -30,6 +30,7 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -117,6 +118,10 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
     override fun onStart() {
         super.onStart()
+       getDataListSs()
+    }
+
+    private fun getDataListSs() {
         try {
             adapter.clear()
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
@@ -339,7 +344,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 notification.shownotificationyesno(
                                     requireActivity(),
                                     requireContext(),
-                                    resources.getColor(R.color.blue_500),
+                                    R.color.blue_500,
                                     resources.getString(R.string.title_past_period),
                                     "",
                                     resources.getString(R.string.agree),
@@ -550,7 +555,55 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onDelete() {
-                            Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
+                            try {
+                                listSsViewModel.deleteSsList(data.idSs)
+                                listSsViewModel.doRemoveSs.observeEvent(this@SuggestionSystemFragment){ resultObserve ->
+                                    resultObserve.observe(viewLifecycleOwner,{result ->
+                                        Timber.e("### -- $result")
+                                        if (result != null){
+                                            when(result.status) {
+                                                Result.Status.LOADING -> {
+                                                    HelperLoading.displayLoadingWithText(
+                                                        requireContext(),
+                                                        "",
+                                                        false
+                                                    )
+                                                    Timber.d("###-- Loading get doRemoveSs loading")
+                                                }
+                                                Result.Status.SUCCESS -> {
+                                                    HelperLoading.hideLoading()
+                                                   getDataListSs()
+
+                                                    result.data?.let {
+                                                        Snackbar.make(
+                                                            binding.root,
+                                                            it.message,
+                                                            Snackbar.LENGTH_SHORT
+                                                        ).show()
+                                                        Timber.d("###-- Success get doRemoveSs sukses $it")
+                                                    }
+                                                }
+                                                Result.Status.ERROR -> {
+                                                    HelperLoading.hideLoading()
+                                                    Snackbar.make(
+                                                        binding.root,
+                                                        result.data?.message.toString(),
+                                                        Snackbar.LENGTH_SHORT
+                                                    ).show()
+                                                    Timber.d("###-- Error get doRemoveSs Error ${result.data}")
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+                            }catch (err : Exception){
+                                Snackbar.make(
+                                    binding.root,
+                                    "Error doRemoveSs : ${err.message}",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                Timber.e("### Error doRemoveSs : ${err.message}")
+                            }
                         }
 
                     }

@@ -157,7 +157,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         notification.shownotificationyesno(
                             activity,
                             requireContext(),
-                            resources.getColor(R.color.blue_500),
+                            R.color.blue_500,
                             resources.getString(R.string.delete),
                             resources.getString(R.string.delete_confirmation_file_attachment),
                             resources.getString(R.string.agree),

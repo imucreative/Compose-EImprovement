@@ -87,6 +87,11 @@ interface AppService {
         @Body suggestionSystemCreateModel: SuggestionSystemCreateModel
     ): Response<ResultsResponse<SuggestionSystemResponseModel>>
 
+    @PUT("ss/remove/{SS_H_ID}")
+    suspend fun removeSs(
+        @Path("SS_H_ID") id : Int
+    ): Response<ResultsResponse<ArrayList<String>>>
+
 
     // Project Improvement
     @POST("pi/list")
