@@ -120,7 +120,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         try {
             adapter.clear()
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                userId, limit, page, roleName,
+                userId, limit, page, roleName, SS,
                 userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
@@ -173,7 +173,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             }
 
                             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, SS,
                                 userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), category = edtCategory.text.toString(),
                                 orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
@@ -209,7 +209,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     adapter.clear()
 
                     val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, SS,
                         userName = userName, ssNo = "", statusId = 0, title = "", category = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -491,6 +491,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
+                Timber.e("### $data")
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
                     view = data.isView,
                     viewEdit = data.isEdit,
@@ -503,7 +504,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Implement Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)                        }
 
@@ -552,7 +553,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
                         }
 
-                    })
+                    }
+                )
             }
         })
 
@@ -638,7 +640,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         adapter.clear()
 
                         val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, SS,
                             userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), category = edtCategory.text.toString(), orgId = branchId,
                             warehouseId = subBranchId, startDate = edtFromDate.text.toString(),

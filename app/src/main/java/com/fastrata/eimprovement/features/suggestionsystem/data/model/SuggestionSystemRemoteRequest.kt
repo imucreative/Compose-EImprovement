@@ -11,6 +11,8 @@ data class SuggestionSystemRemoteRequest(
     val page: Int,
     @SerializedName("roleName")
     val roleName: String,
+    @SerializedName("typeProposal")
+    val typeProposal: String,
 
     @SerializedName("userName")
     val userName: String,

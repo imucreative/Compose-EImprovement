@@ -45,6 +45,9 @@ const val CP = "RP"
 const val CP_CREATE = "change_point"
 const val CP_DETAIL_DATA = "detail_data_cp"
 
+// Approval ------------------------------------------------------------------------------------------
+const val APPR = "APPR"
+
 // action navigation
 const val ADD = "add"
 const val EDIT = "edit"

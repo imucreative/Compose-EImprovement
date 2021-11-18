@@ -23,12 +23,12 @@ data class SuggestionSystemModel(
     val branch: String,
     @SerializedName("SUBBRANCH")
     val subBranch: String,
+    @SerializedName("IS_VIEW")
+    val isView: Boolean,
     @SerializedName("IS_EDIT")
     val isEdit: Boolean,
     @SerializedName("IS_DELETE")
     val isDelete: Boolean,
-    @SerializedName("IS_VIEW")
-    val isView: Boolean,
     @SerializedName("IS_IMPLEMENTATION")
     val isImplementation: Boolean,
     @SerializedName("IS_SUBMIT")
