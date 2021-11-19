@@ -509,101 +509,55 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Detail Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
-                            requireView().findNavController().navigate(direction)                        }
+                            requireView().findNavController().navigate(direction)
+                        }
 
                         override fun onEdit() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
-                            requireView().findNavController().navigate(direction)                        }
+                            requireView().findNavController().navigate(direction)
+                        }
 
                         override fun onSubmit() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onCheck() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Check Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onImplementation() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Implement Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmitLaporan() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onReview() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Review Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onDelete() {
-                            try {
-                                listSsViewModel.deleteSsList(data.idSs)
-                                listSsViewModel.doRemoveSs.observeEvent(this@SuggestionSystemFragment){ resultObserve ->
-                                    resultObserve.observe(viewLifecycleOwner,{result ->
-                                        Timber.e("### -- $result")
-                                        if (result != null){
-                                            when(result.status) {
-                                                Result.Status.LOADING -> {
-                                                    HelperLoading.displayLoadingWithText(
-                                                        requireContext(),
-                                                        "",
-                                                        false
-                                                    )
-                                                    Timber.d("###-- Loading get doRemoveSs loading")
-                                                }
-                                                Result.Status.SUCCESS -> {
-                                                    HelperLoading.hideLoading()
-                                                   getDataListSs()
-
-                                                    result.data?.let {
-                                                        Snackbar.make(
-                                                            binding.root,
-                                                            it.message,
-                                                            Snackbar.LENGTH_SHORT
-                                                        ).show()
-                                                        Timber.d("###-- Success get doRemoveSs sukses $it")
-                                                    }
-                                                }
-                                                Result.Status.ERROR -> {
-                                                    HelperLoading.hideLoading()
-                                                    Snackbar.make(
-                                                        binding.root,
-                                                        result.data?.message.toString(),
-                                                        Snackbar.LENGTH_SHORT
-                                                    ).show()
-                                                    Timber.d("###-- Error get doRemoveSs Error ${result.data}")
-                                                }
-                                            }
-                                        }
-                                    })
-                                }
-                            }catch (err : Exception){
-                                Snackbar.make(
-                                    binding.root,
-                                    "Error doRemoveSs : ${err.message}",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
-                                Timber.e("### Error doRemoveSs : ${err.message}")
-                            }
+                            removeListSs(data)
                         }
 
                     }
@@ -612,6 +566,58 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         })
 
         getListSs()
+    }
+
+    private fun removeListSs(data: SuggestionSystemModel) {
+        try {
+            listSsViewModel.deleteSsList(data.idSs)
+            listSsViewModel.doRemoveSs.observeEvent(this@SuggestionSystemFragment){ resultObserve ->
+                resultObserve.observe(viewLifecycleOwner,{result ->
+                    Timber.e("### -- $result")
+                    if (result != null){
+                        when(result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    requireContext(),
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading get doRemoveSs loading")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+                                getDataListSs()
+
+                                result.data?.let {
+                                    Snackbar.make(
+                                        binding.root,
+                                        it.message,
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    Timber.d("###-- Success get doRemoveSs sukses $it")
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Snackbar.make(
+                                    binding.root,
+                                    result.data?.message.toString(),
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                Timber.d("###-- Error get doRemoveSs Error ${result.data}")
+                            }
+                        }
+                    }
+                })
+            }
+        }catch (err : Exception){
+            Snackbar.make(
+                binding.root,
+                "Error doRemoveSs : ${err.message}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            Timber.e("### Error doRemoveSs : ${err.message}")
+        }
     }
 
     private fun initToolbar() {

@@ -82,7 +82,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         }
 
         when (argsAction) {
-            EDIT, DETAIL, APPROVE -> {
+            EDIT, DETAIL, APPROVE, SUBMIT_PROPOSAL -> {
                 ssNo = argsSsNo
 
                 source = SS_DETAIL_DATA
@@ -307,35 +307,80 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                     if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                         if (currentStep == maxStep) {
-                            lytNext.visibility = View.INVISIBLE
+                            lytNext.visibility = INVISIBLE
                         }
                     }
                 }
             } else {
                 //CoroutineScope(Dispatchers.Default).launch {
+                val gson = Gson()
+                val data = HawkUtils().getTempDataCreateSs(source)
+                val convertToJson = gson.toJson(data)
+
+                Timber.e("### Data form input : $convertToJson")
+                Timber.e("${data?.statusProposal}")
+
+                var initialTypeProposal = ""
+                var buttonInitialTypeProposal = ""
+
+                when (data?.statusProposal?.id) {
+                    1, 4 -> {
+                        initialTypeProposal = "Submit"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                    2 -> {
+                        initialTypeProposal = "Check"
+                        buttonInitialTypeProposal = "Check"
+                    }
+                    5 -> {
+                        initialTypeProposal = "Implementation"
+                        buttonInitialTypeProposal = "Implementation"
+                    }
+                    6 -> {
+                        initialTypeProposal = "Submit Laporan Akhir"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                    7, 9 -> {
+                        initialTypeProposal = "Review"
+                        buttonInitialTypeProposal = "Review"
+                    }
+                }
+
                 notification = HelperNotification()
                 binding.apply {
                     notification.shownotificationyesno(
                         this@SuggestionSystemCreateWizard,
                         applicationContext,
                         R.color.blue_500,
-                        resources.getString(R.string.simpan),
+                        initialTypeProposal,
                         resources.getString(R.string.submit_desc),
-                        resources.getString(R.string.agree),
-                        resources.getString(R.string.not_agree),
+                        buttonInitialTypeProposal,
+                        resources.getString(R.string.cancel),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
                             }
 
                             override fun onNotificationYes() {
-                                val gson = Gson()
-                                val data = HawkUtils().getTempDataCreateSs(source)
-                                val convertToJson = gson.toJson(data)
-
-                                println("### Data form input : $convertToJson")
-
-                                submit(data!!)
+                                if (data?.ssNo.isNullOrEmpty()) {
+                                    submit(data!!)
+                                } else {
+                                    if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (ssAction == EDIT)) {
+                                        Timber.e("$data")
+                                        Toast.makeText(
+                                            this@SuggestionSystemCreateWizard,
+                                            "Under Development for Update Data",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    } else {
+                                        Timber.e("$data")
+                                        Toast.makeText(
+                                            this@SuggestionSystemCreateWizard,
+                                            "Under Development for Update Status Proposal",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
                             }
                         }
                     )
