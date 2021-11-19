@@ -44,6 +44,8 @@ internal class HawkUtils {
         headId: Int? = null,
         orgId: Int? = null,
         warehouseId: Int? = null,
+        proses: String? = null,
+        result: String? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -64,6 +66,8 @@ internal class HawkUtils {
             teamMember = teamMember ?: if (source == SS_CREATE) getDataCreateSs?.teamMember else getDataDetailSs?.teamMember,
             attachment = attachment ?: if (source == SS_CREATE) getDataCreateSs?.attachment else getDataDetailSs?.attachment,
             statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal,
+            proses = proses ?: if (source == SS_CREATE) getDataCreateSs?.proses else getDataDetailSs?.proses,
+            result = result ?: if (source == SS_CREATE) getDataCreateSs?.result else getDataDetailSs?.result,
 
             headId = headId ?: if (source == SS_CREATE) getDataCreateSs?.headId else getDataDetailSs?.headId,
             userId = userId ?: if (source == SS_CREATE) getDataCreateSs?.userId else getDataDetailSs?.userId,
@@ -106,6 +110,17 @@ internal class HawkUtils {
     fun getStatusImplementation(): Boolean{
         if (Hawk.contains(PI_STATUS_IMPLEMENTATION)){
             return Hawk.get(PI_STATUS_IMPLEMENTATION)
+        }
+        return false
+    }
+
+    fun setStatusSuggestion(status: Boolean){
+        Hawk.put(SS_STATUS_IMPLEMENTATION,status)
+    }
+
+    fun getStatusSuggestion(): Boolean{
+        if (Hawk.contains(SS_STATUS_IMPLEMENTATION)){
+            return Hawk.get(SS_STATUS_IMPLEMENTATION)
         }
         return false
     }

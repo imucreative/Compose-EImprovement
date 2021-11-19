@@ -45,7 +45,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     private var ssNo: String = ""
     private var ssAction: String = ""
     private lateinit var viewModel: SuggestionSystemViewModel
-    private var maxStep = 4
+    private var maxStep = 5
     private var currentStep = 1
     private var source: String = SS_CREATE
     private lateinit var notification: HelperNotification
@@ -123,6 +123,9 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         teamMember = result.data?.data?.get(0)?.teamMember,
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                        proses = result.data?.data?.get(0)?.proses,
+                                        result = result.data?.data?.get(0)?.result,
+
                                         headId = result.data?.data?.get(0)?.headId,
                                         userId = result.data?.data?.get(0)?.userId,
                                         orgId = result.data?.data?.get(0)?.orgId,
@@ -260,7 +263,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     commit()
                 }
             }
-            4 -> {
+            4 ->{
                 Timber.e("### step 4 = $currentStep")
                 val fragment = SuggestionSystemStep4Fragment()
                 val args = Bundle()
@@ -273,8 +276,22 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     commit()
                 }
             }
+
             5 -> {
                 Timber.e("### step 5 = $currentStep")
+                val fragment = SuggestionSystemStep5Fragment()
+                val args = Bundle()
+                args.putString(SS_DETAIL_DATA, ssNo)
+                args.putString(ACTION_DETAIL_DATA, ssAction)
+                fragment.arguments = args
+                mFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_container, fragment, SuggestionSystemStep5Fragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+            6 -> {
+                Timber.e("### step 6 = $currentStep")
                 val fragment = ListApprovalHistoryStatusSsFragment()
                 val args = Bundle()
                 args.putString(SS_DETAIL_DATA, ssNo)

@@ -32,6 +32,7 @@ const val SS_CREATE = "suggestion_system"
 const val SS_DETAIL_DATA = "detail_data_ss"
 
 const val PREF_WELCOME = "isDisplay"
+const val SS_STATUS_IMPLEMENTATION = "status_suggestion"
 
 
 // Project Improvement (PI) --------------------------------------------------------------------------

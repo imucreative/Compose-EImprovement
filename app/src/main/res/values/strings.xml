@@ -34,6 +34,7 @@
     <string name="max_file_2mb"><![CDATA[Ukuran Maks 2MB &]]></string>
     <string name="file_type_attachment">Tipe File xls/xlsx/doc/docx/pdf/jpg/png</string>
     <string name="attachment">Lampiran</string>
+    <string name="attachment_add">Tap untuk menambahkan File</string>
     <string name="ss_no">Sistem Saran No</string>
     <string name="select">Pilih</string>
     <string name="title">Judul</string>
@@ -114,6 +115,8 @@
     <string name="pilihlah_pilihan_yang_menurut_anda_sesuai">Pilihlah - pilihan yang menurut anda sesuai</string>
     <string name="g_hasil_implementasi_improvement">G. Hasil Implementasi Improvement</string>
     <string name="jika_improvement_sudah_diimplementasikan">Jika Improvement sudah diimplementasikan</string>
+    <string name="ide_perbaikan">C. Proses Pelaksanaan Ide Perbaikan</string>
+    <string name="Hasil_implementasi">D. Hasil Yang Saya Dapat Atas Implementasi Saran dan Ide</string>
     <string name="setting">Pengaturan</string>
     <!---notification -->
     <string name="error">Error</string>
@@ -174,6 +177,8 @@
     <string name="ketua_not_found">Pastikan Ketua ditambahkan di awal</string>
     <string name="maximal_team">Maksimal anggota hanya 2 orang</string>
 
+    <string name="ide_perbaikan_empty">Pastikan kolom Proses Pelaksanaan Ide Perbaikan sudah terisi</string>
+    <string name="hasil_implementasi_empty">Pastikan kolom Hasil Implementasi atas Saran dan Ide sudah terisi</string>
 
     <!-- Change Point -->
     <string name="tanggal_penukaran">Tanggal Penukaran</string>

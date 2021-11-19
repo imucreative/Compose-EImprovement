@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep2Binding
+
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
@@ -25,11 +26,15 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     private var data: SuggestionSystemCreateModel? = null
     private var ssNo: String? = ""
     private var ssAction: String? = ""
-    private lateinit var datePicker: DatePickerCustom
+    private lateinit var datePickerSudah: DatePickerCustom
+    private lateinit var datePickerAkan : DatePickerCustom
     private var source: String = SS_CREATE
     lateinit var fromDate: Date
     lateinit var toDate: Date
     val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private var edtproses : String = ""
+    private var edtresult : String = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,9 +58,15 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
         _binding = FragmentSuggestionSystemStep2Binding.bind(view)
 
-        datePicker = activity?.let {
+        datePickerSudah = activity?.let {
             DatePickerCustom(
             context = binding.root.context,themeDark = true,
+                minDateIsCurrentDate = false,it.supportFragmentManager
+            )
+        }!!
+        datePickerAkan = activity?.let {
+            DatePickerCustom(
+                context = binding.root.context,themeDark = true,
                 minDateIsCurrentDate = true,it.supportFragmentManager
             )
         }!!
@@ -91,7 +102,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
         binding.apply {
             etFromStatus1.setOnClickListener {
-                datePicker.showDialog(object : DatePickerCustom.Callback {
+                datePickerSudah.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
@@ -103,20 +114,20 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                 })
             }
             etToStatus1.setOnClickListener {
-                datePicker.showDialog(object : DatePickerCustom.Callback {
+                datePickerSudah.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         binding.etToStatus1.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(etToStatus1.text.toString())
-                        if (etFromStatus1.text.isNullOrEmpty()){
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
-                        }else{
+//                        if (etFromStatus1.text.isNullOrEmpty()){
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                                etFromStatus1.requestFocus()
+//                        }else{
                             if (!toDate.after(fromDate)){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
@@ -124,12 +135,12 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 etToStatus1.text!!.clear()
                             }
-                        }
+//                        }
                     }
                 })
             }
             etFromStatus2.setOnClickListener {
-                datePicker.showDialog(object : DatePickerCustom.Callback {
+                datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
@@ -141,20 +152,20 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                 })
             }
             etToStatus2.setOnClickListener {
-                datePicker.showDialog(object : DatePickerCustom.Callback {
+                datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         binding.etToStatus2.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(etToStatus2.text.toString())
-                        if (etFromStatus2.text.isNullOrEmpty()){
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromStatus2.requestFocus()
-                        }else{
+//                        if (etFromStatus2.text.isNullOrEmpty()){
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                            etFromStatus2.requestFocus()
+//                        }else{
                             if (!toDate.after(fromDate)){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
@@ -162,7 +173,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 etToStatus2.text!!.clear()
                             }
-                        }
+//                        }
                     }
                 })
             }
@@ -194,7 +205,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                     etToStatus2.isEnabled = false
                     etFromStatus2.setText("")
                     etToStatus2.setText("")
-
+                    edtproses = data?.proses.toString()
+                    edtresult = data?.result.toString()
+                    HawkUtils().setStatusSuggestion(true)
                 }
             }
 
@@ -207,6 +220,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
                     etFromStatus2.isEnabled = true
                     etToStatus2.isEnabled = true
+                    edtproses = ""
+                    edtresult = ""
+                    HawkUtils().setStatusSuggestion(false)
                 }
             }
         }
@@ -284,39 +300,39 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        rbStatus1.isChecked && etFromStatus1.text.isNullOrEmpty() -> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
-                            stat = false
+                        rbStatus1.isChecked -> {
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                                etFromStatus1.requestFocus()
+                            stat = true
                         }
-                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToStatus1.requestFocus()
-                            stat = false
-                        }
+//                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                            etToStatus1.requestFocus()
+//                            stat = false
+//                        }
 
-                        rbStatus2.isChecked && etFromStatus2.text.isNullOrEmpty() -> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromStatus2.requestFocus()
-                            stat = false
+                        rbStatus2.isChecked  -> {
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                            etFromStatus2.requestFocus()
+                            stat = true
                         }
-                        rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etToStatus2.requestFocus()
-                            stat = false
-                        }
+//                        rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                            etToStatus2.requestFocus()
+//                            stat = false
+//                        }
                         else -> {
                             HawkUtils().setTempDataCreateSs(
                                 ssNo = data?.ssNo,
@@ -340,7 +356,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                 userId = data?.userId,
                                 orgId = data?.orgId,
                                 warehouseId = data?.warehouseId,
-                                source = source
+                                source = source,
+                                proses = edtproses,
+                                result = edtresult
                             )
                             stat = true
                         }
