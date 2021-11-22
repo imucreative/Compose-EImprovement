@@ -55,6 +55,8 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     )
 
     fun observeRemoveSs(idSs: Int) = resultMutableLiveDataRemote (
-        networkCall = { remoteDataSource.removeSs(idSs)}
-            )
+        networkCall = { remoteDataSource.removeSs(idSs)})
+
+    fun observeRemovePi(idPi: Int) = resultMutableLiveDataRemote (
+        networkCall = { remoteDataSource.removePi(idPi)})
 }

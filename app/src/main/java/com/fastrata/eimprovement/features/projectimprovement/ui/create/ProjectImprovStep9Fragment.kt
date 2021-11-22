@@ -399,15 +399,15 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.attachment?.size == 0) {
+//                    stat = if (data?.attachment?.size == 0) {
 //                        SnackBarCustom.snackBarIconInfo(
 //                            root, layoutInflater, resources, root.context,
 //                            resources.getString(R.string.file_empty),
 //                            R.drawable.ic_close, R.color.red_500)
-                        true
-                    } else {
-                        true
-                    }
+//                        true
+//                    } else {
+//                        true
+//                    }
                     HawkUtils().setTempDataCreatePi(
                         id = data?.id,
                         piNo = data?.piNo,

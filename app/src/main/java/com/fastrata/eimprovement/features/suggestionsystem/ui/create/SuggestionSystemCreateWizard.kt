@@ -434,7 +434,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                             finish()
 
-                            HawkUtils().removeDataCreateSs(source)
+                            HawkUtils().removeDataCreateProposal(source)
 
                             Timber.d("###-- Success postSubmitCreateSs")
                         }
@@ -481,7 +481,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                             finish()
 
-                            HawkUtils().removeDataCreateSs(source)
+                            HawkUtils().removeDataCreateProposal(source)
 
                             Timber.d("###-- Success putSubmitUpdateSs")
                         }

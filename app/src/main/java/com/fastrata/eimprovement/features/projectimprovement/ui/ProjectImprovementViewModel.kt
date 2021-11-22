@@ -10,6 +10,7 @@ import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
+import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
 import com.fastrata.eimprovement.wrapper.Event
@@ -19,7 +20,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository): ViewModel(){
+class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository,private val globalRepository : GlobalRemoteRepository): ViewModel(){
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahModel?>?>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahModel?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
@@ -300,6 +301,40 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         viewModelScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.Default) { repository.observeDetailPi(id, userId) }
             _detailPi.value = Event(result)
+        }
+    }
+
+    // === Post Submit Create Pi
+    private val _postSubmitCreatePi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>>()
+    val postSubmitCreatePi: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>> get() = _postSubmitCreatePi
+
+    fun setPostSubmitCreatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) {
+        viewModelScope.launch(Dispatchers.Main){
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreatePi(projectImprovementCreateModel)}
+            _postSubmitCreatePi.value = Event(result)
+        }
+    }
+
+    // === Put Submit Update PI
+    private val _postSubmitUpdatePi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>>()
+    val putSubmitUpdatePi: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>> get() = _postSubmitUpdatePi
+
+    fun setPostSubmitUpdatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) {
+        viewModelScope.launch(Dispatchers.Main)   {
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreatePi(projectImprovementCreateModel)}
+                _postSubmitUpdatePi.value = Event(result)
+        }
+    }
+
+
+    // === Remove List PI
+    private val _removeListPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>>()
+    val doRemovePi : LiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>> get() = _removeListPi
+
+    fun deletePiList(idPi: Int){
+        viewModelScope.launch(Dispatchers.Main){
+            val result = withContext(Dispatchers.Default){globalRepository.observeRemovePi(idPi) }
+            _removeListPi.value = Event(result)
         }
     }
 

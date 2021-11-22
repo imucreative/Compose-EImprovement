@@ -23,6 +23,7 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusPiFragment
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -382,39 +383,175 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     }
                 }
             } else {
-                //CoroutineScope(Dispatchers.Default).launch {
+                val gson = Gson()
+                val data = HawkUtils().getTempDataCreatePi(source)
+                val convertToJson = gson.toJson(data)
+
+                Timber.e("### Data form input: $convertToJson")
+                Timber.e("${data?.statusProposal}")
+
+                var initialTypeProposal = ""
+                var buttonInitialTypeProposal = ""
+
+                when (data?.statusProposal?.id) {
+                    1,4 -> {
+                        initialTypeProposal = "Submit"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                    2 -> {
+                        initialTypeProposal = "Check"
+                        buttonInitialTypeProposal = "Check"
+                    }
+                    5 ->{
+                        initialTypeProposal = "Implementation"
+                        buttonInitialTypeProposal = "Implementation"
+                    }
+                    6 ->{
+                        initialTypeProposal = "Submit Laporan Akhir"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                    7,9 -> {
+                        initialTypeProposal = "Review"
+                        buttonInitialTypeProposal = "Review"
+                    }
+                }
+
                 notification = HelperNotification()
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ProjectImprovementCreateWizard,
                         applicationContext,
                         R.color.blue_500,
-                        resources.getString(R.string.simpan),
+                        initialTypeProposal,
                         resources.getString(R.string.submit_desc),
-                        resources.getString(R.string.agree),
-                        resources.getString(R.string.not_agree),
-                        object : HelperNotification.CallBackNotificationYesNo {
+                        buttonInitialTypeProposal,
+                        resources.getString(R.string.cancel),
+                        object  : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
                             }
 
                             override fun onNotificationYes() {
-                                val gson = Gson()
-                                val data = gson.toJson(HawkUtils().getTempDataCreatePi(source))
-                                println("### Data form input : $data")
-                                Toast.makeText(
-                                    this@ProjectImprovementCreateWizard,
-                                    resources.getString(R.string.pi_saved),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                finish()
+                                if (data?.piNo.isNullOrEmpty()){
+                                    submit(data!!)
+                                }else {
+                                    if((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (action == EDIT)) {
+//                                        update(data)
+                                        Timber.e("$data")
+                                        Toast.makeText(
+                                            this@ProjectImprovementCreateWizard,
+                                            "Under Development for Update Data",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }else{
+                                        Timber.e("$data")
+                                        Toast.makeText(
+                                            this@ProjectImprovementCreateWizard,
+                                            "Under Development for Update Status Proposal",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
                             }
                         }
                     )
                 }
+
             }
         }
     }
+
+    private fun submit(data: ProjectImprovementCreateModel) {
+        viewModel.setPostSubmitCreatePi(data)
+
+        viewModel.postSubmitCreatePi.observeEvent(this@ProjectImprovementCreateWizard) { resultObserve ->
+            resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                if (result != null) {
+                    when(result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ProjectImprovementCreateWizard,"",false)
+                            Timber.d("###-- Loading postSubmitCreatePi")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateProposal(source)
+
+                            Timber.d("###-- Success postSubmitCreatePi")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            finish()
+                            Timber.d("###-- Success postSubmitCreatePi")
+                        }
+                    }
+                }
+            })
+        }
+
+    }
+
+    private fun update(data: ProjectImprovementCreateModel) {
+        viewModel.setPostSubmitUpdatePi(data)
+
+        viewModel.putSubmitUpdatePi.observeEvent(this@ProjectImprovementCreateWizard){resultObserve ->
+            resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                if(result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ProjectImprovementCreateWizard,"",false)
+                            Timber.d("###-- Loading putSubmitUpdatePi")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateProposal(source)
+
+                            Timber.d("###-- Success putSubmitUpdatePi")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error putSubmitUpdatePi")
+                        }
+                    }
+                }
+            })
+        }
+    }
+
 
     override fun onBackPressed() {
         finish()

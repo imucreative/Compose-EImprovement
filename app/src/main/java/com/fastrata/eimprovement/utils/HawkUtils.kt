@@ -276,7 +276,7 @@ internal class HawkUtils {
         }
     }
 
-    fun removeDataCreateSs(source: String){
-        Hawk.delete(source)
+    fun removeDataCreateProposal(typeProposal: String){
+        Hawk.delete(typeProposal)
     }
 }
