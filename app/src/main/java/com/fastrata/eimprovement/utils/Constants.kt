@@ -32,6 +32,7 @@ const val SS_CREATE = "suggestion_system"
 const val SS_DETAIL_DATA = "detail_data_ss"
 
 const val PREF_WELCOME = "isDisplay"
+const val SS_STATUS_IMPLEMENTATION = "status_suggestion"
 
 
 // Project Improvement (PI) --------------------------------------------------------------------------
@@ -45,10 +46,14 @@ const val CP = "RP"
 const val CP_CREATE = "change_point"
 const val CP_DETAIL_DATA = "detail_data_cp"
 
+// Approval ------------------------------------------------------------------------------------------
+const val APPR = "APPR"
+
 // action navigation
 const val ADD = "add"
 const val EDIT = "edit"
 const val DETAIL = "detail"
+const val SUBMIT_PROPOSAL = "submit_proposal"
 const val APPROVE = "approve"
 const val ACTION_DETAIL_DATA = "action_detail_data"
 

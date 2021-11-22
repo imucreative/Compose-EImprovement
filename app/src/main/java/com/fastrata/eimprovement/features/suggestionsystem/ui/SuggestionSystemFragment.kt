@@ -30,6 +30,7 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -91,22 +92,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
-        try {
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName = HawkUtils().getDataLogin().ROLE_NAME
-
-            val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                userId, limit, page, roleName,
-                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
-                warehouseId = 0, startDate = "", endDate = ""
-            )
-
-            listSsViewModel.setListSs(listSsRemoteRequest)
-        } catch (e: Exception){
-            Timber.e("Error setListSs : $e")
-            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-        }
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName = HawkUtils().getDataLogin().ROLE_NAME
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -126,6 +114,27 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.notifyDataSetChanged()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+       getDataListSs()
+    }
+
+    private fun getDataListSs() {
+        try {
+            adapter.clear()
+            val listSsRemoteRequest = SuggestionSystemRemoteRequest(
+                userId, limit, page, roleName, SS,
+                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listSsViewModel.setListSs(listSsRemoteRequest)
+        } catch (e: Exception){
+            Timber.e("Error setListSs : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -169,7 +178,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             }
 
                             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, SS,
                                 userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), category = edtCategory.text.toString(),
                                 orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
@@ -205,7 +214,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     adapter.clear()
 
                     val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, SS,
                         userName = userName, ssNo = "", statusId = 0, title = "", category = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -239,6 +248,11 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             branchId = 0
             subBranchId = 0
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getListSs()
     }
 
     private fun getListSs() {
@@ -280,9 +294,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             isLoading = false
                             Timber.d("###-- Error get List SS")
                         }
-
                     }
-
                 }
             })
         }
@@ -331,8 +343,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             if (statusProposal?.id == 11) {
                                 notification.shownotificationyesno(
                                     requireActivity(),
-                                    "",
+                                    requireContext(),
+                                    R.color.blue_500,
                                     resources.getString(R.string.title_past_period),
+                                    "",
+                                    resources.getString(R.string.agree),
+                                    resources.getString(R.string.not_agree),
                                     object : HelperNotification.CallBackNotificationYesNo {
                                         override fun onNotificationNo() {
 
@@ -480,15 +496,20 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
-
+                Timber.e("### $data")
                 HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
-                    view = true,
-                    viewEdit = true,
-                    viewImplementation = true,
-                    viewDelete = true,object : HelperNotification.CallbackList{
+                    view = data.isView,
+                    viewEdit = data.isEdit,
+                    viewSubmit = data.isSubmit,
+                    viewImplementation = data.isImplementation,
+                    viewCheck = data.isCheck,
+                    viewSubmitLaporan = data.isSubmitlaporan,
+                    viewReview = data.isReview,
+                    viewDelete = data.isDelete,
+                    listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "View Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Detail Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -500,21 +521,103 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             requireView().findNavController().navigate(direction)
                         }
 
+                        override fun onSubmit() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onCheck() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Check Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
                         override fun onImplementation() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Implement Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Implement Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onSubmitLaporan() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                            )
+                            requireView().findNavController().navigate(direction)
+                        }
+
+                        override fun onReview() {
+                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                toolbarTitle = "Review Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onDelete() {
-                            Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
+                            removeListSs(data)
                         }
-                    })
+
+                    }
+                )
             }
         })
 
         getListSs()
+    }
+
+    private fun removeListSs(data: SuggestionSystemModel) {
+        try {
+            listSsViewModel.deleteSsList(data.idSs)
+            listSsViewModel.doRemoveSs.observeEvent(this@SuggestionSystemFragment){ resultObserve ->
+                resultObserve.observe(viewLifecycleOwner,{result ->
+                    Timber.e("### -- $result")
+                    if (result != null){
+                        when(result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    requireContext(),
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading get doRemoveSs loading")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+                                getDataListSs()
+
+                                result.data?.let {
+                                    Snackbar.make(
+                                        binding.root,
+                                        it.message,
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    Timber.d("###-- Success get doRemoveSs sukses $it")
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Snackbar.make(
+                                    binding.root,
+                                    result.data?.message.toString(),
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                Timber.d("###-- Error get doRemoveSs Error ${result.data}")
+                            }
+                        }
+                    }
+                })
+            }
+        }catch (err : Exception){
+            Snackbar.make(
+                binding.root,
+                "Error doRemoveSs : ${err.message}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            Timber.e("### Error doRemoveSs : ${err.message}")
+        }
     }
 
     private fun initToolbar() {
@@ -596,7 +699,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         adapter.clear()
 
                         val listSsRemoteRequest = SuggestionSystemRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, SS,
                             userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), category = edtCategory.text.toString(), orgId = branchId,
                             warehouseId = subBranchId, startDate = edtFromDate.text.toString(),

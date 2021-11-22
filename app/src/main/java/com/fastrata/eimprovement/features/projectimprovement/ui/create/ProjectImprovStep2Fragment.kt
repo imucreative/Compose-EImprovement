@@ -23,7 +23,8 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentProjectImprovementStep2Binding? = null
     private val binding get() = _binding!!
-    private lateinit var datePicker: DatePickerCustom
+    private lateinit var datePickerSudah: DatePickerCustom
+    private lateinit var datePickerAkan: DatePickerCustom
     private var data : ProjectImprovementCreateModel? = null
     private var piNo: String? = ""
     private var action: String? = ""
@@ -53,13 +54,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
         _binding = FragmentProjectImprovementStep2Binding.bind(view)
 
-        datePicker = activity?.let {
+        datePickerSudah = activity?.let {
             DatePickerCustom(
                 context = binding.root.context,themeDark = true,
-                minDateIsCurrentDate = true, it.supportFragmentManager
+                minDateIsCurrentDate = false,it.supportFragmentManager
             )
         }!!
-
+        datePickerAkan = activity?.let {
+            DatePickerCustom(
+                context = binding.root.context,themeDark = true,
+                minDateIsCurrentDate = true,it.supportFragmentManager
+            )
+        }!!
         setLogic()
         getData()
         initComponent()
@@ -132,7 +138,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun initComponent() {
         binding.apply {
-            etFromStatus1.setOnClickListener {datePicker.showDialog(object : DatePickerCustom.Callback {
+            etFromStatus1.setOnClickListener {datePickerSudah.showDialog(object : DatePickerCustom.Callback {
                 override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                     val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                     val mon = month + 1
@@ -146,20 +152,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToStatus1.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerSudah.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToStatus1.setText("$dayStr-$monthStr-$year")
                             toDate = sdf.parse(etToStatus1.text.toString())
-                            if(etFromStatus1.text.isNullOrEmpty()){
-                                 SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
-                            }else{
+//                            if(etFromStatus1.text.isNullOrEmpty()){
+//                                 SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromStatus1.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -167,7 +173,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToStatus1.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -175,7 +181,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etFromIdentifikasi.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
@@ -190,20 +196,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToIdentifikasi.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToIdentifikasi.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToIdentifikasi.text.toString())
-                            if(etFromIdentifikasi.text.isNullOrEmpty()){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromIdentifikasi.requestFocus()
-                            }else{
+//                            if(etFromIdentifikasi.text.isNullOrEmpty()){
+//                                SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromIdentifikasi.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -211,7 +217,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToIdentifikasi.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -219,7 +225,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etFromAnalisaData.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
@@ -234,20 +240,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToAnalisaData.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaData.setText("$dayStr-$monthStr-$year")
                             toDate = sdf.parse(etToAnalisaData.text.toString())
-                            if(etFromAnalisaData.text.isNullOrEmpty()){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromAnalisaData.requestFocus()
-                            }else{
+//                            if(etFromAnalisaData.text.isNullOrEmpty()){
+//                                SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromAnalisaData.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -255,7 +261,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToAnalisaData.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -263,7 +269,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etFromAnalisaAkarMasalah.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
@@ -278,20 +284,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToAnalisaAkarMasalah.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
                             toDate = sdf.parse(etToAnalisaAkarMasalah.text.toString())
-                            if(etFromAnalisaAkarMasalah.text.isNullOrEmpty()){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromAnalisaAkarMasalah.requestFocus()
-                            }else{
+//                            if(etFromAnalisaAkarMasalah.text.isNullOrEmpty()){
+//                                SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromAnalisaAkarMasalah.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -299,7 +305,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToAnalisaAkarMasalah.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -307,7 +313,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etFromMenyusunRencanaPenanggulanganMasalah.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
@@ -322,20 +328,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToMenyusunRencanaPenanggulanganMasalah.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToMenyusunRencanaPenanggulanganMasalah.text.toString())
-                            if(etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
-                            }else{
+//                            if(etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()){
+//                                SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -343,7 +349,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -351,7 +357,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etFromImplementasiRencanaPerbaikan.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
@@ -366,20 +372,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToImplementasiRencanaPerbaikan.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToImplementasiRencanaPerbaikan.text.toString())
-                            if(etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromImplementasiRencanaPerbaikan.requestFocus()
-                            }else{
+//                            if(etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()){
+//                                SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromImplementasiRencanaPerbaikan.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -387,7 +393,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToImplementasiRencanaPerbaikan.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -395,7 +401,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etFromAnalisaPeriksaDanEvaluasi.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
@@ -410,20 +416,20 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
             etToAnalisaPeriksaDanEvaluasi.setOnClickListener {
                 activity?.let {
-                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                    datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                         override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
                             toDate= sdf.parse(etToAnalisaPeriksaDanEvaluasi.text.toString())
-                            if(etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etFromAnalisaPeriksaDanEvaluasi.requestFocus()
-                            }else{
+//                            if(etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()){
+//                                SnackBarCustom.snackBarIconInfo(
+//                                    root, layoutInflater, resources, root.context,
+//                                    resources.getString(R.string.wrong_field),
+//                                    R.drawable.ic_close, R.color.red_500)
+//                                etFromAnalisaPeriksaDanEvaluasi.requestFocus()
+//                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -431,7 +437,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToAnalisaPeriksaDanEvaluasi.text!!.clear()
                                 }
-                            }
+//                            }
                         }
                     })
                 }
@@ -493,8 +499,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     if (rbStatus1.isChecked) {
                         sudah = StatusImplementationPiDoneModel(
                             from = etFromStatus1.text.toString(),
-                            to = etToStatus1.text.toString()
-                        )
+                            to = etToStatus1.text.toString())
                     } else {
                         akan = StatusImplementationPiWantModel(
                             startIdentifikasiMasalah = etFromIdentifikasi.text.toString(),
@@ -521,66 +526,86 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                         sudah = sudah,
                         akan = akan
                     )
+                    HawkUtils().setTempDataCreatePi(
+                        id = data?.id,
+                        piNo = data?.piNo,
+                        date = data?.date,
+                        title = data?.title,
+                        branch = data?.branch,
+                        subBranch = data?.subBranch,
+                        department = data?.department,
+                        years = data?.years,
+                        statusImplementationModel = statusImplementation,
+                        identification = data?.identification,
+                        target = data?.target,
+                        sebabMasalah = data?.sebabMasalah,
+                        akarMasalah = data?.akarMasalah,
+                        nilaiOutput = data?.nilaiOutput,
+                        nqiModel = data?.nqiModel,
+                        teamMember = data?.teamMember,
+                        categoryFixing = data?.categoryFixing,
+                        hasilImplementasi = data?.implementationResult,
+                        attachment = data?.attachment,
+                        statusProposal = data?.statusProposal,
+                        source = source
+                    )
+                    stat = true
 
                     Timber.e("# $statusImplementation")
-                    when {
+//                    when {
                         //statusimplemen1
-                        rbStatus1.isChecked && etFromStatus1.text.isNullOrEmpty() ->{
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
-                            stat = false
-                        }
-                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() ->{
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                                etToStatus1.requestFocus()
-                            stat = false
-                        }
+//                        rbStatus1.isChecked ->{
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                                etFromStatus1.requestFocus()
+//                            stat = false
+//                        }
+//                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() ->{
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                                etToStatus1.requestFocus()
+//                            stat = false
+//                        }
 
-                        rbStatus2.isChecked && etToIdentifikasi.text.isNullOrEmpty() &&
-                                etToAnalisaData.text.isNullOrEmpty() &&
-                                etToAnalisaAkarMasalah.text.isNullOrEmpty() &&
-                                etToMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty() &&
-                                etToAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty() -> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            stat = false
-                        }
+//                        rbStatus2.isChecked -> {
+//                            SnackBarCustom.snackBarIconInfo(
+//                                root, layoutInflater, resources, root.context,
+//                                resources.getString(R.string.wrong_field),
+//                                R.drawable.ic_close, R.color.red_500)
+//                            stat = false
+//                        }
 
-                        else -> {
-                            HawkUtils().setTempDataCreatePi(
-                                id = data?.id,
-                                piNo = data?.piNo,
-                                date = data?.date,
-                                title = data?.title,
-                                branch = data?.branch,
-                                subBranch = data?.subBranch,
-                                department = data?.department,
-                                years = data?.years,
-                                statusImplementationModel = statusImplementation,
-                                identification = data?.identification,
-                                target = data?.target,
-                                sebabMasalah = data?.sebabMasalah,
-                                akarMasalah = data?.akarMasalah,
-                                nilaiOutput = data?.nilaiOutput,
-                                nqiModel = data?.nqiModel,
-                                teamMember = data?.teamMember,
-                                categoryFixing = data?.categoryFixing,
-                                hasilImplementasi = data?.implementationResult,
-                                attachment = data?.attachment,
-                                statusProposal = data?.statusProposal,
-                                source = source
-                            )
-                            stat = true
-                        }
-                    }
+//                        else -> {
+//                            HawkUtils().setTempDataCreatePi(
+//                                id = data?.id,
+//                                piNo = data?.piNo,
+//                                date = data?.date,
+//                                title = data?.title,
+//                                branch = data?.branch,
+//                                subBranch = data?.subBranch,
+//                                department = data?.department,
+//                                years = data?.years,
+//                                statusImplementationModel = statusImplementation,
+//                                identification = data?.identification,
+//                                target = data?.target,
+//                                sebabMasalah = data?.sebabMasalah,
+//                                akarMasalah = data?.akarMasalah,
+//                                nilaiOutput = data?.nilaiOutput,
+//                                nqiModel = data?.nqiModel,
+//                                teamMember = data?.teamMember,
+//                                categoryFixing = data?.categoryFixing,
+//                                hasilImplementasi = data?.implementationResult,
+//                                attachment = data?.attachment,
+//                                statusProposal = data?.statusProposal,
+//                                source = source
+//                            )
+//                            stat = true
+//                        }
+//                    }
                 }
                 return stat
             }

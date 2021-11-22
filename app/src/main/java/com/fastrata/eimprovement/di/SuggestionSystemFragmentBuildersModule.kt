@@ -21,5 +21,8 @@ abstract class SuggestionSystemFragmentBuildersModule {
     abstract fun contributeSuggestionSystem4Fragment(): SuggestionSystemStep4Fragment
 
     @ContributesAndroidInjector
+    abstract fun contributeSuggestionSystem5Fragment(): SuggestionSystemStep5Fragment
+
+    @ContributesAndroidInjector
     abstract fun contributeListApprovalHistoryStatusFragment(): ListApprovalHistoryStatusSsFragment
 }

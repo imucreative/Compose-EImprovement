@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data
 
 import com.fastrata.eimprovement.data.resultMutableLiveDataRemote
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,5 +14,13 @@ class SsRemoteRepository @Inject constructor(private val remoteDataSource: SsRem
 
     fun observeDetailSs(id: Int, userId: Int) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestDetailSs(id, userId) }
+    )
+
+    fun observeSubmitCreateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.postSubmitCreateSs(suggestionSystemCreateModel) }
+    )
+
+    fun observeSubmitUpdateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.postSubmitUpdateSs(suggestionSystemCreateModel) }
     )
 }

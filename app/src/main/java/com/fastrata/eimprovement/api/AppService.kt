@@ -17,6 +17,7 @@ import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.
 import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemResponseModel
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -80,6 +81,21 @@ interface AppService {
         @Field("id") id: Int,
         @Field("userId") userId: Int
     ): Response<ResultsResponse<SuggestionSystemCreateModel>>
+
+    @POST("ss/create")
+    suspend fun submitCreateSs(
+        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel
+    ): Response<ResultsResponse<SuggestionSystemResponseModel>>
+
+    @PUT("ss/remove/{SS_H_ID}")
+    suspend fun removeSs(
+        @Path("SS_H_ID") id : Int
+    ): Response<ResultsResponse<ArrayList<String>>>
+
+    @PUT("ss/update")
+    suspend fun submitUpdateSs(
+        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel
+    ): Response<ResultsResponse<SuggestionSystemResponseModel>>
 
 
     // Project Improvement

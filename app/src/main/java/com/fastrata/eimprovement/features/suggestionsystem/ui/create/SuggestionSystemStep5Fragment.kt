@@ -1,28 +1,26 @@
-package com.fastrata.eimprovement.features.projectimprovement.ui.create
+package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.stetho.server.http.HttpStatus
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep9Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.data.Result
-import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
-import com.fastrata.eimprovement.featuresglobal.adapter.*
+import com.fastrata.eimprovement.featuresglobal.adapter.AttachmentAdapter
+import com.fastrata.eimprovement.featuresglobal.adapter.AttachmentCallback
 import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.viewmodel.AttachmentViewModel
 import com.fastrata.eimprovement.utils.*
@@ -34,24 +32,26 @@ import okhttp3.RequestBody
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
+import androidx.core.app.ActivityCompat
+import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep5Binding
 
-class ProjectImprovStep9Fragment : Fragment(), Injectable {
+class SuggestionSystemStep5Fragment: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private  var _binding : FragmentProjectImprovementStep9Binding? = null
+    private var _binding: FragmentSuggestionSystemStep5Binding? = null
     private val binding get() = _binding!!
-    private var data : ProjectImprovementCreateModel? = null
-    private var piNo: String? = ""
-    private var action: String? = ""
+    private var data: SuggestionSystemCreateModel? = null
+    private var ssNo: String? = ""
+    private var ssAction: String? = ""
     private var userName: String = ""
-    private lateinit var attachmentAdapter: AttachmentAdapter
-    private lateinit var piCreateAttachmentViewModel: ProjectImprovementViewModel
+    private lateinit var ssCreateAttachmentViewModel: SsCreateAttachmentViewModel
     private lateinit var attachmentViewModel: AttachmentViewModel
+    private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var uri: Uri
     private lateinit var initFileSize: String
     private lateinit var initFileName: String
     private lateinit var initFilePath: String
-    private var source: String = PI_CREATE
+    private var source: String = SS_CREATE
     private lateinit var ext : String
     private val fileNameExt = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
     private lateinit var notification: HelperNotification
@@ -62,18 +62,18 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProjectImprovementStep9Binding.inflate(layoutInflater, container, false)
+        _binding = FragmentSuggestionSystemStep5Binding.inflate(layoutInflater, container, false)
 
-        piCreateAttachmentViewModel = injectViewModel(viewModelFactory)
+        ssCreateAttachmentViewModel = injectViewModel(viewModelFactory)
         attachmentViewModel = injectViewModel(viewModelFactory)
 
-        piNo = arguments?.getString(PI_DETAIL_DATA)
-        action = arguments?.getString(ACTION_DETAIL_DATA)
+        ssNo = arguments?.getString(SS_DETAIL_DATA)
+        ssAction = arguments?.getString(ACTION_DETAIL_DATA)
 
-        source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
+        source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
 
-        data = HawkUtils().getTempDataCreatePi(source)
-        piCreateAttachmentViewModel.setAttachment(source)
+        data = HawkUtils().getTempDataCreateSs(source)
+        ssCreateAttachmentViewModel.setSuggestionSystemAttachment(source)
 
         userName = HawkUtils().getDataLogin().USER_NAME
 
@@ -88,12 +88,12 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentProjectImprovementStep9Binding.bind(view)
+        _binding = FragmentSuggestionSystemStep5Binding.bind(view)
 
         binding.apply {
-            rvPiAttachment.setHasFixedSize(true)
-            rvPiAttachment.layoutManager = LinearLayoutManager(context)
-            rvPiAttachment.adapter = attachmentAdapter
+            rvSsAttachment.setHasFixedSize(true)
+            rvSsAttachment.layoutManager = LinearLayoutManager(context)
+            rvSsAttachment.adapter = attachmentAdapter
 
             getAttachment.setOnClickListener {
                 val permission = ActivityCompat.checkSelfPermission(
@@ -116,11 +116,11 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             addAttachment.setOnClickListener {
                 when {
                     fileName.text.isEmpty() -> {
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            resources.getString(R.string.file_empty),
-//                            R.drawable.ic_close, R.color.red_500
-//                        )
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500
+                        )
                     }
                     else -> {
                         uploadAttachment(uri)
@@ -132,7 +132,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         initList(data?.attachment)
         setValidation()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
+        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
     }
@@ -152,7 +152,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private fun initList(listAttachment: ArrayList<AttachmentItem?>?) {
         attachmentAdapter.attachmentCreateCallback(object : AttachmentCallback {
             override fun removeClicked(data: AttachmentItem) {
-                if ((action != APPROVE) && (action != DETAIL)) {
+                if ((ssAction != APPROVE)&&(ssAction != DETAIL)) {
                     activity?.let { activity ->
                         notification.shownotificationyesno(
                             activity,
@@ -174,13 +174,19 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             }
                         )
                     }
+
                 }
             }
 
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
                 println("### Testing path attachment : ${data.fileLocation}")
-                /*if (data.fileLocation.isEmpty()){
+                SnackBarCustom.snackBarIconInfo(
+                    binding.root, layoutInflater, resources, binding.root.context,
+                    data.name,
+                    R.drawable.ic_close, R.color.red_500)
+
+                /**if (data.fileLocation.isEmpty()){
                     println("### FILE EXIST : NOT EXIST")
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
@@ -190,13 +196,13 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                     println("### FILE EXIST : EXIST")
                     val intent = Intent()*/
                 //        .setType("*/*")
-                /*        .setAction(Intent.ACTION_GET_CONTENT)
+                /**        .setAction(Intent.ACTION_GET_CONTENT)
                     startActivityForResult(Intent.createChooser(intent, data.fileLocation), 111)
                 }*/
             }
         })
 
-        piCreateAttachmentViewModel.getAttachment().observe(viewLifecycleOwner, {
+        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
                 attachmentAdapter.setList(it)
             }
@@ -221,47 +227,52 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             Intent.createChooser(intent, "Complete action using"),
             FILE_PICKER_REQUEST_CODE
         )
-        //        Intent(Intent.ACTION_PICK).also {
-        //            it.type = "image/*"
-        //            val mimeTypes = arrayOf("image/jpeg", "image/png")
-        //            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        //            startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
-        //        }
+
+//        Intent(Intent.ACTION_PICK).also {
+//            it.type = "image/*"
+//            val mimeTypes = arrayOf("image/jpeg", "image/png")
+//            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+//            startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                uri = data.data as Uri
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == FILE_PICKER_REQUEST_CODE) {
+                if (data != null) {
+                    uri = data.data as Uri
 
-                val fileData = FileUtils.getFile(requireContext(), uri)
-                val fileSize: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
-                Timber.e("###FILE SIZE: $fileSize")
-                if (fileSize == 0 || fileSize >= 2048){
-                    SnackBarCustom.snackBarIconInfo(
-                        binding.root, layoutInflater, resources, binding.root.context,
-                        resources.getString(R.string.file_size),
-                        R.drawable.ic_close, R.color.red_500)
-                }else{
-                    initFileName = FileInformation().getName(requireContext(), uri).toString()
-                    initFileSize = FileInformation().getSize(requireContext(), uri).toString()
-                    initFilePath = FileInformation().getPath(requireContext(), uri).toString()
-                    if(initFileName.contains(".")){
-                        ext = initFileName.substring(initFileName.lastIndexOf("."))
-                        Timber.e("###EXT : $ext")
-                        val match = fileNameExt.filter { ext.contains(it,ignoreCase = true) }
-                        Timber.e("### MATCH SIZE: ${match.size}")
-                        if (match.isNotEmpty()){
-                            binding.fileName.text = initFileName
-                            Timber.e("### path uri : $uri")
-                            Timber.e("### file size : $initFileSize")
-                            Timber.e("### path : $initFilePath")
-                        }else{
-                            SnackBarCustom.snackBarIconInfo(
-                                binding.root, layoutInflater, resources, binding.root.context,
-                                resources.getString(R.string.file_ext),
-                                R.drawable.ic_close, R.color.red_500)
+                    val fileData = FileUtils.getFile(requireContext(), uri)
+                    val fileSize: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
+                    Timber.e("###FILE SIZE: $fileSize")
+                    if (fileSize == 0 || fileSize >= 2048) {
+                        SnackBarCustom.snackBarIconInfo(
+                            binding.root, layoutInflater, resources, binding.root.context,
+                            resources.getString(R.string.file_size),
+                            R.drawable.ic_close, R.color.red_500
+                        )
+                    } else {
+                        initFileName = FileInformation().getName(requireContext(), uri).toString()
+                        initFileSize = FileInformation().getSize(requireContext(), uri).toString()
+                        initFilePath = FileInformation().getPath(requireContext(), uri).toString()
+                        if (initFileName.contains(".")) {
+                            ext = initFileName.substring(initFileName.lastIndexOf("."))
+                            Timber.e("###EXT : $ext")
+                            val match = fileNameExt.filter { ext.contains(it, ignoreCase = true) }
+                            Timber.e("### MATCH SIZE: ${match.size}")
+                            if (match.isNotEmpty()) {
+                                binding.fileName.text = initFileName
+                                Timber.e("### path uri : $uri")
+                                Timber.e("### file size : $initFileSize")
+                                Timber.e("### path : $initFilePath")
+                            } else {
+                                SnackBarCustom.snackBarIconInfo(
+                                    binding.root, layoutInflater, resources, binding.root.context,
+                                    resources.getString(R.string.file_ext),
+                                    R.drawable.ic_close, R.color.red_500
+                                )
+                            }
                         }
                     }
                 }
@@ -280,7 +291,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 fileLocation = fileLocation
             )
 
-            piCreateAttachmentViewModel.addAttachment(addData, data?.attachment, data, source)
+            ssCreateAttachmentViewModel.addAttachment(addData, data?.attachment, data, source)
             fileName.text = ""
         }
     }
@@ -288,8 +299,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private fun removeDataAttachmentFromHawk(listAttachment: ArrayList<AttachmentItem?>?) {
         listAttachment?.remove(selectedAttachmentItem)
 
-        piCreateAttachmentViewModel.updateAttachment(listAttachment, data, source)
-        piCreateAttachmentViewModel.getAttachment().observe(viewLifecycleOwner, {
+        ssCreateAttachmentViewModel.updateAttachment(listAttachment, data, source)
+        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
             if (it != null) {
                 attachmentAdapter.setList(it)
             }
@@ -304,10 +315,10 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         //val descriptionString = "Capture photo file desc"
         //val description = RequestBody.create(MultipartBody.FORM, descriptionString)
 
-        attachmentViewModel.file = body
-        attachmentViewModel.type = PI
-        attachmentViewModel.group = PROPOSAL
-        attachmentViewModel.createdBy = userName
+            attachmentViewModel.file = body
+            attachmentViewModel.type = SS
+            attachmentViewModel.group = PROPOSAL
+            attachmentViewModel.createdBy = userName
 
         try {
             attachmentViewModel.processSubmitAttachment()
@@ -393,8 +404,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     }
 
     private fun setValidation() {
-        (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object :
-            ProjectImprovementSystemCreateCallback {
+        (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object : SuggestionSystemCreateCallback {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
 
@@ -406,32 +416,32 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 //                            R.drawable.ic_close, R.color.red_500)
                         true
                     } else {
+                        HawkUtils().setTempDataCreateSs(
+                            ssNo = data?.ssNo,
+                            date = data?.date,
+                            title = data?.title,
+                            listCategory = data?.categoryImprovement,
+                            name = data?.name,
+                            nik = data?.nik,
+                            branchCode = data?.branchCode,
+                            branch = data?.branch,
+                            subBranch = data?.subBranch,
+                            department = data?.department,
+                            directMgr = data?.directMgr,
+                            suggestion = data?.suggestion,
+                            problem = data?.problem,
+                            statusImplementation = data?.statusImplementation,
+                            teamMember = data?.teamMember,
+                            attachment = data?.attachment,
+                            statusProposal = data?.statusProposal,
+                            headId = data?.headId,
+                            userId = data?.userId,
+                            orgId = data?.orgId,
+                            warehouseId = data?.warehouseId,
+                            source = source
+                        )
                         true
                     }
-                    HawkUtils().setTempDataCreatePi(
-                        id = data?.id,
-                        piNo = data?.piNo,
-                        date = data?.date,
-                        title = data?.title,
-                        branch = data?.branch,
-                        subBranch = data?.subBranch,
-                        department = data?.department,
-                        years = data?.years,
-                        statusImplementationModel = data?.statusImplementationModel,
-                        identification = data?.identification,
-                        target = data?.target,
-                        sebabMasalah = data?.sebabMasalah,
-                        akarMasalah = data?.akarMasalah,
-                        nilaiOutput = data?.nilaiOutput,
-                        nqiModel = data?.nqiModel,
-                        teamMember = data?.teamMember,
-                        categoryFixing = data?.categoryFixing,
-                        hasilImplementasi = data?.implementationResult,
-                        attachment = data?.attachment,
-                        statusProposal = data?.statusProposal,
-                        source = source
-                    )
-                    stat = true
                 }
 
                 return stat

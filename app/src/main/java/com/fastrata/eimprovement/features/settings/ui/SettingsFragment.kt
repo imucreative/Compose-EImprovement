@@ -68,7 +68,14 @@ class SettingsFragment : Fragment(), Injectable {
             }
 
             btnLogout.setOnClickListener {
-                notification.shownotificationyesno(activity,resources.getString(R.string.info),resources.getString(R.string.log_out),
+                notification.shownotificationyesno(
+                    activity,
+                    requireContext(),
+                    R.color.blue_500,
+                    resources.getString(R.string.info),
+                    resources.getString(R.string.log_out),
+                    resources.getString(R.string.agree),
+                    resources.getString(R.string.not_agree),
                 object  :CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 

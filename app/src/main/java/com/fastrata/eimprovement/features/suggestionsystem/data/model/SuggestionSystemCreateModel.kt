@@ -10,6 +10,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SuggestionSystemCreateModel(
+    @SerializedName("SS_H_ID")
+    var id: Int?,
     @SerializedName("SS_NO")
 	var ssNo: String?,
     @SerializedName("CREATED_DATE")
@@ -51,5 +53,9 @@ data class SuggestionSystemCreateModel(
     @SerializedName("TEAM_MEMBER")
 	var teamMember: ArrayList<TeamMemberItem?>?,
     @SerializedName("STATUS_PROPOSAL")
-    var statusProposal: StatusProposalItem?
+    var statusProposal: StatusProposalItem?,
+    @SerializedName("PROSES_PELAKSANAAN")
+    var proses :String?,
+    @SerializedName("RESULT_IMPLEMENTASI")
+    var result : String?
 ) : Parcelable

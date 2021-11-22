@@ -139,7 +139,7 @@
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                     android:textColor="@color/grey_80"
                                     app:drawableStartCompat="@drawable/ic_attach_file"
-                                    tools:text="@string/attachment" />
+                                    android:text="@string/attachment_add" />
 
                             </RelativeLayout>
 
