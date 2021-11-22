@@ -30,7 +30,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var changesRewardViewModel: ChangesRewardViewModel
     private lateinit var rewardAdapter: ChangesRewardAdapter
-    private var data : ChangePointCreateItemModel? = null
+    private var data : ChangePointCreateModel? = null
     private var source: String = CP_CREATE
     private var action: String? = ""
     private var cpNo: String? = ""

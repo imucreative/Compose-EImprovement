@@ -18,8 +18,8 @@ internal class HawkUtils {
     private val getDataDetailSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_DETAIL_DATA)) Hawk.get(SS_DETAIL_DATA) else null
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
     private val getDataDetailPi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_DETAIL_DATA)) Hawk.get(PI_DETAIL_DATA) else null
-    private val getDataCreateCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
-    private val getDataDetailCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_DETAIL_DATA)) Hawk.get(CP_DETAIL_DATA) else null
+    private val getDataCreateCp : ChangePointCreateModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
+    private val getDataDetailCp : ChangePointCreateModel? = if (Hawk.contains(CP_DETAIL_DATA)) Hawk.get(CP_DETAIL_DATA) else null
 
     // Create Suggestion System
     fun setTempDataCreateSs(
@@ -239,7 +239,7 @@ internal class HawkUtils {
         warehouseId: Int? = null,
         source: String = CP_CREATE
     ){
-        val data = ChangePointCreateItemModel(
+        val data = ChangePointCreateModel(
             id = id ?: if (source == CP_CREATE) getDataCreateCp?.id else getDataDetailCp?.id,
             cpNo = cpNo?: if(source == CP_CREATE) getDataCreateCp?.cpNo else getDataDetailCp?.cpNo,
             saldo = saldo?: if(source == CP_CREATE) getDataCreateCp?.saldo else getDataDetailCp?.saldo,
@@ -268,7 +268,7 @@ internal class HawkUtils {
         }
     }
 
-    fun getTempDataCreateCP(source: String = CP_CREATE) : ChangePointCreateItemModel? {
+    fun getTempDataCreateCP(source: String = CP_CREATE) : ChangePointCreateModel? {
         return if (source == CP_CREATE){
             getDataCreateCp
         }else{

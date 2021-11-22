@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.textLimitReplaceToDots
@@ -20,7 +20,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentChangesPointStep1Binding? = null
     private val binding get() = _binding!!
-    private var data : ChangePointCreateItemModel? = null
+    private var data : ChangePointCreateModel? = null
     private var source :String = CP_CREATE
     private var action: String? = ""
     private var cpNo: String? = ""

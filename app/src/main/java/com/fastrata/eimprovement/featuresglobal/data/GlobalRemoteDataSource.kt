@@ -58,4 +58,8 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
     suspend fun removeSs(idSs : Int) = getResult {
         service.removeSs(idSs)
     }
+
+    suspend fun removeCp(idCp: Int) = getResult {
+        service.removeRp(idCp)
+    }
 }

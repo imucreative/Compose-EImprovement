@@ -21,6 +21,7 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
@@ -81,7 +82,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                 source = CP_DETAIL_DATA
                 viewModel.setDetailCp(argsIdCp, userId)
-                viewModel.getDetailCpItem.observeEvent(this) { resultObserve ->
+                viewModel.getDetailCp.observeEvent(this) { resultObserve ->
                     resultObserve.observe(this, { result ->
                         if (result != null) {
                             when (result.status) {
@@ -267,38 +268,165 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     }
                 }
             }else{
+                val gson = Gson()
+                val data = HawkUtils().getTempDataCreateCP(source)
+                val convertToJson = gson.toJson(data)
+
+                Timber.e("### Data Form Input : $convertToJson")
+                Timber.e("${data?.statusProposal}")
+
+                var initialTypeProposal = ""
+                var buttonInitialTypeProposal = ""
+
+                when(data?.statusProposal?.id) {
+                    13 -> {
+                        initialTypeProposal = "Pengajuan"
+                        buttonInitialTypeProposal = "Pengajuan"
+                    }
+                    14 -> {
+                        initialTypeProposal = "Submit"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                }
                 notification = HelperNotification()
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ChangesPointCreateWizard,
                         applicationContext,
                         R.color.blue_500,
-                        resources.getString(R.string.simpan),
+                        initialTypeProposal,
                         resources.getString(R.string.submit_desc),
-                        resources.getString(R.string.agree),
-                        resources.getString(R.string.not_agree),
+                        buttonInitialTypeProposal,
+                        resources.getString(R.string.cancel),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
                             }
 
                             override fun onNotificationYes() {
-                                val gson = Gson()
-                                val data = gson.toJson(HawkUtils().getTempDataCreateCP(source))
-                                println("### Data form input : $data")
-                                Toast.makeText(
-                                    this@ChangesPointCreateWizard,
-                                    resources.getString(R.string.cp_saved),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                finish()
+                                if (data?.cpNo.isNullOrEmpty()){
+//                                    submit(data!!)
+                                }else{
+                                    if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (action == EDIT)){
+//                                        update(data)
+                                        Timber.e("$data")
+                                        Toast.makeText(
+                                            this@ChangesPointCreateWizard,
+                                            "Under Development for Update Data",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }else{
+                                        Timber.e("$data")
+                                        Toast.makeText(
+                                            this@ChangesPointCreateWizard,
+                                            "Under Development for Update Data",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
                             }
                         }
                     )
                 }
+
             }
         }
     }
+
+
+    private fun submit(data: ChangePointCreateModel){
+        viewModel.setPostSubmitCreateCp(data)
+
+        viewModel.postSubmitCreateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
+            resultObserve.observe(this@ChangesPointCreateWizard, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ChangesPointCreateWizard,"",false)
+                            Timber.d("###-- Loading postSubmitCreateCp")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateSs(source)
+
+                            Timber.d("###-- Success postSubmitCreateCp")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error postSubmitCreateCp")
+                        }
+
+                    }
+                }
+            })
+        }
+    }
+
+    private fun update(data : ChangePointCreateModel){
+        viewModel.setPutSubmitUpdateCp(data)
+        viewModel.putSubmitUpdateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
+            resultObserve.observe(this@ChangesPointCreateWizard, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ChangesPointCreateWizard,"",false)
+                            Timber.d("###-- Loading putSubmitUpdateCp")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateSs(source)
+
+                            Timber.d("###-- Success putSubmitUpdateCp")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error putSubmitUpdateCp")
+                        }
+
+                    }
+                }
+            })
+        }
+    }
+
 
     override fun onBackPressed() {
         finish()

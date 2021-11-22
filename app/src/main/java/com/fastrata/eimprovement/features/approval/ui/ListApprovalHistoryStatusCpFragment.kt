@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentListApprovalHistoryStatusBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.utils.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,7 +20,7 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentListApprovalHistoryStatusBinding? = null
     private val binding get() = _binding!!
-    private var data: ChangePointCreateItemModel? = null
+    private var data: ChangePointCreateModel? = null
     private var typeNo: String? = ""
     private var action: String? = ""
     private lateinit var viewModelHistoryStatus: ListApprovalViewModel
