@@ -57,5 +57,11 @@ data class SuggestionSystemCreateModel(
     @SerializedName("PROSES_PELAKSANAAN")
     var proses :String?,
     @SerializedName("RESULT_IMPLEMENTASI")
-    var result : String?
+    var result : String?,
+    @SerializedName("ACTIVITY_TYPE")
+    var activityType : String?,     // SS/PI/RP
+    @SerializedName("SUBMIT_TYPE")
+    var submitType : Int?,          // 1=Setujui, 2=Revisi, 3=Ditolak
+    @SerializedName("COMMENT")
+    var comment : String?
 ) : Parcelable

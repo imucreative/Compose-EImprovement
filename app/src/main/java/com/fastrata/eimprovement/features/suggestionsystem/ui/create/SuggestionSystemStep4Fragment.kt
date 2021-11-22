@@ -1,7 +1,5 @@
 package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
-import com.fastrata.eimprovement.data.resultLiveData
 import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemStep4Binding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
@@ -32,14 +29,13 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSuggestionSystemStep4Binding.inflate(inflater,container,false)
         ssNo = arguments?.getString(SS_DETAIL_DATA)
         ssAction = arguments?.getString(ACTION_DETAIL_DATA)
 
         source = if (ssNo == "") SS_CREATE else SS_DETAIL_DATA
         data = HawkUtils().getTempDataCreateSs(source)
-        val proposalType = SS
 
         statusSuggestion = HawkUtils().getStatusSuggestion()
 
@@ -138,9 +134,12 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
                                 userId = data?.userId,
                                 orgId = data?.orgId,
                                 warehouseId = data?.warehouseId,
-                                source = source,
                                 proses = idePerbaikan.text.toString(),
-                                result = hasilImplementasi.text.toString()
+                                result = hasilImplementasi.text.toString(),
+                                activityType = data?.activityType,
+                                submitType = data?.submitType,
+                                comment = data?.comment,
+                                source = source
                             )
 
                             stat = true

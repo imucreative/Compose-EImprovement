@@ -2,7 +2,6 @@ package com.fastrata.eimprovement.features.suggestionsystem.ui.create
 
 import android.Manifest
 import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -409,13 +408,13 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.attachment?.size == 0) {
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            resources.getString(R.string.file_empty),
-//                            R.drawable.ic_close, R.color.red_500)
+                    /*stat = if (data?.attachment?.size == 0) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500)
                         true
-                    } else {
+                    } else {*/
                         HawkUtils().setTempDataCreateSs(
                             ssNo = data?.ssNo,
                             date = data?.date,
@@ -438,10 +437,15 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                             userId = data?.userId,
                             orgId = data?.orgId,
                             warehouseId = data?.warehouseId,
+                            proses = data?.proses,
+                            result = data?.result,
+                            activityType = data?.activityType,
+                            submitType = data?.submitType,
+                            comment = data?.comment,
                             source = source
                         )
-                        true
-                    }
+                        stat = true
+                    //}
                 }
 
                 return stat

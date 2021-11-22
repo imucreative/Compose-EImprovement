@@ -95,7 +95,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
 
-                                    Timber.d("###-- Loading get Branch")
+                                    Timber.d("###-- Loading getDetailSsItem")
                                 }
                                 Result.Status.SUCCESS -> {
                                     HelperLoading.hideLoading()
@@ -131,17 +131,22 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         userId = result.data?.data?.get(0)?.userId,
                                         orgId = result.data?.data?.get(0)?.orgId,
                                         warehouseId = result.data?.data?.get(0)?.warehouseId,
+
+                                        activityType = SS,
+                                        submitType = if (argsAction == EDIT) 2 else 1,
+                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
+
                                         source = SS_DETAIL_DATA
                                     )
 
                                     initToolbar(argsTitle)
                                     initComponent()
-                                    Timber.d("###-- Success get Branch")
+                                    Timber.d("###-- Success getDetailSsItem")
                                 }
                                 Result.Status.ERROR -> {
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
-                                    Timber.d("###-- Error get Branch")
+                                    Timber.d("###-- Error getDetailSsItem")
                                 }
 
                             }
@@ -168,6 +173,11 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     userId = userId,
                     orgId = orgId,
                     warehouseId = warehouseId,
+                    proses = "",
+                    result = "",
+                    activityType = SS,
+                    submitType = 1,
+                    comment = "",
                     source = SS_CREATE
                 )
 
@@ -384,22 +394,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 if (data?.ssNo.isNullOrEmpty()) {
                                     submit(data!!)
                                 } else {
-                                    if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (ssAction == EDIT)) {
-                                        update(data)
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@SuggestionSystemCreateWizard,
-                                            "Under Development for Update Data",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    } else {
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@SuggestionSystemCreateWizard,
-                                            "Under Development for Update Status Proposal",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
+                                    update(data!!)
                                 }
                             }
                         }

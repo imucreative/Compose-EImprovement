@@ -47,6 +47,9 @@ internal class HawkUtils {
         warehouseId: Int? = null,
         proses: String? = null,
         result: String? = null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -70,11 +73,14 @@ internal class HawkUtils {
             statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal,
             proses = proses ?: if (source == SS_CREATE) getDataCreateSs?.proses else getDataDetailSs?.proses,
             result = result ?: if (source == SS_CREATE) getDataCreateSs?.result else getDataDetailSs?.result,
-
             headId = headId ?: if (source == SS_CREATE) getDataCreateSs?.headId else getDataDetailSs?.headId,
             userId = userId ?: if (source == SS_CREATE) getDataCreateSs?.userId else getDataDetailSs?.userId,
             orgId = orgId ?: if (source == SS_CREATE) getDataCreateSs?.orgId else getDataDetailSs?.orgId,
-            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId
+            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId,
+
+            activityType = activityType ?: if (source == SS_CREATE) getDataCreateSs?.activityType else getDataDetailSs?.activityType,
+            submitType = submitType ?: if (source == SS_CREATE) getDataCreateSs?.submitType else getDataDetailSs?.submitType,
+            comment = comment ?: if (source == SS_CREATE) getDataCreateSs?.comment else getDataDetailSs?.comment
         )
 
         if (source == SS_CREATE) {
