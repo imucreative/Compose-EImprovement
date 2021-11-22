@@ -102,6 +102,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     binding.bottomNavigationBar.visibility = VISIBLE
 
                                     HawkUtils().setTempDataCreateSs(
+                                        id = result.data?.data?.get(0)?.id,
                                         ssNo = result.data?.data?.get(0)?.ssNo,
                                         title = result.data?.data?.get(0)?.title,
                                         listCategory = result.data?.data?.get(0)?.categoryImprovement,
@@ -154,6 +155,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 source = SS_CREATE
                 // ini ambil dari session
                 HawkUtils().setTempDataCreateSs(
+                    id = 0,
                     ssNo = "",
                     name = HawkUtils().getDataLogin().USER_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
@@ -383,6 +385,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     submit(data!!)
                                 } else {
                                     if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (ssAction == EDIT)) {
+                                        update(data)
                                         Timber.e("$data")
                                         Toast.makeText(
                                             this@SuggestionSystemCreateWizard,
@@ -446,6 +449,53 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                             finish()
 
                             Timber.d("###-- Error postSubmitCreateSs")
+                        }
+
+                    }
+                }
+            })
+        }
+    }
+
+    private fun update(data: SuggestionSystemCreateModel){
+        viewModel.setPostSubmitUpdateSs(data)
+
+        viewModel.putSubmitUpdateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
+            resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@SuggestionSystemCreateWizard,"",false)
+                            Timber.d("###-- Loading putSubmitUpdateSs")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@SuggestionSystemCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateSs(source)
+
+                            Timber.d("###-- Success putSubmitUpdateSs")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@SuggestionSystemCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error putSubmitUpdateSs")
                         }
 
                     }

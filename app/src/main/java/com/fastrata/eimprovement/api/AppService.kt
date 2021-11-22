@@ -92,6 +92,11 @@ interface AppService {
         @Path("SS_H_ID") id : Int
     ): Response<ResultsResponse<ArrayList<String>>>
 
+    @PUT("ss/update")
+    suspend fun submitUpdateSs(
+        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel
+    ): Response<ResultsResponse<SuggestionSystemResponseModel>>
+
 
     // Project Improvement
     @POST("pi/list")

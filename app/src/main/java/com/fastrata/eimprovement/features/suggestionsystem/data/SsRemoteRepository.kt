@@ -19,4 +19,8 @@ class SsRemoteRepository @Inject constructor(private val remoteDataSource: SsRem
     fun observeSubmitCreateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.postSubmitCreateSs(suggestionSystemCreateModel) }
     )
+
+    fun observeSubmitUpdateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.postSubmitUpdateSs(suggestionSystemCreateModel) }
+    )
 }

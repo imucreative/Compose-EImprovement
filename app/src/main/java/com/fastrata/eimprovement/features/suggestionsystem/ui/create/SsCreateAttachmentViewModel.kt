@@ -30,6 +30,7 @@ class SsCreateAttachmentViewModel @Inject constructor(): ViewModel() {
         list.postValue(current)
 
         HawkUtils().setTempDataCreateSs(
+            id = data?.id,
             ssNo = data?.ssNo,
             date = data?.date,
             name = data?.name,
@@ -54,6 +55,7 @@ class SsCreateAttachmentViewModel @Inject constructor(): ViewModel() {
         list.postValue(add)
 
         HawkUtils().setTempDataCreateSs(
+            id = data?.id,
             ssNo = data?.ssNo,
             date = data?.date,
             name = data?.name,

@@ -53,6 +53,16 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
         }
     }
 
+    // === Put Submit Update SS
+    private val _postSubmitUpdateSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemResponseModel>>>>>()
+    val putSubmitUpdateSs: LiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemResponseModel>>>>> get() = _postSubmitUpdateSs
+
+    fun setPostSubmitUpdateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitUpdateSs(suggestionSystemCreateModel) }
+            _postSubmitUpdateSs.value = Event(result)
+        }
+    }
 
     private val _removeListSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>>()
     val doRemoveSs : LiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>> get() = _removeListSs

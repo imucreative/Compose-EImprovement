@@ -23,6 +23,7 @@ internal class HawkUtils {
 
     // Create Suggestion System
     fun setTempDataCreateSs(
+        id: Int? = null,
         ssNo: String? = null,
         date: String? = null,
         title: String? = null,
@@ -49,6 +50,7 @@ internal class HawkUtils {
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
+            id = id ?: if (source == SS_CREATE) getDataCreateSs?.id else getDataDetailSs?.id,
             ssNo = ssNo ?: if (source == SS_CREATE) getDataCreateSs?.ssNo else getDataDetailSs?.ssNo,
             date = date ?: if (source == SS_CREATE) getDataCreateSs?.date else getDataDetailSs?.date,
             title = title ?: if (source == SS_CREATE) getDataCreateSs?.title else getDataDetailSs?.title,

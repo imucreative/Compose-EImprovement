@@ -224,6 +224,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                         }
                         else -> {
                             HawkUtils().setTempDataCreateSs(
+                                id = data?.id,
                                 ssNo = ssNo.text.toString(),
                                 date = data?.date,
                                 title = titleSuggestion.text.toString(),
