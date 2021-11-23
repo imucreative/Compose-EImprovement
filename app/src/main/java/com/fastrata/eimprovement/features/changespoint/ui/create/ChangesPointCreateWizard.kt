@@ -69,6 +69,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         val orgId       = HawkUtils().getDataLogin().ORG_ID
         val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
         val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
+        val statusProposal = args.statusProposal
 
         action = argsAction
 
@@ -146,6 +147,11 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
                     departement = HawkUtils().getDataLogin().DEPARTMENT,
                     position = HawkUtils().getDataLogin().POSITION,
+                    statusProposal = statusProposal,
+                    headId = headId,
+                    userId = userId,
+                    orgId = orgId,
+                    warehouseId = warehouseId,
                     source = CP_CREATE
                 )
                 initToolbar(argsTitle)
@@ -305,11 +311,12 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             override fun onNotificationYes() {
                                 if (data?.cpNo.isNullOrEmpty()){
+                                    Timber.e("data create Cp : $data")
 //                                    submit(data!!)
                                 }else{
                                     if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (action == EDIT)){
 //                                        update(data)
-                                        Timber.e("$data")
+                                        Timber.e("data update Cp : $data")
                                         Toast.makeText(
                                             this@ChangesPointCreateWizard,
                                             "Under Development for Update Data",
