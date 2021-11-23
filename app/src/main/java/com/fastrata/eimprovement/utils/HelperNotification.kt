@@ -8,18 +8,21 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
-
 import com.fastrata.eimprovement.R
+import com.google.android.material.textfield.TextInputEditText
 
 class HelperNotification {
 
     interface CallBackNotificationYesNo {
         fun onNotificationYes()
+        fun onNotificationNo()
+    }
+
+    interface CallBackNotificationYesNoWithComment {
+        fun onNotificationYes(comment: String = "")
         fun onNotificationNo()
     }
 
@@ -101,7 +104,16 @@ class HelperNotification {
     }
 
 
-    fun shownotificationyesno(activity: Activity,context : Context,headerColor : Int,header: String,content: String,yesText : String,noText : String,listener : CallBackNotificationYesNo){
+    fun shownotificationyesno(
+        activity: Activity,
+        context : Context,
+        headerColor : Int,
+        header: String,
+        content: String,
+        yesText : String,
+        noText : String,
+        listener : CallBackNotificationYesNo
+    ){
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_yesno)
@@ -114,10 +126,55 @@ class HelperNotification {
         lp.copyFrom(dialog.window!!.attributes)
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+        (dialog.findViewById<View>(R.id.relative_layout_comment) as RelativeLayout).visibility = View.GONE
+
         (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = yesText
         (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationYes()
+        }
+        (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
+        (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
+    fun showNotificationYesNoWithComment(
+        activity: Activity,
+        context : Context,
+        headerColor : Int,
+        header: String,
+        content: String,
+        yesText : String,
+        noText : String,
+        listener : CallBackNotificationYesNoWithComment
+    ){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_yesno)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        (dialog.findViewById<View>(R.id.linear_header)as LinearLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
+        (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
+        (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+        (dialog.findViewById<View>(R.id.relative_layout_comment) as RelativeLayout).visibility = View.VISIBLE
+
+        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = yesText
+        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null) {
+                val comment = (dialog.findViewById<View>(R.id.comment) as TextInputEditText).text
+                listener.onNotificationYes(comment.toString())
+            }
         }
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->

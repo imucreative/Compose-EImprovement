@@ -10,14 +10,11 @@ import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementRemoteRequest
 import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordModel
 import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemResponseModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.featuresglobal.data.model.*
 import okhttp3.MultipartBody
 import retrofit2.Response

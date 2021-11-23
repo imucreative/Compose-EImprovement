@@ -7,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.suggestionsystem.data.SsRemoteRepository
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemResponseModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers

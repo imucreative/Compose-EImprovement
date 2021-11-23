@@ -34,6 +34,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 import javax.inject.Inject
 import android.view.View.*
+import com.google.android.material.snackbar.Snackbar
 
 class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
     @Inject
@@ -45,10 +46,16 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     private var ssNo: String = ""
     private var ssAction: String = ""
     private lateinit var viewModel: SuggestionSystemViewModel
-    private var maxStep = 5
+    private var maxStep = 6
     private var currentStep = 1
     private var source: String = SS_CREATE
     private lateinit var notification: HelperNotification
+    private val gson = Gson()
+    private var data: SuggestionSystemCreateModel? = null
+    private var userId = 0
+    private var orgId = 0
+    private var warehouseId = 0
+    private var headId = 0
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -70,16 +77,16 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
         val argsSsNo    = args.ssNo
         val statusProposal = args.statusProposal
 
-        val userId      = HawkUtils().getDataLogin().USER_ID
-        val orgId       = HawkUtils().getDataLogin().ORG_ID
-        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
-        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
+        userId      = HawkUtils().getDataLogin().USER_ID
+        orgId       = HawkUtils().getDataLogin().ORG_ID!!
+        warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID!!
+        headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
 
         ssAction = argsAction
 
-        if (ssAction == APPROVE) {
-            maxStep += 1
-        }
+        //if (ssAction == APPROVE) {
+        //    maxStep += 1
+        //}
 
         when (argsAction) {
             EDIT, DETAIL, APPROVE, SUBMIT_PROPOSAL -> {
@@ -95,7 +102,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
 
-                                    Timber.d("###-- Loading get Branch")
+                                    Timber.d("###-- Loading getDetailSsItem")
                                 }
                                 Result.Status.SUCCESS -> {
                                     HelperLoading.hideLoading()
@@ -131,17 +138,23 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         userId = result.data?.data?.get(0)?.userId,
                                         orgId = result.data?.data?.get(0)?.orgId,
                                         warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                        historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                        activityType = SS,
+                                        submitType = if (argsAction == EDIT) 2 else 1,
+                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
+
                                         source = SS_DETAIL_DATA
                                     )
 
                                     initToolbar(argsTitle)
                                     initComponent()
-                                    Timber.d("###-- Success get Branch")
+                                    Timber.d("###-- Success getDetailSsItem")
                                 }
                                 Result.Status.ERROR -> {
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
-                                    Timber.d("###-- Error get Branch")
+                                    Timber.d("###-- Error getDetailSsItem")
                                 }
 
                             }
@@ -168,6 +181,11 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     userId = userId,
                     orgId = orgId,
                     warehouseId = warehouseId,
+                    proses = "",
+                    result = "",
+                    activityType = SS,
+                    submitType = 1,
+                    comment = "",
                     source = SS_CREATE
                 )
 
@@ -181,6 +199,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     }
 
     private fun initComponent() {
+        notification = HelperNotification()
         binding.apply {
             lytBack.setOnClickListener {
                 backStep(currentStep)
@@ -213,6 +232,66 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     .commit()
             }
 
+            lytAccept.setOnClickListener {
+                buttonAction(
+                    1, R.color.green_A700,
+                    "Setuju",
+                    "Apakah Anda yakin ingin Menyetujui pengajuan ini?",
+                    "Setuju"
+                )
+            }
+            lytRevision.setOnClickListener {
+                buttonAction(
+                    2, R.color.blue_A700,
+                    "Revisi",
+                    "Apakah Anda yakin ingin Merevisi pengajuan ini?",
+                    "Revisi"
+                )
+            }
+            lytReject.setOnClickListener {
+                buttonAction(
+                    3, R.color.red_A700,
+                    "Tolak",
+                    "Apakah Anda yakin ingin Menolak pengajuan ini?",
+                    "Tolak"
+                )
+            }
+        }
+    }
+
+    private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
+        binding.apply {
+            notification.showNotificationYesNoWithComment(
+                this@SuggestionSystemCreateWizard,
+                applicationContext, color, title, description, buttonString,
+                resources.getString(R.string.cancel),
+                object : HelperNotification.CallBackNotificationYesNoWithComment {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes(comment: String) {
+                        data = HawkUtils().getTempDataCreateSs(source)
+                        if (comment != "") {
+                            val updateProposal = SuggestionSystemCreateModel(
+                                data?.id, data?.ssNo, data?.date, data?.name,
+                                userId = userId,
+                                data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
+                                data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
+                                data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
+                                data?.department, data?.teamMember, data?.statusProposal, data?.proses,
+                                data?.result, data?.historyApproval,
+                                activityType = SS, submitType = key, comment = comment
+                            )
+                            update(updateProposal)
+                            println(key)
+                            println(comment)
+                        } else {
+                            Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            )
         }
     }
 
@@ -324,16 +403,21 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     lytBack.visibility = VISIBLE
                     lytNext.visibility = VISIBLE
 
-                    if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
+                    if (ssAction == DETAIL) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = INVISIBLE
+                            binding.actionBottom.visibility = GONE
+                        }
+                    } else if (ssAction == APPROVE && (data?.statusProposal?.id == 3 || data?.statusProposal?.id == 8)) {
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = INVISIBLE
+                            binding.actionBottom.visibility = VISIBLE
                         }
                     }
                 }
             } else {
                 //CoroutineScope(Dispatchers.Default).launch {
-                val gson = Gson()
-                val data = HawkUtils().getTempDataCreateSs(source)
+                data = HawkUtils().getTempDataCreateSs(source)
                 val convertToJson = gson.toJson(data)
 
                 Timber.e("### Data form input : $convertToJson")
@@ -365,7 +449,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     }
                 }
 
-                notification = HelperNotification()
                 binding.apply {
                     notification.shownotificationyesno(
                         this@SuggestionSystemCreateWizard,
@@ -384,22 +467,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 if (data?.ssNo.isNullOrEmpty()) {
                                     submit(data!!)
                                 } else {
-                                    if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (ssAction == EDIT)) {
-                                        update(data)
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@SuggestionSystemCreateWizard,
-                                            "Under Development for Update Data",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    } else {
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@SuggestionSystemCreateWizard,
-                                            "Under Development for Update Status Proposal",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
+                                    update(data!!)
                                 }
                             }
                         }
@@ -514,7 +582,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
             currentStepCondition(currentStep)
 
             binding.apply {
-                lytNext.visibility = View.VISIBLE
+                lytNext.visibility = VISIBLE
+                actionBottom.visibility = GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }

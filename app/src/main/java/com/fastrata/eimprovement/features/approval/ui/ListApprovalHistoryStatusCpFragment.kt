@@ -43,7 +43,7 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
         source = if (typeNo == "") CP_CREATE else CP_DETAIL_DATA
 
         //data = HawkUtils().getTempDataCreateSs(source)
-        viewModelHistoryStatus.setApprovalHistoryStatus()
+        viewModelHistoryStatus.setApprovalHistoryStatus(source)
 
         adapter = ListApprovalHistoryStatusAdapter()
         adapter.notifyDataSetChanged()
@@ -60,10 +60,6 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
             rvHistoryStatus.setHasFixedSize(true)
             rvHistoryStatus.layoutManager = LinearLayoutManager(context)
             rvHistoryStatus.adapter = adapter
-
-            /*getAttachment.setOnClickListener {
-                openFolder()
-            }*/
         }
 
         initList()
