@@ -13,3 +13,4 @@ data class SimTrxRedeemPointSystemH(
     @SerializedName("STATUS")
     var status: String?,
 )
+

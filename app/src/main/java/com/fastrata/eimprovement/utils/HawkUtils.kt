@@ -1,13 +1,11 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
-import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
-import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
+import com.fastrata.eimprovement.featuresglobal.data.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
@@ -47,6 +45,10 @@ internal class HawkUtils {
         warehouseId: Int? = null,
         proses: String? = null,
         result: String? = null,
+        historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreateSs?.historyApproval == null) arrayListOf() else null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -70,11 +72,14 @@ internal class HawkUtils {
             statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal,
             proses = proses ?: if (source == SS_CREATE) getDataCreateSs?.proses else getDataDetailSs?.proses,
             result = result ?: if (source == SS_CREATE) getDataCreateSs?.result else getDataDetailSs?.result,
-
             headId = headId ?: if (source == SS_CREATE) getDataCreateSs?.headId else getDataDetailSs?.headId,
             userId = userId ?: if (source == SS_CREATE) getDataCreateSs?.userId else getDataDetailSs?.userId,
             orgId = orgId ?: if (source == SS_CREATE) getDataCreateSs?.orgId else getDataDetailSs?.orgId,
-            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId
+            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId,
+            historyApproval = historyApproval ?: if (source == SS_CREATE) getDataCreateSs?.historyApproval else getDataDetailSs?.historyApproval,
+            activityType = activityType ?: if (source == SS_CREATE) getDataCreateSs?.activityType else getDataDetailSs?.activityType,
+            submitType = submitType ?: if (source == SS_CREATE) getDataCreateSs?.submitType else getDataDetailSs?.submitType,
+            comment = comment ?: if (source == SS_CREATE) getDataCreateSs?.comment else getDataDetailSs?.comment
         )
 
         if (source == SS_CREATE) {
@@ -233,10 +238,15 @@ internal class HawkUtils {
         keterangan: String? = null,
         rewardData: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
         statusProposal: StatusProposalItem? = null,
+        historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreateCp?.historyApproval == null) arrayListOf() else null,
         userId: Int? = null,
         headId: Int? = null,
         orgId: Int? = null,
         warehouseId: Int? = null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
+        branchCode: String? = null,
         source: String = CP_CREATE
     ){
         val data = ChangePointCreateModel(
@@ -257,7 +267,12 @@ internal class HawkUtils {
             headId = headId ?: if (source == CP_CREATE) getDataCreateCp?.headId else getDataDetailCp?.headId,
             userId = userId ?: if (source == CP_CREATE) getDataCreateCp?.userId else getDataDetailCp?.userId,
             orgId = orgId ?: if (source == CP_CREATE) getDataCreateCp?.orgId else getDataDetailCp?.orgId,
-            warehouseId = warehouseId ?: if (source == CP_CREATE) getDataCreateCp?.warehouseId else getDataDetailCp?.warehouseId
+            warehouseId = warehouseId ?: if (source == CP_CREATE) getDataCreateCp?.warehouseId else getDataDetailCp?.warehouseId,
+            historyApproval = historyApproval ?: if (source == CP_CREATE) getDataCreateCp?.historyApproval else getDataDetailCp?.historyApproval,
+            activityType = activityType ?: if (source == CP_CREATE) getDataCreateCp?.activityType else getDataDetailCp?.activityType,
+            submitType = submitType ?: if (source == CP_CREATE) getDataCreateCp?.submitType else getDataDetailCp?.submitType,
+            branchCode = branchCode ?: if (source == CP_CREATE) getDataCreateCp?.branchCode else getDataDetailCp?.branchCode,
+            comment = comment ?: if (source == CP_CREATE) getDataCreateCp?.comment else getDataDetailCp?.comment
         )
         if (source == CP_CREATE) {
             Hawk.put(CP_CREATE, data)

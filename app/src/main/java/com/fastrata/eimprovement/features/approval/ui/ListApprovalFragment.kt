@@ -21,7 +21,6 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
@@ -94,7 +93,7 @@ class ListApprovalFragment : Fragment(), Injectable {
             roleName  = HawkUtils().getDataLogin().ROLE_NAME
 
             val listApprovalRemoteRequest = ApprovalRemoteRequest(
-                userId, limit, page, roleName,
+                userId, limit, page, roleName, APPR,
                 userName = userName, docNo = "", statusId = 0, title = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
@@ -107,14 +106,14 @@ class ListApprovalFragment : Fragment(), Injectable {
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
-        } catch (e: java.lang.Exception){
+        } catch (e: Exception){
             Timber.e("Error setStatusProposal : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
         try {
             masterBranchViewModel.setBranch()
-        } catch (e: java.lang.Exception){
+        } catch (e: Exception){
             Timber.e("Error setBranch : $e")
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
@@ -166,7 +165,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                             }
 
                             val listApprovalRemoteRequest = ApprovalRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, APPR,
                                 userName = userName, docNo = edtNoDoc.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
                                 startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
@@ -190,7 +189,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                     adapter.clear()
 
                     val listApprovalRemoteRequest = ApprovalRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, APPR,
                         userName = userName, docNo = "", statusId = 0, title = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -415,6 +414,87 @@ class ListApprovalFragment : Fragment(), Injectable {
             override fun onItemClicked(data: ApprovalModel) {
                 when (data.type) {
                     SS -> {
+                        HelperNotification().showListEdit(requireActivity(),
+                            resources.getString(R.string.select),
+                            view = data.isView,
+                            viewEdit = data.isEdit,
+                            viewSubmit = data.isSubmit,
+                            viewImplementation = data.isImplementation,
+                            viewCheck = data.isCheck,
+                            viewSubmitLaporan = data.isSubmitlaporan,
+                            viewReview = data.isReview,
+                            viewDelete = data.isDelete,
+                            listener = object : HelperNotification.CallbackList {
+                                override fun onView() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                            toolbarTitle = "View Suggestion System",
+                                            action = DETAIL,
+                                            idSs = data.id,
+                                            ssNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onEdit() {
+
+                                }
+
+                                override fun onSubmit() {
+
+                                }
+
+                                override fun onCheck() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                            toolbarTitle = "Check Suggestion System",
+                                            action = APPROVE,
+                                            idSs = data.id,
+                                            ssNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onImplementation() {
+
+                                }
+
+                                override fun onSubmitLaporan() {
+
+                                }
+
+                                override fun onReview() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                            toolbarTitle = "Review Suggestion System",
+                                            action = APPROVE,
+                                            idSs = data.id,
+                                            ssNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onDelete() {
+
+                                }
+                            }
+                        )
+                    }
+                    PI -> {
+
+                    }
+                    CP -> {
+
+                    }
+                }
+                /*when (data.type) {
+                    SS -> {
                         val direction =
                             ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
                                 toolbarTitle = "Approve Suggestion System",
@@ -447,7 +527,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                             )
                         requireView().findNavController().navigate(direction)
                     }
-                }
+                }*/
             }
         })
 
@@ -534,7 +614,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         adapter.clear()
 
                         val listApprovalRemoteRequest = ApprovalRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, APPR,
                             userName = userName, docNo = edtNoDoc.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
                             startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()

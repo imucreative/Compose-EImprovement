@@ -118,6 +118,11 @@ class ChangesPointFragment : Fragment(), Injectable {
         getDataListCp()
     }
 
+    override fun onResume() {
+        super.onResume()
+       getListCp()
+    }
+
     private fun getDataListCp(){
 
         try{
@@ -125,6 +130,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             userName = HawkUtils().getDataLogin().USER_NAME
             roleName  = HawkUtils().getDataLogin().ROLE_NAME
 
+            adapter.clear()
             val listChangePointRemoteRequest = ChangePointRemoteRequest(
                 userId, limit, page, roleName,
                 userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,

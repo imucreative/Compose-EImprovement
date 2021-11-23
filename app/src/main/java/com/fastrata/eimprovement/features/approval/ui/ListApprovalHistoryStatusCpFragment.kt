@@ -11,6 +11,8 @@ import com.fastrata.eimprovement.databinding.FragmentListApprovalHistoryStatusBi
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointCreateCallback
+import com.fastrata.eimprovement.features.changespoint.ui.create.ChangesPointCreateWizard
 import com.fastrata.eimprovement.utils.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,7 +44,7 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
         source = if (typeNo == "") CP_CREATE else CP_DETAIL_DATA
 
         //data = HawkUtils().getTempDataCreateSs(source)
-        viewModelHistoryStatus.setApprovalHistoryStatus()
+        viewModelHistoryStatus.setApprovalHistoryStatus(source)
 
         adapter = ListApprovalHistoryStatusAdapter()
         adapter.notifyDataSetChanged()
@@ -59,13 +61,45 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
             rvHistoryStatus.setHasFixedSize(true)
             rvHistoryStatus.layoutManager = LinearLayoutManager(context)
             rvHistoryStatus.adapter = adapter
-
-            /*getAttachment.setOnClickListener {
-                openFolder()
-            }*/
         }
 
         initList()
+        setValidation()
+    }
+
+    private fun setValidation() {
+        (activity as ChangesPointCreateWizard).setCpCreateCallback(
+            object : ChangesPointCreateCallback {
+                override fun onDataPass(): Boolean {
+                    var stat: Boolean
+                    binding.apply {
+                        HawkUtils().setTempDataCreateCp(
+                            cpNo = data?.cpNo,
+                            name = data?.name,
+                            nik = data?.nik,
+                            branch = data?.branch,
+                            departement = data?.department,
+                            position = data?.position,
+                            date = data?.date,
+                            keterangan = data?.description,
+                            id = data?.id,
+                            subBranch = data?.subBranch,
+                            branchCode = data?.branchCode,
+                            saldo = data?.saldo,
+                            rewardData = data?.reward,
+                            statusProposal = data?.statusProposal,
+                            headId = data?.headId,
+                            userId = data?.userId,
+                            orgId = data?.orgId,
+                            warehouseId = data?.warehouseId,
+                            source = source
+                        )
+                        stat = true
+                    }
+                    return stat
+                }
+            }
+        )
     }
 
     override fun onDestroyView() {

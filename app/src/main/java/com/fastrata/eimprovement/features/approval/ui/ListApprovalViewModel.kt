@@ -10,8 +10,7 @@ import com.fastrata.eimprovement.features.approval.data.ApprovalRemoteRepository
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
-import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
-import com.fastrata.eimprovement.utils.DataDummySs
+import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,14 +18,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListApprovalViewModel @Inject constructor(private val repository: ApprovalRemoteRepository): ViewModel() {
-    private val listApprovalHistoryStatus = MutableLiveData<ArrayList<ApprovalHistoryStatusModel>>()
-    fun setApprovalHistoryStatus() {
-        // koneksi ke DB
-        val data = DataDummySs.generateDummyApprovalHistoryStatus()
-
+    // History Approval
+    private val listApprovalHistoryStatus = MutableLiveData<ArrayList<ApprovalHistoryStatusModel?>?>()
+    fun setApprovalHistoryStatus(source: String) {
+        val data = HawkUtils().getTempDataCreateSs(source)?.historyApproval
         listApprovalHistoryStatus.postValue(data)
     }
-    fun getApprovalHistoryStatus(): LiveData<ArrayList<ApprovalHistoryStatusModel>> {
+    fun getApprovalHistoryStatus(): LiveData<ArrayList<ApprovalHistoryStatusModel?>?> {
         return listApprovalHistoryStatus
     }
 

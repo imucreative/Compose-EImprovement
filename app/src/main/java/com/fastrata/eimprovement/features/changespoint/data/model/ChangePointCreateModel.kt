@@ -1,6 +1,7 @@
 package com.fastrata.eimprovement.features.changespoint.data.model
 
 import android.os.Parcelable
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -40,5 +41,15 @@ data class ChangePointCreateModel(
     @SerializedName("REDEEM_GIFT")
     var reward : ArrayList<RewardItem?>?,
     @SerializedName("STATUS_PROPOSAL")
-    var statusProposal: StatusProposalItem?
+    var statusProposal: StatusProposalItem?,
+    @SerializedName("HISTORY_APPROVAL")
+    var historyApproval : ArrayList<ApprovalHistoryStatusModel?>?,
+    @SerializedName("ACTIVITY_TYPE")
+    var activityType : String?,     // SS/PI/RP
+    @SerializedName("SUBMIT_TYPE")
+    var submitType : Int?,          // 1=Setujui, 2=Revisi, 3=Ditolak
+    @SerializedName("COMMENT")
+    var comment : String?,
+    @SerializedName("BRANCH_CODE")
+    var branchCode : String?
 ): Parcelable

@@ -79,7 +79,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10)"0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        date.setText("$dayStr-$monthStr-$year")
+                        date.setText("$year-$monthStr-$dayStr")
                     }
                 })
             }
@@ -140,6 +140,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                                 keterangan = desc.text.toString(),
                                 id = data?.id,
                                 subBranch = data?.subBranch,
+                                branchCode = data?.branchCode,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
                                 statusProposal = data?.statusProposal,

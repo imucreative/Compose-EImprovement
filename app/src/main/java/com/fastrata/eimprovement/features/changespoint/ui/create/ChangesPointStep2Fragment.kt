@@ -272,6 +272,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                                 name = data?.name,
                                 nik = data?.nik,
                                 branch = data?.branch,
+                                    branchCode = data?.branchCode,
                                 departement = data?.department,
                                 position = data?.position,
                                 date = data?.date,
