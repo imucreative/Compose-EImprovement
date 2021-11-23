@@ -67,7 +67,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
         binding.apply {
-            if (data?.statusImplementationModel?.sudah == null) {
+            if (data?.statusImplementationModel?.sudah?.from == "") {
                 cardViewHasilImplementasi.visibility = View.GONE
             } else {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
@@ -208,7 +208,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah != null -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah?.from != "" -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.result_empty),

@@ -23,8 +23,6 @@ import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImpr
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementRemoteRequest
-import com.fastrata.eimprovement.features.projectimprovement.ui.create.ProjectImprovementCreateWizardArgs
-import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemFragmentDirections
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
@@ -96,6 +94,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName = HawkUtils().getDataLogin().ROLE_NAME
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -124,12 +125,10 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
     private fun getDataListPi(){
         try {
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName = HawkUtils().getDataLogin().ROLE_NAME
+            adapter.clear()
 
             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
-                userId, limit, page, roleName,
+                userId, limit, page, roleName, PI,
                 userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
@@ -182,7 +181,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
 
                             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, PI,
                                 userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
                                 startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
@@ -216,7 +215,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     adapter.clear()
 
                     val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, PI,
                         userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -252,6 +251,11 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             branchId = 0
             subBranchId = 0
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getListPi()
     }
 
     private fun getListPi() {
@@ -512,42 +516,42 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onEdit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onCheck() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Check Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onImplementation() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Implementation Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmitLaporan() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onReview() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Review Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -712,7 +716,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         adapter.clear()
 
                         val listPiRemoteRequest = ProjectImprovementRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, PI,
                             userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
                             startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
