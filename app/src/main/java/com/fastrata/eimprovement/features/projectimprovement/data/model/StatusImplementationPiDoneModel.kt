@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class StatusImplementationPiDoneModel(
-    @SerializedName("IMP_START")
+    @SerializedName("STARTDATE_IMP")
     val from : String,
-    @SerializedName("IMP_END")
+    @SerializedName("ENDDATE_IMP")
     val to: String
 ): Parcelable

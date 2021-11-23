@@ -473,6 +473,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
         viewModel.postSubmitCreatePi.observeEvent(this@ProjectImprovementCreateWizard) { resultObserve ->
             resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                Timber.e("hasil result : $result")
                 if (result != null) {
                     when(result.status) {
                         Result.Status.LOADING -> {
@@ -482,17 +483,15 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         Result.Status.SUCCESS -> {
                             HelperLoading.hideLoading()
 
-                            Timber.e("${result.data?.message}")
-
+                            Timber.e("result : ${result.data?.message}")
+                            Timber.e("result success : ${result.data?.success}")
                             Toast.makeText(
                                 this@ProjectImprovementCreateWizard,
-                                result.data?.message,
+                                result.data?.message.toString(),
                                 Toast.LENGTH_LONG
                             ).show()
-
-                            finish()
-
                             HawkUtils().removeDataCreateProposal(source)
+                            finish()
 
                             Timber.d("###-- Success postSubmitCreatePi")
                         }

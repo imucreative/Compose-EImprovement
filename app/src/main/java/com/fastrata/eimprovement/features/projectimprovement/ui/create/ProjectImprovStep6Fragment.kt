@@ -18,6 +18,7 @@ import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImp
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -87,6 +88,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
     }
 
     private fun setLogic() {
+        Timber.e("Id Status proposal :  ${data?.statusProposal?.id}")
         binding.apply {
             when {
                 data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
@@ -106,7 +108,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     aktualCost.isEnabled = true
                     aktualCostKeterangan.isEnabled = true
                 }
-                data?.statusProposal == null -> {
+                data?.statusProposal != null -> {
                     estimasiBenefit.isEnabled = true
                     estimasiBenefitKeterangan.isEnabled = true
                     estimasiCost.isEnabled = true
