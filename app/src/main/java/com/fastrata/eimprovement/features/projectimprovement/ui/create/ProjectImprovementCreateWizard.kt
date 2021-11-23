@@ -83,7 +83,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         userId      = HawkUtils().getDataLogin().USER_ID
         orgId       = HawkUtils().getDataLogin().ORG_ID!!
         warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID!!
-       headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
+        headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
 
         action = argsAction
 
@@ -92,7 +92,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 //        }
 
         when (argsAction) {
-            EDIT, DETAIL, APPROVE -> {
+            EDIT, DETAIL, APPROVE, SUBMIT_PROPOSAL -> {
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
@@ -146,15 +146,16 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                         },
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                        nik = nik,
-                                        headId = headId,
-                                        userId = userId,
-                                        orgId = orgId,
-                                        warehouseId = warehouseId,
+                                        nik = result.data?.data?.get(0)?.nik,
+                                        headId = result.data?.data?.get(0)?.headId,
+                                        userId = result.data?.data?.get(0)?.userId,
+                                        orgId = result.data?.data?.get(0)?.orgId,
+                                        warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                        historyApproval = result.data?.data?.get(0)?.historyApproval,
 
                                         activityType = PI,
                                         submitType = if (argsAction == EDIT) 2 else 1,
-                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
+                                        comment = "",
                                         source = PI_DETAIL_DATA
                                     )
 
@@ -178,6 +179,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                 source = PI_CREATE
                 HawkUtils().setTempDataCreatePi(
+                    id = 0,
                     piNo = "",
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
@@ -279,9 +281,10 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         data = HawkUtils().getTempDataCreatePi(source)
                         if (comment != "") {
                             val updateProposal = ProjectImprovementCreateModel(
-                             data?.id,data?.piNo,userId = userId,data?.nik,data?.orgId,
-                                data?.warehouseId,data?.headId,data?.department,data?.years,
-                                data?.date,data?.branchCode,data?.branch,data?.subBranch,
+                                data?.id,data?.piNo,
+                                userId = userId,
+                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,data?.department,
+                                data?.years, data?.date,data?.branchCode,data?.branch,data?.subBranch,
                                 data?.title,data?.statusImplementationModel,data?.identification,
                                 data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
                                 data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
@@ -289,8 +292,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 activityType = PI,submitType = key, comment = comment
                             )
                             update(updateProposal)
-                            println(key)
-                            println(comment)
                         } else {
                             Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
                         }
@@ -519,22 +520,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 if (data?.piNo.isNullOrEmpty()){
                                     submit(data!!)
                                 }else {
-                                    if((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (action == EDIT)) {
-                                        update(data!!)
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@ProjectImprovementCreateWizard,
-                                            "Under Development for Update Data",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }else{
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@ProjectImprovementCreateWizard,
-                                            "Under Development for Update Status Proposal",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
+                                    //update(data!!)
+                                    println(data)
                                 }
                             }
                         }
@@ -635,7 +622,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
             })
         }
     }
-
 
     override fun onBackPressed() {
         finish()

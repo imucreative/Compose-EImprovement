@@ -142,7 +142,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                                         activityType = SS,
                                         submitType = if (argsAction == EDIT) 2 else 1,
-                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
+                                        comment = "",
 
                                         source = SS_DETAIL_DATA
                                     )
@@ -284,8 +284,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 activityType = SS, submitType = key, comment = comment
                             )
                             update(updateProposal)
-                            println(key)
-                            println(comment)
                         } else {
                             Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
                         }

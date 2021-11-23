@@ -245,6 +245,14 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                                 hasilImplementasi = hasilImplementasiImprovement.text.toString(),
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
+                                historyApproval = data?.historyApproval,
+                                activityType = data?.activityType,
+                                submitType = data?.submitType,
+                                comment = data?.comment,
                                 source = source
                             )
                             stat = true

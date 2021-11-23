@@ -34,7 +34,7 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListApprovalHistoryStatusBinding.inflate(inflater, container, false)
+        _binding = FragmentListApprovalHistoryStatusBinding.inflate(layoutInflater, container, false)
 
         viewModelHistoryStatus = injectViewModel(viewModelFactory)
 
@@ -43,8 +43,8 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
 
         source = if (typeNo == "") PI_CREATE else PI_DETAIL_DATA
 
-        //data = HawkUtils().getTempDataCreateSs(source)
-        viewModelHistoryStatus.setApprovalHistoryStatus(source)
+        data = HawkUtils().getTempDataCreatePi(source)
+        viewModelHistoryStatus.setApprovalHistoryStatus(source, PI)
 
         adapter = ListApprovalHistoryStatusAdapter()
         adapter.notifyDataSetChanged()
@@ -73,30 +73,6 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
     }
 
     private fun initList() {
-        /*adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
-            override fun removeClicked(data: AttachmentItem) {
-                if (ssAction != APPROVE) {
-                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
-
-                    attachment?.remove(data)
-
-                    viewModelAttachment.updateAttachment(attachment)
-                    viewModelAttachment.getSuggestionSystemAttachment()
-                        .observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                adapter.setList(it)
-                                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
-                            }
-                        })
-                }
-            }
-
-            override fun showAttachment(data: AttachmentItem) {
-                //File(URI(uri.toString()))
-                println("### Testing show attachment : ${data.name}")
-            }
-        })*/
-
         viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
@@ -108,32 +84,41 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
     private fun setValidation() {
         (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object:
             ProjectImprovementSystemCreateCallback{
-            override fun onDataPass(): Boolean {
-                HawkUtils().setTempDataCreatePi(
-                    id = data?.id,
-                    piNo = data?.piNo,
-                    date = data?.date,
-                    title = data?.title,
-                    branch = data?.branch,
-                    subBranch = data?.subBranch,
-                    department = data?.department,
-                    years = data?.years,
-                    statusImplementationModel = data?.statusImplementationModel,
-                    identification = data?.identification,
-                    target = data?.target,
-                    sebabMasalah = data?.sebabMasalah,
-                    akarMasalah = data?.akarMasalah,
-                    nilaiOutput = data?.nilaiOutput,
-                    nqiModel = data?.nqiModel,
-                    teamMember = data?.teamMember,
-                    categoryFixing = data?.categoryFixing,
-                    hasilImplementasi = data?.implementationResult,
-                    attachment = data?.attachment,
-                    statusProposal = data?.statusProposal,
-                    source = source
-                )
-                return true
-            }
+                override fun onDataPass(): Boolean {
+
+                    HawkUtils().setTempDataCreatePi(
+                        id = data?.id,
+                        piNo = data?.piNo,
+                        date = data?.date,
+                        title = data?.title,
+                        branch = data?.branch,
+                        subBranch = data?.subBranch,
+                        department = data?.department,
+                        years = data?.years,
+                        statusImplementationModel = data?.statusImplementationModel,
+                        identification = data?.identification,
+                        target = data?.target,
+                        sebabMasalah = data?.sebabMasalah,
+                        akarMasalah = data?.akarMasalah,
+                        nilaiOutput = data?.nilaiOutput,
+                        nqiModel = data?.nqiModel,
+                        teamMember = data?.teamMember,
+                        categoryFixing = data?.categoryFixing,
+                        hasilImplementasi = data?.implementationResult,
+                        attachment = data?.attachment,
+                        statusProposal = data?.statusProposal,
+                        headId = data?.headId,
+                        userId = data?.userId,
+                        orgId = data?.orgId,
+                        warehouseId = data?.warehouseId,
+                        historyApproval = data?.historyApproval,
+                        activityType = data?.activityType,
+                        submitType = data?.submitType,
+                        comment = data?.comment,
+                        source = source
+                    )
+                    return true
+                }
             }
         )
     }
