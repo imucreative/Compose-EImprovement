@@ -248,6 +248,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                                 warehouseId = data?.warehouseId,
                                 proses = data?.proses,
                                 result = data?.result,
+                                historyApproval = data?.historyApproval,
                                 activityType = data?.activityType,
                                 submitType = data?.submitType,
                                 comment = data?.comment,

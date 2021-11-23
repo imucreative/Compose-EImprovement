@@ -357,6 +357,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                 warehouseId = data?.warehouseId,
                                 proses = edtProses,
                                 result = edtResult,
+                                historyApproval = data?.historyApproval,
                                 activityType = data?.activityType,
                                 submitType = data?.submitType,
                                 comment = data?.comment,

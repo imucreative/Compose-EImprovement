@@ -136,6 +136,7 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
                                 warehouseId = data?.warehouseId,
                                 proses = idePerbaikan.text.toString(),
                                 result = hasilImplementasi.text.toString(),
+                                historyApproval = data?.historyApproval,
                                 activityType = data?.activityType,
                                 submitType = data?.submitType,
                                 comment = data?.comment,

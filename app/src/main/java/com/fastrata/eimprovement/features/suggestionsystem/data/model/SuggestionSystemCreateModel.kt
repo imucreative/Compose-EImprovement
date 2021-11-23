@@ -1,10 +1,8 @@
 package com.fastrata.eimprovement.features.suggestionsystem.data.model
 
 import android.os.Parcelable
-import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
-import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
-import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
+import com.fastrata.eimprovement.featuresglobal.data.model.*
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -58,6 +56,8 @@ data class SuggestionSystemCreateModel(
     var proses :String?,
     @SerializedName("RESULT_IMPLEMENTASI")
     var result : String?,
+    @SerializedName("HISTORY_APPROVAL")
+    var historyApproval : ArrayList<ApprovalHistoryStatusModel?>?,
     @SerializedName("ACTIVITY_TYPE")
     var activityType : String?,     // SS/PI/RP
     @SerializedName("SUBMIT_TYPE")
