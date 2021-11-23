@@ -496,11 +496,11 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     var sudah: StatusImplementationPiDoneModel? = null
                     var akan: StatusImplementationPiWantModel? = null
 
-                    if (rbStatus1.isChecked) {
+//                    if (rbStatus1.isChecked) {
                         sudah = StatusImplementationPiDoneModel(
                             from = etFromStatus1.text.toString(),
                             to = etToStatus1.text.toString())
-                    } else {
+//                    } else {
                         akan = StatusImplementationPiWantModel(
                             startIdentifikasiMasalah = etFromIdentifikasi.text.toString(),
                             endIdentifikasiMasalah = etToIdentifikasi.text.toString(),
@@ -520,7 +520,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             startAnalisPeriksaEvaluasi = etFromAnalisaPeriksaDanEvaluasi.text.toString(),
                             endAnalisPeriksaEvaluasi = etToAnalisaPeriksaDanEvaluasi.text.toString()
                         )
-                    }
+//                    }
 
                     val statusImplementation = StatusImplementationPiModel(
                         sudah = sudah,

@@ -68,6 +68,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         val argsAction  = args.action
         val argsIdPi    = args.idPi
         val argsPiNo    = args.piNo
+        val statusProposal = args.statusProposal
+
         val nik         = HawkUtils().getDataLogin().NIK
         val userId      = HawkUtils().getDataLogin().USER_ID
         val orgId       = HawkUtils().getDataLogin().ORG_ID
@@ -164,10 +166,15 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 source = PI_CREATE
                 HawkUtils().setTempDataCreatePi(
                     piNo = "",
+                    nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
-                    subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
+                    statusProposal = statusProposal,
+                    headId = headId,
+                    userId = userId,
+                    orgId = orgId,
+                    warehouseId = warehouseId,
                     source = PI_CREATE
                 )
 
@@ -388,7 +395,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 val convertToJson = gson.toJson(data)
 
                 Timber.e("### Data form input: $convertToJson")
-                Timber.e("${data?.statusProposal}")
+                Timber.e("### Data Proposal : ${data?.statusProposal}")
 
                 var initialTypeProposal = ""
                 var buttonInitialTypeProposal = ""

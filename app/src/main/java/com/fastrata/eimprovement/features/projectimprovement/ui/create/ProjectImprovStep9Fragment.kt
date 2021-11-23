@@ -351,7 +351,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
     private fun removeAttachment(listAttachment: ArrayList<AttachmentItem?>?) {
         try {
-            attachmentViewModel.processRemoveAttachment(selectedAttachmentItem.id, selectedAttachmentItem.name, SS)
+            attachmentViewModel.processRemoveAttachment(selectedAttachmentItem.id, selectedAttachmentItem.name, PI)
 
             attachmentViewModel.doRemoveAttachment.observeEvent(this) { resultObserve ->
                 resultObserve.observe(viewLifecycleOwner, { result ->

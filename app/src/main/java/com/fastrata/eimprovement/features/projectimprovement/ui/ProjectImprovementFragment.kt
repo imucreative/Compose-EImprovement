@@ -197,10 +197,6 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             })
 
             createPi.setOnClickListener {
-//                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-//                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = ""
-//                )
-//                it.findNavController().navigate(direction)
                 try{
                     checkPeriodViewModel.setCheckPeriod(PI)
                     getStatusCheckPeriod()
@@ -343,6 +339,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         Result.Status.SUCCESS -> {
                             HelperLoading.hideLoading()
                             val statusProposal = result.data?.data?.get(0)
+                            Timber.e("Period : $statusProposal")
                             if (statusProposal?.id == 11) {
                                 notification.shownotificationyesno(
                                         requireActivity(),
@@ -583,6 +580,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                             Result.Status.SUCCESS  -> {
                                 HelperLoading.hideLoading()
+                                clearFormFilter()
                                 getDataListPi()
 
                                 result.data?.let {
