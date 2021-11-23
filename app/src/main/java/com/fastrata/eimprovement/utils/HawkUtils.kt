@@ -1,13 +1,11 @@
 package com.fastrata.eimprovement.utils
 
-import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
-import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementItem
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
-import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
+import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistoryStatusModel
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
+import com.fastrata.eimprovement.featuresglobal.data.model.*
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
@@ -47,6 +45,10 @@ internal class HawkUtils {
         warehouseId: Int? = null,
         proses: String? = null,
         result: String? = null,
+        historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreateSs?.historyApproval == null) arrayListOf() else null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
         source: String = SS_CREATE
     ) {
         val data = SuggestionSystemCreateModel(
@@ -70,11 +72,14 @@ internal class HawkUtils {
             statusProposal = statusProposal ?: if (source == SS_CREATE) getDataCreateSs?.statusProposal else getDataDetailSs?.statusProposal,
             proses = proses ?: if (source == SS_CREATE) getDataCreateSs?.proses else getDataDetailSs?.proses,
             result = result ?: if (source == SS_CREATE) getDataCreateSs?.result else getDataDetailSs?.result,
-
             headId = headId ?: if (source == SS_CREATE) getDataCreateSs?.headId else getDataDetailSs?.headId,
             userId = userId ?: if (source == SS_CREATE) getDataCreateSs?.userId else getDataDetailSs?.userId,
             orgId = orgId ?: if (source == SS_CREATE) getDataCreateSs?.orgId else getDataDetailSs?.orgId,
-            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId
+            warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId,
+            historyApproval = historyApproval ?: if (source == SS_CREATE) getDataCreateSs?.historyApproval else getDataDetailSs?.historyApproval,
+            activityType = activityType ?: if (source == SS_CREATE) getDataCreateSs?.activityType else getDataDetailSs?.activityType,
+            submitType = submitType ?: if (source == SS_CREATE) getDataCreateSs?.submitType else getDataDetailSs?.submitType,
+            comment = comment ?: if (source == SS_CREATE) getDataCreateSs?.comment else getDataDetailSs?.comment
         )
 
         if (source == SS_CREATE) {
@@ -170,6 +175,10 @@ internal class HawkUtils {
         headId: Int? = null,
         orgId: Int? = null,
         warehouseId: Int? = null,
+        historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreatePi?.historyApproval == null) arrayListOf() else null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
         source: String = PI_CREATE
     ){
         val data = ProjectImprovementCreateModel(
@@ -199,7 +208,11 @@ internal class HawkUtils {
             headId = headId ?: if (source == PI_CREATE) getDataCreatePi?.headId else getDataDetailPi?.headId,
             userId = userId ?: if (source == PI_CREATE) getDataCreatePi?.userId else getDataDetailPi?.userId,
             orgId = orgId ?: if (source == PI_CREATE) getDataCreatePi?.orgId else getDataDetailPi?.orgId,
-            warehouseId = warehouseId ?: if (source == PI_CREATE) getDataCreatePi?.warehouseId else getDataDetailPi?.warehouseId
+            warehouseId = warehouseId ?: if (source == PI_CREATE) getDataCreatePi?.warehouseId else getDataDetailPi?.warehouseId,
+            historyApproval = historyApproval ?: if (source == PI_CREATE) getDataCreatePi?.historyApproval else getDataDetailPi?.historyApproval,
+            activityType = activityType ?: if (source == PI_CREATE) getDataCreatePi?.activityType else getDataDetailPi?.activityType,
+            submitType = submitType ?: if (source == PI_CREATE) getDataCreatePi?.submitType else getDataDetailPi?.submitType,
+            comment = comment ?: if (source == PI_CREATE) getDataCreatePi?.comment else getDataDetailPi?.comment
         )
 
         if (source == PI_CREATE) {

@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.databinding.FragmentListApprovalHistoryStatusBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
+import com.fastrata.eimprovement.features.projectimprovement.ui.create.ProjectImprovementCreateWizard
 import com.fastrata.eimprovement.utils.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,7 +44,7 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
         source = if (typeNo == "") PI_CREATE else PI_DETAIL_DATA
 
         //data = HawkUtils().getTempDataCreateSs(source)
-        viewModelHistoryStatus.setApprovalHistoryStatus()
+        viewModelHistoryStatus.setApprovalHistoryStatus(source)
 
         adapter = ListApprovalHistoryStatusAdapter()
         adapter.notifyDataSetChanged()
@@ -59,13 +61,10 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
             rvHistoryStatus.setHasFixedSize(true)
             rvHistoryStatus.layoutManager = LinearLayoutManager(context)
             rvHistoryStatus.adapter = adapter
-
-            /*getAttachment.setOnClickListener {
-                openFolder()
-            }*/
         }
 
         initList()
+        setValidation()
     }
 
     override fun onDestroyView() {
@@ -104,6 +103,39 @@ class ListApprovalHistoryStatusPiFragment: Fragment(), Injectable {
                 Timber.i("### ambil dari getApprovalHistoryStatus $it")
             }
         })
+    }
+
+    private fun setValidation() {
+        (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object:
+            ProjectImprovementSystemCreateCallback{
+            override fun onDataPass(): Boolean {
+                HawkUtils().setTempDataCreatePi(
+                    id = data?.id,
+                    piNo = data?.piNo,
+                    date = data?.date,
+                    title = data?.title,
+                    branch = data?.branch,
+                    subBranch = data?.subBranch,
+                    department = data?.department,
+                    years = data?.years,
+                    statusImplementationModel = data?.statusImplementationModel,
+                    identification = data?.identification,
+                    target = data?.target,
+                    sebabMasalah = data?.sebabMasalah,
+                    akarMasalah = data?.akarMasalah,
+                    nilaiOutput = data?.nilaiOutput,
+                    nqiModel = data?.nqiModel,
+                    teamMember = data?.teamMember,
+                    categoryFixing = data?.categoryFixing,
+                    hasilImplementasi = data?.implementationResult,
+                    attachment = data?.attachment,
+                    statusProposal = data?.statusProposal,
+                    source = source
+                )
+                return true
+            }
+            }
+        )
     }
 
 }

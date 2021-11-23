@@ -29,6 +29,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.Suggestion
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -78,17 +79,17 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         val argsPiNo    = args.piNo
         val statusProposal = args.statusProposal
 
-        val nik         = HawkUtils().getDataLogin().NIK
-        val userId      = HawkUtils().getDataLogin().USER_ID
-        val orgId       = HawkUtils().getDataLogin().ORG_ID
-        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
-        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
+        nik         = HawkUtils().getDataLogin().NIK
+        userId      = HawkUtils().getDataLogin().USER_ID
+        orgId       = HawkUtils().getDataLogin().ORG_ID!!
+        warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID!!
+       headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
 
         action = argsAction
 
-        if (action == APPROVE) {
-            maxStep += 1
-        }
+//        if (action == APPROVE) {
+//            maxStep += 1
+//        }
 
         when (argsAction) {
             EDIT, DETAIL, APPROVE -> {
@@ -150,6 +151,10 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                         userId = userId,
                                         orgId = orgId,
                                         warehouseId = warehouseId,
+
+                                        activityType = PI,
+                                        submitType = if (argsAction == EDIT) 2 else 1,
+                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
                                         source = PI_DETAIL_DATA
                                     )
 
@@ -183,6 +188,9 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     userId = userId,
                     orgId = orgId,
                     warehouseId = warehouseId,
+                    activityType = PI,
+                    submitType = 1,
+                    comment = "",
                     source = PI_CREATE
                 )
 
@@ -228,6 +236,67 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     .commit()
             }
 
+            lytAccept.setOnClickListener {
+                buttonAction(
+                    1, R.color.green_A700,
+                    "Setuju",
+                    "Apakah Anda yakin ingin Menyetujui pengajuan ini?",
+                    "Setuju"
+                )
+            }
+            lytRevision.setOnClickListener {
+                buttonAction(
+                    2, R.color.blue_A700,
+                    "Revisi",
+                    "Apakah Anda yakin ingin Merevisi pengajuan ini?",
+                    "Revisi"
+                )
+            }
+            lytReject.setOnClickListener {
+                buttonAction(
+                    3, R.color.red_A700,
+                    "Tolak",
+                    "Apakah Anda yakin ingin Menolak pengajuan ini?",
+                    "Tolak"
+                )
+            }
+
+        }
+    }
+
+    private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
+        binding.apply {
+            notification.showNotificationYesNoWithComment(
+                this@ProjectImprovementCreateWizard,
+                applicationContext, color, title, description, buttonString,
+                resources.getString(R.string.cancel),
+                object : HelperNotification.CallBackNotificationYesNoWithComment {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes(comment: String) {
+                        data = HawkUtils().getTempDataCreatePi(source)
+                        if (comment != "") {
+                            val updateProposal = ProjectImprovementCreateModel(
+                             data?.id,data?.piNo,userId = userId,data?.nik,data?.orgId,
+                                data?.warehouseId,data?.headId,data?.department,data?.years,
+                                data?.date,data?.branchCode,data?.branch,data?.subBranch,
+                                data?.title,data?.statusImplementationModel,data?.identification,
+                                data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
+                                data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
+                                data?.attachment,data?.statusProposal,data?.historyApproval,
+                                activityType = PI,submitType = key, comment = comment
+                            )
+                            update(updateProposal)
+                            println(key)
+                            println(comment)
+                        } else {
+                            Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            )
         }
     }
 

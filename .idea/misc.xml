@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.16018518518518518" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/activity_change_reward.xml" value="0.28974358974358977" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/activity_changes_point_system_create_wizard.xml" value="0.15462962962962962" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/activity_home.xml" value="0.28974358974358977" />
@@ -64,15 +65,17 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_pi.xml" value="0.259963768115942" />
         <entry key="app/src/main/res/layout/activity_project_improvement.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_project_improvement_wizard.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/activity_project_improvement_wizard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_project_improvment.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/activity_project_improvment_wizard.xml" value="0.20153985507246377" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.2572463768115942" />
         <entry key="app/src/main/res/layout/activity_suggestion_system.xml" value="0.20606884057971014" />
-        <entry key="app/src/main/res/layout/activity_suggestion_system_create_wizard.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/activity_suggestion_system_create_wizard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/changes_point_system_create_wizard.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_yesno.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_changes_point_step_1.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_changes_point_step_2.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_list_approval_history_status.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_pi.xml" value="0.2545289855072464" />
         <entry key="app/src/main/res/layout/fragment_project_improvement_step_1.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_project_improvement_step_2.xml" value="0.335" />

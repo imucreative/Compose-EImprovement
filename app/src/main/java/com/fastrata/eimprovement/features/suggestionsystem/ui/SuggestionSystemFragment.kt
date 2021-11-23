@@ -529,10 +529,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onCheck() {
-                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Check Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
-                            )
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onImplementation() {
@@ -550,10 +547,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onReview() {
-                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Review Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
-                            )
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onDelete() {

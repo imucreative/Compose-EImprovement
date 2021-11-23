@@ -11,9 +11,10 @@ import com.fastrata.eimprovement.databinding.FragmentListApprovalHistoryStatusBi
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
-import com.fastrata.eimprovement.utils.ACTION_DETAIL_DATA
-import com.fastrata.eimprovement.utils.SS_CREATE
-import com.fastrata.eimprovement.utils.SS_DETAIL_DATA
+import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateCallback
+import com.fastrata.eimprovement.features.suggestionsystem.ui.create.SuggestionSystemCreateWizard
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -43,8 +44,8 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
 
         source = if (typeNo == "") SS_CREATE else SS_DETAIL_DATA
 
-        //data = HawkUtils().getTempDataCreateSs(source)
-        viewModelHistoryStatus.setApprovalHistoryStatus()
+        data = HawkUtils().getTempDataCreateSs(source)
+        viewModelHistoryStatus.setApprovalHistoryStatus(source)
 
         adapter = ListApprovalHistoryStatusAdapter()
         adapter.notifyDataSetChanged()
@@ -61,13 +62,10 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
             rvHistoryStatus.setHasFixedSize(true)
             rvHistoryStatus.layoutManager = LinearLayoutManager(context)
             rvHistoryStatus.adapter = adapter
-
-            /*getAttachment.setOnClickListener {
-                openFolder()
-            }*/
         }
 
         initList()
+        setValidation()
     }
 
     override fun onDestroyView() {
@@ -76,34 +74,51 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
     }
 
     private fun initList() {
-        /*adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
-            override fun removeClicked(data: AttachmentItem) {
-                if (ssAction != APPROVE) {
-                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
-
-                    attachment?.remove(data)
-
-                    viewModelAttachment.updateAttachment(attachment)
-                    viewModelAttachment.getSuggestionSystemAttachment()
-                        .observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                adapter.setList(it)
-                                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
-                            }
-                        })
-                }
-            }
-
-            override fun showAttachment(data: AttachmentItem) {
-                //File(URI(uri.toString()))
-                println("### Testing show attachment : ${data.name}")
-            }
-        })*/
-
         viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
                 Timber.i("### ambil dari getApprovalHistoryStatus $it")
+            }
+        })
+    }
+
+    private fun setValidation() {
+        (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object :
+            SuggestionSystemCreateCallback {
+            override fun onDataPass(): Boolean {
+
+                HawkUtils().setTempDataCreateSs(
+                    ssNo = data?.ssNo,
+                    date = data?.date,
+                    title = data?.title,
+                    listCategory = data?.categoryImprovement,
+                    name = data?.name,
+                    nik = data?.nik,
+                    branchCode = data?.branchCode,
+                    branch = data?.branch,
+                    subBranch = data?.subBranch,
+                    department = data?.department,
+                    directMgr = data?.directMgr,
+                    suggestion = data?.suggestion,
+                    problem = data?.problem,
+                    statusImplementation = data?.statusImplementation,
+                    teamMember = data?.teamMember,
+                    attachment = data?.attachment,
+                    statusProposal = data?.statusProposal,
+                    headId = data?.headId,
+                    userId = data?.userId,
+                    orgId = data?.orgId,
+                    warehouseId = data?.warehouseId,
+                    proses = data?.proses,
+                    result = data?.result,
+                    historyApproval = data?.historyApproval,
+                    activityType = data?.activityType,
+                    submitType = data?.submitType,
+                    comment = data?.comment,
+                    source = source
+                )
+
+                return true
             }
         })
     }

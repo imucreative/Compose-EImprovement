@@ -8,20 +8,17 @@ import com.fastrata.eimprovement.features.approval.data.model.ApprovalHistorySta
 
 class ListApprovalHistoryStatusAdapter : RecyclerView.Adapter<ListApprovalHistoryStatusAdapter.ApprovalViewHolder>() {
 
-    private var list = ArrayList<ApprovalHistoryStatusModel>()
-    fun setList(data: ArrayList<ApprovalHistoryStatusModel>) {
+    private var list = ArrayList<ApprovalHistoryStatusModel?>()
+    fun setList(data: ArrayList<ApprovalHistoryStatusModel?>?) {
         list.clear()
-        list.addAll(data)
+        if (data != null) {
+            list.addAll(data)
+        }
         notifyDataSetChanged()
     }
 
     inner class ApprovalViewHolder(private val binding: ItemListApprovalHistoryStatusBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ApprovalHistoryStatusModel) {
-
-            /*binding.root.setOnClickListener {
-                listApprovalCallback.onItemClicked(data)
-            }*/
-
             binding.apply {
                 pic.text = data.pic
                 status.text = data.status
@@ -37,7 +34,7 @@ class ListApprovalHistoryStatusAdapter : RecyclerView.Adapter<ListApprovalHistor
     }
 
     override fun onBindViewHolder(holder: ApprovalViewHolder, position: Int) {
-        holder.bind(list[position])
+        list[position]?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int {
