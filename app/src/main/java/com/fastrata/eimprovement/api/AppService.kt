@@ -126,7 +126,7 @@ interface AppService {
     @PUT("pi/update")
     suspend fun submitUpdatePi(
         @Body  projectImprovementCreateModel : ProjectImprovementCreateModel
-    ): Response<ResultsResponse<ProjectImprovementCreateModel>>
+    ): Response<ResultsResponse<ProjectImprovementResponseModel>>
 
 
     // Reward Point

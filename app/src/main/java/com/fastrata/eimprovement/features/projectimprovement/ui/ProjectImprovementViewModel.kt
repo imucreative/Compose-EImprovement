@@ -321,7 +321,7 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
 
     fun setPostSubmitUpdatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) {
         viewModelScope.launch(Dispatchers.Main)   {
-            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreatePi(projectImprovementCreateModel)}
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitUpdatePi(projectImprovementCreateModel)}
                 _postSubmitUpdatePi.value = Event(result)
         }
     }
