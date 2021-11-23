@@ -25,6 +25,7 @@ import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusP
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
@@ -45,10 +46,17 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     private var piNo: String = ""
     private var action: String = ""
     private lateinit var viewModel: ProjectImprovementViewModel
-    private var maxStep = 9
+    private var maxStep = 10
     private var currentStep = 1
     private var source: String = PI_CREATE
     private lateinit var notification: HelperNotification
+    private val gson = Gson()
+    private var data: ProjectImprovementCreateModel? = null
+    private var nik : String = ""
+    private var userId = 0
+    private var orgId = 0
+    private var warehouseId = 0
+    private var headId = 0
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -391,7 +399,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 }
             } else {
                 val gson = Gson()
-                val data = HawkUtils().getTempDataCreatePi(source)
+                data = HawkUtils().getTempDataCreatePi(source)
                 val convertToJson = gson.toJson(data)
 
                 Timber.e("### Data form input: $convertToJson")
@@ -443,7 +451,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                     submit(data!!)
                                 }else {
                                     if((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (action == EDIT)) {
-//                                        update(data)
+                                        update(data!!)
                                         Timber.e("$data")
                                         Toast.makeText(
                                             this@ProjectImprovementCreateWizard,
@@ -517,6 +525,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
         viewModel.putSubmitUpdatePi.observeEvent(this@ProjectImprovementCreateWizard){resultObserve ->
             resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                Timber.e("hasil result : $result")
                 if(result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
