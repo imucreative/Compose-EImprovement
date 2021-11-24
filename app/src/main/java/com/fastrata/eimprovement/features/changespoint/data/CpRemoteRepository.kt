@@ -25,4 +25,8 @@ class CpRemoteRepository @Inject constructor(private val remoteDataSource: CpRem
     fun observeSubmitUpdateCp(changePointCreateModel: ChangePointCreateModel) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.postSubmitUpdateCp(changePointCreateModel)}
     )
+
+    fun observeRemoveCp(idCp: Int) = resultMutableLiveDataRemote (
+        networkCall = { remoteDataSource.removeCp(idCp)}
+    )
 }

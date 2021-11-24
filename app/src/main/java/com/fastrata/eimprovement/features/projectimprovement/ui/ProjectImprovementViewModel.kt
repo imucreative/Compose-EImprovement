@@ -303,4 +303,38 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         }
     }
 
+    // === Post Submit Create Pi
+    private val _postSubmitCreatePi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>>()
+    val postSubmitCreatePi: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>> get() = _postSubmitCreatePi
+
+    fun setPostSubmitCreatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) {
+        viewModelScope.launch(Dispatchers.Main){
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreatePi(projectImprovementCreateModel)}
+            _postSubmitCreatePi.value = Event(result)
+        }
+    }
+
+    // === Put Submit Update PI
+    private val _postSubmitUpdatePi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>>()
+    val putSubmitUpdatePi: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>> get() = _postSubmitUpdatePi
+
+    fun setPostSubmitUpdatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) {
+        viewModelScope.launch(Dispatchers.Main)   {
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitUpdatePi(projectImprovementCreateModel)}
+                _postSubmitUpdatePi.value = Event(result)
+        }
+    }
+
+
+    // === Remove List PI
+    private val _removeListPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>>()
+    val doRemovePi : LiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>> get() = _removeListPi
+
+    fun deletePiList(idPi: Int){
+        viewModelScope.launch(Dispatchers.Main){
+            val result = withContext(Dispatchers.Default){repository.observeRemovePi(idPi) }
+            _removeListPi.value = Event(result)
+        }
+    }
+
 }

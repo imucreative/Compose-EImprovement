@@ -125,6 +125,14 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
                             hasilImplementasi = data?.implementationResult,
                             attachment = data?.attachment,
                             statusProposal = data?.statusProposal,
+                            headId = data?.headId,
+                            userId = data?.userId,
+                            orgId = data?.orgId,
+                            warehouseId = data?.warehouseId,
+                            historyApproval = data?.historyApproval,
+                            activityType = data?.activityType,
+                            submitType = data?.submitType,
+                            comment = data?.comment,
                             source = source
                         )
                         true

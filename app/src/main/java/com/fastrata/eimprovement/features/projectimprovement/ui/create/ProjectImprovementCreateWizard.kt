@@ -23,10 +23,13 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusPiFragment
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImprovementSystemCreateCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -44,10 +47,17 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     private var piNo: String = ""
     private var action: String = ""
     private lateinit var viewModel: ProjectImprovementViewModel
-    private var maxStep = 9
+    private var maxStep = 10
     private var currentStep = 1
     private var source: String = PI_CREATE
     private lateinit var notification: HelperNotification
+    private val gson = Gson()
+    private var data: ProjectImprovementCreateModel? = null
+    private var nik : String = ""
+    private var userId = 0
+    private var orgId = 0
+    private var warehouseId = 0
+    private var headId = 0
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -67,20 +77,22 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         val argsAction  = args.action
         val argsIdPi    = args.idPi
         val argsPiNo    = args.piNo
-        val nik         = HawkUtils().getDataLogin().NIK
-        val userId      = HawkUtils().getDataLogin().USER_ID
-        val orgId       = HawkUtils().getDataLogin().ORG_ID
-        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
-        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
+        val statusProposal = args.statusProposal
+
+        nik         = HawkUtils().getDataLogin().NIK
+        userId      = HawkUtils().getDataLogin().USER_ID
+        orgId       = HawkUtils().getDataLogin().ORG_ID!!
+        warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID!!
+        headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
 
         action = argsAction
 
-        if (action == APPROVE) {
-            maxStep += 1
-        }
+//        if (action == APPROVE) {
+//            maxStep += 1
+//        }
 
         when (argsAction) {
-            EDIT, DETAIL, APPROVE -> {
+            EDIT, DETAIL, APPROVE, SUBMIT_PROPOSAL -> {
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
@@ -134,11 +146,16 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                         },
                                         attachment = result.data?.data?.get(0)?.attachment,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                        nik = nik,
-                                        headId = headId,
-                                        userId = userId,
-                                        orgId = orgId,
-                                        warehouseId = warehouseId,
+                                        nik = result.data?.data?.get(0)?.nik,
+                                        headId = result.data?.data?.get(0)?.headId,
+                                        userId = result.data?.data?.get(0)?.userId,
+                                        orgId = result.data?.data?.get(0)?.orgId,
+                                        warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                        historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                        activityType = PI,
+                                        submitType = if (argsAction == EDIT) 2 else 1,
+                                        comment = "",
                                         source = PI_DETAIL_DATA
                                     )
 
@@ -149,6 +166,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 Result.Status.ERROR -> {
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = View.GONE
+                                    HelperLoading.hideLoading()
+                                    Toast.makeText(this,"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                     Timber.d("###-- Error getDetailPiItem")
                                 }
 
@@ -162,11 +181,20 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                 source = PI_CREATE
                 HawkUtils().setTempDataCreatePi(
+                    id = 0,
                     piNo = "",
+                    nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
-                    subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
+                    statusProposal = statusProposal,
+                    headId = headId,
+                    userId = userId,
+                    orgId = orgId,
+                    warehouseId = warehouseId,
+                    activityType = PI,
+                    submitType = 1,
+                    comment = "",
                     source = PI_CREATE
                 )
 
@@ -180,6 +208,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun initComponent() {
+        notification = HelperNotification()
         binding.apply {
             lytBack.setOnClickListener {
                 backStep(currentStep)
@@ -212,6 +241,66 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     .commit()
             }
 
+            lytAccept.setOnClickListener {
+                buttonAction(
+                    1, R.color.green_A700,
+                    "Setuju",
+                    "Apakah Anda yakin ingin Menyetujui pengajuan ini?",
+                    "Setuju"
+                )
+            }
+            lytRevision.setOnClickListener {
+                buttonAction(
+                    2, R.color.blue_A700,
+                    "Revisi",
+                    "Apakah Anda yakin ingin Merevisi pengajuan ini?",
+                    "Revisi"
+                )
+            }
+            lytReject.setOnClickListener {
+                buttonAction(
+                    3, R.color.red_A700,
+                    "Tolak",
+                    "Apakah Anda yakin ingin Menolak pengajuan ini?",
+                    "Tolak"
+                )
+            }
+
+        }
+    }
+
+    private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
+        binding.apply {
+            notification.showNotificationYesNoWithComment(
+                this@ProjectImprovementCreateWizard,
+                applicationContext, color, title, description, buttonString,
+                resources.getString(R.string.cancel),
+                object : HelperNotification.CallBackNotificationYesNoWithComment {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes(comment: String) {
+                        data = HawkUtils().getTempDataCreatePi(source)
+                        if (comment != "") {
+                            val updateProposal = ProjectImprovementCreateModel(
+                                data?.id,data?.piNo,
+                                userId = userId,
+                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,data?.department,
+                                data?.years, data?.date,data?.branchCode,data?.branch,data?.subBranch,
+                                data?.title,data?.statusImplementationModel,data?.identification,
+                                data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
+                                data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
+                                data?.attachment,data?.statusProposal,data?.historyApproval,
+                                activityType = PI,submitType = key, comment = comment
+                            )
+                            update(updateProposal)
+                        } else {
+                            Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            )
         }
     }
 
@@ -365,6 +454,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun nextStep(progress: Int) {
+        data = HawkUtils().getTempDataCreatePi(source)
+
         val status = piCreateCallback.onDataPass()
         if (status) {
             if (progress < maxStep) {
@@ -375,44 +466,169 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if ((action == APPROVE) || (action == DETAIL)) {
+                    if (action == DETAIL) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.GONE
+                        }
+                    } else if (action == APPROVE && (data?.statusProposal?.id == 3 || data?.statusProposal?.id == 8)) {
+
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.VISIBLE
                         }
                     }
                 }
             } else {
-                //CoroutineScope(Dispatchers.Default).launch {
+                val convertToJson = gson.toJson(data)
+
+                Timber.e("### Data form input: $convertToJson")
+                Timber.e("### Data Proposal : ${data?.statusProposal}")
+
+                var initialTypeProposal = ""
+                var buttonInitialTypeProposal = ""
+
+                when (data?.statusProposal?.id) {
+                    1,4 -> {
+                        initialTypeProposal = "Submit"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                    2 -> {
+                        initialTypeProposal = "Check"
+                        buttonInitialTypeProposal = "Check"
+                    }
+                    5 ->{
+                        initialTypeProposal = "Implementation"
+                        buttonInitialTypeProposal = "Implementation"
+                    }
+                    6 ->{
+                        initialTypeProposal = "Submit Laporan Akhir"
+                        buttonInitialTypeProposal = "Submit"
+                    }
+                    7,9 -> {
+                        initialTypeProposal = "Review"
+                        buttonInitialTypeProposal = "Review"
+                    }
+                }
+
                 notification = HelperNotification()
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ProjectImprovementCreateWizard,
                         applicationContext,
                         R.color.blue_500,
-                        resources.getString(R.string.simpan),
+                        initialTypeProposal,
                         resources.getString(R.string.submit_desc),
-                        resources.getString(R.string.agree),
-                        resources.getString(R.string.not_agree),
-                        object : HelperNotification.CallBackNotificationYesNo {
+                        buttonInitialTypeProposal,
+                        resources.getString(R.string.cancel),
+                        object  : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
                             }
 
                             override fun onNotificationYes() {
-                                val gson = Gson()
-                                val data = gson.toJson(HawkUtils().getTempDataCreatePi(source))
-                                println("### Data form input : $data")
-                                Toast.makeText(
-                                    this@ProjectImprovementCreateWizard,
-                                    resources.getString(R.string.pi_saved),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                finish()
+                                if (data?.piNo.isNullOrEmpty()){
+                                    submit(data!!)
+                                }else {
+                                    update(data!!)
+                                }
                             }
                         }
                     )
                 }
+
             }
+        }
+    }
+
+    private fun submit(data: ProjectImprovementCreateModel) {
+        viewModel.setPostSubmitCreatePi(data)
+
+        viewModel.postSubmitCreatePi.observeEvent(this@ProjectImprovementCreateWizard) { resultObserve ->
+            resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                Timber.e("hasil result : $result")
+                if (result != null) {
+                    when(result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ProjectImprovementCreateWizard,"",false)
+                            Timber.d("###-- Loading postSubmitCreatePi")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("result : ${result.data?.message}")
+                            Timber.e("result success : ${result.data?.success}")
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.data?.message.toString(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            HawkUtils().removeDataCreateProposal(source)
+                            finish()
+
+                            Timber.d("###-- Success postSubmitCreatePi")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            finish()
+                            Timber.d("###-- Success postSubmitCreatePi")
+                        }
+                    }
+                }
+            })
+        }
+
+    }
+
+    private fun update(data: ProjectImprovementCreateModel) {
+        viewModel.setPostSubmitUpdatePi(data)
+
+        viewModel.putSubmitUpdatePi.observeEvent(this@ProjectImprovementCreateWizard){resultObserve ->
+            resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                Timber.e("hasil result : $result")
+                if(result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ProjectImprovementCreateWizard,"",false)
+                            Timber.d("###-- Loading putSubmitUpdatePi")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateProposal(source)
+
+                            Timber.d("###-- Success putSubmitUpdatePi")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ProjectImprovementCreateWizard,
+                                result.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error putSubmitUpdatePi")
+                        }
+                    }
+                }
+            })
         }
     }
 
@@ -427,6 +643,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
+                actionBottom.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }

@@ -126,15 +126,20 @@ class HelperNotification {
         lp.copyFrom(dialog.window!!.attributes)
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-
-        (dialog.findViewById<View>(R.id.relative_layout_comment) as RelativeLayout).visibility = View.GONE
-
-        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = yesText
+        if (yesText.isNullOrEmpty()){
+            (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = "OK"
+        }else{
+            (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = yesText
+        }
         (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationYes()
         }
-        (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
+        if (noText.isNullOrEmpty()){
+            (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = "No"
+        }else{
+            (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
+        }
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationNo()

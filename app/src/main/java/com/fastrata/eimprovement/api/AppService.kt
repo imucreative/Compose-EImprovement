@@ -9,6 +9,7 @@ import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementRemoteRequest
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementResponseModel
 import com.fastrata.eimprovement.features.settings.ui.changepassword.data.model.ChangePasswordModel
 import com.fastrata.eimprovement.features.settings.ui.mutasi.data.model.MutasiModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
@@ -105,6 +106,22 @@ interface AppService {
         @Field("userId") userId: Int
     ): Response<ResultsResponse<ProjectImprovementCreateModel>>
 
+    @POST("pi/create")
+    suspend fun submitCreatePi(
+        @Body projectImprovementCreateModel: ProjectImprovementCreateModel
+    ): Response<ResultsResponse<ProjectImprovementResponseModel>>
+
+
+    @PUT("pi/remove/{PI_H_ID}")
+    suspend fun removePi(
+        @Path("PI_H_ID") id : Int
+    ): Response<ResultsResponse<ArrayList<String>>>
+
+    @PUT("pi/update")
+    suspend fun submitUpdatePi(
+        @Body  projectImprovementCreateModel : ProjectImprovementCreateModel
+    ): Response<ResultsResponse<ProjectImprovementResponseModel>>
+
 
     // Reward Point
     @POST("rp/list")
@@ -120,17 +137,17 @@ interface AppService {
     ): Response<ResultsResponse<ChangePointCreateModel>>
 
     @POST("rp/create")
-    suspend fun submitCreateRp(
+    suspend fun submitCreateCp(
         @Body changePointCreateModel: ChangePointCreateModel
     ): Response<ResultsResponse<ChangePointResponseModel>>
 
     @PUT("rp/remove/{RP_H_ID}")
-    suspend fun removeRp(
+    suspend fun removeCp(
         @Path("RP_H_ID") id: Int
     ): Response<ResultsResponse<ArrayList<String>>>
 
     @PUT("rp/update")
-    suspend fun submitUpdateRp(
+    suspend fun submitUpdateCp(
         @Body changePointCreateModel: ChangePointCreateModel
     ): Response<ResultsResponse<ChangePointResponseModel>>
 

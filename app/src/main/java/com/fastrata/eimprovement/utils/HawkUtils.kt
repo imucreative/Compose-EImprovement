@@ -175,6 +175,10 @@ internal class HawkUtils {
         headId: Int? = null,
         orgId: Int? = null,
         warehouseId: Int? = null,
+        historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreatePi?.historyApproval == null) arrayListOf() else null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
         source: String = PI_CREATE
     ){
         val data = ProjectImprovementCreateModel(
@@ -204,7 +208,11 @@ internal class HawkUtils {
             headId = headId ?: if (source == PI_CREATE) getDataCreatePi?.headId else getDataDetailPi?.headId,
             userId = userId ?: if (source == PI_CREATE) getDataCreatePi?.userId else getDataDetailPi?.userId,
             orgId = orgId ?: if (source == PI_CREATE) getDataCreatePi?.orgId else getDataDetailPi?.orgId,
-            warehouseId = warehouseId ?: if (source == PI_CREATE) getDataCreatePi?.warehouseId else getDataDetailPi?.warehouseId
+            warehouseId = warehouseId ?: if (source == PI_CREATE) getDataCreatePi?.warehouseId else getDataDetailPi?.warehouseId,
+            historyApproval = historyApproval ?: if (source == PI_CREATE) getDataCreatePi?.historyApproval else getDataDetailPi?.historyApproval,
+            activityType = activityType ?: if (source == PI_CREATE) getDataCreatePi?.activityType else getDataDetailPi?.activityType,
+            submitType = submitType ?: if (source == PI_CREATE) getDataCreatePi?.submitType else getDataDetailPi?.submitType,
+            comment = comment ?: if (source == PI_CREATE) getDataCreatePi?.comment else getDataDetailPi?.comment
         )
 
         if (source == PI_CREATE) {
@@ -291,7 +299,7 @@ internal class HawkUtils {
         }
     }
 
-    fun removeDataCreateSs(source: String){
-        Hawk.delete(source)
+    fun removeDataCreateProposal(typeProposal: String){
+        Hawk.delete(typeProposal)
     }
 }

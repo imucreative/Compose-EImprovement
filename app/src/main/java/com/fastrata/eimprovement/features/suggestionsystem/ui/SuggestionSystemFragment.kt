@@ -292,6 +292,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
                             isLoading = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get List SS")
                         }
                     }
@@ -317,6 +318,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             binding.edtStatusProposal.isEnabled = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -373,6 +375,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get CheckPeriod")
                         }
 
@@ -400,6 +403,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             binding.edtBranch.isEnabled = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -427,6 +431,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             binding.edtSubBranch.isEnabled = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get sub Branch")
                         }
 

@@ -20,11 +20,15 @@ class CpRemoteDataSource @Inject constructor(private val service: AppService) : 
     }
 
     suspend fun postSubmitCreateCp(changePointCreateModel: ChangePointCreateModel)= getResult {
-        service.submitCreateRp(changePointCreateModel)
+        service.submitCreateCp(changePointCreateModel)
     }
 
     suspend fun postSubmitUpdateCp(changePointCreateModel: ChangePointCreateModel)= getResult {
-        service.submitUpdateRp(changePointCreateModel)
+        service.submitUpdateCp(changePointCreateModel)
+    }
+
+    suspend fun removeCp(idCp: Int) = getResult {
+        service.removeCp(idCp)
     }
 
 }

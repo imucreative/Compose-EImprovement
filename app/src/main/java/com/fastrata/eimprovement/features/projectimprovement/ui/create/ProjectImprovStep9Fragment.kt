@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -116,11 +117,11 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             addAttachment.setOnClickListener {
                 when {
                     fileName.text.isEmpty() -> {
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            resources.getString(R.string.file_empty),
-//                            R.drawable.ic_close, R.color.red_500
-//                        )
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500
+                        )
                     }
                     else -> {
                         uploadAttachment(uri)
@@ -333,6 +334,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
+                                Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error get Upload Error $result")
                             }
                         }
@@ -351,7 +353,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
     private fun removeAttachment(listAttachment: ArrayList<AttachmentItem?>?) {
         try {
-            attachmentViewModel.processRemoveAttachment(selectedAttachmentItem.id, selectedAttachmentItem.name, SS)
+            attachmentViewModel.processRemoveAttachment(selectedAttachmentItem.id, selectedAttachmentItem.name, PI)
 
             attachmentViewModel.doRemoveAttachment.observeEvent(this) { resultObserve ->
                 resultObserve.observe(viewLifecycleOwner, { result ->
@@ -369,13 +371,16 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                                 removeDataAttachmentFromHawk(listAttachment)
 
                                 result.data?.let {
-                                    Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT).show()
+                                    SnackBarCustom.snackBarIconInfo(
+                                        binding.root, layoutInflater, resources, binding.root.context,
+                                        it.message,
+                                        R.drawable.ic_close, R.color.red_500)
                                     Timber.d("###-- Success get doRemoveAttachment sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Snackbar.make(binding.root, result.data?.message.toString(), Snackbar.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error get doRemoveAttachment Error ${result.data}")
                             }
                         }
@@ -399,15 +404,15 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.attachment?.size == 0) {
+//                    stat = if (data?.attachment?.size == 0) {
 //                        SnackBarCustom.snackBarIconInfo(
 //                            root, layoutInflater, resources, root.context,
 //                            resources.getString(R.string.file_empty),
 //                            R.drawable.ic_close, R.color.red_500)
-                        true
-                    } else {
-                        true
-                    }
+//                        true
+//                    } else {
+//                        true
+//                    }
                     HawkUtils().setTempDataCreatePi(
                         id = data?.id,
                         piNo = data?.piNo,
@@ -429,6 +434,14 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         hasilImplementasi = data?.implementationResult,
                         attachment = data?.attachment,
                         statusProposal = data?.statusProposal,
+                        headId = data?.headId,
+                        userId = data?.userId,
+                        orgId = data?.orgId,
+                        warehouseId = data?.warehouseId,
+                        historyApproval = data?.historyApproval,
+                        activityType = data?.activityType,
+                        submitType = data?.submitType,
+                        comment = data?.comment,
                         source = source
                     )
                     stat = true

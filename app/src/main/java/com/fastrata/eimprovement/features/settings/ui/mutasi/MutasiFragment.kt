@@ -124,6 +124,7 @@ class MutasiFragment : Fragment(),Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get List Mutasi")
                         }
                     }

@@ -139,8 +139,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                     Timber.d("###-- Success get Branch")
                                 }
                                 Result.Status.ERROR -> {
-                                    HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = View.GONE
+                                    HelperLoading.hideLoading()
+                                    Toast.makeText(this,"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                     Timber.d("###-- Error get Branch")
                                 }
 
@@ -440,7 +441,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             finish()
 
-                            HawkUtils().removeDataCreateSs(source)
+                            HawkUtils().removeDataCreateProposal(source)
 
                             Timber.d("###-- Success postSubmitCreateCp")
                         }
@@ -486,7 +487,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             finish()
 
-                            HawkUtils().removeDataCreateSs(source)
+                            HawkUtils().removeDataCreateProposal(source)
 
                             Timber.d("###-- Success putSubmitUpdateCp")
                         }

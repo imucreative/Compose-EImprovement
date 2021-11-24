@@ -11,14 +11,13 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCre
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointResponseModel
-import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class ChangesPointCreateViewModel @Inject constructor(private val repository: CpRemoteRepository,private val globalRepository: GlobalRemoteRepository) : ViewModel() {
+class ChangesPointCreateViewModel @Inject constructor(private val repository: CpRemoteRepository) : ViewModel() {
 
     // === List CP
     private val _listCp = MutableLiveData<Event<LiveData<Result<ResultsResponse<ChangePointModel>>>>>()
@@ -70,7 +69,7 @@ class ChangesPointCreateViewModel @Inject constructor(private val repository: Cp
 
     fun deleteCpList(idCp : Int){
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default){ globalRepository.observeRemoveRp(idCp)}
+            val result = withContext(Dispatchers.Default){ repository.observeRemoveCp(idCp)}
             _removeListCp.value = Event(result)
         }
     }

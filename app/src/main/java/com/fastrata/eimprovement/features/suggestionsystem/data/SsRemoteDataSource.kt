@@ -22,4 +22,8 @@ class SsRemoteDataSource @Inject constructor(private val service: AppService) : 
     suspend fun postSubmitUpdateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) = getResult {
         service.submitUpdateSs(suggestionSystemCreateModel)
     }
+
+    suspend fun removeSs(idSs : Int) = getResult {
+        service.removeSs(idSs)
+    }
 }

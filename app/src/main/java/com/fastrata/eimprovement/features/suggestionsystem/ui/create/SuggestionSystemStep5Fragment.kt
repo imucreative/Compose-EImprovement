@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.stetho.server.http.HttpStatus
@@ -180,10 +181,10 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : ${data.name}")
                 println("### Testing path attachment : ${data.fileLocation}")
-                SnackBarCustom.snackBarIconInfo(
+                /*SnackBarCustom.snackBarIconInfo(
                     binding.root, layoutInflater, resources, binding.root.context,
                     data.name,
-                    R.drawable.ic_close, R.color.red_500)
+                    R.drawable.ic_close, R.color.red_500)*/
 
                 /**if (data.fileLocation.isEmpty()){
                     println("### FILE EXIST : NOT EXIST")
@@ -343,6 +344,7 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
+                                Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error get Upload Error $result")
                             }
                         }
@@ -379,13 +381,16 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                                 removeDataAttachmentFromHawk(listAttachment)
 
                                 result.data?.let {
-                                    Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT).show()
+                                    SnackBarCustom.snackBarIconInfo(
+                                        binding.root, layoutInflater, resources, binding.root.context,
+                                        it.message,
+                                        R.drawable.ic_close, R.color.red_500)
                                     Timber.d("###-- Success get doRemoveAttachment sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Snackbar.make(binding.root, result.data?.message.toString(), Snackbar.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error get doRemoveAttachment Error ${result.data}")
                             }
                         }

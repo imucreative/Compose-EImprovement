@@ -94,6 +94,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                 source = SS_DETAIL_DATA
                 viewModel.setDetailSs(argsIdSs, userId)
+
                 viewModel.getDetailSsItem.observeEvent(this) { resultObserve ->
                     resultObserve.observe(this, { result ->
                         if (result != null) {
@@ -142,7 +143,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                                         activityType = SS,
                                         submitType = if (argsAction == EDIT) 2 else 1,
-                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
+                                        comment = "",
 
                                         source = SS_DETAIL_DATA
                                     )
@@ -154,6 +155,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 Result.Status.ERROR -> {
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = GONE
+                                    Toast.makeText(this,"Error : ${result.message}",Toast.LENGTH_LONG).show()
                                     Timber.d("###-- Error getDetailSsItem")
                                 }
 
@@ -284,8 +286,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 activityType = SS, submitType = key, comment = comment
                             )
                             update(updateProposal)
-                            println(key)
-                            println(comment)
                         } else {
                             Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
                         }
@@ -393,6 +393,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     }
 
     private fun nextStep(progress: Int) {
+        data = HawkUtils().getTempDataCreateSs(source)
+
         val status =  ssCreateCallback.onDataPass()
         if (status) {
             if (progress < maxStep) {
@@ -406,18 +408,17 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     if (ssAction == DETAIL) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = INVISIBLE
-                            binding.actionBottom.visibility = GONE
+                            actionBottom.visibility = GONE
                         }
                     } else if (ssAction == APPROVE && (data?.statusProposal?.id == 3 || data?.statusProposal?.id == 8)) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = INVISIBLE
-                            binding.actionBottom.visibility = VISIBLE
+                            actionBottom.visibility = VISIBLE
                         }
                     }
                 }
             } else {
                 //CoroutineScope(Dispatchers.Default).launch {
-                data = HawkUtils().getTempDataCreateSs(source)
                 val convertToJson = gson.toJson(data)
 
                 Timber.e("### Data form input : $convertToJson")
@@ -502,7 +503,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                             finish()
 
-                            HawkUtils().removeDataCreateSs(source)
+                            HawkUtils().removeDataCreateProposal(source)
 
                             Timber.d("###-- Success postSubmitCreateSs")
                         }
@@ -510,7 +511,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                             HelperLoading.hideLoading()
                             Toast.makeText(
                                 this@SuggestionSystemCreateWizard,
-                                result.data?.message,
+                                result.message,
                                 Toast.LENGTH_LONG
                             ).show()
 
@@ -549,7 +550,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                             finish()
 
-                            HawkUtils().removeDataCreateSs(source)
+                            HawkUtils().removeDataCreateProposal(source)
 
                             Timber.d("###-- Success putSubmitUpdateSs")
                         }
@@ -557,7 +558,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                             HelperLoading.hideLoading()
                             Toast.makeText(
                                 this@SuggestionSystemCreateWizard,
-                                result.data?.message,
+                                result.message,
                                 Toast.LENGTH_LONG
                             ).show()
 

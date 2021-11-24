@@ -215,6 +215,11 @@
             android:name="type"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="statusProposal"
+            android:defaultValue="@null"
+            app:argType="com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem"
+            app:nullable="true" />
     </activity>
 
     <activity
