@@ -3,6 +3,7 @@ package com.fastrata.eimprovement.features.login.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.stetho.server.http.HttpStatus
@@ -127,6 +128,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                             Timber.d("###-- ERROR")
 //                            binding.progressbar.progressbar.visibility = View.GONE
                             HelperLoading.hideLoading()
+                            Toast.makeText(this@LoginActivity,"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             notification.showErrorDialog(this@LoginActivity,resources.getString(R.string.error), result.message.toString())
                         }
                     }

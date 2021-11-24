@@ -79,14 +79,15 @@ class DashboardFragment: Fragment(), Injectable {
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Toast.makeText(requireContext(),"Error : ${result.data?.message}",Toast.LENGTH_LONG).show()
-                                Timber.d("###-- Loading error balance")
+                                Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Loading error balance $result")
                             }
                         }
                     }
                 })
             }
         }catch (e : Exception){
+            HelperLoading.hideLoading()
             Timber.e("Error balance : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
         }

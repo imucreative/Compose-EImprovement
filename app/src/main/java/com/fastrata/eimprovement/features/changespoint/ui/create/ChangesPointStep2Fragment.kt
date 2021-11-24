@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.R.layout.simple_list_item_1
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -115,17 +116,16 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get team member name")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
                             listRewardItem = result.data?.data
                             initComponentGift()
                             Timber.d("###-- Success get team member name")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get team member name")
                         }
 

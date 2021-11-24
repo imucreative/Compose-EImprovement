@@ -102,6 +102,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             masterDataStatusProposalViewModel.setStatusProposal()
         } catch (e: Exception){
             Timber.e("Error setStatusProposal : $e")
+            HelperLoading.hideLoading()
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
@@ -109,6 +110,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             masterBranchViewModel.setBranch()
         } catch (e: Exception){
             Timber.e("Error setBranch : $e")
+            HelperLoading.hideLoading()
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
@@ -136,6 +138,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             listPiViewModel.setListPi(listProjectImprovementRemoteRequest)
         } catch (e: Exception){
             Timber.e("Error setListPi : $e")
+            HelperLoading.hideLoading()
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
     }
@@ -201,6 +204,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     getStatusCheckPeriod()
                 }catch (err : Exception){
                     Timber.e("Error setCheckPeriod : $err")
+                    HelperLoading.hideLoading()
                     Toast.makeText(requireContext(), "Error : $err", Toast.LENGTH_LONG).show()
                 }
             }
@@ -224,6 +228,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     swipe.isRefreshing = false
                 } catch (e: Exception){
                     Timber.e("Error setListPi : $e")
+                    HelperLoading.hideLoading()
                     Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
                 }
             }
@@ -294,6 +299,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             isLoading = false
                             Timber.d("###-- Error get List PI")
                         }
@@ -320,6 +326,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             binding.edtStatusProposal.isEnabled = false
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -376,6 +384,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get CheckPeriod")
                         }
                     }
@@ -401,6 +410,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             binding.edtBranch.isEnabled = false
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -428,6 +439,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             binding.edtSubBranch.isEnabled = false
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get sub Branch")
                         }
 
@@ -529,10 +542,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onCheck() {
-                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Check Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
-                            )
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onImplementation() {
@@ -550,10 +560,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onReview() {
-                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Review Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
-                            )
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onDelete() {
