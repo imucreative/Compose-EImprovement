@@ -39,8 +39,8 @@ class AppModule {
         upstreamClient: OkHttpClient
     ): OkHttpClient {
         return upstreamClient.newBuilder()
-            .readTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(AuthInterceptor(BuildConfig.API_DEVELOPER_TOKEN))
             .build()
     }

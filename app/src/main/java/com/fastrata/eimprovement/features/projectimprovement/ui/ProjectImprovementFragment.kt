@@ -23,15 +23,16 @@ import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImpr
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementRemoteRequest
-import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemFragmentDirections
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
 import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckPeriodViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -46,6 +47,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var listPiViewModel : ProjectImprovementViewModel
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
+    private lateinit var checkPeriodViewModel: CheckPeriodViewModel
     private lateinit var masterBranchViewModel: BranchViewModel
 
     private lateinit var adapter : ProjectImprovementAdapter
@@ -71,6 +73,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var roleName: String = ""
     private val sdf = SimpleDateFormat("dd-MM-yyyy")
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var notification: HelperNotification
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,33 +87,22 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         listPiViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
         masterBranchViewModel = injectViewModel(viewModelFactory)
+        checkPeriodViewModel = injectViewModel(viewModelFactory)
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
-        try {
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName = HawkUtils().getDataLogin().ROLE_NAME
-
-            val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
-                userId, limit, page, roleName,
-                userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
-                warehouseId = 0, startDate = "", endDate = ""
-            )
-
-            listPiViewModel.setListPi(listProjectImprovementRemoteRequest)
-        } catch (e: Exception){
-            Timber.e("Error setListPi : $e")
-            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-        }
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName = HawkUtils().getDataLogin().ROLE_NAME
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
         } catch (e: Exception){
             Timber.e("Error setStatusProposal : $e")
+            HelperLoading.hideLoading()
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
@@ -118,6 +110,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             masterBranchViewModel.setBranch()
         } catch (e: Exception){
             Timber.e("Error setBranch : $e")
+            HelperLoading.hideLoading()
             Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
         }
 
@@ -125,6 +118,29 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         adapter.notifyDataSetChanged()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDataListPi()
+    }
+
+    private fun getDataListPi(){
+        try {
+            adapter.clear()
+
+            val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
+                userId, limit, page, roleName, PI,
+                userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listPiViewModel.setListPi(listProjectImprovementRemoteRequest)
+        } catch (e: Exception){
+            Timber.e("Error setListPi : $e")
+            HelperLoading.hideLoading()
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -168,7 +184,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
 
                             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, PI,
                                 userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
                                 startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
@@ -183,10 +199,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             })
 
             createPi.setOnClickListener {
-                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = ""
-                )
-                it.findNavController().navigate(direction)
+                try{
+                    checkPeriodViewModel.setCheckPeriod(PI)
+                    getStatusCheckPeriod()
+                }catch (err : Exception){
+                    Timber.e("Error setCheckPeriod : $err")
+                    HelperLoading.hideLoading()
+                    Toast.makeText(requireContext(), "Error : $err", Toast.LENGTH_LONG).show()
+                }
             }
 
             swipe.setOnRefreshListener {
@@ -199,7 +219,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     adapter.clear()
 
                     val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, PI,
                         userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -208,6 +228,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     swipe.isRefreshing = false
                 } catch (e: Exception){
                     Timber.e("Error setListPi : $e")
+                    HelperLoading.hideLoading()
                     Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
                 }
             }
@@ -235,6 +256,11 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             branchId = 0
             subBranchId = 0
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getListPi()
     }
 
     private fun getListPi() {
@@ -273,6 +299,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             isLoading = false
                             Timber.d("###-- Error get List PI")
                         }
@@ -299,11 +326,68 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             binding.edtStatusProposal.isEnabled = false
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get status proposal")
                         }
 
                     }
 
+                }
+            })
+        }
+    }
+
+    private fun getStatusCheckPeriod(){
+        notification = HelperNotification()
+        checkPeriodViewModel.getCheckPeriodItem.observeEvent(this){ resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when(result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get CheckPeriod")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+                            val statusProposal = result.data?.data?.get(0)
+                            Timber.e("Period : $statusProposal")
+                            if (statusProposal?.id == 11) {
+                                notification.shownotificationyesno(
+                                        requireActivity(),
+                                        requireContext(),
+                                        R.color.blue_500,
+                                        resources.getString(R.string.title_past_period),
+                                        "",
+                                        resources.getString(R.string.agree),
+                                        resources.getString(R.string.not_agree),
+                                        object : HelperNotification.CallBackNotificationYesNo{
+                                            override fun onNotificationNo() {
+
+                                            }
+
+                                            override fun onNotificationYes() {
+                                                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = "",statusProposal = statusProposal
+                                                )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+                                        }
+                                    )
+                            }else {
+                                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = "",statusProposal = statusProposal
+                                )
+                                requireView().findNavController().navigate(direction)
+                            }
+                            Timber.d("###-- Success get CheckPeriod")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Timber.d("###-- Error get CheckPeriod")
+                        }
+                    }
                 }
             })
         }
@@ -326,6 +410,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             binding.edtBranch.isEnabled = false
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -353,6 +439,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
                         Result.Status.ERROR -> {
                             binding.edtSubBranch.isEnabled = false
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get sub Branch")
                         }
 
@@ -434,55 +522,49 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onCheck() {
-                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
-                            )
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onImplementation() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Implementation Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmitLaporan() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
+                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onReview() {
-                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = ""
-                            )
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onDelete() {
-                            Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
+                            removeListPi(data)
                         }
                     })
             }
@@ -490,6 +572,60 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
         getListPi()
     }
+
+    private fun removeListPi(data: ProjectImprovementModel){
+        try{
+            listPiViewModel.deletePiList(data.idPi)
+            listPiViewModel.doRemovePi.observeEvent(this@ProjectImprovementFragment){ resultObserve ->
+                resultObserve.observe(viewLifecycleOwner,{result ->
+                    Timber.e("### -- $result")
+                    if (result != null){
+                        when(result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    requireContext(),
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading get doRemoveSs loading")
+                            }
+                            Result.Status.SUCCESS  -> {
+                                HelperLoading.hideLoading()
+                                clearFormFilter()
+                                getDataListPi()
+
+                                result.data?.let {
+                                    Snackbar.make(
+                                        binding.root,
+                                        it.message,
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    Timber.d("###-- Success get doRemovePi sukses $it")
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Snackbar.make(
+                                    binding.root,
+                                    result.data?.message.toString(),
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                Timber.d("###-- Error get doRemovePi Error ${result.data}")
+                            }
+                        }
+                    }
+                })
+            }
+        }catch (err : Exception){
+            Snackbar.make(
+                binding.root,
+                "Error doRemovePi : ${err.message}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            Timber.e("### Error doRemovePi : ${err.message}")
+        }
+    }
+
 
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar
@@ -587,7 +723,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         adapter.clear()
 
                         val listPiRemoteRequest = ProjectImprovementRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, PI,
                             userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
                             startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()

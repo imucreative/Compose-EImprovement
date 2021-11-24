@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.R.layout.simple_list_item_1
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -131,17 +132,16 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get team member name")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
                             listMemberItem = result.data?.data
                             initComponentMemberName()
                             Timber.d("###-- Success get team member name")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get team member name")
                         }
 
@@ -158,17 +158,16 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get Department")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
                             listDepartmentItem = result.data?.data
                             initComponentDepartment()
                             Timber.d("###-- Success get Department")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get Department")
                         }
 
@@ -185,17 +184,16 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get Team role")
                         }
                         Result.Status.SUCCESS -> {
-                            //binding.progressBar.visibility = View.GONE
                             listTaskItem = result.data?.data
                             initComponentTeamRole()
                             Timber.d("###-- Success get Team role")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get Team role")
                         }
 
@@ -395,6 +393,14 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             hasilImplementasi = data?.implementationResult,
                             attachment = data?.attachment,
                             statusProposal = data?.statusProposal,
+                            headId = data?.headId,
+                            userId = data?.userId,
+                            orgId = data?.orgId,
+                            warehouseId = data?.warehouseId,
+                            historyApproval = data?.historyApproval,
+                            activityType = data?.activityType,
+                            submitType = data?.submitType,
+                            comment = data?.comment,
                             source = source
                         )
                         true

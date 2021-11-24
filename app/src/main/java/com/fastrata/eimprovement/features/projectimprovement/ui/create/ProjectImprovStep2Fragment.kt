@@ -143,7 +143,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                     val mon = month + 1
                     val monthStr = if (mon < 10) "0$mon" else "$mon"
-                    etFromStatus1.setText("$dayStr-$monthStr-$year")
+                    etFromStatus1.setText("$year-$monthStr-$dayStr")
                     fromDate = sdf.parse(etFromStatus1.text.toString())
                     etToStatus1.text!!.clear()
                 }
@@ -157,7 +157,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToStatus1.setText("$dayStr-$monthStr-$year")
+                            etToStatus1.setText("$year-$monthStr-$dayStr")
                             toDate = sdf.parse(etToStatus1.text.toString())
 //                            if(etFromStatus1.text.isNullOrEmpty()){
 //                                 SnackBarCustom.snackBarIconInfo(
@@ -186,7 +186,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromIdentifikasi.setText("$dayStr-$monthStr-$year")
+                            etFromIdentifikasi.setText("$year-$monthStr-$dayStr")
                             fromDate = sdf.parse(etFromIdentifikasi.text.toString())
                             etToIdentifikasi.text!!.clear()
                         }
@@ -201,7 +201,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToIdentifikasi.setText("$dayStr-$monthStr-$year")
+                            etToIdentifikasi.setText("$year-$monthStr-$dayStr")
                             toDate= sdf.parse(etToIdentifikasi.text.toString())
 //                            if(etFromIdentifikasi.text.isNullOrEmpty()){
 //                                SnackBarCustom.snackBarIconInfo(
@@ -230,7 +230,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromAnalisaData.setText("$dayStr-$monthStr-$year")
+                            etFromAnalisaData.setText("$year-$monthStr-$dayStr")
                             fromDate = sdf.parse(etFromAnalisaData.text.toString())
                             etToAnalisaData.text!!.clear()
                         }
@@ -245,7 +245,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToAnalisaData.setText("$dayStr-$monthStr-$year")
+                            etToAnalisaData.setText("$year-$monthStr-$dayStr")
                             toDate = sdf.parse(etToAnalisaData.text.toString())
 //                            if(etFromAnalisaData.text.isNullOrEmpty()){
 //                                SnackBarCustom.snackBarIconInfo(
@@ -274,7 +274,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
+                            etFromAnalisaAkarMasalah.setText("$year-$monthStr-$dayStr")
                             fromDate = sdf.parse(etFromAnalisaAkarMasalah.text.toString())
                             etToAnalisaAkarMasalah.text!!.clear()
                         }
@@ -289,7 +289,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToAnalisaAkarMasalah.setText("$dayStr-$monthStr-$year")
+                            etToAnalisaAkarMasalah.setText("$year-$monthStr-$dayStr")
                             toDate = sdf.parse(etToAnalisaAkarMasalah.text.toString())
 //                            if(etFromAnalisaAkarMasalah.text.isNullOrEmpty()){
 //                                SnackBarCustom.snackBarIconInfo(
@@ -318,7 +318,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
+                            etFromMenyusunRencanaPenanggulanganMasalah.setText("$year-$monthStr-$dayStr")
                             fromDate = sdf.parse(etFromMenyusunRencanaPenanggulanganMasalah.text.toString())
                             etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
                         }
@@ -333,7 +333,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToMenyusunRencanaPenanggulanganMasalah.setText("$dayStr-$monthStr-$year")
+                            etToMenyusunRencanaPenanggulanganMasalah.setText("$year-$monthStr-$dayStr")
                             toDate= sdf.parse(etToMenyusunRencanaPenanggulanganMasalah.text.toString())
 //                            if(etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()){
 //                                SnackBarCustom.snackBarIconInfo(
@@ -362,7 +362,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
+                            etFromImplementasiRencanaPerbaikan.setText("$year-$monthStr-$dayStr")
                             fromDate = sdf.parse(etFromImplementasiRencanaPerbaikan.text.toString())
                             etToImplementasiRencanaPerbaikan.text!!.clear()
                         }
@@ -377,7 +377,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToImplementasiRencanaPerbaikan.setText("$dayStr-$monthStr-$year")
+                            etToImplementasiRencanaPerbaikan.setText("$year-$monthStr-$dayStr")
                             toDate= sdf.parse(etToImplementasiRencanaPerbaikan.text.toString())
 //                            if(etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()){
 //                                SnackBarCustom.snackBarIconInfo(
@@ -406,7 +406,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
+                            etFromAnalisaPeriksaDanEvaluasi.setText("$year-$monthStr-$dayStr")
                             fromDate = sdf.parse(etFromAnalisaPeriksaDanEvaluasi.text.toString())
                             etToAnalisaPeriksaDanEvaluasi.text!!.clear()
                         }
@@ -421,7 +421,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToAnalisaPeriksaDanEvaluasi.setText("$dayStr-$monthStr-$year")
+                            etToAnalisaPeriksaDanEvaluasi.setText("$year-$monthStr-$dayStr")
                             toDate= sdf.parse(etToAnalisaPeriksaDanEvaluasi.text.toString())
 //                            if(etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()){
 //                                SnackBarCustom.snackBarIconInfo(
@@ -447,7 +447,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun getData() {
         binding.apply {
-            if (data?.statusImplementationModel?.akan == null) {
+            if (data?.statusImplementationModel?.sudah?.from != "") {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
 
@@ -496,11 +496,11 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     var sudah: StatusImplementationPiDoneModel? = null
                     var akan: StatusImplementationPiWantModel? = null
 
-                    if (rbStatus1.isChecked) {
+//                    if (rbStatus1.isChecked) {
                         sudah = StatusImplementationPiDoneModel(
                             from = etFromStatus1.text.toString(),
                             to = etToStatus1.text.toString())
-                    } else {
+//                    } else {
                         akan = StatusImplementationPiWantModel(
                             startIdentifikasiMasalah = etFromIdentifikasi.text.toString(),
                             endIdentifikasiMasalah = etToIdentifikasi.text.toString(),
@@ -520,7 +520,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             startAnalisPeriksaEvaluasi = etFromAnalisaPeriksaDanEvaluasi.text.toString(),
                             endAnalisPeriksaEvaluasi = etToAnalisaPeriksaDanEvaluasi.text.toString()
                         )
-                    }
+//                    }
 
                     val statusImplementation = StatusImplementationPiModel(
                         sudah = sudah,
@@ -547,6 +547,14 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                         hasilImplementasi = data?.implementationResult,
                         attachment = data?.attachment,
                         statusProposal = data?.statusProposal,
+                        headId = data?.headId,
+                        userId = data?.userId,
+                        orgId = data?.orgId,
+                        warehouseId = data?.warehouseId,
+                        historyApproval = data?.historyApproval,
+                        activityType = data?.activityType,
+                        submitType = data?.submitType,
+                        comment = data?.comment,
                         source = source
                     )
                     stat = true

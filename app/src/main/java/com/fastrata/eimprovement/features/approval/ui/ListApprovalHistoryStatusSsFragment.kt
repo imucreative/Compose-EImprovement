@@ -45,7 +45,7 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
         source = if (typeNo == "") SS_CREATE else SS_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreateSs(source)
-        viewModelHistoryStatus.setApprovalHistoryStatus(source)
+        viewModelHistoryStatus.setApprovalHistoryStatus(source, SS)
 
         adapter = ListApprovalHistoryStatusAdapter()
         adapter.notifyDataSetChanged()

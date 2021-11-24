@@ -18,6 +18,7 @@ import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImp
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -87,6 +88,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
     }
 
     private fun setLogic() {
+        Timber.e("Id Status proposal :  ${data?.statusProposal?.id}")
         binding.apply {
             when {
                 data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
@@ -106,7 +108,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     aktualCost.isEnabled = true
                     aktualCostKeterangan.isEnabled = true
                 }
-                data?.statusProposal == null -> {
+                data?.statusProposal != null -> {
                     estimasiBenefit.isEnabled = true
                     estimasiBenefitKeterangan.isEnabled = true
                     estimasiCost.isEnabled = true
@@ -333,7 +335,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        aktualBenefit.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                        aktualBenefit.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -341,7 +343,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualBenefit.requestFocus()
                             stat = false
                         }
-                        aktualBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                        aktualBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -349,7 +351,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualBenefitKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualCost.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                        aktualCost.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -357,7 +359,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualCost.requestFocus()
                             stat = false
                         }
-                        aktualCostKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                        aktualCostKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -365,7 +367,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualCostKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualNqiTotal.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                        aktualNqiTotal.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -431,6 +433,14 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                                 hasilImplementasi = data?.implementationResult,
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
+                                historyApproval = data?.historyApproval,
+                                activityType = data?.activityType,
+                                submitType = data?.submitType,
+                                comment = data?.comment,
                                 source = source
                             )
                             stat = true

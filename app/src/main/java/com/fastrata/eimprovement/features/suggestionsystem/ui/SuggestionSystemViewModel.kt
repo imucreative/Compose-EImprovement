@@ -61,6 +61,8 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
         }
     }
 
+
+    // === Remove List Ss
     private val _removeListSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>>()
     val doRemoveSs : LiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>> get() = _removeListSs
 

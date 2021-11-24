@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -67,7 +68,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
         binding.apply {
-            if (data?.statusImplementationModel?.sudah == null) {
+            if (data?.statusImplementationModel?.sudah?.from == "") {
                 cardViewHasilImplementasi.visibility = View.GONE
             } else {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
@@ -135,7 +136,6 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
@@ -153,7 +153,8 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             Timber.d("###-- Success get master item getCategory")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get master item getCategory")
                         }
 
@@ -208,7 +209,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah != null -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah?.from != "" -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.result_empty),
@@ -245,6 +246,14 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                                 hasilImplementasi = hasilImplementasiImprovement.text.toString(),
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
+                                historyApproval = data?.historyApproval,
+                                activityType = data?.activityType,
+                                submitType = data?.submitType,
+                                comment = data?.comment,
                                 source = source
                             )
                             stat = true
