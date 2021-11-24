@@ -87,22 +87,9 @@ class ListApprovalFragment : Fragment(), Injectable {
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
-        try {
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName  = HawkUtils().getDataLogin().ROLE_NAME
-
-            val listApprovalRemoteRequest = ApprovalRemoteRequest(
-                userId, limit, page, roleName, APPR,
-                userName = userName, docNo = "", statusId = 0, title = "", orgId = 0,
-                warehouseId = 0, startDate = "", endDate = ""
-            )
-
-            listApproveViewModel.setListApproval(listApprovalRemoteRequest)
-        } catch (e: Exception){
-            Timber.e("Error setListApproval : $e")
-            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
-        }
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName  = HawkUtils().getDataLogin().ROLE_NAME
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -122,6 +109,29 @@ class ListApprovalFragment : Fragment(), Injectable {
         adapter.notifyDataSetChanged()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDataListApproval()
+    }
+
+    private fun getDataListApproval(){
+        try {
+            adapter.clear()
+
+            val listApprovalRemoteRequest = ApprovalRemoteRequest(
+                userId, limit, page, roleName, APPR,
+                userName = userName, docNo = "", statusId = 0, title = "", orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listApproveViewModel.setListApproval(listApprovalRemoteRequest)
+        } catch (e: Exception){
+            Timber.e("Error setListPi : $e")
+            HelperLoading.hideLoading()
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -227,6 +237,11 @@ class ListApprovalFragment : Fragment(), Injectable {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getListApproval()
+    }
+
     private fun getListApproval() {
         isLoading = true
 
@@ -264,6 +279,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
                             isLoading = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get List CP")
                         }
                     }
@@ -289,6 +305,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             binding.edtStatusProposal.isEnabled = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get status proposal")
                         }
 
@@ -316,6 +333,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             binding.edtBranch.isEnabled = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get Branch")
                         }
 
@@ -343,6 +361,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             binding.edtSubBranch.isEnabled = false
+                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get sub Branch")
                         }
 
@@ -487,7 +506,77 @@ class ListApprovalFragment : Fragment(), Injectable {
                         )
                     }
                     PI -> {
+                        HelperNotification().showListEdit(requireActivity(),
+                            resources.getString(R.string.select),
+                            view = data.isView,
+                            viewEdit = data.isEdit,
+                            viewSubmit = data.isSubmit,
+                            viewImplementation = data.isImplementation,
+                            viewCheck = data.isCheck,
+                            viewSubmitLaporan = data.isSubmitlaporan,
+                            viewReview = data.isReview,
+                            viewDelete = data.isDelete,
+                            listener = object : HelperNotification.CallbackList {
+                                override fun onView() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                            toolbarTitle = "View Project Improvement",
+                                            action = DETAIL,
+                                            idPi = data.id,
+                                            piNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
 
+                                override fun onEdit() {
+
+                                }
+
+                                override fun onSubmit() {
+
+                                }
+
+                                override fun onCheck() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                            toolbarTitle = "Check Project Improvement",
+                                            action = APPROVE,
+                                            idPi = data.id,
+                                            piNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onImplementation() {
+
+                                }
+
+                                override fun onSubmitLaporan() {
+
+                                }
+
+                                override fun onReview() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                            toolbarTitle = "Review Project Improvement",
+                                            action = APPROVE,
+                                            idPi = data.id,
+                                            piNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onDelete() {
+
+                                }
+                            }
+                        )
                     }
                     CP -> {
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -135,7 +136,6 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            //binding.progressBar.visibility = View.VISIBLE
                             Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
@@ -153,7 +153,8 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             Timber.d("###-- Success get master item getCategory")
                         }
                         Result.Status.ERROR -> {
-                            //binding.progressBar.visibility = View.GONE
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             Timber.d("###-- Error get master item getCategory")
                         }
 

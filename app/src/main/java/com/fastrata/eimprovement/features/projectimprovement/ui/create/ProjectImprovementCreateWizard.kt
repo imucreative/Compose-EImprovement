@@ -166,6 +166,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 Result.Status.ERROR -> {
                                     HelperLoading.displayLoadingWithText(this,"",false)
                                     binding.bottomNavigationBar.visibility = View.GONE
+                                    HelperLoading.hideLoading()
+                                    Toast.makeText(this,"Error : ${result.message}", Toast.LENGTH_LONG).show()
                                     Timber.d("###-- Error getDetailPiItem")
                                 }
 
@@ -206,6 +208,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun initComponent() {
+        notification = HelperNotification()
         binding.apply {
             lytBack.setOnClickListener {
                 backStep(currentStep)
@@ -451,6 +454,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun nextStep(progress: Int) {
+        data = HawkUtils().getTempDataCreatePi(source)
+
         val status = piCreateCallback.onDataPass()
         if (status) {
             if (progress < maxStep) {
@@ -461,15 +466,20 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if ((action == APPROVE) || (action == DETAIL)) {
+                    if (action == DETAIL) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.GONE
+                        }
+                    } else if (action == APPROVE && (data?.statusProposal?.id == 3 || data?.statusProposal?.id == 8)) {
+
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.VISIBLE
                         }
                     }
                 }
             } else {
-                val gson = Gson()
-                data = HawkUtils().getTempDataCreatePi(source)
                 val convertToJson = gson.toJson(data)
 
                 Timber.e("### Data form input: $convertToJson")
@@ -520,8 +530,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 if (data?.piNo.isNullOrEmpty()){
                                     submit(data!!)
                                 }else {
-                                    //update(data!!)
-                                    println(data)
+                                    update(data!!)
                                 }
                             }
                         }
@@ -563,7 +572,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                             HelperLoading.hideLoading()
                             Toast.makeText(
                                 this@ProjectImprovementCreateWizard,
-                                result.data?.message,
+                                result.message,
                                 Toast.LENGTH_LONG
                             ).show()
                             finish()
@@ -609,7 +618,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                             HelperLoading.hideLoading()
                             Toast.makeText(
                                 this@ProjectImprovementCreateWizard,
-                                result.data?.message,
+                                result.message,
                                 Toast.LENGTH_LONG
                             ).show()
 
@@ -634,6 +643,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
+                actionBottom.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }
