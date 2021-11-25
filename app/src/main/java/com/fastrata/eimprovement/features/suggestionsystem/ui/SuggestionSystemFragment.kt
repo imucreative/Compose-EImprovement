@@ -271,7 +271,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                             val listResponse = result.data?.data
                             if (listResponse != null) {
-                                if (page == 0 && listResponse.isEmpty()) {
+                                if (listResponse.isNullOrEmpty()) {
                                     binding.rv.visibility = View.GONE
                                     binding.noDataScreen.root.visibility = View.VISIBLE
                                 } else {
