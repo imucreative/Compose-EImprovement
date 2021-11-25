@@ -45,8 +45,6 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
 
         source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
 
-        data = HawkUtils().getTempDataCreatePi(source)
-
         return binding.root
     }
 
@@ -95,7 +93,7 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
         (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object : ProjectImprovementSystemCreateCallback {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
-
+                data = HawkUtils().getTempDataCreatePi(source)
                 binding.apply {
                     stat = if (data?.akarMasalah?.size == 0) {
                         SnackBarCustom.snackBarIconInfo(

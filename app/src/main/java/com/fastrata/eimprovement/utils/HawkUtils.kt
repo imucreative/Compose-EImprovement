@@ -6,12 +6,14 @@ import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
 import com.fastrata.eimprovement.featuresglobal.data.model.*
+import com.google.gson.Gson
 import com.orhanobut.hawk.Hawk
 import timber.log.Timber
 
 internal class HawkUtils {
 
     // init create object
+    private val gson = Gson()
     private val getDataCreateSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_CREATE)) Hawk.get(SS_CREATE) else null
     private val getDataDetailSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_DETAIL_DATA)) Hawk.get(SS_DETAIL_DATA) else null
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
@@ -84,10 +86,12 @@ internal class HawkUtils {
 
         if (source == SS_CREATE) {
             Hawk.put(SS_CREATE, data)
-            Timber.w("### Hawk SS: $data")
+            val convertToJson = gson.toJson(data)
+            Timber.w("### Hawk SS: $convertToJson")
         } else {
             Hawk.put(SS_DETAIL_DATA, data)
-            Timber.w("### Hawk SS Detail Data: $data")
+            val convertToJson = gson.toJson(data)
+            Timber.w("### Hawk SS Detail Data: $convertToJson")
         }
     }
 
@@ -217,10 +221,12 @@ internal class HawkUtils {
 
         if (source == PI_CREATE) {
             Hawk.put(PI_CREATE, data)
-            Timber.w("### Hawk PI: $data")
+            val convertToJson = gson.toJson(data)
+            Timber.w("### Hawk PI: $convertToJson")
         } else {
             Hawk.put(PI_DETAIL_DATA, data)
-            Timber.w("### Hawk PI Detail Data: $data")
+            val convertToJson = gson.toJson(data)
+            Timber.w("### Hawk PI Detail Data: $convertToJson")
         }
     }
 
@@ -284,10 +290,12 @@ internal class HawkUtils {
         )
         if (source == CP_CREATE) {
             Hawk.put(CP_CREATE, data)
-            Timber.w("### Hawk CP: $data")
+            val convertToJson = gson.toJson(data)
+            Timber.w("### Hawk CP: $convertToJson")
         } else {
             Hawk.put(CP_DETAIL_DATA, data)
-            Timber.w("### Hawk CP Detail Data: $data")
+            val convertToJson = gson.toJson(data)
+            Timber.w("### Hawk CP Detail Data: $convertToJson")
         }
     }
 
