@@ -57,11 +57,11 @@ object DataDummySs {
         )
     }*/
 
-    /*fun generateDummyDetailChangePoint(): ChangePointCreateItemModel{
+    /*fun generateDummyDetailChangePoint(): ChangePointCreateModel{
        val rewardArray = ArrayList<RewardItem?>()
        rewardArray.add(RewardItem(hadiahId = 1,hadiah = "PULSA 100K",nilai = 10000,keterangan = "Penukaran"))
 
-       return ChangePointCreateItemModel(
+       return ChangePointCreateModel(
           id = 1,
           saldo = 2000,
           cpNo = "CP-0000/08/2021/0100",

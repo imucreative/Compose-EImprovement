@@ -8,14 +8,13 @@ import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.suggestionsystem.data.SsRemoteRepository
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.*
-import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SuggestionSystemViewModel @Inject constructor(private val repository: SsRemoteRepository,private val globalrepository : GlobalRemoteRepository): ViewModel() {
+class SuggestionSystemViewModel @Inject constructor(private val repository: SsRemoteRepository): ViewModel() {
 
     // === List SS
     private val _listSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemModel>>>>>()
@@ -68,7 +67,7 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
 
     fun deleteSsList(idSs: Int){
         viewModelScope.launch(Dispatchers.Main){
-            val result =  withContext(Dispatchers.Default) { globalrepository.observeRemoveSs(idSs)}
+            val result =  withContext(Dispatchers.Default) { repository.observeRemoveSs(idSs)}
             _removeListSs.value = Event(result)
         }
 

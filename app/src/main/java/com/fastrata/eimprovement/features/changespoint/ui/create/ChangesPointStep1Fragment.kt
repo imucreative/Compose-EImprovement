@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentChangesPointStep1Binding
 import com.fastrata.eimprovement.di.Injectable
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.textLimitReplaceToDots
@@ -20,7 +20,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentChangesPointStep1Binding? = null
     private val binding get() = _binding!!
-    private var data : ChangePointCreateItemModel? = null
+    private var data : ChangePointCreateModel? = null
     private var source :String = CP_CREATE
     private var action: String? = ""
     private var cpNo: String? = ""
@@ -39,7 +39,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
 
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
-        data = HawkUtils().getTempDataCreateCP(source)
+        data = HawkUtils().getTempDataCreateCp(source)
         intSaldo = HawkUtils().getDataBalance()
 
         return binding.root
@@ -79,7 +79,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10)"0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        date.setText("$dayStr-$monthStr-$year")
+                        date.setText("$year-$monthStr-$dayStr")
                     }
                 })
             }
@@ -140,6 +140,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                                 keterangan = desc.text.toString(),
                                 id = data?.id,
                                 subBranch = data?.subBranch,
+                                branchCode = data?.branchCode,
                                 saldo = data?.saldo,
                                 rewardData = data?.reward,
                                 statusProposal = data?.statusProposal,

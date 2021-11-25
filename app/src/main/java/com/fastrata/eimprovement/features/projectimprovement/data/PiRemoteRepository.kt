@@ -21,4 +21,8 @@ class PiRemoteRepository @Inject constructor(private val remoteDataSource: PiRem
     fun observeSubmitUpdatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.postSubmitUpdatePi(projectImprovementCreateModel) }
     )
+
+    fun observeRemovePi(idPi: Int) = resultMutableLiveDataRemote (
+        networkCall = { remoteDataSource.removePi(idPi)}
+    )
 }

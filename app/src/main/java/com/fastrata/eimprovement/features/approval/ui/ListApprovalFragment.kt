@@ -258,7 +258,7 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                             val listResponse = result.data?.data
                             if (listResponse != null) {
-                                if (page == 0 && listResponse.isEmpty()) {
+                                if (listResponse.isNullOrEmpty()) {
                                     binding.rv.visibility = View.GONE
                                     binding.noDataScreen.root.visibility = View.VISIBLE
                                 } else {
@@ -579,44 +579,70 @@ class ListApprovalFragment : Fragment(), Injectable {
                         )
                     }
                     CP -> {
+                        HelperNotification().showListEdit(requireActivity(),
+                            resources.getString(R.string.select),
+                            view = data.isView,
+                            viewEdit = data.isEdit,
+                            viewSubmit = data.isSubmit,
+                            viewImplementation = data.isImplementation,
+                            viewCheck = data.isCheck,
+                            viewSubmitLaporan = data.isSubmitlaporan,
+                            viewReview = data.isReview,
+                            viewDelete = data.isDelete,
+                            listener = object : HelperNotification.CallbackList {
+                                override fun onView() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                            toolbarTitle = "Detail Change Point",
+                                            action = DETAIL,
+                                            idCp = data.id,
+                                            cpNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
 
+                                override fun onEdit() {
+
+                                }
+
+                                override fun onSubmit() {
+
+                                }
+
+                                override fun onCheck() {
+
+                                }
+
+                                override fun onImplementation() {
+
+                                }
+
+                                override fun onSubmitLaporan() {
+
+                                }
+
+                                override fun onReview() {
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                            toolbarTitle = "Review Change Point",
+                                            action = APPROVE,
+                                            idCp = data.id,
+                                            cpNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onDelete() {
+
+                                }
+                            }
+                        )
                     }
                 }
-                /*when (data.type) {
-                    SS -> {
-                        val direction =
-                            ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Approve Suggestion System",
-                                action = APPROVE,
-                                idSs = data.id,
-                                ssNo = data.typeNo,
-                                type = data.type
-                            )
-                        requireView().findNavController().navigate(direction)
-                    }
-                    PI -> {
-                        val direction =
-                            ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Approve Project Improvement",
-                                action = APPROVE,
-                                idPi = data.id,
-                                piNo = data.typeNo,
-                                type = data.type
-                            )
-                        requireView().findNavController().navigate(direction)
-                    }
-                    CP -> {
-                        val direction =
-                            ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                toolbarTitle = "Approve Change Point",
-                                action = APPROVE,
-                                idCp = data.id,
-                                cpNo = data.typeNo,
-                                type = data.type
-                            )
-                        requireView().findNavController().navigate(direction)
-                    }
-                }*/
             }
         })
 

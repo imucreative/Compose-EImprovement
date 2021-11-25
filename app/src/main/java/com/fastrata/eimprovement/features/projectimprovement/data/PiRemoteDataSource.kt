@@ -22,4 +22,8 @@ class PiRemoteDataSource @Inject constructor(private val service: AppService) : 
     suspend fun postSubmitUpdatePi(projectImprovementCreateModel: ProjectImprovementCreateModel)  = getResult {
         service.submitUpdatePi(projectImprovementCreateModel)
     }
+
+    suspend fun removePi(idPi : Int) = getResult {
+        service.removePi(idPi)
+    }
 }

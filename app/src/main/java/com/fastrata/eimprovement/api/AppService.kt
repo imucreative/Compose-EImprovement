@@ -2,10 +2,7 @@ package com.fastrata.eimprovement.api
 
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateItemModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
-import com.fastrata.eimprovement.features.changespoint.data.model.GiftItem
+import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
@@ -116,7 +113,7 @@ interface AppService {
 
 
     @PUT("pi/remove/{PI_H_ID}")
-    suspend fun removePI(
+    suspend fun removePi(
         @Path("PI_H_ID") id : Int
     ): Response<ResultsResponse<ArrayList<String>>>
 
@@ -137,7 +134,22 @@ interface AppService {
     suspend fun detailCp(
         @Field("id") id: Int,
         @Field("userId") userId: Int
-    ): Response<ResultsResponse<ChangePointCreateItemModel>>
+    ): Response<ResultsResponse<ChangePointCreateModel>>
+
+    @POST("rp/create")
+    suspend fun submitCreateCp(
+        @Body changePointCreateModel: ChangePointCreateModel
+    ): Response<ResultsResponse<ChangePointResponseModel>>
+
+    @PUT("rp/remove/{RP_H_ID}")
+    suspend fun removeCp(
+        @Path("RP_H_ID") id: Int
+    ): Response<ResultsResponse<ArrayList<String>>>
+
+    @PUT("rp/update")
+    suspend fun submitUpdateCp(
+        @Body changePointCreateModel: ChangePointCreateModel
+    ): Response<ResultsResponse<ChangePointResponseModel>>
 
 
     // Approval

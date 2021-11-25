@@ -31,7 +31,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var changesRewardViewModel: ChangesRewardViewModel
     private lateinit var rewardAdapter: ChangesRewardAdapter
-    private var data : ChangePointCreateItemModel? = null
+    private var data : ChangePointCreateModel? = null
     private var source: String = CP_CREATE
     private var action: String? = ""
     private var cpNo: String? = ""
@@ -53,7 +53,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
-        data = HawkUtils().getTempDataCreateCP(source)
+        data = HawkUtils().getTempDataCreateCp(source)
         intSaldo = HawkUtils().getDataBalance()
 
         if (data?.reward != null){
@@ -76,8 +76,6 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         _binding = FragmentChangesPointStep2Binding.bind(view)
 
         binding.apply {
-            //totalReward.text = data?.saldo.toString()
-
             rvChangereward.setHasFixedSize(true)
             rvChangereward.layoutManager = LinearLayoutManager(context)
             rvChangereward.adapter = rewardAdapter
@@ -116,17 +114,17 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            Timber.d("###-- Loading get team member name")
+                            Timber.d("###-- Loading getAllGift")
                         }
                         Result.Status.SUCCESS -> {
                             listRewardItem = result.data?.data
                             initComponentGift()
-                            Timber.d("###-- Success get team member name")
+                            Timber.d("###-- Success getAllGift")
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
                             Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get team member name")
+                            Timber.d("###-- Error getAllGift")
                         }
 
                     }
@@ -173,7 +171,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                     val total = totalBalance()
                     changesRewardViewModel.setTotalReward(total)
                     changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner, {
-                        binding.totalReward.text = it.toString()
+                        binding.totalReward.text = Tools.doubleToRupiah(it.toDouble(),2)
                     })
                 }
             }
@@ -239,7 +237,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         val total = totalBalance()
                         changesRewardViewModel.setTotalReward(total)
                         changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner,{
-                            totalReward.text = it.toString()
+                            totalReward.text = Tools.doubleToRupiah(it.toDouble(),2)
                         })
 
                         hadiahCp.setText("")
@@ -258,34 +256,35 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                     override fun onDataPass(): Boolean {
                     var stat : Boolean
                     binding.apply {
-                        when{
-                            data?.reward?.size == 0 ->{
+                        when (data?.reward?.size) {
+                            0 -> {
                                 SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.desc_empty),
-                                R.drawable.ic_close, R.color.red_500)
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.reward_empty),
+                                    R.drawable.ic_close, R.color.red_500)
                                 stat = false
                             }
                             else -> {
                                 HawkUtils().setTempDataCreateCp(
-                                cpNo = data?.cpNo,
-                                name = data?.name,
-                                nik = data?.nik,
-                                branch = data?.branch,
-                                departement = data?.department,
-                                position = data?.position,
-                                date = data?.date,
-                                keterangan = data?.description,
-                                id = data?.id,
-                                subBranch = data?.subBranch,
-                                saldo = data?.saldo,
-                                rewardData = data?.reward,
-                                statusProposal = data?.statusProposal,
-                                headId = data?.headId,
-                                userId = data?.userId,
-                                orgId = data?.orgId,
-                                warehouseId = data?.warehouseId,
-                                source = source)
+                                    cpNo = data?.cpNo,
+                                    name = data?.name,
+                                    nik = data?.nik,
+                                    branch = data?.branch,
+                                    branchCode = data?.branchCode,
+                                    departement = data?.department,
+                                    position = data?.position,
+                                    date = data?.date,
+                                    keterangan = data?.description,
+                                    id = data?.id,
+                                    subBranch = data?.subBranch,
+                                    saldo = totalBalance(),
+                                    rewardData = data?.reward,
+                                    statusProposal = data?.statusProposal,
+                                    headId = data?.headId,
+                                    userId = data?.userId,
+                                    orgId = data?.orgId,
+                                    warehouseId = data?.warehouseId,
+                                    source = source)
                                 stat = true
                             }
                         }

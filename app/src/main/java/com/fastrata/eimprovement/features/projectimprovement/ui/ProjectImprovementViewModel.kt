@@ -10,7 +10,6 @@ import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.fastrata.eimprovement.features.projectimprovement.data.PiRemoteRepository
 import com.fastrata.eimprovement.features.projectimprovement.data.model.*
-import com.fastrata.eimprovement.featuresglobal.data.GlobalRemoteRepository
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools
 import com.fastrata.eimprovement.wrapper.Event
@@ -20,7 +19,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository,private val globalRepository : GlobalRemoteRepository): ViewModel(){
+class ProjectImprovementViewModel @Inject constructor(private val repository: PiRemoteRepository): ViewModel(){
     private val listSebabMasalah = MutableLiveData<ArrayList<SebabMasalahModel?>?>()
     private val listAkarMasalah = MutableLiveData<ArrayList<AkarMasalahModel?>?>()
     private val listTeamMember = MutableLiveData<ArrayList<TeamMemberItem?>?>()
@@ -333,7 +332,7 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
 
     fun deletePiList(idPi: Int){
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default){globalRepository.observeRemovePi(idPi) }
+            val result = withContext(Dispatchers.Default){repository.observeRemovePi(idPi) }
             _removeListPi.value = Event(result)
         }
     }

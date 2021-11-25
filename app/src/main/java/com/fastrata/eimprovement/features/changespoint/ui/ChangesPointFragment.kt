@@ -25,10 +25,12 @@ import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
 import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckPeriodViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,6 +44,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var listCpViewModel: ChangesPointCreateViewModel
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
+    private lateinit var checkPeriodViewModel: CheckPeriodViewModel
     private lateinit var masterBranchViewModel: BranchViewModel
 
     private lateinit var adapter: ChangesPointAdapter
@@ -67,6 +70,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     private var roleName: String = ""
     private val sdf = SimpleDateFormat("dd-MM-yyyy")
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var notification: HelperNotification
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,29 +84,16 @@ class ChangesPointFragment : Fragment(), Injectable {
         listCpViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
         masterBranchViewModel = injectViewModel(viewModelFactory)
+        checkPeriodViewModel = injectViewModel(viewModelFactory)
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
-        try{
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName  = HawkUtils().getDataLogin().ROLE_NAME
-
-            val listChangePointRemoteRequest = ChangePointRemoteRequest(
-                userId, limit, page, roleName,
-                userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
-                warehouseId = 0, startDate = "", endDate = ""
-            )
-
-            listCpViewModel.setListCp(listChangePointRemoteRequest)
-
-        }catch (e: Exception){
-            Timber.e("Error setListCp : $e")
-            Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
-        }
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName  = HawkUtils().getDataLogin().ROLE_NAME
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -122,6 +113,32 @@ class ChangesPointFragment : Fragment(), Injectable {
         adapter.notifyDataSetChanged()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDataListCp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+       getListCp()
+    }
+
+    private fun getDataListCp(){
+        try{
+            adapter.clear()
+            val listChangePointRemoteRequest = ChangePointRemoteRequest(
+                userId, limit, page, roleName, CP,
+                userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
+                warehouseId = 0, startDate = "", endDate = ""
+            )
+
+            listCpViewModel.setListCp(listChangePointRemoteRequest)
+        }catch (e: Exception){
+            Timber.e("Error setListCp : $e")
+            Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -165,7 +182,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                             }
 
                             val listChangePointRemoteRequest = ChangePointRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, CP,
                                 userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
                                 description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
                                 orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
@@ -181,10 +198,14 @@ class ChangesPointFragment : Fragment(), Injectable {
             })
 
             createSs.setOnClickListener {
-                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                    toolbarTitle = "Create Changes Point", action = ADD, idCp = 0, cpNo = "", type = CP
-                )
-                it.findNavController().navigate(direction)
+                try {
+                    checkPeriodViewModel.setCheckPeriod(CP)
+
+                    getStatusCheckPeriod()
+                }catch (e: Exception){
+                    Timber.e("Error setCheckPeriod : $e")
+                    Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+                }
             }
 
             swipe.setOnRefreshListener {
@@ -197,7 +218,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                     adapter.clear()
 
                     val listChangePointRemoteRequest = ChangePointRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, CP,
                         userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -211,9 +232,62 @@ class ChangesPointFragment : Fragment(), Injectable {
 
             }
         }
+    }
 
-        retrieveDataStatusProposal()
-        retrieveDataBranch()
+    private fun getStatusCheckPeriod() {
+        notification = HelperNotification()
+        checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
+            resultObserve.observe(viewLifecycleOwner, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            Timber.d("###-- Loading get CheckPeriod")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+                            val statusProposal = result.data?.data?.get(0)
+                            if (statusProposal?.id == 11) {
+                                notification.shownotificationyesno(
+                                    requireActivity(),
+                                    requireContext(),
+                                    R.color.blue_500,
+                                    resources.getString(R.string.title_past_period),
+                                    "",
+                                    resources.getString(R.string.agree),
+                                    resources.getString(R.string.not_agree),
+                                    object : HelperNotification.CallBackNotificationYesNo {
+                                        override fun onNotificationNo() {
+
+                                        }
+
+                                        override fun onNotificationYes() {
+                                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                                toolbarTitle = "Create ChangePoint", action = ADD , idCp = 0 , cpNo = "", type = "",statusProposal = statusProposal
+                                            )
+                                            requireView().findNavController().navigate(direction)
+                                        }
+                                    }
+                                )
+                            } else {
+                                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                    toolbarTitle = "Create ChangePoint", action = ADD , idCp = 0 , cpNo = "", type = "",statusProposal = statusProposal
+                                )
+                                requireView().findNavController().navigate(direction)
+                            }
+
+                            Timber.d("###-- Success get CheckPeriod")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Timber.d("###-- Error get CheckPeriod")
+                        }
+
+                    }
+
+                }
+            })
+        }
     }
 
     override fun onDestroyView() {
@@ -252,7 +326,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
                             val listResponse = result.data?.data
                             if (listResponse != null) {
-                                if (page == 0 && listResponse.isEmpty()) {
+                                if (listResponse.isNullOrEmpty()) {
                                     binding.rv.visibility = View.GONE
                                     binding.noDataScreen.root.visibility = View.VISIBLE
                                 } else {
@@ -441,54 +515,42 @@ class ChangesPointFragment : Fragment(), Injectable {
                         override fun onView() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                                 toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                                toolbarTitle = "Edit Changes Point", action = EDIT,
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
+                                toolbarTitle = "Submit Changes Point", action = SUBMIT_PROPOSAL,
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onCheck() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onImplementation() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onSubmitLaporan() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onReview() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onDelete() {
-                            Toast.makeText(requireContext(),"Data Belum Terhapus",Toast.LENGTH_SHORT).show()
+                            removeListCp(data)
                         }
                     })
 
@@ -496,6 +558,58 @@ class ChangesPointFragment : Fragment(), Injectable {
         })
 
         getListCp()
+    }
+
+    private fun removeListCp(data: ChangePointModel) {
+        try {
+            listCpViewModel.deleteCpList(data.idCp)
+            listCpViewModel.doRemoveCp.observeEvent(this@ChangesPointFragment){ resultObserve ->
+                resultObserve.observe(viewLifecycleOwner,{result ->
+                    Timber.e("### -- $result")
+                    if (result != null){
+                        when(result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    requireContext(),
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading get doRemoveCp loading")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+                                getDataListCp()
+
+                                result.data?.let {
+                                    Snackbar.make(
+                                        binding.root,
+                                        it.message,
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    Timber.d("###-- Success get doRemoveCp sukses $it")
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Snackbar.make(
+                                    binding.root,
+                                    result.data?.message.toString(),
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                Timber.d("###-- Error get doRemoveCp Error ${result.data}")
+                            }
+                        }
+                    }
+                })
+            }
+        }catch (err: Exception){
+            Snackbar.make(
+                binding.root,
+                "Error doRemoveSs : ${err.message}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            Timber.e("### Error doRemoveSs : ${err.message}")
+        }
     }
 
     private fun initToolbar() {
@@ -577,7 +691,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                         adapter.clear()
 
                         val listCpRemoteRequest = ChangePointRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, CP,
                             userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
                             description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
                             orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),

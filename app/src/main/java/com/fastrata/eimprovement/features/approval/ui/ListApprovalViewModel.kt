@@ -23,10 +23,16 @@ class ListApprovalViewModel @Inject constructor(private val repository: Approval
     private val listApprovalHistoryStatus = MutableLiveData<ArrayList<ApprovalHistoryStatusModel?>?>()
     fun setApprovalHistoryStatus(source: String, type: String) {
         var data: ArrayList<ApprovalHistoryStatusModel?>? = null
-        if (type == SS) {
-            data = HawkUtils().getTempDataCreateSs(source)?.historyApproval
-        } else if (type == PI) {
-            data = HawkUtils().getTempDataCreatePi(source)?.historyApproval
+        when (type) {
+            SS -> {
+                data = HawkUtils().getTempDataCreateSs(source)?.historyApproval
+            }
+            PI -> {
+                data = HawkUtils().getTempDataCreatePi(source)?.historyApproval
+            }
+            CP -> {
+                data = HawkUtils().getTempDataCreateCp(source)?.historyApproval
+            }
         }
         listApprovalHistoryStatus.postValue(data)
     }

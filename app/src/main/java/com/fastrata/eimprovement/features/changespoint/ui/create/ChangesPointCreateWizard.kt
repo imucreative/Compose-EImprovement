@@ -21,9 +21,11 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
+import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -39,12 +41,18 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     private lateinit var binding: ActivityChangesPointSystemCreateWizardBinding
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var viewModel : ChangesPointCreateViewModel
-    private var maxStep = 2
+    private var maxStep = 3
     private var currentStep = 1
     private var action: String = ""
     private var cpNo: String = ""
     private var source: String = CP_CREATE
     private lateinit var notification: HelperNotification
+    private val gson = Gson()
+    private var data: ChangePointCreateModel? = null
+    private var userId = 0
+    private var orgId = 0
+    private var warehouseId = 0
+    private var headId = 0
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -64,24 +72,26 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         val argsAction  = args.action
         val argsIdCp    = args.idCp
         val argsCpNo    = args.cpNo
-        val userId      = HawkUtils().getDataLogin().USER_ID
-        val orgId       = HawkUtils().getDataLogin().ORG_ID
-        val warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
-        val headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
+        val statusProposal = args.statusProposal
+
+        userId      = HawkUtils().getDataLogin().USER_ID
+        orgId       = HawkUtils().getDataLogin().ORG_ID!!
+        warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID!!
+        headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
 
         action = argsAction
 
-        if (action == APPROVE) {
-            maxStep += 1
-        }
+//        if (action == APPROVE) {
+//            maxStep += 1
+//        }
 
         when(argsAction) {
-            EDIT, DETAIL, APPROVE -> {
+            EDIT, DETAIL, APPROVE, SUBMIT_PROPOSAL -> {
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
                 viewModel.setDetailCp(argsIdCp, userId)
-                viewModel.getDetailCpItem.observeEvent(this) { resultObserve ->
+                viewModel.getDetailCp.observeEvent(this) { resultObserve ->
                     resultObserve.observe(this, { result ->
                         if (result != null) {
                             when (result.status) {
@@ -103,16 +113,23 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                         nik = result.data?.data?.get(0)?.nik,
                                         branch = result.data?.data?.get(0)?.branch,
                                         subBranch = result.data?.data?.get(0)?.subBranch,
+                                        branchCode = result.data?.data?.get(0)?.branchCode,
                                         departement = result.data?.data?.get(0)?.department,
                                         position = result.data?.data?.get(0)?.position,
                                         date = result.data?.data?.get(0)?.date,
                                         keterangan = result.data?.data?.get(0)?.description,
                                         rewardData = result.data?.data?.get(0)?.reward,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                        headId = headId,
-                                        userId = userId,
-                                        orgId = orgId,
-                                        warehouseId = warehouseId,
+
+                                        headId = result.data?.data?.get(0)?.headId,
+                                        userId = result.data?.data?.get(0)?.userId,
+                                        orgId = result.data?.data?.get(0)?.orgId,
+                                        warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                        historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                        activityType = CP,
+                                        submitType = if (argsAction == EDIT) 2 else 1,
+                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
                                         source = CP_DETAIL_DATA
                                     )
 
@@ -139,13 +156,21 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 HawkUtils().setTempDataCreateCp(
                     id = 0,
                     cpNo = "",
-                    saldo = 0,
                     name = HawkUtils().getDataLogin().USER_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
+                    branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
                     departement = HawkUtils().getDataLogin().DEPARTMENT,
                     position = HawkUtils().getDataLogin().POSITION,
+                    statusProposal = statusProposal,
+                    headId = headId,
+                    userId = userId,
+                    orgId = orgId,
+                    warehouseId = warehouseId,
+                    activityType = CP,
+                    submitType = 1,
+                    comment = "",
                     source = CP_CREATE
                 )
                 initToolbar(argsTitle)
@@ -158,6 +183,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     }
 
     private fun initComponent() {
+        notification = HelperNotification()
         binding.apply {
             lytBack.setOnClickListener {
                 backStep(currentStep)
@@ -172,7 +198,6 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
             if (currentStep == 1) {
                 lytBack.visibility = View.INVISIBLE
             }
-
 
             bottomProgressDots(currentStep)
 
@@ -190,6 +215,62 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     .add(R.id.frame_container_cp, mHomeFragment, ChangesPointStep1Fragment::class.java.simpleName)
                     .commit()
             }
+
+            lytAccept.setOnClickListener {
+                buttonAction(
+                    1, R.color.green_A700,
+                    "Setuju",
+                    "Apakah Anda yakin ingin Menyetujui pengajuan ini?",
+                    "Setuju"
+                )
+            }
+            lytRevision.setOnClickListener {
+                buttonAction(
+                    2, R.color.blue_A700,
+                    "Revisi",
+                    "Apakah Anda yakin ingin Merevisi pengajuan ini?",
+                    "Revisi"
+                )
+            }
+            lytReject.setOnClickListener {
+                buttonAction(
+                    3, R.color.red_A700,
+                    "Tolak",
+                    "Apakah Anda yakin ingin Menolak pengajuan ini?",
+                    "Tolak"
+                )
+            }
+        }
+    }
+
+    private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
+        binding.apply {
+            notification.showNotificationYesNoWithComment(
+                this@ChangesPointCreateWizard,
+                applicationContext, color, title, description, buttonString,
+                resources.getString(R.string.cancel),
+                object : HelperNotification.CallBackNotificationYesNoWithComment {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes(comment: String) {
+                        data = HawkUtils().getTempDataCreateCp(source)
+                        if (comment != "") {
+                            val updateProposal = ChangePointCreateModel(
+                                data?.id,data?.saldo,data?.cpNo,data?.name,data?.nik,
+                                userId = userId,data?.orgId,
+                                data?.warehouseId,data?.headId,data?.branch,data?.subBranch, data?.department,
+                                data?.position,data?.date,data?.description,data?.reward,data?.statusProposal,
+                                data?.historyApproval, activityType = CP, submitType = key, comment = comment,data?.branchCode
+                            )
+                            update(updateProposal)
+                        } else {
+                            Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            )
         }
     }
 
@@ -251,6 +332,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     }
 
     private fun nextStep(progress: Int) {
+        data = HawkUtils().getTempDataCreateCp(source)
+
         val status = cpCreateCallbac.onDataPass()
         if(status){
             if (progress < maxStep){
@@ -261,45 +344,160 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if ((action == APPROVE) || (action == DETAIL)) {
+                    if (action == DETAIL) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.GONE
+                        }
+                    } else if (action == APPROVE && data?.statusProposal?.id == 14) {
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.VISIBLE
                         }
                     }
                 }
             }else{
+                val convertToJson = gson.toJson(data)
+
+                Timber.e("### Data Form Input : $convertToJson")
+                Timber.e("${data?.statusProposal}")
+
+                var initialTypeProposal = ""
+                var buttonInitialTypeProposal = ""
+
+                if (action == SUBMIT_PROPOSAL){
+                    initialTypeProposal = "Submit"
+                    buttonInitialTypeProposal = "Submit"
+                } else {
+                    initialTypeProposal = "Save"
+                    buttonInitialTypeProposal = "Save"
+                }
                 notification = HelperNotification()
                 binding.apply {
                     notification.shownotificationyesno(
                         this@ChangesPointCreateWizard,
                         applicationContext,
                         R.color.blue_500,
-                        resources.getString(R.string.simpan),
+                        initialTypeProposal,
                         resources.getString(R.string.submit_desc),
-                        resources.getString(R.string.agree),
-                        resources.getString(R.string.not_agree),
+                        buttonInitialTypeProposal,
+                        resources.getString(R.string.cancel),
                         object : HelperNotification.CallBackNotificationYesNo {
                             override fun onNotificationNo() {
 
                             }
 
                             override fun onNotificationYes() {
-                                val gson = Gson()
-                                val data = gson.toJson(HawkUtils().getTempDataCreateCP(source))
-                                println("### Data form input : $data")
-                                Toast.makeText(
-                                    this@ChangesPointCreateWizard,
-                                    resources.getString(R.string.cp_saved),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                finish()
+                                if (data?.cpNo.isNullOrEmpty()){
+                                    Timber.e("data create Cp : $data")
+                                    submit(data!!)
+                                }else{
+                                    Timber.e("data update Cp : $data")
+                                    update(data!!)
+                                }
                             }
                         }
                     )
                 }
+
             }
         }
     }
+
+
+    private fun submit(data: ChangePointCreateModel){
+        viewModel.setPostSubmitCreateCp(data)
+
+        viewModel.postSubmitCreateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
+            resultObserve.observe(this@ChangesPointCreateWizard, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ChangesPointCreateWizard,"",false)
+                            Timber.d("###-- Loading postSubmitCreateCp")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateProposal(source)
+
+                            Timber.d("###-- Success postSubmitCreateCp")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error postSubmitCreateCp")
+                        }
+
+                    }
+                }
+            })
+        }
+    }
+
+    private fun update(data : ChangePointCreateModel){
+        viewModel.setPutSubmitUpdateCp(data)
+        viewModel.putSubmitUpdateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
+            resultObserve.observe(this@ChangesPointCreateWizard, { result ->
+                if (result != null) {
+                    when (result.status) {
+                        Result.Status.LOADING -> {
+                            HelperLoading.displayLoadingWithText(this@ChangesPointCreateWizard,"",false)
+                            Timber.d("###-- Loading putSubmitUpdateCp")
+                        }
+                        Result.Status.SUCCESS -> {
+                            HelperLoading.hideLoading()
+
+                            Timber.e("${result.data?.message}")
+
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            HawkUtils().removeDataCreateProposal(source)
+
+                            Timber.d("###-- Success putSubmitUpdateCp")
+                        }
+                        Result.Status.ERROR -> {
+                            HelperLoading.hideLoading()
+                            Toast.makeText(
+                                this@ChangesPointCreateWizard,
+                                result.data?.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            finish()
+
+                            Timber.d("###-- Error putSubmitUpdateCp")
+                        }
+
+                    }
+                }
+            })
+        }
+    }
+
 
     override fun onBackPressed() {
         finish()

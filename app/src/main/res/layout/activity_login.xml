@@ -113,7 +113,7 @@
                                 android:id="@+id/edt_user_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapCharacters"
+                                android:inputType="number"
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:maxLength="20"

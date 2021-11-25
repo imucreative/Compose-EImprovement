@@ -16,8 +16,8 @@ internal class HawkUtils {
     private val getDataDetailSs: SuggestionSystemCreateModel? = if (Hawk.contains(SS_DETAIL_DATA)) Hawk.get(SS_DETAIL_DATA) else null
     private val getDataCreatePi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_CREATE)) Hawk.get(PI_CREATE) else null
     private val getDataDetailPi: ProjectImprovementCreateModel? = if (Hawk.contains(PI_DETAIL_DATA)) Hawk.get(PI_DETAIL_DATA) else null
-    private val getDataCreateCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
-    private val getDataDetailCp : ChangePointCreateItemModel? = if (Hawk.contains(CP_DETAIL_DATA)) Hawk.get(CP_DETAIL_DATA) else null
+    private val getDataCreateCp : ChangePointCreateModel? = if (Hawk.contains(CP_CREATE)) Hawk.get(CP_CREATE) else null
+    private val getDataDetailCp : ChangePointCreateModel? = if (Hawk.contains(CP_DETAIL_DATA)) Hawk.get(CP_DETAIL_DATA) else null
 
     // Create Suggestion System
     fun setTempDataCreateSs(
@@ -246,13 +246,18 @@ internal class HawkUtils {
         keterangan: String? = null,
         rewardData: ArrayList<RewardItem?>? = if (getDataCreateCp?.reward == null) arrayListOf() else null,
         statusProposal: StatusProposalItem? = null,
+        historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreateCp?.historyApproval == null) arrayListOf() else null,
         userId: Int? = null,
         headId: Int? = null,
         orgId: Int? = null,
         warehouseId: Int? = null,
+        activityType: String? = null,
+        submitType: Int? = null,
+        comment: String? = null,
+        branchCode: String? = null,
         source: String = CP_CREATE
     ){
-        val data = ChangePointCreateItemModel(
+        val data = ChangePointCreateModel(
             id = id ?: if (source == CP_CREATE) getDataCreateCp?.id else getDataDetailCp?.id,
             cpNo = cpNo?: if(source == CP_CREATE) getDataCreateCp?.cpNo else getDataDetailCp?.cpNo,
             saldo = saldo?: if(source == CP_CREATE) getDataCreateCp?.saldo else getDataDetailCp?.saldo,
@@ -270,7 +275,12 @@ internal class HawkUtils {
             headId = headId ?: if (source == CP_CREATE) getDataCreateCp?.headId else getDataDetailCp?.headId,
             userId = userId ?: if (source == CP_CREATE) getDataCreateCp?.userId else getDataDetailCp?.userId,
             orgId = orgId ?: if (source == CP_CREATE) getDataCreateCp?.orgId else getDataDetailCp?.orgId,
-            warehouseId = warehouseId ?: if (source == CP_CREATE) getDataCreateCp?.warehouseId else getDataDetailCp?.warehouseId
+            warehouseId = warehouseId ?: if (source == CP_CREATE) getDataCreateCp?.warehouseId else getDataDetailCp?.warehouseId,
+            historyApproval = historyApproval ?: if (source == CP_CREATE) getDataCreateCp?.historyApproval else getDataDetailCp?.historyApproval,
+            activityType = activityType ?: if (source == CP_CREATE) getDataCreateCp?.activityType else getDataDetailCp?.activityType,
+            submitType = submitType ?: if (source == CP_CREATE) getDataCreateCp?.submitType else getDataDetailCp?.submitType,
+            branchCode = branchCode ?: if (source == CP_CREATE) getDataCreateCp?.branchCode else getDataDetailCp?.branchCode,
+            comment = comment ?: if (source == CP_CREATE) getDataCreateCp?.comment else getDataDetailCp?.comment
         )
         if (source == CP_CREATE) {
             Hawk.put(CP_CREATE, data)
@@ -281,7 +291,7 @@ internal class HawkUtils {
         }
     }
 
-    fun getTempDataCreateCP(source: String = CP_CREATE) : ChangePointCreateItemModel? {
+    fun getTempDataCreateCp(source: String = CP_CREATE) : ChangePointCreateModel? {
         return if (source == CP_CREATE){
             getDataCreateCp
         }else{
