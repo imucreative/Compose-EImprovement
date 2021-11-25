@@ -34,7 +34,7 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListApprovalHistoryStatusBinding.inflate(inflater, container, false)
+        _binding = FragmentListApprovalHistoryStatusBinding.inflate(layoutInflater, container, false)
 
         viewModelHistoryStatus = injectViewModel(viewModelFactory)
 
@@ -43,7 +43,7 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
 
         source = if (typeNo == "") CP_CREATE else CP_DETAIL_DATA
 
-        //data = HawkUtils().getTempDataCreateSs(source)
+        data = HawkUtils().getTempDataCreateCp(source)
         viewModelHistoryStatus.setApprovalHistoryStatus(source, CP)
 
         adapter = ListApprovalHistoryStatusAdapter()
@@ -67,71 +67,12 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
         setValidation()
     }
 
-    private fun setValidation() {
-        (activity as ChangesPointCreateWizard).setCpCreateCallback(
-            object : ChangesPointCreateCallback {
-                override fun onDataPass(): Boolean {
-                    var stat: Boolean
-                    binding.apply {
-                        HawkUtils().setTempDataCreateCp(
-                            cpNo = data?.cpNo,
-                            name = data?.name,
-                            nik = data?.nik,
-                            branch = data?.branch,
-                            departement = data?.department,
-                            position = data?.position,
-                            date = data?.date,
-                            keterangan = data?.description,
-                            id = data?.id,
-                            subBranch = data?.subBranch,
-                            branchCode = data?.branchCode,
-                            saldo = data?.saldo,
-                            rewardData = data?.reward,
-                            statusProposal = data?.statusProposal,
-                            headId = data?.headId,
-                            userId = data?.userId,
-                            orgId = data?.orgId,
-                            warehouseId = data?.warehouseId,
-                            source = source
-                        )
-                        stat = true
-                    }
-                    return stat
-                }
-            }
-        )
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     private fun initList() {
-        /*adapter.ssCreateCallback(object : SuggestionSystemCreateAttachmentCallback {
-            override fun removeClicked(data: AttachmentItem) {
-                if (ssAction != APPROVE) {
-                    Toast.makeText(context, data.name, Toast.LENGTH_LONG).show()
-
-                    attachment?.remove(data)
-
-                    viewModelAttachment.updateAttachment(attachment)
-                    viewModelAttachment.getSuggestionSystemAttachment()
-                        .observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                adapter.setList(it)
-                                Timber.i("### ambil dari getSuggestionSystemAttachment $it")
-                            }
-                        })
-                }
-            }
-
-            override fun showAttachment(data: AttachmentItem) {
-                //File(URI(uri.toString()))
-                println("### Testing show attachment : ${data.name}")
-            }
-        })*/
-
         viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner, {
             if (it != null) {
                 adapter.setList(it)
@@ -139,5 +80,38 @@ class ListApprovalHistoryStatusCpFragment: Fragment(), Injectable {
             }
         })
     }
+
+    private fun setValidation() {
+        (activity as ChangesPointCreateWizard).setCpCreateCallback(
+            object : ChangesPointCreateCallback {
+                override fun onDataPass(): Boolean {
+                    HawkUtils().setTempDataCreateCp(
+                        cpNo = data?.cpNo,
+                        name = data?.name,
+                        nik = data?.nik,
+                        branch = data?.branch,
+                        departement = data?.department,
+                        position = data?.position,
+                        date = data?.date,
+                        keterangan = data?.description,
+                        id = data?.id,
+                        subBranch = data?.subBranch,
+                        branchCode = data?.branchCode,
+                        saldo = data?.saldo,
+                        rewardData = data?.reward,
+                        statusProposal = data?.statusProposal,
+                        headId = data?.headId,
+                        userId = data?.userId,
+                        orgId = data?.orgId,
+                        warehouseId = data?.warehouseId,
+                        source = source
+                    )
+                    return true
+                }
+            }
+        )
+    }
+
+
 
 }

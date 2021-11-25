@@ -23,7 +23,6 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
-import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.google.android.material.snackbar.Snackbar
@@ -87,7 +86,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 //        }
 
         when(argsAction) {
-            EDIT, DETAIL, APPROVE -> {
+            EDIT, DETAIL, APPROVE, SUBMIT_PROPOSAL -> {
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
@@ -122,10 +121,10 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                         rewardData = result.data?.data?.get(0)?.reward,
                                         statusProposal = result.data?.data?.get(0)?.statusProposal,
 
-                                        headId = headId,
-                                        userId = userId,
-                                        orgId = orgId,
-                                        warehouseId = warehouseId,
+                                        headId = result.data?.data?.get(0)?.headId,
+                                        userId = result.data?.data?.get(0)?.userId,
+                                        orgId = result.data?.data?.get(0)?.orgId,
+                                        warehouseId = result.data?.data?.get(0)?.warehouseId,
                                         historyApproval = result.data?.data?.get(0)?.historyApproval,
 
                                         activityType = CP,
@@ -157,9 +156,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 HawkUtils().setTempDataCreateCp(
                     id = 0,
                     cpNo = "",
-                    saldo = 0,
                     name = HawkUtils().getDataLogin().USER_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
+                    branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
                     subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
                     departement = HawkUtils().getDataLogin().DEPARTMENT,
@@ -184,6 +183,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     }
 
     private fun initComponent() {
+        notification = HelperNotification()
         binding.apply {
             lytBack.setOnClickListener {
                 backStep(currentStep)
@@ -198,7 +198,6 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
             if (currentStep == 1) {
                 lytBack.visibility = View.INVISIBLE
             }
-
 
             bottomProgressDots(currentStep)
 
@@ -256,17 +255,16 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     }
 
                     override fun onNotificationYes(comment: String) {
-                        data = HawkUtils().getTempDataCreateCP(source)
+                        data = HawkUtils().getTempDataCreateCp(source)
                         if (comment != "") {
                             val updateProposal = ChangePointCreateModel(
-                              data?.id,data?.saldo,data?.cpNo,data?.name,data?.nik,userId = userId,data?.orgId,
-                                data?.warehouseId,data?.headId,data?.branch,data?.subBranch,
-                                data?.department,data?.position,data?.date,data?.description,data?.reward,data?.statusProposal,
+                                data?.id,data?.saldo,data?.cpNo,data?.name,data?.nik,
+                                userId = userId,data?.orgId,
+                                data?.warehouseId,data?.headId,data?.branch,data?.subBranch, data?.department,
+                                data?.position,data?.date,data?.description,data?.reward,data?.statusProposal,
                                 data?.historyApproval, activityType = CP, submitType = key, comment = comment,data?.branchCode
                             )
                             update(updateProposal)
-                            println(key)
-                            println(comment)
                         } else {
                             Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
                         }
@@ -334,6 +332,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     }
 
     private fun nextStep(progress: Int) {
+        data = HawkUtils().getTempDataCreateCp(source)
+
         val status = cpCreateCallbac.onDataPass()
         if(status){
             if (progress < maxStep){
@@ -344,14 +344,19 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     lytBack.visibility = View.VISIBLE
                     lytNext.visibility = View.VISIBLE
 
-                    if ((action == APPROVE) || (action == DETAIL)) {
+                    if (action == DETAIL) {
                         if (currentStep == maxStep) {
                             lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.GONE
+                        }
+                    } else if (action == APPROVE && data?.statusProposal?.id == 14) {
+                        if (currentStep == maxStep) {
+                            lytNext.visibility = View.INVISIBLE
+                            actionBottom.visibility = View.VISIBLE
                         }
                     }
                 }
             }else{
-                data = HawkUtils().getTempDataCreateCP(source)
                 val convertToJson = gson.toJson(data)
 
                 Timber.e("### Data Form Input : $convertToJson")
@@ -360,15 +365,12 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 var initialTypeProposal = ""
                 var buttonInitialTypeProposal = ""
 
-                when(data?.statusProposal?.id) {
-                    13 -> {
-                        initialTypeProposal = "Pengajuan"
-                        buttonInitialTypeProposal = "Pengajuan"
-                    }
-                    14 -> {
-                        initialTypeProposal = "Submit"
-                        buttonInitialTypeProposal = "Submit"
-                    }
+                if (action == SUBMIT_PROPOSAL){
+                    initialTypeProposal = "Submit"
+                    buttonInitialTypeProposal = "Submit"
+                } else {
+                    initialTypeProposal = "Save"
+                    buttonInitialTypeProposal = "Save"
                 }
                 notification = HelperNotification()
                 binding.apply {
@@ -390,22 +392,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                     Timber.e("data create Cp : $data")
                                     submit(data!!)
                                 }else{
-                                    if ((data?.statusProposal?.id == 1 || data?.statusProposal?.id == 11) && (action == EDIT)){
-                                        update(data!!)
-                                        Timber.e("data update Cp : $data")
-                                        Toast.makeText(
-                                            this@ChangesPointCreateWizard,
-                                            "Under Development for Update Data",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }else{
-                                        Timber.e("$data")
-                                        Toast.makeText(
-                                            this@ChangesPointCreateWizard,
-                                            "Under Development for Update Data",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
+                                    Timber.e("data update Cp : $data")
+                                    update(data!!)
                                 }
                             }
                         }

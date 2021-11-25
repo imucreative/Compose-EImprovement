@@ -19,10 +19,8 @@ import com.fastrata.eimprovement.databinding.FragmentChangesPointSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRemoteRequest
-import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemFragmentDirections
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
@@ -93,6 +91,10 @@ class ChangesPointFragment : Fragment(), Injectable {
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
         )
 
+        userId = HawkUtils().getDataLogin().USER_ID
+        userName = HawkUtils().getDataLogin().USER_NAME
+        roleName  = HawkUtils().getDataLogin().ROLE_NAME
+
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
         } catch (e: java.lang.Exception){
@@ -124,21 +126,15 @@ class ChangesPointFragment : Fragment(), Injectable {
     }
 
     private fun getDataListCp(){
-
         try{
-            userId = HawkUtils().getDataLogin().USER_ID
-            userName = HawkUtils().getDataLogin().USER_NAME
-            roleName  = HawkUtils().getDataLogin().ROLE_NAME
-
             adapter.clear()
             val listChangePointRemoteRequest = ChangePointRemoteRequest(
-                userId, limit, page, roleName,
+                userId, limit, page, roleName, CP,
                 userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 
             listCpViewModel.setListCp(listChangePointRemoteRequest)
-
         }catch (e: Exception){
             Timber.e("Error setListCp : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
@@ -186,7 +182,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                             }
 
                             val listChangePointRemoteRequest = ChangePointRemoteRequest(
-                                userId, limit, page, roleName,
+                                userId, limit, page, roleName, CP,
                                 userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
                                 description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
                                 orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
@@ -202,12 +198,9 @@ class ChangesPointFragment : Fragment(), Injectable {
             })
 
             createSs.setOnClickListener {
-//                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-//                    toolbarTitle = "Create Changes Point", action = ADD, idCp = 0, cpNo = "", type = CP
-//                )
-//                it.findNavController().navigate(direction)
                 try {
                     checkPeriodViewModel.setCheckPeriod(CP)
+
                     getStatusCheckPeriod()
                 }catch (e: Exception){
                     Timber.e("Error setCheckPeriod : $e")
@@ -225,7 +218,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                     adapter.clear()
 
                     val listChangePointRemoteRequest = ChangePointRemoteRequest(
-                        userId, limit, page, roleName,
+                        userId, limit, page, roleName, CP,
                         userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
                         warehouseId = 0, startDate = "", endDate = ""
                     )
@@ -239,9 +232,6 @@ class ChangesPointFragment : Fragment(), Injectable {
 
             }
         }
-
-        retrieveDataStatusProposal()
-        retrieveDataBranch()
     }
 
     private fun getStatusCheckPeriod() {
@@ -531,44 +521,32 @@ class ChangesPointFragment : Fragment(), Injectable {
 
                         override fun onEdit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                toolbarTitle = "Edit Changes Point", action = EDIT,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                toolbarTitle = "Submit Changes Point", action = SUBMIT_PROPOSAL,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onCheck() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onImplementation() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onSubmitLaporan() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onReview() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
-                            requireView().findNavController().navigate(direction)
+
                         }
 
                         override fun onDelete() {
@@ -713,7 +691,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                         adapter.clear()
 
                         val listCpRemoteRequest = ChangePointRemoteRequest(
-                            userId, limit, page, roleName,
+                            userId, limit, page, roleName, CP,
                             userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
                             description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
                             orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),

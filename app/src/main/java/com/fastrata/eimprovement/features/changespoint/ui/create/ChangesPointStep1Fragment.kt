@@ -39,7 +39,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
 
         source = if (cpNo == "") CP_CREATE else CP_DETAIL_DATA
 
-        data = HawkUtils().getTempDataCreateCP(source)
+        data = HawkUtils().getTempDataCreateCp(source)
         intSaldo = HawkUtils().getDataBalance()
 
         return binding.root

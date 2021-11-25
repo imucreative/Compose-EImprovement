@@ -291,7 +291,7 @@ internal class HawkUtils {
         }
     }
 
-    fun getTempDataCreateCP(source: String = CP_CREATE) : ChangePointCreateModel? {
+    fun getTempDataCreateCp(source: String = CP_CREATE) : ChangePointCreateModel? {
         return if (source == CP_CREATE){
             getDataCreateCp
         }else{

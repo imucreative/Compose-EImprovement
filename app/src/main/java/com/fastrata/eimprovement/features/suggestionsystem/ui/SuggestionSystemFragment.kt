@@ -270,6 +270,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             HelperLoading.hideLoading()
 
                             val listResponse = result.data?.data
+
                             if (listResponse != null) {
                                 if (listResponse.isNullOrEmpty()) {
                                     binding.rv.visibility = View.GONE

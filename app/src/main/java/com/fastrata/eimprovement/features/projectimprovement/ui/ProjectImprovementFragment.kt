@@ -522,21 +522,21 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "View Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Detail Project Improvement", action = DETAIL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Edit Project Improvement", action = EDIT, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -547,14 +547,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onImplementation() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Implementation Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Implement Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmitLaporan() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "",statusProposal = data.status
+                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
