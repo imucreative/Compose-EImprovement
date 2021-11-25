@@ -106,9 +106,9 @@ class DashboardFragment: Fragment(), Injectable {
     }
 
     private fun initData(activity: FragmentActivity){
-        val menu = HawkUtils().getDataLogin().ROLES
-        when {
-            !Tools.isMenuEligible(activity,menu, MENU_LIST_APPROVAL) -> {
+            var menu = HawkUtils().getDataLogin().POSITION_ID
+            Timber.e("data Login :${HawkUtils().getDataLogin().POSITION_ID}")
+            if(menu!! == 1 || menu == 2){
                 binding.btnListApproval.isEnabled = false
                 binding.btnListApproval.isClickable = false
                 binding.btnListApproval.isFocusable = false
@@ -117,18 +117,6 @@ class DashboardFragment: Fragment(), Injectable {
                 binding.menuApproval.isClickable = false
                 binding.menuApproval.isFocusable = false
                 binding.menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            }
-            !Tools.isMenuEligible(activity,menu,MENU_SS) -> {
-                binding.btnSuggestionSystem.isEnabled = false
-                binding.btnSuggestionSystem.isClickable = false
-                binding.btnSuggestionSystem.isFocusable = false
-                binding.btnSuggestionSystem.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                binding.menuSuggestionSystem.isEnabled = false
-                binding.menuSuggestionSystem.isClickable = false
-                binding.menuSuggestionSystem.isFocusable = false
-                binding.menuSuggestionSystem.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            }
-            !Tools.isMenuEligible(activity,menu, MENU_PI) -> {
                 binding.btnProjectImprovement.isEnabled = false
                 binding.btnProjectImprovement.isClickable = false
                 binding.btnProjectImprovement.isFocusable = false
@@ -138,20 +126,6 @@ class DashboardFragment: Fragment(), Injectable {
                 binding.menuProjectImprovement.isFocusable = false
                 binding.menuProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
             }
-            !Tools.isMenuEligible(activity,menu, MENU_CP) -> {
-                binding.btnChangePoint.isEnabled = false
-                binding.btnChangePoint.isClickable = false
-                binding.btnChangePoint.isFocusable = false
-                binding.btnChangePoint.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                binding.menuPointExchange.isEnabled = false
-                binding.menuPointExchange.isClickable = false
-                binding.menuPointExchange.isFocusable = false
-                binding.menuPointExchange.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            }
-
-
-
-        }
     }
 
 

@@ -247,11 +247,6 @@ object Tools {
         }
     }
 
-    fun isMenuEligible(activity: Activity, list: List<RoleEntity>?, menuApps: String): Boolean{
-        return list!!.any {
-                it.MENU_NAME == menuApps }
-    }
-
     @JvmOverloads
     fun toggleArrow(show: Boolean, view: View, delay: Boolean = true): Boolean {
         return if (show) {
