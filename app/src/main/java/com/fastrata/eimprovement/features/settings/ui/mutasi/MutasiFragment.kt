@@ -110,7 +110,7 @@ class MutasiFragment : Fragment(),Injectable {
                         Result.Status.SUCCESS -> {
                             HelperLoading.hideLoading()
 
-                            if (result.data?.data?.size == 0 ){
+                            if (result.data?.data.isNullOrEmpty()){
                                 binding.rvMutasi.visibility == View.GONE
                                 binding.noDataScreen.root.visibility = View.VISIBLE
                             }else{
