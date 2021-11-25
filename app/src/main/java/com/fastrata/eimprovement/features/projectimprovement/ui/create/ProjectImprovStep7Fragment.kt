@@ -295,7 +295,6 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 val name = memberName.text.toString()
                 val department = memberDepartment.text.toString()
                 val task = memberTask.text.toString()
-
                 when {
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
@@ -329,6 +328,13 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_team),
+                            R.drawable.ic_close, R.color.red_500)
+                        memberTask.requestFocus()
+                    }
+                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id!! == 1 && task == "Ketua" ->{
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.maximal_ketua),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }

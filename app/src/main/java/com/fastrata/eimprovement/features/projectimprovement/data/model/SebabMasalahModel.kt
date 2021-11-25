@@ -8,15 +8,15 @@ import kotlinx.android.parcel.Parcelize
 data class SebabMasalahModel(
     @SerializedName("CAUSE_PROBLEM")
     val penyebab: String,
-    @SerializedName("w1")
+    @SerializedName("W1")
     val w1: String,
-    @SerializedName("w2")
+    @SerializedName("W2")
     val w2: String,
-    @SerializedName("w3")
+    @SerializedName("W3")
     val w3: String,
-    @SerializedName("w4")
+    @SerializedName("W4")
     val w4: String,
-    @SerializedName("w5")
+    @SerializedName("W5")
     val w5: String,
     @SerializedName("PRIORITY_PROBLEM")
     val prioritas : String,

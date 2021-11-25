@@ -176,6 +176,7 @@
     <string name="not_match_conf_password">Pastikan Password Konfirmasi sama dengan Password Baru Anda</string>
     <string name="ketua_not_found">Pastikan Ketua ditambahkan di awal</string>
     <string name="maximal_team">Maksimal anggota hanya 2 orang</string>
+    <string name="maximal_ketua">Ketua hanya boleh ada satu dalam satu team</string>
 
     <string name="ide_perbaikan_empty">Pastikan kolom Proses Pelaksanaan Ide Perbaikan sudah terisi</string>
     <string name="hasil_implementasi_empty">Pastikan kolom Hasil Implementasi atas Saran dan Ide sudah terisi</string>
