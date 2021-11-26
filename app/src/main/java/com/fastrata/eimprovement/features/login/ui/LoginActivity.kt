@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.stetho.server.http.HttpStatus
+import com.fastrata.eimprovement.BuildConfig
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
@@ -42,6 +43,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
             btnLogin.setOnClickListener {
                 doLogin(binding)
             }
+            version.text = "Version ${BuildConfig.VERSION_NAME}"
         }
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
@@ -67,6 +69,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
         } else if (!ConnectivityUtil.isConnected(this)) {
             HelperNotification().displayNoInternet(this,object : HelperNotification.CallbackRetry{
                 override fun onRetry() {
+
                 }
             })
         } else {
@@ -76,13 +79,11 @@ class LoginActivity : AppCompatActivity(), Injectable {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             Timber.d("###-- LOADING")
-//                            binding.progressbar.progressbar.visibility = View.VISIBLE
                             HelperLoading.displayLoadingWithText(this@LoginActivity,"",false)
                         }
 
                         Result.Status.SUCCESS -> {
                             Timber.d("###-- SUCCESS")
-//                            binding.progressbar.progressbar.visibility = View.GONE
                             HelperLoading.hideLoading()
 
                             if (result.data?.code == HttpStatus.HTTP_OK) {
@@ -126,7 +127,6 @@ class LoginActivity : AppCompatActivity(), Injectable {
 
                         Result.Status.ERROR -> {
                             Timber.d("###-- ERROR")
-//                            binding.progressbar.progressbar.visibility = View.GONE
                             HelperLoading.hideLoading()
                             Toast.makeText(this@LoginActivity,"Error : ${result.message}", Toast.LENGTH_LONG).show()
                             notification.showErrorDialog(this@LoginActivity,resources.getString(R.string.error), result.message.toString())

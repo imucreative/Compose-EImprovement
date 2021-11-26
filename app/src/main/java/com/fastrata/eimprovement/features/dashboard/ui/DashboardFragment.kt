@@ -93,7 +93,7 @@ class DashboardFragment: Fragment(), Injectable {
         }
 
         initToolbar()
-        initData(requireActivity())
+        initData()
         initComponent(requireActivity())
         return binding.root
     }
@@ -105,30 +105,13 @@ class DashboardFragment: Fragment(), Injectable {
         setToolbar(toolbar, greetings)
     }
 
-    private fun initData(activity: FragmentActivity){
-            var joblevel = HawkUtils().getDataLogin().POSITION_ID
-            var roles = HawkUtils().getDataLogin().ROLE_ID
-            Timber.e("data Login :${HawkUtils().getDataLogin().POSITION_ID}")
-        if(roles == 5){
-            binding.btnListApproval.isEnabled = false
-            binding.btnListApproval.isClickable = false
-            binding.btnListApproval.isFocusable = false
-            binding.btnListApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            binding.menuApproval.isEnabled = false
-            binding.menuApproval.isClickable = false
-            binding.menuApproval.isFocusable = false
-            binding.menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            binding.btnProjectImprovement.isEnabled = false
-            binding.btnProjectImprovement.isClickable = false
-            binding.btnProjectImprovement.isFocusable = false
-            binding.btnProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            binding.menuProjectImprovement.isEnabled = false
-            binding.menuProjectImprovement.isClickable = false
-            binding.menuProjectImprovement.isFocusable = false
-            binding.menuProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-        }else{
-            when(joblevel){
-                1,2 ->{
+    private fun initData(){
+        val joblevel = HawkUtils().getDataLogin().POSITION_ID
+        val roles = HawkUtils().getDataLogin().ROLE_ID
+        Timber.e("data Login :${HawkUtils().getDataLogin().POSITION_ID}")
+        if (roles == 5) {
+            when(joblevel) {
+                1, 2 -> {
                     binding.btnListApproval.isEnabled = false
                     binding.btnListApproval.isClickable = false
                     binding.btnListApproval.isFocusable = false
@@ -146,10 +129,19 @@ class DashboardFragment: Fragment(), Injectable {
                     binding.menuProjectImprovement.isFocusable = false
                     binding.menuProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
                 }
+                3, 4, 5 -> {
+                    binding.btnListApproval.isEnabled = false
+                    binding.btnListApproval.isClickable = false
+                    binding.btnListApproval.isFocusable = false
+                    binding.btnListApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                    binding.menuApproval.isEnabled = false
+                    binding.menuApproval.isClickable = false
+                    binding.menuApproval.isFocusable = false
+                    binding.menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                }
             }
         }
     }
-
 
     private fun initComponent(activity: FragmentActivity) {
         binding.apply {

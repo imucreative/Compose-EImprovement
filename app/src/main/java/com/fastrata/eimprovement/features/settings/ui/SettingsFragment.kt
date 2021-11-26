@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.fastrata.eimprovement.BuildConfig
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
@@ -55,6 +56,7 @@ class SettingsFragment : Fragment(), Injectable {
             tvSubBranch.text = HawkUtils().getDataLogin().SUB_BRANCH
             tvDepartment.text = HawkUtils().getDataLogin().DEPARTMENT
             tvPosition.text = HawkUtils().getDataLogin().POSITION
+            version.text = "Version ${BuildConfig.VERSION_NAME}"
 
             btnMutasi.setOnClickListener {
                 val directions = SettingsFragmentDirections.actionSettingsToMutasiFragment(resources.getString(R.string.detail_balance))
