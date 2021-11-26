@@ -514,23 +514,23 @@ class ChangesPointFragment : Fragment(), Injectable {
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Changes Point", action = DETAIL,
+                                toolbarTitle = "Detail Redeem Point", action = DETAIL,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Edit Changes Point", action = EDIT,
+                                toolbarTitle = "Edit Redeem Point", action = EDIT,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
-                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                            /*val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                                 toolbarTitle = "Submit Changes Point", action = SUBMIT_PROPOSAL,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
-                            requireView().findNavController().navigate(direction)
+                            requireView().findNavController().navigate(direction)*/
                         }
 
                         override fun onCheck() {
@@ -552,7 +552,8 @@ class ChangesPointFragment : Fragment(), Injectable {
                         override fun onDelete() {
                             removeListCp(data)
                         }
-                    })
+                    }
+                )
 
             }
         })

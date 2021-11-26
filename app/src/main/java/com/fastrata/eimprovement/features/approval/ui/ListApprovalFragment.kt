@@ -612,7 +612,16 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
-
+                                    val direction =
+                                        ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                            toolbarTitle = "Check Redeem Point",
+                                            action = SUBMIT_PROPOSAL,
+                                            idCp = data.id,
+                                            cpNo = data.typeNo,
+                                            type = APPR,
+                                            statusProposal = data.status
+                                        )
+                                    requireView().findNavController().navigate(direction)
                                 }
 
                                 override fun onImplementation() {
@@ -626,7 +635,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onReview() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                            toolbarTitle = "Review Change Point",
+                                            toolbarTitle = "Review Redeem Point",
                                             action = APPROVE,
                                             idCp = data.id,
                                             cpNo = data.typeNo,
