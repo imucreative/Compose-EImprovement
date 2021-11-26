@@ -30,7 +30,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     private var source: String = SS_CREATE
     lateinit var fromDate: Date
     lateinit var toDate: Date
-    val sdf = SimpleDateFormat("dd-MM-yyyy")
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var edtProses : String = ""
     private var edtResult : String = ""
 

@@ -30,7 +30,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     private var action: String? = ""
     lateinit var fromDate: Date
     lateinit var toDate: Date
-    val sdf = SimpleDateFormat("dd-MM-yyyy")
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var source: String = PI_CREATE
 
     override fun onCreateView(

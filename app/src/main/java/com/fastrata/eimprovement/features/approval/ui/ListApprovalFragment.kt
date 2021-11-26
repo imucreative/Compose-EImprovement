@@ -66,7 +66,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
-    private val sdf = SimpleDateFormat("dd-MM-yyyy")
+    private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
