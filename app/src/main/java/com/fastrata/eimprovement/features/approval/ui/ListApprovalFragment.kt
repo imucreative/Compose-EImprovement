@@ -615,7 +615,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
                                             toolbarTitle = "Check Redeem Point",
-                                            action = SUBMIT_PROPOSAL,
+                                            action = APPROVE,
                                             idCp = data.id,
                                             cpNo = data.typeNo,
                                             type = APPR,

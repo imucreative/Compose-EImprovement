@@ -147,6 +147,11 @@ class DashboardFragment: Fragment(), Injectable {
         binding.apply {
             welcome.text = greetings
 
+            linearSaldo.setOnClickListener {
+                val directions = DashboardFragmentDirections.actionDashboardFragmentToMutasiFragment(resources.getString(R.string.detail_balance))
+                it.findNavController().navigate(directions)
+            }
+
             btnListApproval.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
                 it.findNavController().navigate(direction)

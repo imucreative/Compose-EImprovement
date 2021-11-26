@@ -365,9 +365,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 var initialTypeProposal = ""
                 var buttonInitialTypeProposal = ""
 
-                if (action == SUBMIT_PROPOSAL){
-                    initialTypeProposal = "Submit"
-                    buttonInitialTypeProposal = "Submit"
+                if (action == APPROVE){
+                    initialTypeProposal = "Check"
+                    buttonInitialTypeProposal = "Check"
                 } else {
                     initialTypeProposal = "Save"
                     buttonInitialTypeProposal = "Save"
