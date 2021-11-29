@@ -55,7 +55,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
 
         masterDataCategoryViewModel.setCategory()
-        categoryAdapter = CategoryImprovementAdapter()
+        categoryAdapter = CategoryImprovementAdapter(data?.statusProposal?.id)
         categoryAdapter.notifyDataSetChanged()
 
         setInitCategory()

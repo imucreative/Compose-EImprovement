@@ -404,15 +404,16 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-//                    stat = if (data?.attachment?.size == 0) {
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            resources.getString(R.string.file_empty),
-//                            R.drawable.ic_close, R.color.red_500)
-//                        true
-//                    } else {
-//                        true
-//                    }
+                    stat = if (data?.attachment?.size == 0 && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
+                        true
+                    }
+
                     HawkUtils().setTempDataCreatePi(
                         id = data?.id,
                         piNo = data?.piNo,
@@ -444,7 +445,6 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         comment = data?.comment,
                         source = source
                     )
-                    stat = true
                 }
 
                 return stat

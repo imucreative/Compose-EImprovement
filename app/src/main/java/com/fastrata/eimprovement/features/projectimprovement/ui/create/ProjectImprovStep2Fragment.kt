@@ -74,6 +74,16 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
+
+        when (data?.statusProposal?.id) {
+            4, 9 -> {
+                binding.rbStatus1.isClickable = false
+                binding.rbStatus2.isClickable = false
+            }
+            5, 6 -> {
+                disableForm()
+            }
+        }
     }
 
     override fun onDestroyView() {

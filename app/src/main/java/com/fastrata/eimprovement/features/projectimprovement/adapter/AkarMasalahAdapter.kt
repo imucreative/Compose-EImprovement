@@ -13,11 +13,12 @@ import com.fastrata.eimprovement.utils.DETAIL
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahModel: AkarMasalahModel, index: Int) -> Unit) : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
+class AkarMasalahAdapter(action: String?, statusProposalId: Int?, val clickedItemListener: (akarMasalahModel: AkarMasalahModel, index: Int) -> Unit) : RecyclerView.Adapter<AkarMasalahAdapter.AkarMasalahViewHolder>() {
 
     private var list = ArrayList<AkarMasalahModel?>()
     private var timer: Timer? = null
     private var action: String? = action
+    private var statusProposalId: Int? = statusProposalId
 
     fun setList(data : ArrayList<AkarMasalahModel?>){
         list.clear()
@@ -45,6 +46,14 @@ class AkarMasalahAdapter(action: String?, val clickedItemListener: (akarMasalahM
                     whyTerakhir.isEnabled = false
                     imprvementDilakukan.isEnabled = false
                     detilLangkah.isEnabled = false
+                } else {
+                    when (statusProposalId) {
+                         5, 6 -> {
+                            whyTerakhir.isEnabled = false
+                            imprvementDilakukan.isEnabled = false
+                            detilLangkah.isEnabled = false
+                        }
+                    }
                 }
 
                 whyTerakhir.addTextChangedListener(object : TextWatcher {

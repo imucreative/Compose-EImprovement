@@ -124,6 +124,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun getDataListSs() {
         try {
             adapter.clear()
+            page = 1
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                 userId, limit, page, roleName, SS,
                 userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,

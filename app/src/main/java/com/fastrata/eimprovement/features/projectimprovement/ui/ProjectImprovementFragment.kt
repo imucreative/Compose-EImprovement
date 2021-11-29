@@ -128,6 +128,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun getDataListPi(){
         try {
             adapter.clear()
+            page = 1
 
             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                 userId, limit, page, roleName, PI,
