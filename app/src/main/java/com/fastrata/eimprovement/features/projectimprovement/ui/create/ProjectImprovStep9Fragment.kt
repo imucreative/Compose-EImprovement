@@ -237,9 +237,10 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 uri = data.data as Uri
 
                 val fileData = FileUtils.getFile(requireContext(), uri)
-                val fileSize: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
-                Timber.e("###FILE SIZE: $fileSize")
-                if (fileSize == 0 || fileSize >= 2048){
+                val fileSize: Int = fileData.length().toInt()
+                Timber.e("### FILE SIZE: $fileSize")
+
+                if (fileSize == 0 || (fileData.length() / 1024) >= 2048) {
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
                         resources.getString(R.string.file_size),
