@@ -16,7 +16,7 @@ import javax.inject.Inject
 class BalanceCreateViewModel @Inject constructor(private val repo :BalanceRemoteRepository) : ViewModel() {
 
     private val _balance = MutableLiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>>()
-    val getbalance : LiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>> get() = _balance
+    val getBalance : LiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>> get() = _balance
 
     fun setBalance(
         userId: Int

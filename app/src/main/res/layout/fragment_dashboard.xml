@@ -205,11 +205,12 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/count_approval"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="9 Available"
                                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                android:textColor="@color/grey_40" />
+                                android:textColor="@color/grey_40"
+                                tools:text="9 Available" />
 
                         </LinearLayout>
 
@@ -266,25 +267,26 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:ellipsize="end"
                                 android:singleLine="true"
                                 android:text="@string/suggestion_system"
+                                android:gravity="center_vertical"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 android:textColor="@color/grey_60"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <!--<TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="5 Available"
                                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                android:textColor="@color/grey_40" />
+                                android:textColor="@color/grey_40" />-->
 
                         </LinearLayout>
 
@@ -350,25 +352,26 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:ellipsize="end"
                                 android:singleLine="true"
                                 android:text="@string/project_improvement"
+                                android:gravity="center_vertical"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 android:textColor="@color/grey_60"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <!--<TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="9 Available"
                                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                android:textColor="@color/grey_40" />
+                                android:textColor="@color/grey_40" />-->
 
                         </LinearLayout>
 
@@ -425,25 +428,26 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:ellipsize="end"
                                 android:singleLine="true"
                                 android:text="@string/change_point"
+                                android:gravity="center_vertical"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 android:textColor="@color/grey_60"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <!--<TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="1 Available"
                                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                android:textColor="@color/grey_40" />
+                                android:textColor="@color/grey_40" />-->
 
                         </LinearLayout>
 
@@ -614,11 +618,12 @@
                             android:textColor="@color/grey_80" />
 
                         <TextView
+                            android:id="@+id/count_approval_menu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5 available"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/grey_40" />
+                            android:textColor="@color/grey_40"
+                            tools:text="5 available" />
 
                     </LinearLayout>
 
@@ -658,23 +663,24 @@
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="@dimen/spacing_large"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:text="@string/suggestion_system"
+                            android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
-                        <TextView
+                        <!--<TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12 available"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/grey_40" />
+                            android:textColor="@color/grey_40" />-->
 
                     </LinearLayout>
 
@@ -714,23 +720,24 @@
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="@dimen/spacing_large"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:text="@string/project_improvement"
+                            android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
-                        <TextView
+                        <!--<TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="9 available"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/grey_40" />
+                            android:textColor="@color/grey_40" />-->
 
                     </LinearLayout>
 
@@ -770,23 +777,24 @@
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="@dimen/spacing_large"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:text="@string/change_point"
+                            android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_80" />
 
-                        <TextView
+                        <!--<TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1 available"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/grey_40" />
+                            android:textColor="@color/grey_40" />-->
 
                     </LinearLayout>
 
