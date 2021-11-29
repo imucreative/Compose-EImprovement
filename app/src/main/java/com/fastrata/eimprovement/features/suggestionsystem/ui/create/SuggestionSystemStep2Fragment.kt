@@ -74,8 +74,16 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
         if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
-        when(data!!.statusProposal!!.id){
-            5,6 ->{
+
+        when (data?.statusProposal?.id) {
+            9 -> {
+                binding.problem.isEnabled = false
+                binding.suggestion.isEnabled = false
+
+                binding.rbStatus1.isClickable = false
+                binding.rbStatus2.isClickable = false
+            }
+            5, 6 -> {
                 disableForm()
             }
         }

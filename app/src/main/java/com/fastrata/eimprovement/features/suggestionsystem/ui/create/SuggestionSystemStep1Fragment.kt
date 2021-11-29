@@ -86,10 +86,8 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                 disableForm()
             }
 
-            when(data!!.statusProposal!!.id){
-                5,6 ->{
-                    disableForm()
-                }
+            when (data?.statusProposal?.id) {
+                5, 6, 9 -> disableForm()
             }
         }
     }
@@ -106,17 +104,6 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             checkboxOther.isEnabled = false
             tvCheckboxOther.isClickable = false
             edtLainLain.isEnabled = false
-            //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
-        }
-    }
-
-    private fun enableForm() {
-        binding.apply {
-            titleSuggestion.isEnabled = true
-            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
-            checkboxOther.isEnabled = true
-            tvCheckboxOther.isClickable = true
-            edtLainLain.isEnabled = true
             //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
         }
     }

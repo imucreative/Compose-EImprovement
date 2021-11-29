@@ -420,45 +420,46 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    /*stat = if (data?.attachment?.size == 0) {
+                    stat = if (data?.attachment?.size == 0 && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.file_empty),
                             R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
                         true
-                    } else {*/
-                        HawkUtils().setTempDataCreateSs(
-                            ssNo = data?.ssNo,
-                            date = data?.date,
-                            title = data?.title,
-                            listCategory = data?.categoryImprovement,
-                            name = data?.name,
-                            nik = data?.nik,
-                            branchCode = data?.branchCode,
-                            branch = data?.branch,
-                            subBranch = data?.subBranch,
-                            department = data?.department,
-                            directMgr = data?.directMgr,
-                            suggestion = data?.suggestion,
-                            problem = data?.problem,
-                            statusImplementation = data?.statusImplementation,
-                            teamMember = data?.teamMember,
-                            attachment = data?.attachment,
-                            statusProposal = data?.statusProposal,
-                            headId = data?.headId,
-                            userId = data?.userId,
-                            orgId = data?.orgId,
-                            warehouseId = data?.warehouseId,
-                            proses = data?.proses,
-                            result = data?.result,
-                            historyApproval = data?.historyApproval,
-                            activityType = data?.activityType,
-                            submitType = data?.submitType,
-                            comment = data?.comment,
-                            source = source
-                        )
-                        stat = true
-                    //}
+                    }
+
+                    HawkUtils().setTempDataCreateSs(
+                        ssNo = data?.ssNo,
+                        date = data?.date,
+                        title = data?.title,
+                        listCategory = data?.categoryImprovement,
+                        name = data?.name,
+                        nik = data?.nik,
+                        branchCode = data?.branchCode,
+                        branch = data?.branch,
+                        subBranch = data?.subBranch,
+                        department = data?.department,
+                        directMgr = data?.directMgr,
+                        suggestion = data?.suggestion,
+                        problem = data?.problem,
+                        statusImplementation = data?.statusImplementation,
+                        teamMember = data?.teamMember,
+                        attachment = data?.attachment,
+                        statusProposal = data?.statusProposal,
+                        headId = data?.headId,
+                        userId = data?.userId,
+                        orgId = data?.orgId,
+                        warehouseId = data?.warehouseId,
+                        proses = data?.proses,
+                        result = data?.result,
+                        historyApproval = data?.historyApproval,
+                        activityType = data?.activityType,
+                        submitType = data?.submitType,
+                        comment = data?.comment,
+                        source = source
+                    )
                 }
 
                 return stat

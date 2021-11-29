@@ -48,29 +48,15 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
             disableForm()
         }else{
             when(data!!.statusProposal!!.id){
-                1,5,6 ->{
+                5, 6, 9 -> {
                     enableForm()
-                    statusSuggestion == true
                 }
                 else->{
                     disableForm()
-
-                        binding.idePerbaikan.isEnabled = false
-                        binding.hasilImplementasi.isEnabled = false
-                        binding.idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                        binding.hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
                 }
             }
         }
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
-        binding.apply {
-//            if (!statusSuggestion){
-//                idePerbaikan.isEnabled = false
-//                hasilImplementasi.isEnabled = false
-//                idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-//                hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-//            }
-        }
 
         getData()
         setData()
@@ -80,13 +66,14 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
         binding.apply {
             idePerbaikan.isEnabled = false
             hasilImplementasi.isEnabled = false
+
+            idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+            hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
         }
     }
 
     private fun enableForm() {
         binding.apply {
-            idePerbaikan.isEnabled = true
-            hasilImplementasi.isEnabled = true
             idePerbaikan.isEnabled = true
             hasilImplementasi.isEnabled = true
         }
@@ -99,13 +86,8 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
 
     private fun getData(){
         binding.apply {
-            if (data?.proses != null && statusSuggestion){
-                idePerbaikan.setText(data?.proses.toString())
-                hasilImplementasi.setText(data?.result.toString())
-            }else{
-                idePerbaikan.setText("")
-                hasilImplementasi.setText("")
-            }
+            idePerbaikan.setText(data?.proses.toString())
+            hasilImplementasi.setText(data?.result.toString())
         }
     }
 
@@ -115,7 +97,7 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
                 var stat : Boolean
                 binding.apply {
                     when{
-                        idePerbaikan.text.isNullOrEmpty() && statusSuggestion -> {
+                        idePerbaikan.text.isNullOrEmpty() && (((ssAction == SUBMIT_PROPOSAL) && (data!!.statusProposal!!.id == 5 || data!!.statusProposal!!.id == 6 || data!!.statusProposal!!.id == 9)) || (statusSuggestion)) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root,layoutInflater,resources,root.context,
                                 resources.getString(R.string.ide_perbaikan_empty),
@@ -124,7 +106,7 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
                             idePerbaikan.requestFocus()
                             stat = false
                         }
-                        hasilImplementasi.text.isNullOrEmpty() && statusSuggestion -> {
+                        hasilImplementasi.text.isNullOrEmpty() && (((ssAction == SUBMIT_PROPOSAL) && (data!!.statusProposal!!.id == 5 || data!!.statusProposal!!.id == 6 || data!!.statusProposal!!.id == 9)) || (statusSuggestion))-> {
                             SnackBarCustom.snackBarIconInfo(
                                 root,layoutInflater,resources,root.context,
                                 resources.getString(R.string.hasil_implementasi_empty),

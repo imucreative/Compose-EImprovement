@@ -123,15 +123,6 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             addTeamMember.isClickable = false
         }
     }
-    private fun enableForm() {
-        binding.apply {
-            memberName.isEnabled = true
-            memberDepartment.isEnabled = true
-            memberTask.isEnabled = true
-
-            addTeamMember.isClickable = true
-        }
-    }
 
     private fun retrieveDataMemberName(){
         masterDataTeamMemberViewModel.getTeamMemberName.observeEvent(this) { resultObserve ->
