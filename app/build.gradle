@@ -22,10 +22,25 @@ android {
         buildConfigField 'String', 'API_DEVELOPER_TOKEN', "\"${api_developer_token}\""
     }
 
+    signingConfigs {
+        release {
+            storeFile file('improvement-key.jks')
+            storePassword "android"
+            keyAlias "fbimprovement"
+            keyPassword "android"
+        }
+    }
+
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            debuggable true
         }
     }
     compileOptions {
