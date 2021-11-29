@@ -48,7 +48,7 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
             disableForm()
         }else{
             when(data!!.statusProposal!!.id){
-                5, 6, 9 -> {
+                1, 11, 5, 6, 9 -> {
                     enableForm()
                 }
                 else->{
