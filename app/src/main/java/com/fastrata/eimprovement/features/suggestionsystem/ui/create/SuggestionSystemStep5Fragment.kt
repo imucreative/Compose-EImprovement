@@ -115,7 +115,7 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
 
             addAttachment.setOnClickListener {
                 when {
-                    fileName.text.isEmpty() -> {
+                    fileName.text.isNullOrEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.file_empty),
@@ -146,6 +146,13 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
         binding.apply {
             getAttachment.isClickable = false
             addAttachment.isClickable = false
+        }
+    }
+
+    private fun enableForm() {
+        binding.apply {
+            getAttachment.isClickable = true
+            addAttachment.isClickable = true
         }
     }
 

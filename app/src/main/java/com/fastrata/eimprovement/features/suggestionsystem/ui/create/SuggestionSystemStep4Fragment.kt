@@ -44,28 +44,51 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if ((ssAction == APPROVE) || (ssAction == DETAIL)){
+            disableForm()
+        }else{
+            when(data!!.statusProposal!!.id){
+                1,5,6 ->{
+                    enableForm()
+                    statusSuggestion == true
+                }
+                else->{
+                    disableForm()
+
+                        binding.idePerbaikan.isEnabled = false
+                        binding.hasilImplementasi.isEnabled = false
+                        binding.idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                        binding.hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                }
+            }
+        }
         _binding = FragmentSuggestionSystemStep4Binding.bind(view)
         binding.apply {
-            if (!statusSuggestion){
-                idePerbaikan.isEnabled = false
-                hasilImplementasi.isEnabled = false
-                idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            }
+//            if (!statusSuggestion){
+//                idePerbaikan.isEnabled = false
+//                hasilImplementasi.isEnabled = false
+//                idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+//                hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+//            }
         }
 
         getData()
         setData()
-
-        if ((ssAction == APPROVE) || (ssAction == DETAIL)){
-            disableForm()
-        }
     }
 
     private fun disableForm() {
         binding.apply {
             idePerbaikan.isEnabled = false
             hasilImplementasi.isEnabled = false
+        }
+    }
+
+    private fun enableForm() {
+        binding.apply {
+            idePerbaikan.isEnabled = true
+            hasilImplementasi.isEnabled = true
+            idePerbaikan.isEnabled = true
+            hasilImplementasi.isEnabled = true
         }
     }
 

@@ -36,6 +36,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private lateinit var categoryAdapter: CategoryImprovementAdapter
     private val listCategory = ArrayList<CategoryImprovementItem?>()
     private var source: String = SS_CREATE
+    private var statProposal : Int  = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +85,12 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                 disableForm()
             }
+
+            when(data!!.statusProposal!!.id){
+                5,6 ->{
+                    disableForm()
+                }
+            }
         }
     }
 
@@ -99,6 +106,17 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
             checkboxOther.isEnabled = false
             tvCheckboxOther.isClickable = false
             edtLainLain.isEnabled = false
+            //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+        }
+    }
+
+    private fun enableForm() {
+        binding.apply {
+            titleSuggestion.isEnabled = true
+            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+            checkboxOther.isEnabled = true
+            tvCheckboxOther.isClickable = true
+            edtLainLain.isEnabled = true
             //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
         }
     }

@@ -74,6 +74,11 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
         if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
             disableForm()
         }
+        when(data!!.statusProposal!!.id){
+            5,6 ->{
+                disableForm()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -93,6 +98,21 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
             rbStatus2.isClickable = false
             etFromStatus2.isEnabled = false
             etToStatus2.isEnabled = false
+        }
+    }
+
+    private fun enableForm() {
+        binding.apply {
+            problem.isEnabled = true
+            suggestion.isEnabled = true
+
+            rbStatus1.isClickable = true
+            etFromStatus1.isEnabled = true
+            etToStatus1.isEnabled = true
+
+            rbStatus2.isClickable = true
+            etFromStatus2.isEnabled = true
+            etToStatus2.isEnabled = true
         }
     }
 
