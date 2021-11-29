@@ -163,6 +163,7 @@
     <string name="file_size">Pastikan Ukuran Lampiran tidak 0 MB dan dibawah 2 MB</string>
     <string name="file_ext">Ekstensien Lampiran Tidak Sesuai</string>
     <string name="file_empty">Lampiran Tidak Tersedia</string>
+    <string name="saldo_kurang">Saldo anda tidak cukup untuk melakukan transaksi ini</string>
 
     <string name="log_out_info">Apakah Anda Yakin Keluar Akun?</string>
     <string name="log_out">Keluar Akun</string>

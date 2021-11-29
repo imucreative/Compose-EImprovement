@@ -37,6 +37,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     private var cpNo: String? = ""
     var intTotal : Int = 0
     var intSaldo : Int = 0
+    var total_hadiah : Int = 0
     private var listRewardItem : List<GiftItem>? = null
     private lateinit var selectedReward: GiftItem
 
@@ -55,6 +56,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
         data = HawkUtils().getTempDataCreateCp(source)
         intSaldo = HawkUtils().getDataBalance()
+        Timber.e("Saldo : $intSaldo")
 
         if (data?.reward != null){
             totalBalance()
@@ -185,6 +187,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     }
 
     private fun totalBalance(): Int {
+        Timber.e("data_reward : "+ data?.reward)
         if(data?.reward != null){
             val itemCount = data?.reward!!.map { values ->
                 values!!.nilai
@@ -202,7 +205,8 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             addReward.setOnClickListener {
                 val reward = hadiahCp.text.toString()
                 val desc = keteranganCp.text.toString()
-                Timber.e("saldo & total : $intSaldo / $intTotal")
+                total_hadiah = totalBalance()
+                Timber.e("saldo & total : $intSaldo / $total_hadiah")
                 when{
                     reward.isEmpty() ->{
                         SnackBarCustom.snackBarIconInfo(
@@ -218,10 +222,10 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         keteranganCp.requestFocus()
                     }
-                    intSaldo <= intTotal ->{
+                    intSaldo < total_hadiah ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
-                            "Saldo Kurang",
+                            resources.getString(R.string.saldo_kurang),
                             R.drawable.ic_close, R.color.red_500)
                     }
                     else -> {
@@ -255,12 +259,21 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             object : ChangesPointCreateCallback {
                     override fun onDataPass(): Boolean {
                     var stat : Boolean
+                    total_hadiah = totalBalance()
                     binding.apply {
-                        when (data?.reward?.size) {
-                            0 -> {
+//                        when (data?.reward?.size) {
+                        when{
+                            data?.reward?.size == 0 -> {
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.reward_empty),
+                                    R.drawable.ic_close, R.color.red_500)
+                                stat = false
+                            }
+                            intSaldo < total_hadiah -> {
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.saldo_kurang),
                                     R.drawable.ic_close, R.color.red_500)
                                 stat = false
                             }
