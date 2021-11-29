@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -10,16 +13,34 @@ android {
         applicationId "com.fastrata.eimprovement"
         minSdk 21
         targetSdk 30
-        versionCode 1
-        versionName "1.0"
+
+        versionCode 2
+        versionName "1.0.2"
+        buildConfigField 'String', 'LAST_UPDATE', "\"26 November 2021\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'API_DEVELOPER_TOKEN', "\"${api_developer_token}\""
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('improvement-key.jks')
+            storePassword "android"
+            keyAlias "fbimprovement"
+            keyPassword "android"
+        }
     }
 
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            debuggable true
         }
     }
     compileOptions {
@@ -29,6 +50,28 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        local {
+            resValue "string", "app_name", "E-Improvement - Local"
+            buildConfigField "String", "BASE_URL", "\"${base_url_local}\""
+        }
+
+        publics {
+            resValue "string", "app_name", "E-Improvement"
+            buildConfigField "String", "BASE_URL", "\"${base_url_public}\""
+        }
+    }
 }
 
 dependencies {
@@ -36,8 +79,70 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    testImplementation 'junit:junit:4.+'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // network
+    def retrofit = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    def okhttp = '4.9.1'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    def stetho = '1.5.1'
+    implementation "com.facebook.stetho:stetho:$stetho"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
+    def gson = '2.8.8'
+    implementation "com.google.code.gson:gson:$gson"
+
+    // tools
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation "com.jakewharton.timber:timber:4.7.1"                // logs console
+    implementation "com.balysv:material-ripple:1.0.2"                   // ripple effect
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'             // image loader
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'          // date & time picker
+    implementation "com.mikhaellopez:circularimageview:4.3.0"           // circle image view
+    implementation "com.orhanobut:hawk:2.0.1"                           // Secure, simple key-value storage for android
+
+    // navigation
+    def navigation = '2.3.5'
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+
+    // lifecycle ViewModel
+    def lifecycle = '2.3.1'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
+
+    // Dagger
+    def daggerVersion = '2.23.2'
+    def daggerAndroidVersion = '2.35.1'
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation "com.google.dagger:dagger:$daggerAndroidVersion"
+    implementation "com.google.dagger:dagger-android:$daggerAndroidVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    // coroutine
+    def coroutine = '1.5.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
+
+    // database room -----------------------------------------------------------------------------
+    def roomVersion = '2.2.5'
+    def roomRuntime = '2.3.0'
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomRuntime"
+    implementation "androidx.room:room-ktx:$roomRuntime"
+
+    // work
+    def workVersion = '2.6.0'
+    implementation "androidx.work:work-runtime-ktx:$workVersion"
 }

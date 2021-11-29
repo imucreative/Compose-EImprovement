@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.MaterialComponents.Light"
+    tools:context=".features.projectimprovement.ui.create.ProjectImprovStep2Fragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:scrollingCache="true">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/spacing_medium"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:layout_marginHorizontal="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="@string/status_implementasi_improvement"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/grey_80" />
+                <RadioGroup
+                    android:id="@+id/group_basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rb_status_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/spacing_medium"
+                    android:paddingVertical="@dimen/spacing_middle"
+                    android:text="@string/sudah_pernah_diimplementasi_pada_periode"
+                    app:buttonTint="@color/colorPrimary" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_sudah"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="150dp"
+                        android:layout_height="@dimen/spacing_xxlarge"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_from_status_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:maxLines="1"
+                            android:padding="0dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
+                            android:hint="@string/from"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="@dimen/spacing_small"
+                        android:layout_height="@dimen/spacing_small" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/dash"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/grey_80" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_small"
+                        android:layout_height="@dimen/spacing_small" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="150dp"
+                        android:layout_height="@dimen/spacing_xxlarge"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_to_status_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:padding="0dp"
+                            android:hint="@string/to"
+                            android:textColor="@color/colorPrimary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                    <RadioButton
+                        android:id="@+id/rb_status_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/spacing_medium"
+                        android:paddingVertical="@dimen/spacing_middle"
+                        android:text="@string/akan_diimplementasi_pada_periode"
+                        app:buttonTint="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout_akan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_middle"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="@string/identifikasi_masalah"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_80" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_from_identifikasi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/colorPrimary"
+                                    android:hint="@string/from"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/grey_80" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_to_identifikasi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:padding="0dp"
+                                    android:hint="@string/to"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_middle"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="@string/analisa_data"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_80" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_from_analisa_data"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/colorPrimary"
+                                    android:hint="@string/from"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/grey_80" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_to_analisa_data"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:padding="0dp"
+                                    android:hint="@string/to"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_middle"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="@string/analisa_akar_masalah"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_80" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_from_analisa_akar_masalah"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/colorPrimary"
+                                    android:hint="@string/from"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/grey_80" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_to_analisa_akar_masalah"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:padding="0dp"
+                                    android:hint="@string/to"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_middle"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="@string/menyusun_rencana_penganggulangan_masalah"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_80" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_from_menyusun_rencana_penanggulangan_masalah"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/colorPrimary"
+                                    android:hint="@string/from"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/grey_80" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_to_menyusun_rencana_penanggulangan_masalah"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:padding="0dp"
+                                    android:hint="@string/to"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_middle"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="@string/implementasi_rencana_perbaikan"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_80" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_from_implementasi_rencana_perbaikan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/colorPrimary"
+                                    android:hint="@string/from"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/grey_80" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_to_implementasi_rencana_perbaikan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:padding="0dp"
+                                    android:hint="@string/to"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_middle"
+                            android:layout_marginHorizontal="@dimen/spacing_large"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="@string/analisis_periksa_dan_evaluasi_hasil_pencairan"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_80" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_from_analisa_periksa_dan_evaluasi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:padding="0dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/colorPrimary"
+                                    android:hint="@string/from"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/grey_80" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_small"
+                                android:layout_height="@dimen/spacing_small" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/spacing_xxlarge"
+                                android:textColorHint="@color/colorPrimary"
+                                app:boxStrokeColor="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_to_analisa_periksa_dan_evaluasi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:drawableEnd="@drawable/ic_calendar"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:padding="0dp"
+                                    android:hint="@string/to"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
