@@ -119,6 +119,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private fun getDataListApproval(){
         try {
             adapter.clear()
+            page = 1
 
             val listApprovalRemoteRequest = ApprovalRemoteRequest(
                 userId, limit, page, roleName, APPR,

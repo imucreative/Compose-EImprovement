@@ -147,13 +147,13 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         etToStatus1.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(etToStatus1.text.toString())
-//                        if (etFromStatus1.text.isNullOrEmpty()){
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                                etFromStatus1.requestFocus()
-//                        }else{
+                        if (etFromStatus1.text.isNullOrEmpty()){
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etFromStatus1.requestFocus()
+                        }else{
                             if (!toDate.after(fromDate)){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
@@ -161,7 +161,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 etToStatus1.text!!.clear()
                             }
-//                        }
+                        }
                     }
                 })
             }
@@ -185,13 +185,13 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
                         etToStatus2.setText("$year-$monthStr-$dayStr")
                         toDate = sdf.parse(etToStatus2.text.toString())
-//                        if (etFromStatus2.text.isNullOrEmpty()){
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                            etFromStatus2.requestFocus()
-//                        }else{
+                        if (etFromStatus2.text.isNullOrEmpty()){
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromStatus2.requestFocus()
+                        }else{
                             if (!toDate.after(fromDate)){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
@@ -199,7 +199,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 etToStatus2.text!!.clear()
                             }
-//                        }
+                        }
                     }
                 })
             }
@@ -326,39 +326,39 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        //rbStatus1.isChecked -> {
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                                etFromStatus1.requestFocus()
-                            //stat = true
-                        //}
-//                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                            etToStatus1.requestFocus()
-//                            stat = false
-//                        }
+                        rbStatus1.isChecked -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etFromStatus1.requestFocus()
+                            stat = false
+                        }
+                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToStatus1.requestFocus()
+                            stat = false
+                        }
 
-                        //rbStatus2.isChecked  -> {
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                            etFromStatus2.requestFocus()
-                            //stat = true
-                        //}
-//                        rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                            etToStatus2.requestFocus()
-//                            stat = false
-//                        }
+                        rbStatus2.isChecked  -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etFromStatus2.requestFocus()
+                            stat = false
+                        }
+                        rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            etToStatus2.requestFocus()
+                            stat = false
+                        }
                         else -> {
                             HawkUtils().setTempDataCreateSs(
                                 id = data?.id,
