@@ -86,7 +86,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             disableForm()
         } else {
             when (data?.statusProposal?.id) {
-                1, 11, 5, 6, 9 -> {
+                5, 6, 9 -> {
                     binding.apply {
                         checkboxOther.isEnabled = false
                         tvCheckboxOther.isClickable = false
