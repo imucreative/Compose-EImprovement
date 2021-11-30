@@ -323,13 +323,13 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
-                    data?.teamMember?.size.isGreaterThan(1) ->{
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            resources.getString(R.string.maximal_team),
-                            R.drawable.ic_close, R.color.red_500)
-                        memberTask.requestFocus()
-                    }
+//                    data?.teamMember?.size.isGreaterThan(1) ->{
+//                        SnackBarCustom.snackBarIconInfo(
+//                            root, layoutInflater, resources, root.context,
+//                            resources.getString(R.string.maximal_team),
+//                            R.drawable.ic_close, R.color.red_500)
+//                        memberTask.requestFocus()
+//                    }
                     !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id!! == 1 && task.equals("Ketua") ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
