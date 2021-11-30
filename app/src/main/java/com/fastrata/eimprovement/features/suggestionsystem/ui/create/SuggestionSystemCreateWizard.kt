@@ -480,96 +480,128 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     }
 
     private fun submit(data: SuggestionSystemCreateModel){
-        viewModel.setPostSubmitCreateSs(data)
+        try {
+            viewModel.setPostSubmitCreateSs(data)
+            viewModel.postSubmitCreateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
+                resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    this@SuggestionSystemCreateWizard,
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading postSubmitCreateSs")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-        viewModel.postSubmitCreateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
-            resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(this@SuggestionSystemCreateWizard,"",false)
-                            Timber.d("###-- Loading postSubmitCreateSs")
+                                Timber.e("${result.data?.message}")
+
+                                Toast.makeText(
+                                    this@SuggestionSystemCreateWizard,
+                                    result.data?.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                finish()
+
+                                HawkUtils().removeDataCreateProposal(source)
+
+                                Timber.d("###-- Success postSubmitCreateSs")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    this@SuggestionSystemCreateWizard,
+                                    result.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                finish()
+
+                                Timber.d("###-- Error postSubmitCreateSs")
+                            }
+
                         }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-
-                            Timber.e("${result.data?.message}")
-
-                            Toast.makeText(
-                                this@SuggestionSystemCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            HawkUtils().removeDataCreateProposal(source)
-
-                            Timber.d("###-- Success postSubmitCreateSs")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(
-                                this@SuggestionSystemCreateWizard,
-                                result.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            Timber.d("###-- Error postSubmitCreateSs")
-                        }
-
                     }
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                this@SuggestionSystemCreateWizard,
+                err.message,
+                Toast.LENGTH_LONG
+            ).show()
+
+            finish()
+
+            Timber.d("###-- Error postSubmitCreateSs")
         }
     }
 
     private fun update(data: SuggestionSystemCreateModel){
-        viewModel.setPostSubmitUpdateSs(data)
+        try {
+            viewModel.setPostSubmitUpdateSs(data)
+            viewModel.putSubmitUpdateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
+                resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    this@SuggestionSystemCreateWizard,
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading putSubmitUpdateSs")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-        viewModel.putSubmitUpdateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
-            resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(this@SuggestionSystemCreateWizard,"",false)
-                            Timber.d("###-- Loading putSubmitUpdateSs")
+                                Timber.e("${result.data?.message}")
+
+                                Toast.makeText(
+                                    this@SuggestionSystemCreateWizard,
+                                    result.data?.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                finish()
+
+                                HawkUtils().removeDataCreateProposal(source)
+
+                                Timber.d("###-- Success putSubmitUpdateSs")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    this@SuggestionSystemCreateWizard,
+                                    result.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                finish()
+
+                                Timber.d("###-- Error putSubmitUpdateSs")
+                            }
+
                         }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-
-                            Timber.e("${result.data?.message}")
-
-                            Toast.makeText(
-                                this@SuggestionSystemCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            HawkUtils().removeDataCreateProposal(source)
-
-                            Timber.d("###-- Success putSubmitUpdateSs")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(
-                                this@SuggestionSystemCreateWizard,
-                                result.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            Timber.d("###-- Error putSubmitUpdateSs")
-                        }
-
                     }
-                }
-            })
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                this@SuggestionSystemCreateWizard,
+                err.message,
+                Toast.LENGTH_LONG
+            ).show()
+
+            finish()
+
+            Timber.d("###-- Error putSubmitUpdateSs")
         }
     }
 

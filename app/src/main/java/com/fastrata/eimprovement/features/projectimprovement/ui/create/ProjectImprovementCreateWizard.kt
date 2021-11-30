@@ -542,93 +542,122 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun submit(data: ProjectImprovementCreateModel) {
-        viewModel.setPostSubmitCreatePi(data)
+        try {
+            viewModel.setPostSubmitCreatePi(data)
+            viewModel.postSubmitCreatePi.observeEvent(this@ProjectImprovementCreateWizard) { resultObserve ->
+                resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                    Timber.e("hasil result : $result")
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    this@ProjectImprovementCreateWizard,
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading postSubmitCreatePi")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-        viewModel.postSubmitCreatePi.observeEvent(this@ProjectImprovementCreateWizard) { resultObserve ->
-            resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
-                Timber.e("hasil result : $result")
-                if (result != null) {
-                    when(result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(this@ProjectImprovementCreateWizard,"",false)
-                            Timber.d("###-- Loading postSubmitCreatePi")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
+                                Timber.e("result : ${result.data?.message}")
+                                Timber.e("result success : ${result.data?.success}")
+                                Toast.makeText(
+                                    this@ProjectImprovementCreateWizard,
+                                    result.data?.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                HawkUtils().removeDataCreateProposal(source)
+                                finish()
 
-                            Timber.e("result : ${result.data?.message}")
-                            Timber.e("result success : ${result.data?.success}")
-                            Toast.makeText(
-                                this@ProjectImprovementCreateWizard,
-                                result.data?.message.toString(),
-                                Toast.LENGTH_LONG
-                            ).show()
-                            HawkUtils().removeDataCreateProposal(source)
-                            finish()
-
-                            Timber.d("###-- Success postSubmitCreatePi")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(
-                                this@ProjectImprovementCreateWizard,
-                                result.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-                            finish()
-                            Timber.d("###-- Success postSubmitCreatePi")
+                                Timber.d("###-- Success postSubmitCreatePi")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    this@ProjectImprovementCreateWizard,
+                                    result.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                finish()
+                                Timber.d("###-- Success postSubmitCreatePi")
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                this@ProjectImprovementCreateWizard,
+                err.message,
+                Toast.LENGTH_LONG
+            ).show()
+            finish()
+            Timber.d("###-- Success postSubmitCreatePi")
         }
-
     }
 
     private fun update(data: ProjectImprovementCreateModel) {
-        viewModel.setPostSubmitUpdatePi(data)
+        try {
+            viewModel.setPostSubmitUpdatePi(data)
+            viewModel.putSubmitUpdatePi.observeEvent(this@ProjectImprovementCreateWizard) { resultObserve ->
+                resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
+                    Timber.e("hasil result : $result")
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    this@ProjectImprovementCreateWizard,
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading putSubmitUpdatePi")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-        viewModel.putSubmitUpdatePi.observeEvent(this@ProjectImprovementCreateWizard){resultObserve ->
-            resultObserve.observe(this@ProjectImprovementCreateWizard, { result ->
-                Timber.e("hasil result : $result")
-                if(result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(this@ProjectImprovementCreateWizard,"",false)
-                            Timber.d("###-- Loading putSubmitUpdatePi")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
+                                Timber.e("${result.data?.message}")
 
-                            Timber.e("${result.data?.message}")
+                                Toast.makeText(
+                                    this@ProjectImprovementCreateWizard,
+                                    result.data?.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
 
-                            Toast.makeText(
-                                this@ProjectImprovementCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
+                                finish()
 
-                            finish()
+                                HawkUtils().removeDataCreateProposal(source)
 
-                            HawkUtils().removeDataCreateProposal(source)
+                                Timber.d("###-- Success putSubmitUpdatePi")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    this@ProjectImprovementCreateWizard,
+                                    result.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
 
-                            Timber.d("###-- Success putSubmitUpdatePi")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(
-                                this@ProjectImprovementCreateWizard,
-                                result.message,
-                                Toast.LENGTH_LONG
-                            ).show()
+                                finish()
 
-                            finish()
-
-                            Timber.d("###-- Error putSubmitUpdatePi")
+                                Timber.d("###-- Error putSubmitUpdatePi")
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                this@ProjectImprovementCreateWizard,
+                err.message,
+                Toast.LENGTH_LONG
+            ).show()
+
+            finish()
+
+            Timber.d("###-- Error putSubmitUpdatePi")
         }
     }
 

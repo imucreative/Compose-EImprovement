@@ -99,37 +99,51 @@ class MutasiFragment : Fragment(),Injectable {
 
 
     private fun initComponent(activity: FragmentActivity) {
-        listMutasiModel.getListMutasi.observeEvent(activity){resultObserve ->
-            resultObserve.observe(viewLifecycleOwner,{ result ->
-                if (result != null){
-                    when (result.status){
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get List CP")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
+        try {
+            listMutasiModel.getListMutasi.observeEvent(activity) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading get List CP")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-                            if (result.data?.data.isNullOrEmpty()){
-                                binding.rvMutasi.visibility == View.GONE
-                                binding.noDataScreen.root.visibility = View.VISIBLE
-                            }else{
-                                binding.rvMutasi.visibility = View.VISIBLE
-                                binding.noDataScreen.root.visibility = View.GONE
-                                adapter.clear()
-                                adapter.setList(result.data?.data!!)
+                                if (result.data?.data.isNullOrEmpty()) {
+                                    binding.rvMutasi.visibility == View.GONE
+                                    binding.noDataScreen.root.visibility = View.VISIBLE
+                                } else {
+                                    binding.rvMutasi.visibility = View.VISIBLE
+                                    binding.noDataScreen.root.visibility = View.GONE
+                                    adapter.clear()
+                                    adapter.setList(result.data?.data!!)
 
-                                Timber.d("###-- Success get List Mutasi")
+                                    Timber.d("###-- Success get List Mutasi")
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get List Mutasi")
                             }
                         }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get List Mutasi")
-                        }
                     }
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get List Mutasi")
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,12 +75,16 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
     }
 
     private fun initList() {
-        viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner, {
-            if (it != null) {
-                adapter.setList(it)
-                Timber.i("### ambil dari getApprovalHistoryStatus $it")
-            }
-        })
+        try {
+            viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner, {
+                if (it != null) {
+                    adapter.setList(it)
+                    Timber.i("### ambil dari getApprovalHistoryStatus $it")
+                }
+            })
+        }catch (err : Exception){
+            Toast.makeText(activity,"### error dari getApprovalHistoryStatus",Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setValidation() {

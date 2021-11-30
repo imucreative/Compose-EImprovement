@@ -406,49 +406,65 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
 
     private fun submit(data: ChangePointCreateModel){
-        viewModel.setPostSubmitCreateCp(data)
+        try {
+            viewModel.setPostSubmitCreateCp(data)
+            viewModel.postSubmitCreateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
+                resultObserve.observe(this@ChangesPointCreateWizard, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(
+                                    this@ChangesPointCreateWizard,
+                                    "",
+                                    false
+                                )
+                                Timber.d("###-- Loading postSubmitCreateCp")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-        viewModel.postSubmitCreateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
-            resultObserve.observe(this@ChangesPointCreateWizard, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(this@ChangesPointCreateWizard,"",false)
-                            Timber.d("###-- Loading postSubmitCreateCp")
+                                Timber.e("${result.data?.message}")
+
+                                Toast.makeText(
+                                    this@ChangesPointCreateWizard,
+                                    result.data?.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                finish()
+
+                                HawkUtils().removeDataCreateProposal(source)
+
+                                Timber.d("###-- Success postSubmitCreateCp")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    this@ChangesPointCreateWizard,
+                                    result.data?.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                finish()
+
+                                Timber.d("###-- Error postSubmitCreateCp")
+                            }
+
                         }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-
-                            Timber.e("${result.data?.message}")
-
-                            Toast.makeText(
-                                this@ChangesPointCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            HawkUtils().removeDataCreateProposal(source)
-
-                            Timber.d("###-- Success postSubmitCreateCp")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(
-                                this@ChangesPointCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            Timber.d("###-- Error postSubmitCreateCp")
-                        }
-
                     }
-                }
-            })
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                this@ChangesPointCreateWizard,
+               err.message,
+                Toast.LENGTH_LONG
+            ).show()
+
+            finish()
+
+            Timber.d("###-- Error postSubmitCreateCp")
         }
     }
 
