@@ -13,6 +13,7 @@ import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImpl
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -139,6 +140,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                     }
                 })
             }
+
             etToStatus1.setOnClickListener {
                 datePickerSudah.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
@@ -165,6 +167,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                     }
                 })
             }
+
             etFromStatus2.setOnClickListener {
                 datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
@@ -177,6 +180,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                     }
                 })
             }
+
             etToStatus2.setOnClickListener {
                 datePickerAkan.showDialog(object : DatePickerCustom.Callback {
                     override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
@@ -317,6 +321,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                             problem.requestFocus()
                             stat = false
                         }
+
                         suggestion.text.isNullOrEmpty() -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
@@ -326,15 +331,17 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        rbStatus1.isChecked -> {
+                        !rbStatus1.isChecked && !rbStatus2.isChecked -> {
+                            Timber.e("Hasus ada yg dipilih")
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
                             stat = false
                         }
-                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() -> {
+
+                        rbStatus1.isChecked && (etFromStatus1.text.isNullOrEmpty() || etToStatus1.text.isNullOrEmpty()) -> {
+                            Timber.e("RB Status 1 / Sudah & Edit Text harus diisi")
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
@@ -343,15 +350,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        rbStatus2.isChecked  -> {
-                            SnackBarCustom.snackBarIconInfo(
-                                root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500)
-                            etFromStatus2.requestFocus()
-                            stat = false
-                        }
-                        rbStatus2.isChecked && etToStatus2.text.isNullOrEmpty() -> {
+                        rbStatus2.isChecked && (etFromStatus2.text.isNullOrEmpty() || etToStatus2.text.isNullOrEmpty()) -> {
+                            Timber.e("RB Status 2 / Akan & Edit Text harus diisi")
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
@@ -359,6 +359,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                             etToStatus2.requestFocus()
                             stat = false
                         }
+
                         else -> {
                             HawkUtils().setTempDataCreateSs(
                                 id = data?.id,
