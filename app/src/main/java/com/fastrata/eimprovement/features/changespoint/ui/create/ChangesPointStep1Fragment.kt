@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.features.changespoint.ui.create
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -62,6 +63,9 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                 saldo.text = Tools.doubleToRupiah("0".toDouble(),2)
             }else{
                 saldo.text = Tools.doubleToRupiah(intSaldo.toString().toDouble(),2)
+            }
+            if(action == APPR){
+                linearSaldo.visibility = View.INVISIBLE
             }
 
             cpNo.setText(data?.cpNo)

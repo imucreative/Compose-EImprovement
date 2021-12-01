@@ -154,4 +154,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
         }
     }
 
+    override fun onBackPressed() {
+    }
+
 }

@@ -105,7 +105,8 @@ class SettingsFragment : Fragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                if (!findNavController().popBackStack()) activity?.finish()
+//                if (!findNavController().popBackStack()) activity?.finish()
+                activity?.finish()
             }
         }
 
