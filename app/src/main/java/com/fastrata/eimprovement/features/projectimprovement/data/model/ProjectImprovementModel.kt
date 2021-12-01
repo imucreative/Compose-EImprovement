@@ -11,6 +11,8 @@ data class ProjectImprovementModel(
     val idPi: Int,
     @SerializedName("PI_NO")
     val piNo: String,
+    @SerializedName("USER_ID")
+    val userId: Int,
     @SerializedName("STATUS_PROPOSAL")
     val status: StatusProposalItem,
     @SerializedName("TITLE")

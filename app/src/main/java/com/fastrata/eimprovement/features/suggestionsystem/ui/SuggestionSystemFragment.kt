@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.R.layout.simple_list_item_1
 import android.widget.AdapterView
+import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,7 @@ import com.fastrata.eimprovement.databinding.FragmentSuggestionSystemBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemRemoteRequest
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
@@ -86,6 +88,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
         masterBranchViewModel = injectViewModel(viewModelFactory)
         checkPeriodViewModel = injectViewModel(viewModelFactory)
+
+        notification = HelperNotification()
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
@@ -361,7 +365,6 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
     private fun getStatusCheckPeriod(){
         try {
-            notification = HelperNotification()
             checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
                 resultObserve.observe(viewLifecycleOwner, { result ->
                     if (result != null) {
@@ -587,7 +590,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
                 Timber.e("### $data")
-                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),resources.getString(R.string.select),
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -612,10 +615,11 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onSubmit() {
-                            val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                            /*val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
                                 toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
-                            requireView().findNavController().navigate(direction)
+                            requireView().findNavController().navigate(direction)*/
+                            getDetailData(data.idSs, data.userId)
                         }
 
                         override fun onCheck() {
@@ -641,7 +645,22 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onDelete() {
-                            removeListSs(data)
+                            notification.shownotificationyesno(
+                                requireActivity(),
+                                requireContext(),
+                                R.color.blue_500,
+                                resources.getString(R.string.delete),
+                                resources.getString(R.string.delete_confirmation),
+                                resources.getString(R.string.ok),
+                                resources.getString(R.string.no),
+                                object : HelperNotification.CallBackNotificationYesNo {
+                                    override fun onNotificationNo() {
+                                    }
+                                    override fun onNotificationYes() {
+                                        removeListSs(data)
+                                    }
+                                }
+                            )
                         }
 
                     }
@@ -701,6 +720,138 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                 Snackbar.LENGTH_SHORT
             ).show()
             Timber.e("### Error doRemoveSs : ${err.message}")
+        }
+    }
+
+    private fun getDetailData(idSs: Int, userId: Int) {
+        try {
+            listSsViewModel.setDetailSs(idSs, userId)
+
+            listSsViewModel.getDetailSsItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(this, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+
+                                Timber.d("###-- Loading getDetailSsItem to submit ")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+
+                                val dataCreateModel = SuggestionSystemCreateModel(
+                                    id = result.data?.data?.get(0)?.id,
+                                    ssNo = result.data?.data?.get(0)?.ssNo,
+                                    date = "",
+                                    title = result.data?.data?.get(0)?.title,
+                                    categoryImprovement = result.data?.data?.get(0)?.categoryImprovement,
+                                    name = result.data?.data?.get(0)?.name,
+                                    nik = result.data?.data?.get(0)?.nik,
+                                    branchCode = result.data?.data?.get(0)?.branchCode,
+                                    branch = result.data?.data?.get(0)?.branch,
+                                    subBranch = "",
+                                    department = result.data?.data?.get(0)?.department,
+                                    directMgr = result.data?.data?.get(0)?.directMgr,
+                                    suggestion = result.data?.data?.get(0)?.suggestion?.let {
+                                        HtmlCompat.fromHtml(
+                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        ).toString()
+                                    },
+                                    problem = result.data?.data?.get(0)?.problem?.let {
+                                        HtmlCompat.fromHtml(
+                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        ).toString()
+                                    },
+                                    statusImplementation = result.data?.data?.get(0)?.statusImplementation,
+                                    teamMember = result.data?.data?.get(0)?.teamMember,
+                                    attachment = result.data?.data?.get(0)?.attachment,
+                                    statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                    proses = result.data?.data?.get(0)?.proses,
+                                    result = result.data?.data?.get(0)?.result,
+
+                                    headId = result.data?.data?.get(0)?.headId,
+                                    userId = result.data?.data?.get(0)?.userId,
+                                    orgId = result.data?.data?.get(0)?.orgId,
+                                    warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                    historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                    activityType = SS,
+                                    submitType = 1,
+                                    comment = ""
+                                )
+
+                                notification.shownotificationyesno(
+                                    requireActivity(),
+                                    requireContext(),
+                                    R.color.blue_500,
+                                    resources.getString(R.string.submit),
+                                    resources.getString(R.string.submit_desc),
+                                    "SEND",
+                                    resources.getString(R.string.no),
+                                    object : HelperNotification.CallBackNotificationYesNo {
+                                        override fun onNotificationNo() {
+
+                                        }
+                                        override fun onNotificationYes() {
+                                            update(dataCreateModel)
+                                        }
+                                    }
+                                )
+
+                                Timber.d("###-- Success getDetailSsItem to submit ")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+
+                                Toast.makeText(requireContext(), "Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Error getDetailSsItem to submit ")
+                            }
+
+                        }
+                    }
+                })
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            Timber.d("###-- Error onCreate")
+        }
+    }
+
+    private fun update(data: SuggestionSystemCreateModel){
+        try {
+            listSsViewModel.setPostSubmitUpdateSs(data)
+            listSsViewModel.putSubmitUpdateSs.observeEvent(this) { resultObserve ->
+                resultObserve.observe(this, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading putSubmitUpdateSs")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+
+                                Timber.e("${result.data?.message}")
+
+                                Toast.makeText(requireContext(), result.data?.message, Toast.LENGTH_LONG).show()
+                                onStart()
+
+                                Timber.d("###-- Success putSubmitUpdateSs")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Error putSubmitUpdateSs")
+                            }
+
+                        }
+                    }
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(requireContext(), err.message, Toast.LENGTH_LONG).show()
+            Timber.d("###-- Error putSubmitUpdateSs")
         }
     }
 

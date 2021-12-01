@@ -50,9 +50,9 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
     private val gson = Gson()
     private var data: ChangePointCreateModel? = null
     private var userId = 0
-    private var orgId = 0
-    private var warehouseId = 0
-    private var headId = 0
+    private var orgId: Int? = null
+    private var warehouseId: Int? = null
+    private var headId: Int? = null
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -74,10 +74,15 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
         val argsCpNo    = args.cpNo
         val statusProposal = args.statusProposal
 
-        userId      = HawkUtils().getDataLogin().USER_ID
-        orgId       = HawkUtils().getDataLogin().ORG_ID!!
-        warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID!!
-        headId      = HawkUtils().getDataLogin().DIRECT_MANAGER_ID!!
+        try {
+            userId = HawkUtils().getDataLogin().USER_ID
+            orgId = HawkUtils().getDataLogin().ORG_ID
+            warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
+            headId = HawkUtils().getDataLogin().DIRECT_MANAGER_ID
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            Timber.d("###-- Error onCreate")
+        }
 
         action = argsAction
 

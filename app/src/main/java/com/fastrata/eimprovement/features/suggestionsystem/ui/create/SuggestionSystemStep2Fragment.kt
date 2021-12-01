@@ -250,8 +250,13 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
                     etFromStatus2.isEnabled = true
                     etToStatus2.isEnabled = true
-                    edtProses = ""
-                    edtResult = ""
+                    if (ssAction == ADD) {
+                        edtProses = ""
+                        edtResult = ""
+                    } else {
+                        edtProses = data?.proses.toString()
+                        edtResult = data?.result.toString()
+                    }
                     HawkUtils().setStatusSuggestion(false)
                 }
             }
