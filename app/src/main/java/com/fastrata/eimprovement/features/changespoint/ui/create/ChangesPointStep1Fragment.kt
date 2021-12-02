@@ -64,6 +64,10 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                 saldo.text = Tools.doubleToRupiah(intSaldo.toString().toDouble(),2)
             }
 
+            if(action == APPROVE){
+                linearSaldo.visibility = View.INVISIBLE
+            }
+
             cpNo.setText(data?.cpNo)
             name.setText(data?.name?.let { textLimitReplaceToDots(it) })
             nik.setText(data?.nik)

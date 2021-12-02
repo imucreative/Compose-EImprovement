@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class BalanceModel (
+data class BalanceModel (
     @SerializedName("TOTAL")
-    val total: Int
-        ):Parcelable
+    val total: Int,
+    @SerializedName("COUNT_APPROVAL")
+    val countApproval: Int
+):Parcelable

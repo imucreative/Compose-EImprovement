@@ -68,6 +68,9 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
             if ((action == APPROVE) || (action == DETAIL)) {
                 disableForm()
             }
+            when (data?.statusProposal?.id) {
+                5, 6, 9 -> disableForm()
+            }
         }
     }
 

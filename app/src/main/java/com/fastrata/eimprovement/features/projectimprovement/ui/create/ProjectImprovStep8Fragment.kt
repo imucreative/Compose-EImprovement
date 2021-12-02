@@ -55,7 +55,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         data = HawkUtils().getTempDataCreatePi(source)
 
         masterDataCategoryViewModel.setCategory()
-        categoryAdapter = CategoryImprovementAdapter()
+        categoryAdapter = CategoryImprovementAdapter(data?.statusProposal?.id)
         categoryAdapter.notifyDataSetChanged()
 
         statusImplement = HawkUtils().getStatusImplementation()
@@ -84,6 +84,18 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
 
         if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
+        } else {
+            when (data?.statusProposal?.id) {
+                5, 6, 9 -> {
+                    binding.apply {
+                        checkboxOther.isEnabled = false
+                        tvCheckboxOther.isClickable = false
+                        edtLainLain.isEnabled = false
+
+                        cardViewHasilImplementasi.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
     }
 
@@ -209,7 +221,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() && data?.statusImplementationModel?.sudah?.from != "" -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && (data?.statusImplementationModel?.sudah?.from != "" || (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.result_empty),

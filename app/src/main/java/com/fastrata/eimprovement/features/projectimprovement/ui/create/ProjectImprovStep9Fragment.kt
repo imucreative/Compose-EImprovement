@@ -237,9 +237,10 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 uri = data.data as Uri
 
                 val fileData = FileUtils.getFile(requireContext(), uri)
-                val fileSize: Int = java.lang.String.valueOf(fileData!!.length() / 1024).toInt()
-                Timber.e("###FILE SIZE: $fileSize")
-                if (fileSize == 0 || fileSize >= 2048){
+                val fileSize: Int = fileData.length().toInt()
+                Timber.e("### FILE SIZE: $fileSize")
+
+                if (fileSize == 0 || (fileData.length() / 1024) >= 2048) {
                     SnackBarCustom.snackBarIconInfo(
                         binding.root, layoutInflater, resources, binding.root.context,
                         resources.getString(R.string.file_size),
@@ -404,15 +405,16 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-//                    stat = if (data?.attachment?.size == 0) {
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            resources.getString(R.string.file_empty),
-//                            R.drawable.ic_close, R.color.red_500)
-//                        true
-//                    } else {
-//                        true
-//                    }
+                    stat = if (data?.attachment?.size == 0 && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_empty),
+                            R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else {
+                        true
+                    }
+
                     HawkUtils().setTempDataCreatePi(
                         id = data?.id,
                         piNo = data?.piNo,
@@ -444,7 +446,6 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         comment = data?.comment,
                         source = source
                     )
-                    stat = true
                 }
 
                 return stat

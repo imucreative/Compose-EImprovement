@@ -85,6 +85,10 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
         if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
+
+        when (data?.statusProposal?.id) {
+            5, 6, 9 -> disableForm()
+        }
     }
 
     override fun onDestroyView() {
@@ -106,34 +110,41 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
             override fun onItemRemoved(data: SebabMasalahModel, position: Int) {
                 binding.apply {
-                    if ((action != APPROVE) && (action != DETAIL)) {
-                        activity?.let { activity ->
-                            notification.shownotificationyesno(
-                                activity,
-                                requireContext(),
-                                R.color.blue_500,
-                                resources.getString(R.string.delete),
-                                resources.getString(R.string.delete_confirmation),
-                                resources.getString(R.string.agree),
-                                resources.getString(R.string.not_agree),
-                                object : HelperNotification.CallBackNotificationYesNo {
-                                    override fun onNotificationNo() {
+                    if (action != APPROVE && action != DETAIL) {
+                        if (this@ProjectImprovStep4Fragment.data?.statusProposal?.id != 5 && this@ProjectImprovStep4Fragment.data?.statusProposal?.id != 6 && this@ProjectImprovStep4Fragment.data?.statusProposal?.id != 9) {
+                            activity?.let { activity ->
+                                notification.shownotificationyesno(
+                                    activity,
+                                    requireContext(),
+                                    R.color.blue_500,
+                                    resources.getString(R.string.delete),
+                                    resources.getString(R.string.delete_confirmation),
+                                    resources.getString(R.string.agree),
+                                    resources.getString(R.string.not_agree),
+                                    object : HelperNotification.CallBackNotificationYesNo {
+                                        override fun onNotificationNo() {
 
+                                        }
+
+                                        override fun onNotificationYes() {
+                                            sebabMasalah?.remove(data)
+
+                                            viewModel.updateSebabMasalah(sebabMasalah, source)
+                                            viewModel.getSebabMasalah()
+                                                .observe(viewLifecycleOwner, {
+                                                    if (it != null) {
+                                                        adapter.setList(it)
+                                                    }
+                                                })
+                                            viewModel.removeAkarMasalah(
+                                                position,
+                                                this@ProjectImprovStep4Fragment.data?.akarMasalah,
+                                                source
+                                            )
+                                        }
                                     }
-
-                                    override fun onNotificationYes() {
-                                        sebabMasalah?.remove(data)
-
-                                        viewModel.updateSebabMasalah(sebabMasalah, source)
-                                        viewModel.getSebabMasalah().observe(viewLifecycleOwner, {
-                                            if (it != null) {
-                                                adapter.setList(it)
-                                            }
-                                        })
-                                        viewModel.removeAkarMasalah(position, this@ProjectImprovStep4Fragment.data?.akarMasalah, source)
-                                    }
-                                }
-                            )
+                                )
+                            }
                         }
                     }
                 }

@@ -15,10 +15,9 @@ import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
 import com.fastrata.eimprovement.ui.setToolbar
+import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.HelperNotification
 import com.fastrata.eimprovement.utils.HelperNotification.CallBackNotificationYesNo
-import com.fastrata.eimprovement.utils.Tools
 import javax.inject.Inject
 
 class SettingsFragment : Fragment(), Injectable {
@@ -86,6 +85,9 @@ class SettingsFragment : Fragment(), Injectable {
                     override fun onNotificationYes() {
                         HawkUtils().setStatusLogin(false)
                         HawkUtils().setDataLogin(null)
+                        HawkUtils().removeDataCreateProposal(SS)
+                        HawkUtils().removeDataCreateProposal(CP)
+                        HawkUtils().removeDataCreateProposal(PI)
                         startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })
@@ -103,7 +105,8 @@ class SettingsFragment : Fragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                if (!findNavController().popBackStack()) activity?.finish()
+//                if (!findNavController().popBackStack()) activity?.finish()
+                activity?.finish()
             }
         }
 

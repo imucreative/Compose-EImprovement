@@ -9,9 +9,10 @@ import com.fastrata.eimprovement.utils.APPROVE
 import com.fastrata.eimprovement.utils.DETAIL
 import com.fastrata.eimprovement.utils.Tools
 
-class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapter.CategoryViewHolder>() {
+class CategoryImprovementAdapter(statusProposalId: Int?): RecyclerView.Adapter<CategoryImprovementAdapter.CategoryViewHolder>() {
     private var list = ArrayList<CategoryImprovementItem?>()
     private var action = ""
+    private var statusProposalId: Int? = statusProposalId
     fun setListCategoryImprovement(data: List<CategoryImprovementItem>?, checked: ArrayList<CategoryImprovementItem?>?, act: String) {
         list.clear()
         action = act
@@ -63,13 +64,21 @@ class CategoryImprovementAdapter: RecyclerView.Adapter<CategoryImprovementAdapte
                     chbxCategorySuggestion.isEnabled = false
                     tvCategorySuggestion.isClickable = false
                 } else {
-                    tvCategorySuggestion.setOnClickListener {
-                        chbxCategorySuggestion.isChecked = !chbxCategorySuggestion.isChecked
+                    when (statusProposalId) {
+                        1, 4, 11 -> {
+                            tvCategorySuggestion.setOnClickListener {
+                                chbxCategorySuggestion.isChecked = !chbxCategorySuggestion.isChecked
 
-                        if (chbxCategorySuggestion.isChecked) {
-                            callback.checkClicked(data, true)
-                        } else if (!chbxCategorySuggestion.isChecked) {
-                            callback.checkClicked(data, false)
+                                if (chbxCategorySuggestion.isChecked) {
+                                    callback.checkClicked(data, true)
+                                } else if (!chbxCategorySuggestion.isChecked) {
+                                    callback.checkClicked(data, false)
+                                }
+                            }
+                        }
+                        else -> {
+                            chbxCategorySuggestion.isEnabled = false
+                            tvCategorySuggestion.isClickable = false
                         }
                     }
                 }

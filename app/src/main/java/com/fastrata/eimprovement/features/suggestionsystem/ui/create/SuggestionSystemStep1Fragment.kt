@@ -36,6 +36,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private lateinit var categoryAdapter: CategoryImprovementAdapter
     private val listCategory = ArrayList<CategoryImprovementItem?>()
     private var source: String = SS_CREATE
+    private var statProposal : Int  = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +55,7 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         data = HawkUtils().getTempDataCreateSs(source)
 
         masterDataCategoryViewModel.setCategory()
-        categoryAdapter = CategoryImprovementAdapter()
+        categoryAdapter = CategoryImprovementAdapter(data?.statusProposal?.id)
         categoryAdapter.notifyDataSetChanged()
 
         setInitCategory()
@@ -83,6 +84,10 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
 
             if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
                 disableForm()
+            }
+
+            when (data?.statusProposal?.id) {
+                5, 6, 9 -> disableForm()
             }
         }
     }

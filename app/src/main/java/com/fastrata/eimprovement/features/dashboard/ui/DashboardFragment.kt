@@ -59,7 +59,7 @@ class DashboardFragment: Fragment(), Injectable {
 
         try {
             balanceViewModel.setBalance(userId)
-            balanceViewModel.getbalance.observeEvent(this){resultObserve->
+            balanceViewModel.getBalance.observeEvent(this){resultObserve->
                 resultObserve.observe(viewLifecycleOwner,{ result->
                     if (result != null){
                         when(result.status){
@@ -69,12 +69,14 @@ class DashboardFragment: Fragment(), Injectable {
                             }
                             Result.Status.SUCCESS -> {
                                 HelperLoading.hideLoading()
-                                if (result.data?.data?.size == 0){
-                                    HawkUtils().setDataBalance(0)
-                                    binding.saldoTxt.text = Tools.doubleToRupiah("0".toDouble(),2)
-                                }else{
-                                    HawkUtils().setDataBalance(result.data!!.data[0].total)
-                                    binding.saldoTxt.text = Tools.doubleToRupiah(result.data.data[0].total.toDouble(),2)
+                                binding.apply {
+                                    val valCountApproval = result.data!!.data[0].countApproval
+                                    val valTotal = result.data.data[0].total
+
+                                    HawkUtils().setDataBalance(valTotal)
+                                    saldoTxt.text = Tools.doubleToRupiah(valTotal.toDouble(), 2)
+                                    countApproval.text = "$valCountApproval Available"
+                                    countApprovalMenu.text = "$valCountApproval Available"
                                 }
                             }
                             Result.Status.ERROR -> {

@@ -118,37 +118,57 @@ class ChangePasswordFragment : Fragment(), Injectable {
 
     private fun sendData(oldPassword: String, newPassword: String) {
         Timber.d("message Req:"+oldPassword+"/"+newPassword+"/"+userId+"/"+userName)
-        viewModel.setChangePassword(userId,userName,oldPassword,newPassword)
-        viewModel.getChangePassword.observeEvent(this){resultObserve ->
-            resultObserve.observe(viewLifecycleOwner,{ result->
-                if (result != null){
-                    when(result.status){
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading Change Password")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-                            if(result.data?.code != 200){
-                                HelperNotification().showErrorDialog(requireActivity(),resources.getString(R.string.error)+" "+result.data?.code.toString(),
-                                    result.data?.message.toString()
-                                )
-                            }else{
-                                HelperNotification().showNotificationDismisAction(requireActivity(),resources.getString(R.string.succes),"Password berhasil terganti",object  : HelperNotification.CallbackDismis{
-                                    override fun onDismiss(){
-                                        if (!findNavController().popBackStack()) activity?.finish()
-                                    }
-                                })
+        try {
+            viewModel.setChangePassword(userId, userName, oldPassword, newPassword)
+            viewModel.getChangePassword.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading Change Password")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+                                if (result.data?.code != 200) {
+                                    HelperNotification().showErrorDialog(
+                                        requireActivity(),
+                                        resources.getString(R.string.error) + " " + result.data?.code.toString(),
+                                        result.data?.message.toString()
+                                    )
+                                } else {
+                                    HelperNotification().showNotificationDismisAction(
+                                        requireActivity(),
+                                        resources.getString(R.string.succes),
+                                        "Password berhasil terganti",
+                                        object : HelperNotification.CallbackDismis {
+                                            override fun onDismiss() {
+                                                if (!findNavController().popBackStack()) activity?.finish()
+                                            }
+                                        })
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error Change Password")
                             }
                         }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error Change Password")
-                        }
                     }
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error Change Password")
         }
     }
 

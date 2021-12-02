@@ -30,10 +30,10 @@ import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import timber.log.Timber
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.Exception
 
 class ListApprovalFragment : Fragment(), Injectable {
     @Inject
@@ -119,6 +119,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private fun getDataListApproval(){
         try {
             adapter.clear()
+            page = 1
 
             val listApprovalRemoteRequest = ApprovalRemoteRequest(
                 userId, limit, page, roleName, APPR,
@@ -243,132 +244,188 @@ class ListApprovalFragment : Fragment(), Injectable {
     }
 
     private fun getListApproval() {
-        isLoading = true
-
-        listApproveViewModel.getListApprovalItem.observeEvent(this){ resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status){
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get List CP")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-
-                            val listResponse = result.data?.data
-                            if (listResponse != null) {
-                                if (listResponse.isNullOrEmpty()) {
-                                    binding.rv.visibility = View.GONE
-                                    binding.noDataScreen.root.visibility = View.VISIBLE
-                                } else {
-                                    totalPage = result.data.totalPage
-
-                                    binding.rv.visibility = View.VISIBLE
-                                    binding.noDataScreen.root.visibility = View.GONE
-
-                                    adapter.setList(listResponse)
-                                }
+        try {
+            isLoading = true
+            listApproveViewModel.getListApprovalItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading get List CP")
                             }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-                            retrieveDataStatusProposal()
-                            retrieveDataBranch()
-                            isLoading = false
-                            Timber.d("###-- Success get List CP")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            isLoading = false
-                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get List CP")
+                                val listResponse = result.data?.data
+                                if (listResponse != null) {
+                                    if (listResponse.isNullOrEmpty()) {
+                                        binding.rv.visibility = View.GONE
+                                        binding.noDataScreen.root.visibility = View.VISIBLE
+                                    } else {
+                                        totalPage = result.data.totalPage
+
+                                        binding.rv.visibility = View.VISIBLE
+                                        binding.noDataScreen.root.visibility = View.GONE
+
+                                        adapter.setList(listResponse)
+                                    }
+                                }
+
+                                retrieveDataStatusProposal()
+                                retrieveDataBranch()
+                                isLoading = false
+                                Timber.d("###-- Success get List CP")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                isLoading = false
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get List CP")
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            isLoading = false
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get List CP")
         }
     }
 
     private fun retrieveDataStatusProposal(){
-        masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            binding.edtStatusProposal.isEnabled = false
-                            Timber.d("###-- Loading get status proposal")
-                        }
-                        Result.Status.SUCCESS -> {
-                            binding.edtStatusProposal.isEnabled = true
-                            listStatusProposalItem = result.data?.data
-                            initComponentStatusProposal()
-                            Timber.d("###-- Success get status proposal")
-                        }
-                        Result.Status.ERROR -> {
-                            binding.edtStatusProposal.isEnabled = false
-                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get status proposal")
+        try {
+            masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                binding.edtStatusProposal.isEnabled = false
+                                Timber.d("###-- Loading get status proposal")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.edtStatusProposal.isEnabled = true
+                                listStatusProposalItem = result.data?.data
+                                initComponentStatusProposal()
+                                Timber.d("###-- Success get status proposal")
+                            }
+                            Result.Status.ERROR -> {
+                                binding.edtStatusProposal.isEnabled = false
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get status proposal")
+                            }
+
                         }
 
                     }
-
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            binding.edtStatusProposal.isEnabled = false
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get status proposal")
         }
     }
 
     private fun retrieveDataBranch(){
-        masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            binding.edtBranch.isEnabled = false
-                            Timber.d("###-- Loading get Branch")
-                        }
-                        Result.Status.SUCCESS -> {
-                            binding.edtBranch.isEnabled = true
-                            listBranchItem = result.data?.data
-                            initComponentBranch()
-                            Timber.d("###-- Success get Branch")
-                        }
-                        Result.Status.ERROR -> {
-                            binding.edtBranch.isEnabled = false
-                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get Branch")
+        try {
+            masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                binding.edtBranch.isEnabled = false
+                                Timber.d("###-- Loading get Branch")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.edtBranch.isEnabled = true
+                                listBranchItem = result.data?.data
+                                initComponentBranch()
+                                Timber.d("###-- Success get Branch")
+                            }
+                            Result.Status.ERROR -> {
+                                binding.edtBranch.isEnabled = false
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get Branch")
+                            }
+
                         }
 
                     }
-
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            binding.edtBranch.isEnabled = false
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get Branch")
         }
     }
 
     private fun retrieveDataSubBranch(){
-        masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            binding.edtSubBranch.isEnabled = false
-                            Timber.d("###-- Loading get sub Branch")
-                        }
-                        Result.Status.SUCCESS -> {
-                            binding.edtSubBranch.isEnabled = true
-                            listSubBranchItem = result.data?.data
-                            initComponentSubBranch()
-                            Timber.d("###-- Success get sub Branch")
-                        }
-                        Result.Status.ERROR -> {
-                            binding.edtSubBranch.isEnabled = false
-                            Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get sub Branch")
+        try {
+            masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                binding.edtSubBranch.isEnabled = false
+                                Timber.d("###-- Loading get sub Branch")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.edtSubBranch.isEnabled = true
+                                listSubBranchItem = result.data?.data
+                                initComponentSubBranch()
+                                Timber.d("###-- Success get sub Branch")
+                            }
+                            Result.Status.ERROR -> {
+                                binding.edtSubBranch.isEnabled = false
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get sub Branch")
+                            }
+
                         }
 
                     }
-
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            binding.edtSubBranch.isEnabled = false
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get sub Branch")
         }
     }
 

@@ -91,7 +91,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
         Timber.e("Id Status proposal :  ${data?.statusProposal?.id}")
         binding.apply {
             when {
-                data?.statusProposal?.id == STATUS_IMPLEMENTASI -> {
+                data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9 -> {
                     estimasiBenefit.isEnabled = false
                     edtLayoutEstimasiBenefit.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
                     estimasiBenefitKeterangan.isEnabled = false
@@ -335,7 +335,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        aktualBenefit.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
+                        aktualBenefit.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -343,7 +343,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualBenefit.requestFocus()
                             stat = false
                         }
-                        aktualBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
+                        aktualBenefitKeterangan.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -351,7 +351,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualBenefitKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualCost.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
+                        aktualCost.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -359,7 +359,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualCost.requestFocus()
                             stat = false
                         }
-                        aktualCostKeterangan.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
+                        aktualCostKeterangan.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -367,7 +367,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualCostKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualNqiTotal.text.isNullOrEmpty() && data?.statusProposal?.id == STATUS_IMPLEMENTASI && action == SUBMIT_PROPOSAL -> {
+                        aktualNqiTotal.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),

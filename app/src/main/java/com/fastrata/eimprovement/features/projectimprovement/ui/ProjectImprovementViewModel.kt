@@ -121,7 +121,34 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         val convertToArrayList = Tools.listToArrayList(sortMergedList)
 
         HawkUtils().setTempDataCreatePi(
+            id = data?.id,
+            piNo = data?.piNo,
+            date = data?.date,
+            title = data?.title,
+            branch = data?.branch,
+            subBranch = data?.subBranch,
+            department = data?.department,
+            years = data?.years,
+            statusImplementationModel = data?.statusImplementationModel,
+            identification = data?.identification,
+            target = data?.target,
+            sebabMasalah = data?.sebabMasalah,
             akarMasalah = convertToArrayList,
+            nilaiOutput = data?.nilaiOutput,
+            nqiModel = data?.nqiModel,
+            teamMember = data?.teamMember,
+            categoryFixing = data?.categoryFixing,
+            hasilImplementasi = data?.implementationResult,
+            attachment = data?.attachment,
+            statusProposal = data?.statusProposal,
+            headId = data?.headId,
+            userId = data?.userId,
+            orgId = data?.orgId,
+            warehouseId = data?.warehouseId,
+            historyApproval = data?.historyApproval,
+            activityType = data?.activityType,
+            submitType = data?.submitType,
+            comment = data?.comment,
             source = source
         )
 

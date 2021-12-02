@@ -74,6 +74,16 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
         }
+
+        when (data?.statusProposal?.id) {
+            4, 9 -> {
+                binding.rbStatus1.isClickable = false
+                binding.rbStatus2.isClickable = false
+            }
+            5, 6 -> {
+                disableForm()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -159,13 +169,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
                             etToStatus1.setText("$year-$monthStr-$dayStr")
                             toDate = sdf.parse(etToStatus1.text.toString())
-//                            if(etFromStatus1.text.isNullOrEmpty()){
-//                                 SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromStatus1.requestFocus()
-//                            }else{
+                            if(etFromStatus1.text.isNullOrEmpty()){
+                                 SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etFromStatus1.requestFocus()
+                            }else{
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -173,7 +183,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                         R.drawable.ic_close, R.color.red_500)
                                     etToStatus1.text!!.clear()
                                 }
-//                            }
+                            }
                         }
                     })
                 }
@@ -526,41 +536,41 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                         sudah = sudah,
                         akan = akan
                     )
-                    HawkUtils().setTempDataCreatePi(
-                        id = data?.id,
-                        piNo = data?.piNo,
-                        date = data?.date,
-                        title = data?.title,
-                        branch = data?.branch,
-                        subBranch = data?.subBranch,
-                        department = data?.department,
-                        years = data?.years,
-                        statusImplementationModel = statusImplementation,
-                        identification = data?.identification,
-                        target = data?.target,
-                        sebabMasalah = data?.sebabMasalah,
-                        akarMasalah = data?.akarMasalah,
-                        nilaiOutput = data?.nilaiOutput,
-                        nqiModel = data?.nqiModel,
-                        teamMember = data?.teamMember,
-                        categoryFixing = data?.categoryFixing,
-                        hasilImplementasi = data?.implementationResult,
-                        attachment = data?.attachment,
-                        statusProposal = data?.statusProposal,
-                        headId = data?.headId,
-                        userId = data?.userId,
-                        orgId = data?.orgId,
-                        warehouseId = data?.warehouseId,
-                        historyApproval = data?.historyApproval,
-                        activityType = data?.activityType,
-                        submitType = data?.submitType,
-                        comment = data?.comment,
-                        source = source
-                    )
-                    stat = true
+//                    HawkUtils().setTempDataCreatePi(
+//                        id = data?.id,
+//                        piNo = data?.piNo,
+//                        date = data?.date,
+//                        title = data?.title,
+//                        branch = data?.branch,
+//                        subBranch = data?.subBranch,
+//                        department = data?.department,
+//                        years = data?.years,
+//                        statusImplementationModel = statusImplementation,
+//                        identification = data?.identification,
+//                        target = data?.target,
+//                        sebabMasalah = data?.sebabMasalah,
+//                        akarMasalah = data?.akarMasalah,
+//                        nilaiOutput = data?.nilaiOutput,
+//                        nqiModel = data?.nqiModel,
+//                        teamMember = data?.teamMember,
+//                        categoryFixing = data?.categoryFixing,
+//                        hasilImplementasi = data?.implementationResult,
+//                        attachment = data?.attachment,
+//                        statusProposal = data?.statusProposal,
+//                        headId = data?.headId,
+//                        userId = data?.userId,
+//                        orgId = data?.orgId,
+//                        warehouseId = data?.warehouseId,
+//                        historyApproval = data?.historyApproval,
+//                        activityType = data?.activityType,
+//                        submitType = data?.submitType,
+//                        comment = data?.comment,
+//                        source = source
+//                    )
+//                    stat = true
 
                     Timber.e("# $statusImplementation")
-//                    when {
+                    when {
                         //statusimplemen1
 //                        rbStatus1.isChecked ->{
 //                            SnackBarCustom.snackBarIconInfo(
@@ -570,50 +580,62 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                etFromStatus1.requestFocus()
 //                            stat = false
 //                        }
-//                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() ->{
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                                etToStatus1.requestFocus()
-//                            stat = false
-//                        }
+                        rbStatus1.isChecked && etToStatus1.text.isNullOrEmpty() ->{
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                                etToStatus1.requestFocus()
+                            stat = false
+                        }
 
-//                        rbStatus2.isChecked -> {
-//                            SnackBarCustom.snackBarIconInfo(
-//                                root, layoutInflater, resources, root.context,
-//                                resources.getString(R.string.wrong_field),
-//                                R.drawable.ic_close, R.color.red_500)
-//                            stat = false
-//                        }
+                        rbStatus2.isChecked && etToIdentifikasi.text.isNullOrEmpty() &&
+                                etToAnalisaData.text.isNullOrEmpty() &&
+                                etToAnalisaAkarMasalah.text.isNullOrEmpty() &&
+                                etToMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty() &&
+                                etToAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500)
+                            stat = false
+                        }
 
-//                        else -> {
-//                            HawkUtils().setTempDataCreatePi(
-//                                id = data?.id,
-//                                piNo = data?.piNo,
-//                                date = data?.date,
-//                                title = data?.title,
-//                                branch = data?.branch,
-//                                subBranch = data?.subBranch,
-//                                department = data?.department,
-//                                years = data?.years,
-//                                statusImplementationModel = statusImplementation,
-//                                identification = data?.identification,
-//                                target = data?.target,
-//                                sebabMasalah = data?.sebabMasalah,
-//                                akarMasalah = data?.akarMasalah,
-//                                nilaiOutput = data?.nilaiOutput,
-//                                nqiModel = data?.nqiModel,
-//                                teamMember = data?.teamMember,
-//                                categoryFixing = data?.categoryFixing,
-//                                hasilImplementasi = data?.implementationResult,
-//                                attachment = data?.attachment,
-//                                statusProposal = data?.statusProposal,
-//                                source = source
-//                            )
-//                            stat = true
-//                        }
-//                    }
+                        else -> {
+                            HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.date,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementationModel = statusImplementation,
+                                identification = data?.identification,
+                                target = data?.target,
+                                sebabMasalah = data?.sebabMasalah,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.nilaiOutput,
+                                nqiModel = data?.nqiModel,
+                                teamMember = data?.teamMember,
+                                categoryFixing = data?.categoryFixing,
+                                hasilImplementasi = data?.implementationResult,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
+                                historyApproval = data?.historyApproval,
+                                activityType = data?.activityType,
+                                submitType = data?.submitType,
+                                comment = data?.comment,
+                                source = source
+                            )
+                            stat = true
+                        }
+                    }
                 }
                 return stat
             }

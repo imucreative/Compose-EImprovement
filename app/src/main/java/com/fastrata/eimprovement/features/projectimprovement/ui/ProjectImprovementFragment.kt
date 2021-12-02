@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.R.layout.simple_list_item_1
+import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,7 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.projectimprovement.adapter.ProjectImprovementAdapter
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
+import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementRemoteRequest
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
@@ -34,10 +36,10 @@ import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.Exception
 
 class ProjectImprovementFragment : Fragment(), Injectable{
     @Inject
@@ -89,6 +91,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         masterBranchViewModel = injectViewModel(viewModelFactory)
         checkPeriodViewModel = injectViewModel(viewModelFactory)
 
+        notification = HelperNotification()
+
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
@@ -128,6 +132,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun getDataListPi(){
         try {
             adapter.clear()
+            page = 1
 
             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                 userId, limit, page, roleName, PI,
@@ -265,95 +270,124 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
     private fun getListPi() {
         isLoading = true
-
-        listPiViewModel.getListPiItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get List PI")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-
-                            val listResponse = result.data?.data
-                            if (listResponse != null) {
-                                if (listResponse.isNullOrEmpty()) {
-                                    binding.rv.visibility = View.GONE
-                                    binding.noDataScreen.root.visibility = View.VISIBLE
-                                } else {
-                                    totalPage = result.data.totalPage
-
-                                    binding.rv.visibility = View.VISIBLE
-                                    binding.noDataScreen.root.visibility = View.GONE
-
-                                    adapter.setList(listResponse)
-                                }
+        try {
+            listPiViewModel.getListPiItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading get List PI")
                             }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
 
-                            retrieveDataStatusProposal()
-                            retrieveDataBranch()
-                            isLoading = false
-                            Timber.d("###-- Success get List PI")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            isLoading = false
-                            Timber.d("###-- Error get List PI")
+                                val listResponse = result.data?.data
+                                if (listResponse != null) {
+                                    if (listResponse.isNullOrEmpty()) {
+                                        binding.rv.visibility = View.GONE
+                                        binding.noDataScreen.root.visibility = View.VISIBLE
+                                    } else {
+                                        totalPage = result.data.totalPage
+
+                                        binding.rv.visibility = View.VISIBLE
+                                        binding.noDataScreen.root.visibility = View.GONE
+
+                                        adapter.setList(listResponse)
+                                    }
+                                }
+
+                                retrieveDataStatusProposal()
+                                retrieveDataBranch()
+                                isLoading = false
+                                Timber.d("###-- Success get List PI")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                isLoading = false
+                                Timber.d("###-- Error get List PI")
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            isLoading = false
+            Timber.d("###-- Error get List PI")
         }
     }
 
     private fun retrieveDataStatusProposal(){
-        masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            binding.edtStatusProposal.isEnabled = false
-                            Timber.d("###-- Loading get status proposal")
-                        }
-                        Result.Status.SUCCESS -> {
-                            binding.edtStatusProposal.isEnabled = true
-                            listStatusProposalItem = result.data?.data
-                            initComponentStatusProposal()
-                            Timber.d("###-- Success get status proposal")
-                        }
-                        Result.Status.ERROR -> {
-                            binding.edtStatusProposal.isEnabled = false
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get status proposal")
+        try {
+            masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                binding.edtStatusProposal.isEnabled = false
+                                Timber.d("###-- Loading get status proposal")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.edtStatusProposal.isEnabled = true
+                                listStatusProposalItem = result.data?.data
+                                initComponentStatusProposal()
+                                Timber.d("###-- Success get status proposal")
+                            }
+                            Result.Status.ERROR -> {
+                                binding.edtStatusProposal.isEnabled = false
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get status proposal")
+                            }
+
                         }
 
                     }
-
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            binding.edtStatusProposal.isEnabled = false
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get status proposal")
         }
     }
 
     private fun getStatusCheckPeriod(){
-        notification = HelperNotification()
-        checkPeriodViewModel.getCheckPeriodItem.observeEvent(this){ resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when(result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
-                            Timber.d("###-- Loading get CheckPeriod")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-                            val statusProposal = result.data?.data?.get(0)
-                            Timber.e("Period : $statusProposal")
-                            if (statusProposal?.id == 11) {
-                                notification.shownotificationyesno(
+        try {
+            checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading get CheckPeriod")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+                                val statusProposal = result.data?.data?.get(0)
+                                Timber.e("Period : $statusProposal")
+                                if (statusProposal?.id == 11) {
+                                    notification.shownotificationyesno(
                                         requireActivity(),
                                         requireContext(),
                                         R.color.blue_500,
@@ -361,93 +395,149 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                         "",
                                         resources.getString(R.string.agree),
                                         resources.getString(R.string.not_agree),
-                                        object : HelperNotification.CallBackNotificationYesNo{
+                                        object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
                                             }
 
                                             override fun onNotificationYes() {
-                                                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = "",statusProposal = statusProposal
-                                                )
-                                                requireView().findNavController().navigate(direction)
+                                                val direction =
+                                                    ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                                        toolbarTitle = "Create Project Improvement",
+                                                        action = ADD,
+                                                        idPi = 0,
+                                                        piNo = "",
+                                                        type = "",
+                                                        statusProposal = statusProposal
+                                                    )
+                                                requireView().findNavController()
+                                                    .navigate(direction)
                                             }
                                         }
                                     )
-                            }else {
-                                val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                    toolbarTitle = "Create Project Improvement", action = ADD, idPi = 0, piNo = "", type = "",statusProposal = statusProposal
-                                )
-                                requireView().findNavController().navigate(direction)
+                                } else {
+                                    val direction =
+                                        ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                                            toolbarTitle = "Create Project Improvement",
+                                            action = ADD,
+                                            idPi = 0,
+                                            piNo = "",
+                                            type = "",
+                                            statusProposal = statusProposal
+                                        )
+                                    requireView().findNavController().navigate(direction)
+                                }
+                                Timber.d("###-- Success get CheckPeriod")
                             }
-                            Timber.d("###-- Success get CheckPeriod")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get CheckPeriod")
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get CheckPeriod")
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get CheckPeriod")
         }
     }
 
     private fun retrieveDataBranch(){
-        masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            binding.edtBranch.isEnabled = false
-                            Timber.d("###-- Loading get Branch")
-                        }
-                        Result.Status.SUCCESS -> {
-                            binding.edtBranch.isEnabled = true
-                            listBranchItem = result.data?.data
-                            initComponentBranch()
-                            Timber.d("###-- Success get Branch")
-                        }
-                        Result.Status.ERROR -> {
-                            binding.edtBranch.isEnabled = false
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get Branch")
+        try {
+            masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                binding.edtBranch.isEnabled = false
+                                Timber.d("###-- Loading get Branch")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.edtBranch.isEnabled = true
+                                listBranchItem = result.data?.data
+                                initComponentBranch()
+                                Timber.d("###-- Success get Branch")
+                            }
+                            Result.Status.ERROR -> {
+                                binding.edtBranch.isEnabled = false
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get Branch")
+                            }
+
                         }
 
                     }
-
-                }
-            })
+                })
+            }
+        }catch (err : Exception){
+            binding.edtBranch.isEnabled = false
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get Branch")
         }
     }
 
     private fun retrieveDataSubBranch(){
-        masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            binding.edtSubBranch.isEnabled = false
-                            Timber.d("###-- Loading get sub Branch")
-                        }
-                        Result.Status.SUCCESS -> {
-                            binding.edtSubBranch.isEnabled = true
-                            listSubBranchItem = result.data?.data
-                            initComponentSubBranch()
-                            Timber.d("###-- Success get sub Branch")
-                        }
-                        Result.Status.ERROR -> {
-                            binding.edtSubBranch.isEnabled = false
-                            HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                            Timber.d("###-- Error get sub Branch")
+        try {
+            masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                binding.edtSubBranch.isEnabled = false
+                                Timber.d("###-- Loading get sub Branch")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.edtSubBranch.isEnabled = true
+                                listSubBranchItem = result.data?.data
+                                initComponentSubBranch()
+                                Timber.d("###-- Success get sub Branch")
+                            }
+                            Result.Status.ERROR -> {
+                                binding.edtSubBranch.isEnabled = false
+                                HelperLoading.hideLoading()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Timber.d("###-- Error get sub Branch")
+                            }
+
                         }
 
                     }
-
-                }
-            })
+                })
+            }
+        }catch (err: Exception){
+            binding.edtSubBranch.isEnabled = false
+            HelperLoading.hideLoading()
+            Toast.makeText(
+                requireContext(),
+                "Error : ${err.message}",
+                Toast.LENGTH_LONG
+            ).show()
+            Timber.d("###-- Error get sub Branch")
         }
     }
 
@@ -510,7 +600,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun initComponent() {
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementModel) {
-                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),resources.getString(R.string.select),
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -535,10 +625,11 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onSubmit() {
-                            val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
+                            /*val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
                                 toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
                             )
-                            requireView().findNavController().navigate(direction)
+                            requireView().findNavController().navigate(direction)*/
+                            getDetailData(data.idPi, data.userId)
                         }
 
                         override fun onCheck() {
@@ -564,7 +655,22 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onDelete() {
-                            removeListPi(data)
+                            notification.shownotificationyesno(
+                                requireActivity(),
+                                requireContext(),
+                                R.color.blue_500,
+                                resources.getString(R.string.delete),
+                                resources.getString(R.string.delete_confirmation),
+                                resources.getString(R.string.ok),
+                                resources.getString(R.string.no),
+                                object : HelperNotification.CallBackNotificationYesNo {
+                                    override fun onNotificationNo() {
+                                    }
+                                    override fun onNotificationYes() {
+                                        removeListPi(data)
+                                    }
+                                }
+                            )
                         }
                     })
             }
@@ -626,6 +732,145 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         }
     }
 
+    private fun getDetailData(idPi: Int, userId: Int) {
+        try {
+            listPiViewModel.setDetailPi(idPi, userId)
+
+            listPiViewModel.getDetailPiItem.observeEvent(this) { resultObserve ->
+                resultObserve.observe(this, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+
+                                Timber.d("###-- Loading getDetailPiItem")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+
+                                val dataCreateModel = ProjectImprovementCreateModel(
+                                    id = result.data?.data?.get(0)?.id,
+                                    piNo = result.data?.data?.get(0)?.piNo,
+                                    department = result.data?.data?.get(0)?.department,
+                                    years = result.data?.data?.get(0)?.years,
+                                    date = result.data?.data?.get(0)?.date,
+                                    branchCode = result.data?.data?.get(0)?.branchCode,
+                                    branch = result.data?.data?.get(0)?.branch,
+                                    subBranch = result.data?.data?.get(0)?.subBranch,
+                                    title = result.data?.data?.get(0)?.title,
+                                    statusImplementationModel = result.data?.data?.get(0)?.statusImplementationModel,
+                                    identification = result.data?.data?.get(0)?.identification?.let {
+                                        HtmlCompat.fromHtml(
+                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        ).toString()
+                                    },
+                                    target = result.data?.data?.get(0)?.target?.let {
+                                        HtmlCompat.fromHtml(
+                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        ).toString()
+                                    },
+                                    sebabMasalah = result.data?.data?.get(0)?.sebabMasalah,
+                                    akarMasalah = result.data?.data?.get(0)?.akarMasalah,
+                                    nilaiOutput = result.data?.data?.get(0)?.nilaiOutput?.let {
+                                        HtmlCompat.fromHtml(
+                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        ).toString()
+                                    },
+                                    nqiModel = result.data?.data?.get(0)?.nqiModel,
+                                    teamMember = result.data?.data?.get(0)?.teamMember,
+                                    categoryFixing = result.data?.data?.get(0)?.categoryFixing,
+                                    implementationResult = result.data?.data?.get(0)?.implementationResult?.let {
+                                        HtmlCompat.fromHtml(
+                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        ).toString()
+                                    },
+                                    attachment = result.data?.data?.get(0)?.attachment,
+                                    statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                    nik = result.data?.data?.get(0)?.nik,
+                                    headId = result.data?.data?.get(0)?.headId,
+                                    userId = result.data?.data?.get(0)?.userId,
+                                    orgId = result.data?.data?.get(0)?.orgId,
+                                    warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                    historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                    activityType = PI,
+                                    submitType = 1,
+                                    comment = ""
+                                )
+
+                                notification.shownotificationyesno(
+                                    requireActivity(),
+                                    requireContext(),
+                                    R.color.blue_500,
+                                    resources.getString(R.string.submit),
+                                    resources.getString(R.string.submit_desc),
+                                    "SEND",
+                                    resources.getString(R.string.no),
+                                    object : HelperNotification.CallBackNotificationYesNo {
+                                        override fun onNotificationNo() {
+
+                                        }
+                                        override fun onNotificationYes() {
+                                            update(dataCreateModel)
+                                        }
+                                    }
+                                )
+
+                                Timber.d("###-- Success getDetailPiItem")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(requireContext(), "Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Error getDetailPiItem")
+                            }
+
+                        }
+                    }
+                })
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            Timber.d("###-- Error onCreate")
+        }
+    }
+
+    private fun update(data: ProjectImprovementCreateModel){
+        try {
+            listPiViewModel.setPostSubmitUpdatePi(data)
+            listPiViewModel.putSubmitUpdatePi.observeEvent(this) { resultObserve ->
+                resultObserve.observe(this, { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
+                                Timber.d("###-- Loading putSubmitUpdatePi")
+                            }
+                            Result.Status.SUCCESS -> {
+                                HelperLoading.hideLoading()
+
+                                Timber.e("${result.data?.message}")
+
+                                Toast.makeText(requireContext(), result.data?.message, Toast.LENGTH_LONG).show()
+                                onStart()
+
+                                Timber.d("###-- Success putSubmitUpdatePi")
+                            }
+                            Result.Status.ERROR -> {
+                                HelperLoading.hideLoading()
+                                Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Error putSubmitUpdatePi")
+                            }
+
+                        }
+                    }
+                })
+            }
+        }catch (err: Exception){
+            HelperLoading.hideLoading()
+            Toast.makeText(requireContext(), err.message, Toast.LENGTH_LONG).show()
+            Timber.d("###-- Error putSubmitUpdatePi")
+        }
+    }
 
     private fun initToolbar() {
         val toolbar = toolbarBinding.toolbar

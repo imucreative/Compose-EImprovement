@@ -60,8 +60,8 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
 
     private fun initComponent() {
         viewModel.setAkarMasalah(source)
-
-        adapter = AkarMasalahAdapter(action = action, clickedItemListener = { akarMasalahItem, index ->
+        data = HawkUtils().getTempDataCreatePi(source)
+        adapter = AkarMasalahAdapter(action = action, statusProposalId = data?.statusProposal?.id, clickedItemListener = { akarMasalahItem, index ->
             changeItemListener(akarMasalahItem, index)
         })
         adapter.notifyDataSetChanged()
