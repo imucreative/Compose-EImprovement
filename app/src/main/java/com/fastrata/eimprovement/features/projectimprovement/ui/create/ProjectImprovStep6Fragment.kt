@@ -181,7 +181,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                val sum = Tools.sumValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
+                                val sum = Tools.minusValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
                                 estimasiNqiTotal.setText(sum)
                             }
                         }
@@ -205,7 +205,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                val sum = Tools.sumValues(estimasiCost.text.toString(), estimasiBenefit.text.toString())
+                                val sum = Tools.minusValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
                                 estimasiNqiTotal.setText(sum)
                             }
                         }
@@ -234,7 +234,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                val sum = Tools.sumValues(aktualBenefit.text.toString(), aktualCost.text.toString())
+                                val sum = Tools.minusValues(aktualBenefit.text.toString(), aktualCost.text.toString())
                                 aktualNqiTotal.setText(sum)
                             }
                         }
@@ -258,7 +258,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     timer!!.schedule(object : TimerTask() {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
-                                val sum = Tools.sumValues(aktualCost.text.toString(), aktualBenefit.text.toString())
+                                val sum = Tools.minusValues(aktualBenefit.text.toString(), aktualCost.text.toString())
                                 aktualNqiTotal.setText(sum)
                             }
                         }
