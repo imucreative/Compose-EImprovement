@@ -106,8 +106,12 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         setData()
         setValidation()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
-            disableForm()
+        when (action){
+            APPROVE, DETAIL -> disableForm()
+        }
+
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -123,6 +127,17 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
             memberTask.isEnabled = false
 
             addTeamMember.isClickable = false
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            5, 6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -262,16 +277,17 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(data: TeamMemberItem) {
                 if ((action != APPROVE) && (action != DETAIL)) {
-                    teamMember?.remove(data)
+                    if (!conditionImplementation()) {
+                        teamMember?.remove(data)
 
-                    listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                    listTeamMemberViewModel.getSuggestionSystemTeamMember()
-                        .observe(viewLifecycleOwner, {
+                        listTeamMemberViewModel.updateTeamMember(teamMember, source)
+                        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
                             if (it != null) {
                                 teamMemberAdapter.setListTeamMember(it)
                                 Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
                             }
                         })
+                    }
                 }
             }
         })
@@ -330,7 +346,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 //                            R.drawable.ic_close, R.color.red_500)
 //                        memberTask.requestFocus()
 //                    }
-                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id!! == 1 && task.equals("Ketua") ->{
+                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id == 1 && task.equals("Ketua") ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_ketua),

@@ -104,8 +104,12 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         setValidation()
 
 
-        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
-            disableForm()
+        when (ssAction){
+            APPROVE, DETAIL -> disableForm()
+        }
+
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -121,6 +125,17 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             memberTask.isEnabled = false
 
             addTeamMember.isClickable = false
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            5, 6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -264,15 +279,16 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(dataMember: TeamMemberItem) {
                 if ((ssAction != APPROVE) && (ssAction != DETAIL)) {
-                    teamMember?.remove(dataMember)
+                    if (!conditionImplementation()) {
+                        teamMember?.remove(dataMember)
 
-                    listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                    listTeamMemberViewModel.getSuggestionSystemTeamMember()
-                        .observe(viewLifecycleOwner, {
+                        listTeamMemberViewModel . updateTeamMember (teamMember, source)
+                        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
                             if (it != null) {
                                 teamMemberAdapter.setListTeamMember(it)
                             }
                         })
+                    }
                 }
             }
         })
@@ -332,7 +348,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
-                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id!! == 1 && task.equals("Ketua") ->{
+                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id == 1 && task.equals("Ketua") ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_ketua),
