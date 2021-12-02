@@ -76,11 +76,11 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         }
 
         when (data?.statusProposal?.id) {
-            4, 9 -> {
+            4 -> {
                 binding.rbStatus1.isClickable = false
                 binding.rbStatus2.isClickable = false
             }
-            5, 6 -> {
+            5, 6, 9 -> {
                 disableForm()
             }
         }
@@ -125,9 +125,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
             linearLayoutAkan.visibility = View.GONE
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
+                    HawkUtils().setStatusImplementation(true)
                     etFromStatus1.isEnabled = true
                     etToStatus1.isEnabled = true
-                    HawkUtils().setStatusImplementation(true)
+
                     linearLayoutAkan.visibility = View.GONE
                 }
             }

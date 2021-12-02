@@ -54,11 +54,11 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
 
         _binding = FragmentProjectImprovementStep6Binding.bind(view)
 
-        setLogic()
         setLogicEstimasi()
         setLogicAktual()
         getData()
         setData()
+        setLogic()
 
         if ((action == APPROVE) || (action == DETAIL)) {
             disableForm()
@@ -91,7 +91,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
         Timber.e("Id Status proposal :  ${data?.statusProposal?.id}")
         binding.apply {
             when {
-                data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9 -> {
+                ((conditionCreate() && data?.statusImplementationModel?.sudah?.from != "") || conditionImplementation()) -> {
                     estimasiBenefit.isEnabled = false
                     edtLayoutEstimasiBenefit.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
                     estimasiBenefitKeterangan.isEnabled = false
@@ -103,12 +103,22 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     estimasiNqiTotal.isEnabled = false
                     edtLayoutEstimasiNqi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
 
+                    when {
+                        conditionCreate() -> {
+                            estimasiBenefit.setText("")
+                            estimasiBenefitKeterangan.setText("")
+                            estimasiCost.setText("")
+                            estimasiCostKeterangan.setText("")
+                            estimasiNqiTotal.setText("")
+                        }
+                    }
+
                     aktualBenefit.isEnabled = true
                     aktualBenefitKeterangan.isEnabled = true
                     aktualCost.isEnabled = true
                     aktualCostKeterangan.isEnabled = true
                 }
-                data?.statusProposal != null -> {
+                (conditionCreate() && data?.statusImplementationModel?.sudah?.from == "") -> {
                     estimasiBenefit.isEnabled = true
                     estimasiBenefitKeterangan.isEnabled = true
                     estimasiCost.isEnabled = true
@@ -124,6 +134,16 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                     edtLayoutAktualCostKeterangan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
                     aktualNqiTotal.isEnabled = false
                     edtLayoutAktualNqi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+
+                    when {
+                        conditionCreate() -> {
+                            aktualBenefit.setText("")
+                            aktualBenefitKeterangan.setText("")
+                            aktualCost.setText("")
+                            aktualCostKeterangan.setText("")
+                            aktualNqiTotal.setText("")
+                        }
+                    }
                 }
                 else -> {
                     estimasiBenefit.isEnabled = false
@@ -278,6 +298,28 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
         }
     }
 
+    private fun conditionCreate(): Boolean {
+        return when (data?.statusProposal?.id) {
+            1, 11, 4 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            5, 6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
     private fun setData() {
         (activity as ProjectImprovementCreateWizard).setPiCreateCallback(object :
             ProjectImprovementSystemCreateCallback {
@@ -294,7 +336,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        estimasiBenefit.text.isNullOrEmpty() && data?.statusProposal == null -> {
+                        estimasiBenefit.text.isNullOrEmpty() && (conditionCreate() && data?.statusImplementationModel?.sudah?.from == "") -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_estimasi_empty),
@@ -302,7 +344,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             estimasiBenefit.requestFocus()
                             stat = false
                         }
-                        estimasiBenefitKeterangan.text.isNullOrEmpty() && data?.statusProposal == null -> {
+                        estimasiBenefitKeterangan.text.isNullOrEmpty() && (conditionCreate() && data?.statusImplementationModel?.sudah?.from == "") -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_estimasi_empty),
@@ -310,7 +352,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             estimasiBenefitKeterangan.requestFocus()
                             stat = false
                         }
-                        estimasiCost.text.isNullOrEmpty() && data?.statusProposal == null -> {
+                        estimasiCost.text.isNullOrEmpty() && (conditionCreate() && data?.statusImplementationModel?.sudah?.from == "") -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_estimasi_empty),
@@ -318,7 +360,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             estimasiCost.requestFocus()
                             stat = false
                         }
-                        estimasiCostKeterangan.text.isNullOrEmpty() && data?.statusProposal == null -> {
+                        estimasiCostKeterangan.text.isNullOrEmpty() && (conditionCreate() && data?.statusImplementationModel?.sudah?.from == "") -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_estimasi_empty),
@@ -326,7 +368,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             estimasiCostKeterangan.requestFocus()
                             stat = false
                         }
-                        estimasiNqiTotal.text.isNullOrEmpty() && data?.statusProposal == null -> {
+                        estimasiNqiTotal.text.isNullOrEmpty() && (conditionCreate() && data?.statusImplementationModel?.sudah?.from == "") -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_estimasi_empty),
@@ -335,7 +377,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             stat = false
                         }
 
-                        aktualBenefit.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
+                        aktualBenefit.text.isNullOrEmpty() && ((conditionCreate() && data?.statusImplementationModel?.sudah?.from != "") || conditionImplementation()) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -343,7 +385,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualBenefit.requestFocus()
                             stat = false
                         }
-                        aktualBenefitKeterangan.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
+                        aktualBenefitKeterangan.text.isNullOrEmpty() && ((conditionCreate() && data?.statusImplementationModel?.sudah?.from != "") || conditionImplementation()) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -351,7 +393,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualBenefitKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualCost.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
+                        aktualCost.text.isNullOrEmpty() && ((conditionCreate() && data?.statusImplementationModel?.sudah?.from != "") || conditionImplementation()) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -359,7 +401,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualCost.requestFocus()
                             stat = false
                         }
-                        aktualCostKeterangan.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
+                        aktualCostKeterangan.text.isNullOrEmpty() && ((conditionCreate() && data?.statusImplementationModel?.sudah?.from != "") || conditionImplementation()) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
@@ -367,7 +409,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             aktualCostKeterangan.requestFocus()
                             stat = false
                         }
-                        aktualNqiTotal.text.isNullOrEmpty() && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9) && action == SUBMIT_PROPOSAL -> {
+                        aktualNqiTotal.text.isNullOrEmpty() && ((conditionCreate() && data?.statusImplementationModel?.sudah?.from != "") || conditionImplementation()) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.value_Aktual_empty),
