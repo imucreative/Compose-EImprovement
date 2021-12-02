@@ -15,6 +15,8 @@ data class SuggestionSystemModel(
     val userId: Int,
     @SerializedName("CREATED_DATE")
     val date: String,
+    @SerializedName("CREATED_BY")
+    val createdBy : String,
     @SerializedName("TITLE")
     val title: String,
     @SerializedName("STATUS_PROPOSAL")
