@@ -421,7 +421,7 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.attachment?.size == 0 && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) {
+                    stat = if (data?.attachment?.size == 0 && ((ssAction != DETAIL) && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9))) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.file_empty),
