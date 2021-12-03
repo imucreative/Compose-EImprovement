@@ -37,14 +37,14 @@ class MutasiAdapter : RecyclerView.Adapter<MutasiAdapter.MutasiAdapterViewHolder
                 desc.text = data.desc
                 if (data.nominal_debit!= null && data.nominal_debit == 0){
                     point.text = Tools.doubleToRupiah(data.nominal_kredit.toDouble(),2)
-                    point.setTextColor(Color.GREEN)
+                    point.setTextColor(Color.RED)
                     typeReward.text = "KR"
-                    typeReward.setTextColor(Color.GREEN)
+                    typeReward.setTextColor(Color.RED)
                 }else{
                     point.text = Tools.doubleToRupiah(data.nominal_debit.toDouble(),2)
-                    point.setTextColor(Color.RED)
+                    point.setTextColor(Color.GREEN)
                     typeReward.text = "DB"
-                    typeReward.setTextColor(Color.RED)
+                    typeReward.setTextColor(Color.GREEN)
                 }
             }
         }
