@@ -59,6 +59,29 @@
                 android:textColor="@color/grey_60" />
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/linear_rating"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/spacing_large"
+            android:paddingRight="@dimen/spacing_large"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                style="@style/Yellow.AppCompatRatingBar"
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="1"
+                android:theme="@style/Yellow.AppCompatRatingBar" />
+
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/relative_layout_comment"
             android:layout_width="match_parent"

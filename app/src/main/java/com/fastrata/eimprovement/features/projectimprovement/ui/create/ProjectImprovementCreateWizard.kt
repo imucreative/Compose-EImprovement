@@ -351,8 +351,46 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
     }
 
     private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
+        val dataCreateModel = HawkUtils().getTempDataCreatePi(source)
+        Timber.e("stat Props: "+ dataCreateModel?.statusProposal?.id)
         binding.apply {
-            notification.showNotificationYesNoWithComment(
+            if(key == 1 ){
+                   notification.showNotificationYesNoWithRating(
+                this@ProjectImprovementCreateWizard,
+                applicationContext, color, title, description, buttonString,
+                resources.getString(R.string.cancel),dataCreateModel?.statusProposal?.id,
+                object : HelperNotification.CallBackNotificationYesNoWithRating {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes(comment: String,rate: Int) {
+                        data = HawkUtils().getTempDataCreatePi(source)
+                        if (comment != "") {
+                            val updateProposal = ProjectImprovementCreateModel(
+                                data?.id,data?.piNo,
+                                userId = userId,
+                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,data?.department,
+                                data?.years, data?.date,data?.branchCode,data?.branch,data?.subBranch,
+                                data?.title,data?.statusImplementationModel,data?.identification,
+                                data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
+                                data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
+                                data?.attachment,data?.statusProposal,data?.historyApproval,
+                                activityType = PI,submitType = key, comment = comment
+                            )
+                            update(updateProposal, true)
+                        } else {
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500
+                            )
+                        }
+                    }
+                }
+            )
+            }else{
+                   notification.showNotificationYesNoWithComment(
                 this@ProjectImprovementCreateWizard,
                 applicationContext, color, title, description, buttonString,
                 resources.getString(R.string.cancel),
@@ -386,6 +424,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     }
                 }
             )
+            }
         }
     }
 

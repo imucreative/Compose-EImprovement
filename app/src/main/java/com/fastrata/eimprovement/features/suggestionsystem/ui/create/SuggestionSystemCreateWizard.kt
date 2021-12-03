@@ -333,40 +333,78 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     }
 
     private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
+        val dataCreateModel = HawkUtils().getTempDataCreateSs(source)
+        Timber.e("stat Props: "+ dataCreateModel?.statusProposal?.id)
         binding.apply {
-            notification.showNotificationYesNoWithComment(
-                this@SuggestionSystemCreateWizard,
-                applicationContext, color, title, description, buttonString,
-                resources.getString(R.string.cancel),
-                object : HelperNotification.CallBackNotificationYesNoWithComment {
-                    override fun onNotificationNo() {
+            if (key == 1){
+                notification.showNotificationYesNoWithRating(
+                    this@SuggestionSystemCreateWizard,
+                    applicationContext, color, title, description, buttonString,
+                    resources.getString(R.string.cancel),dataCreateModel?.statusProposal?.id,
+                    object : HelperNotification.CallBackNotificationYesNoWithRating {
+                        override fun onNotificationNo() {
+                        }
 
-                    }
-
-                    override fun onNotificationYes(comment: String) {
-                        data = HawkUtils().getTempDataCreateSs(source)
-                        if (comment != "") {
-                            val updateProposal = SuggestionSystemCreateModel(
-                                data?.id, data?.ssNo, data?.date, data?.name,
-                                userId = userId,
-                                data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
-                                data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
-                                data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
-                                data?.department, data?.teamMember, data?.statusProposal, data?.proses,
-                                data?.result, data?.historyApproval,
-                                activityType = SS, submitType = key, comment = comment
-                            )
-                            update(updateProposal, true)
-                        } else {
-                            SnackBarCustom.snackBarIconInfo(
-                                binding.root, layoutInflater, resources, root.context,
-                                resources.getString(R.string.wrong_field),
-                                R.drawable.ic_close, R.color.red_500
-                            )
+                        override fun onNotificationYes(comment: String,rate : Int) {
+                            data = HawkUtils().getTempDataCreateSs(source)
+                            Timber.e("rate: $rate")
+                            if (comment != "") {
+                                val updateProposal = SuggestionSystemCreateModel(
+                                    data?.id, data?.ssNo, data?.date, data?.name,
+                                    userId = userId,
+                                    data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
+                                    data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
+                                    data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
+                                    data?.department, data?.teamMember, data?.statusProposal, data?.proses,
+                                    data?.result, data?.historyApproval,
+                                    activityType = SS, submitType = key, comment = comment
+                                )
+                                update(updateProposal, true)
+                            } else {
+                                SnackBarCustom.snackBarIconInfo(
+                                    binding.root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500
+                                )
+                            }
                         }
                     }
-                }
-            )
+                )
+            }else{
+                notification.showNotificationYesNoWithComment(
+                    this@SuggestionSystemCreateWizard,
+                    applicationContext, color, title, description, buttonString,
+                    resources.getString(R.string.cancel),
+                    object : HelperNotification.CallBackNotificationYesNoWithComment {
+                        override fun onNotificationNo() {
+
+                        }
+
+                        override fun onNotificationYes(comment: String) {
+                            data = HawkUtils().getTempDataCreateSs(source)
+                            if (comment != "") {
+                                val updateProposal = SuggestionSystemCreateModel(
+                                    data?.id, data?.ssNo, data?.date, data?.name,
+                                    userId = userId,
+                                    data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
+                                    data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
+                                    data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
+                                    data?.department, data?.teamMember, data?.statusProposal, data?.proses,
+                                    data?.result, data?.historyApproval,
+                                    activityType = SS, submitType = key, comment = comment
+                                )
+                                update(updateProposal, true)
+                            } else {
+                                SnackBarCustom.snackBarIconInfo(
+                                    binding.root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500
+                                )
+                            }
+                        }
+                    }
+                )
+            }
         }
     }
 
