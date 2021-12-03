@@ -43,4 +43,12 @@ class AttachmentViewModel @Inject constructor(private val repository: GlobalRemo
             _doRemoveAttachment.value = Event(result)
         }
     }
+
+    // download attachment
+    private val _downloading: MutableLiveData<Boolean> = MutableLiveData()
+    val downloading: LiveData<Boolean> = _downloading
+
+    fun setDownloading(downloading: Boolean) {
+        _downloading.value = downloading
+    }
 }

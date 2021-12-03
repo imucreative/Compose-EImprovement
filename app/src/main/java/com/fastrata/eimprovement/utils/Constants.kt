@@ -58,9 +58,12 @@ const val APPROVE = "approve"
 const val ACTION_DETAIL_DATA = "action_detail_data"
 
 // provide attachment
+val FILE_NAME_EXT = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
+val PERMISSIONS = listOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 const val FILE_PICKER_REQUEST_CODE = 101
+const val DOWNLOAD_FILE_CODE = 102
 const val PROPOSAL = "Proposal"
-const val IMPLEMENTASI = "Implementasi"
+const val IMPLEMENT = "Implementasi"
 const val REQUEST_EXTERNAL_STORAGE = 1
 val PERMISSIONS_STORAGE = arrayOf(
     Manifest.permission.READ_EXTERNAL_STORAGE,

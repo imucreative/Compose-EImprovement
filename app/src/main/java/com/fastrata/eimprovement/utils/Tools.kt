@@ -32,7 +32,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.model.DeviceInfo
-import com.fastrata.eimprovement.features.login.data.model.RoleEntity
 import com.google.android.material.bottomappbar.BottomAppBar
 import java.lang.Exception
 import java.lang.StringBuilder
