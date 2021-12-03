@@ -182,7 +182,14 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
                                 val sum = Tools.minusValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
-                                estimasiNqiTotal.setText(sum)
+//                                estimasiNqiTotal.setText(sum)
+                                if (sum.isNotEmpty()){
+                                    val newString = Tools.doubleToRupiah(sum.toDouble(),2)
+                                    estimasiNqiTotal.setText(newString)
+                                }else{
+                                    estimasiNqiTotal.setText(sum)
+                                }
+
                             }
                         }
                     }, 1000)
@@ -206,7 +213,13 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
                                 val sum = Tools.minusValues(estimasiBenefit.text.toString(), estimasiCost.text.toString())
-                                estimasiNqiTotal.setText(sum)
+//                                estimasiNqiTotal.setText(sum)
+                                if (sum.isNotEmpty()){
+                                    val newString = Tools.doubleToRupiah(sum.toDouble(),2)
+                                    estimasiNqiTotal.setText(newString)
+                                }else{
+                                    estimasiNqiTotal.setText(sum)
+                                }
                             }
                         }
                     }, 1000)
@@ -235,7 +248,13 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
                                 val sum = Tools.minusValues(aktualBenefit.text.toString(), aktualCost.text.toString())
-                                aktualNqiTotal.setText(sum)
+//                                aktualNqiTotal.setText(sum)
+                                if (sum.isNotEmpty()){
+                                    val newString = Tools.doubleToRupiah(sum.toDouble(),2)
+                                    aktualNqiTotal.setText(newString)
+                                }else{
+                                    aktualNqiTotal.setText(sum)
+                                }
                             }
                         }
                     }, 1000)
@@ -259,7 +278,13 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                         override fun run() {
                             Handler(Looper.getMainLooper()).post {
                                 val sum = Tools.minusValues(aktualBenefit.text.toString(), aktualCost.text.toString())
-                                aktualNqiTotal.setText(sum)
+//                                aktualNqiTotal.setText(sum)
+                                if (sum.isNotEmpty()){
+                                    val newString = Tools.doubleToRupiah(sum.toDouble(),2)
+                                    aktualNqiTotal.setText(newString)
+                                }else{
+                                    aktualNqiTotal.setText(sum)
+                                }
                             }
                         }
                     }, 1000)
@@ -425,7 +450,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             val estimasiBenefitKeterangan = estimasiBenefitKeterangan.text.toString()
                             val estimasiCost = estimasiCost.text.toString()
                             val estimasiCostKeterangan = estimasiCostKeterangan.text.toString()
-                            val estimasiNqiTotal = estimasiNqiTotal.text.toString()
+                            val estimasiNqiTotal = estimasiNqiTotal.text.toString().replace("Rp","").replace(".","").lines().joinToString(transform = String::trim, separator = "\n")
 
                             estimasiModel = NqiEstimasiModel(
                                 benefit = if (estimasiBenefit.isNotEmpty()) estimasiBenefit.toInt() else null,
@@ -439,7 +464,7 @@ class ProjectImprovStep6Fragment : Fragment(), Injectable {
                             val aktualBenefitKeterangan = aktualBenefitKeterangan.text.toString()
                             val aktualCost = aktualCost.text.toString()
                             val aktualCostKeterangan = aktualCostKeterangan.text.toString()
-                            val aktualNqiTotal = aktualNqiTotal.text.toString()
+                            val aktualNqiTotal = aktualNqiTotal.text.toString().replace("Rp","").replace(".","").lines().joinToString(transform = String::trim, separator = "\n")
 
                             aktualModel = NqiAktualModel(
                                 benefit = if (aktualBenefit.isNotEmpty()) aktualBenefit.toInt() else null,
