@@ -2,15 +2,18 @@ package com.fastrata.eimprovement.di
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import dagger.android.DispatchingAndroidInjector
 import com.fastrata.eimprovement.BuildConfig
+import com.fastrata.eimprovement.api.AMQPConsumer
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.orhanobut.hawk.Hawk
 import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector
 import timber.log.Timber
+import java.net.URL
 import javax.inject.Inject
 
 class ThisApplication : Application(), HasAndroidInjector {
@@ -50,11 +53,47 @@ class ThisApplication : Application(), HasAndroidInjector {
             })
         }
 
+        startAMQPConsumer(this)
+
         /*//val userName = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
         val userName = HawkUtils().getDataLogin().USER_NAME
 
         //don't start sync if user does not login yet
         if (userName.isBlank()) return*/
+    }
+
+    companion object HomeSingleton {
+        private var amqpConsumer: AMQPConsumer? = null
+
+        fun startAMQPConsumer(context: Context){
+            val url: URL = URL(BuildConfig.BASE_URL)
+            val amqpHost = url.host
+            val amqpUser = "user"
+            val amqpPassword = "user"
+            val amqpPort = 81
+            val amqpVhost = "/"
+            val queueName = "EMP."+ HawkUtils().getDataLogin().USER_ID.toString()
+
+            if (amqpConsumer != null) {
+                if (amqpConsumer!!.isConnected()){
+                    amqpConsumer!!.stop()
+                }
+                amqpConsumer = null
+            }
+            amqpConsumer = AMQPConsumer(
+                amqpHost,
+                amqpPort,
+                amqpUser,
+                amqpPassword,
+                amqpVhost,
+                Build.PRODUCT + " " + Build.MODEL, context
+            );
+            amqpConsumer!!.start(queueName)
+        }
+
+        fun stopAMQPConsumer(){
+            amqpConsumer!!.stop()
+        }
     }
 
 

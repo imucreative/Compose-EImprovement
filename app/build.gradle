@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'          // date & time picker
     implementation "com.mikhaellopez:circularimageview:4.3.0"           // circle image view
     implementation "com.orhanobut:hawk:2.0.1"                           // Secure, simple key-value storage for android
+    implementation 'com.rabbitmq:amqp-client:5.14.0'                    //rabbit messaging
 
     // navigation
     def navigation = '2.3.5'

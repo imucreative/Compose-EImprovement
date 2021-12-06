@@ -12,6 +12,7 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
 import com.fastrata.eimprovement.di.Injectable
+import com.fastrata.eimprovement.di.ThisApplication
 import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.HawkUtils
@@ -77,6 +78,7 @@ class SettingsFragment : Fragment(), Injectable {
                     override fun onNotificationYes() {
                         HawkUtils().setStatusLogin(false)
                         HawkUtils().setDataLogin(null)
+                        ThisApplication.stopAMQPConsumer()
                         startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })
