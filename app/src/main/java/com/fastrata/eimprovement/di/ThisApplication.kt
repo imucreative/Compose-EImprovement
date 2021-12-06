@@ -19,7 +19,6 @@ import java.net.URL
 import javax.inject.Inject
 
 class ThisApplication : Application(), HasAndroidInjector {
-    var context: Context? = null
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
@@ -56,10 +55,6 @@ class ThisApplication : Application(), HasAndroidInjector {
         }
 
         startAMQPConsumer(this)
-        val intent = Intent(context, ThisApplication::class.java)
-//        if (intent.hasExtra("message")){
-//            correctivePlanOnClickListener()
-//        }
 
         /*//val userName = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
         val userName = HawkUtils().getDataLogin().USER_NAME
@@ -82,7 +77,7 @@ class ThisApplication : Application(), HasAndroidInjector {
 
         fun startAMQPConsumer(context: Context){
             val url: URL = URL(BuildConfig.BASE_URL)
-            val amqpHost = url.host
+            val amqpHost = "e-improvement.fastratabuana.co.id"
             val amqpUser = "user"
             val amqpPassword = "user"
             val amqpPort = 81
