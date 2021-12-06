@@ -2,7 +2,9 @@ package com.fastrata.eimprovement.di
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import androidx.annotation.IdRes
 import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import dagger.android.DispatchingAndroidInjector
@@ -17,6 +19,7 @@ import java.net.URL
 import javax.inject.Inject
 
 class ThisApplication : Application(), HasAndroidInjector {
+    var context: Context? = null
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
@@ -36,7 +39,6 @@ class ThisApplication : Application(), HasAndroidInjector {
         Hawk.init(this).build()
 
         if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
-
         AppInjector.init(this)
 
         if (BuildConfig.DEBUG) {
@@ -54,6 +56,10 @@ class ThisApplication : Application(), HasAndroidInjector {
         }
 
         startAMQPConsumer(this)
+        val intent = Intent(context, ThisApplication::class.java)
+//        if (intent.hasExtra("message")){
+//            correctivePlanOnClickListener()
+//        }
 
         /*//val userName = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
         val userName = HawkUtils().getDataLogin().USER_NAME
@@ -61,6 +67,15 @@ class ThisApplication : Application(), HasAndroidInjector {
         //don't start sync if user does not login yet
         if (userName.isBlank()) return*/
     }
+
+    private fun correctivePlanOnClickListener(){
+
+    }
+
+    private fun changeDestinationFragment(@IdRes containerViewId : Int,title:String){
+
+    }
+
 
     companion object HomeSingleton {
         private var amqpConsumer: AMQPConsumer? = null
