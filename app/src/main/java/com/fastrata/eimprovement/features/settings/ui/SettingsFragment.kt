@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
@@ -78,7 +79,7 @@ class SettingsFragment : Fragment(), Injectable {
                     override fun onNotificationYes() {
                         HawkUtils().setStatusLogin(false)
                         HawkUtils().setDataLogin(null)
-                        ThisApplication.stopAMQPConsumer()
+                        HomeActivity.stopAMQPConsumer()
                         startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })

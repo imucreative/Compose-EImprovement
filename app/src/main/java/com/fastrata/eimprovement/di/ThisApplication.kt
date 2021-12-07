@@ -54,57 +54,11 @@ class ThisApplication : Application(), HasAndroidInjector {
             })
         }
 
-        startAMQPConsumer(this)
-
         /*//val userName = PreferenceUtils(this).get(PREF_USER_NAME, "", true) ?: ""
         val userName = HawkUtils().getDataLogin().USER_NAME
 
         //don't start sync if user does not login yet
         if (userName.isBlank()) return*/
     }
-
-    private fun correctivePlanOnClickListener(){
-
-    }
-
-    private fun changeDestinationFragment(@IdRes containerViewId : Int,title:String){
-
-    }
-
-
-    companion object HomeSingleton {
-        private var amqpConsumer: AMQPConsumer? = null
-
-        fun startAMQPConsumer(context: Context){
-            val url: URL = URL(BuildConfig.BASE_URL)
-            val amqpHost = "e-improvement.fastratabuana.co.id"
-            val amqpUser = "user"
-            val amqpPassword = "user"
-            val amqpPort = 81
-            val amqpVhost = "/"
-            val queueName = "EMP."+ HawkUtils().getDataLogin().USER_ID.toString()
-
-            if (amqpConsumer != null) {
-                if (amqpConsumer!!.isConnected()){
-                    amqpConsumer!!.stop()
-                }
-                amqpConsumer = null
-            }
-            amqpConsumer = AMQPConsumer(
-                amqpHost,
-                amqpPort,
-                amqpUser,
-                amqpPassword,
-                amqpVhost,
-                Build.PRODUCT + " " + Build.MODEL, context
-            );
-            amqpConsumer!!.start(queueName)
-        }
-
-        fun stopAMQPConsumer(){
-            amqpConsumer!!.stop()
-        }
-    }
-
 
 }

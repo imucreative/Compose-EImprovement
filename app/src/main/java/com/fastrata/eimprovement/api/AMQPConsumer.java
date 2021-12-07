@@ -12,8 +12,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 
+import com.fastrata.eimprovement.HomeActivity;
 import com.fastrata.eimprovement.R;
-import com.fastrata.eimprovement.di.ThisApplication;
+import com.fastrata.eimprovement.data.model.MessageItem;
+import com.fastrata.eimprovement.utils.HawkUtils;
+import com.google.gson.Gson;
 import com.rabbitmq.client.CancelCallback;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -27,6 +30,7 @@ import java.util.Random;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import timber.log.Timber;
 
 public class AMQPConsumer {
     String host;
@@ -68,10 +72,16 @@ public class AMQPConsumer {
         public boolean handleMessage(Message msg) {
             if (msg.arg1 == 1) {
                 String message = msg.getData().getString("message");
+                MessageItem messageItem = new Gson().fromJson(message,MessageItem.class);
+                String data = messageItem.getMessage();
+                Integer id = messageItem.getId();
+                String type = messageItem.getType();
+                Timber.e("id&type "+id+"|"+type);
+                Timber.e("message : "+ data);
                 if (listener != null)
                     listener.onReceive("", message);
                 else
-                    showNotify(message);
+                    showNotify(data,type);
             }
             else {
                 if (listener != null)
@@ -140,15 +150,14 @@ public class AMQPConsumer {
     }
 
     @RequiresApi(api =  Build.VERSION_CODES.O)
-    void showNotify(String message){
+    void showNotify(String message,String type){
         Random random = new Random();
         Integer channelId = random.nextInt();
-
-        Intent fullScreenIntent = new Intent(context, ThisApplication.class);
+        Intent fullScreenIntent = new Intent(context, HomeActivity.class);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
                 fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Intent intent = new Intent(context, ThisApplication.class);
-        intent.putExtra("message", message);
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.putExtra("type", type);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP );
         PendingIntent pendingIntent = PendingIntent.getActivities(
                 context,
