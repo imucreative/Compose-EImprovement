@@ -99,6 +99,18 @@ internal class HawkUtils {
         return false
     }
 
+    fun setDocId(doc:String){
+        Hawk.put(HAWK_DOC_ID,doc)
+    }
+
+    fun getDocId():String{
+        return Hawk.get(HAWK_DOC_ID)
+    }
+
+    fun deleteDocId(){
+        Hawk.delete(HAWK_DOC_ID)
+    }
+
     fun setStatusImplementation(status: Boolean){
         Hawk.put(PI_STATUS_IMPLEMENTATION,status)
     }

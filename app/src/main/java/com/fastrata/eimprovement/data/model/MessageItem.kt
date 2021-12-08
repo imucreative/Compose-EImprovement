@@ -10,6 +10,8 @@ class MessageItem (
         val id : Int,
         @SerializedName("TYPE_PROPOSAL")
         val type: String,
+        @SerializedName("DOC_ID")
+        val doc:String,
         @SerializedName("MESSAGE")
         val message: String
         ):Parcelable

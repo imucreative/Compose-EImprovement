@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.fastrata.eimprovement.api.AMQPConsumer
-import com.fastrata.eimprovement.data.model.MessageItem
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.features.dashboard.ui.DashboardFragmentDirections
 import com.fastrata.eimprovement.utils.HawkUtils
@@ -23,6 +22,10 @@ import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 import java.net.URL
 import javax.inject.Inject
+import com.fastrata.eimprovement.data.model.MessageItem
+
+
+
 
 class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
@@ -39,8 +42,8 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
         navController = findNavController(R.id.nav_fragment)
 
         startAMQPConsumer(this)
-        if(intent.hasExtra("type")){
-            val ts = intent.getStringExtra("type")
+        if(intent.hasExtra("message")){
+            val ts = intent.getStringExtra("message")
             correctivePlanOnClickListener(ts!!)
         }
 
@@ -52,21 +55,28 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     private fun correctivePlanOnClickListener(ts : String){
         Timber.e("type :$ts")
-        changeDestinationFragment(ts)
+        val msg: MessageItem = Gson().fromJson(ts, MessageItem::class.java)
+        val type: String = msg.type
+        val doc: String = msg.doc
+        Timber.i("doc id : $doc")
+        changeDestinationFragment(type,doc)
     }
 
-    private fun changeDestinationFragment( type :String){
+    private fun changeDestinationFragment( type :String,doc: String){
         try {
             when(type){
                 "SS" ->{
+                    HawkUtils().setDocId(doc)
                     val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
                     navController.navigate(direction)
                 }
                 "PI"->{
+                    HawkUtils().setDocId(doc)
                     val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
                     navController.navigate(direction)
                 }
                 "CP"->{
+                    HawkUtils().setDocId(doc)
                     val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
                     navController.navigate(direction)
                 }

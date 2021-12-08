@@ -42,7 +42,6 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
         source = if (piNo == "") PI_CREATE else PI_DETAIL_DATA
 
         data = HawkUtils().getTempDataCreatePi(source)
-
         return binding.root
     }
 

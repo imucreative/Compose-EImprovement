@@ -94,13 +94,17 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             userId = HawkUtils().getDataLogin().USER_ID
             userName = HawkUtils().getDataLogin().USER_NAME
             roleName = HawkUtils().getDataLogin().ROLE_NAME
-
+//            var doc :String = ""
+//            doc = if(HawkUtils().getDocId()== null){
+//                ""
+//            }else{
+//                HawkUtils().getDocId()
+//            }
             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                 userId, limit, page, roleName,
                 userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
-
             listPiViewModel.setListPi(listProjectImprovementRemoteRequest)
         } catch (e: Exception){
             Timber.e("Error setListPi : $e")

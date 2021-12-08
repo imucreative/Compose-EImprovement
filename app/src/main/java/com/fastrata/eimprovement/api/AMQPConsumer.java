@@ -77,12 +77,13 @@ public class AMQPConsumer {
                    String data = messageItem.getMessage();
                    Integer id = messageItem.getId();
                    String type = messageItem.getType();
+                   String doc = messageItem.getDoc();
                    Timber.e("id&type "+id+"|"+type);
                    Timber.e("message : "+ data);
                    if (listener != null)
                        listener.onReceive("", message);
                    else
-                       showNotify(data,type);
+                       showNotify(message,data);
                }catch (Exception e){
                    Timber.e("error : "+e);
                }
@@ -154,14 +155,15 @@ public class AMQPConsumer {
     }
 
     @RequiresApi(api =  Build.VERSION_CODES.O)
-    void showNotify(String message,String type){
+    void showNotify(String message,String data){
         Random random = new Random();
         Integer channelId = random.nextInt();
         Intent fullScreenIntent = new Intent(context, HomeActivity.class);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
                 fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Intent intent = new Intent(context, HomeActivity.class);
-        intent.putExtra("type", type);
+        intent.putExtra("message", message);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP );
         PendingIntent pendingIntent = PendingIntent.getActivities(
                 context,
@@ -188,7 +190,7 @@ public class AMQPConsumer {
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Eimprovement")
                 .setTicker("Eimprovement")
-                .setContentText(message)
+                .setContentText(data)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
