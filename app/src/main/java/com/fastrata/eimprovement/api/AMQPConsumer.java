@@ -71,17 +71,21 @@ public class AMQPConsumer {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.arg1 == 1) {
-                String message = msg.getData().getString("message");
-                MessageItem messageItem = new Gson().fromJson(message,MessageItem.class);
-                String data = messageItem.getMessage();
-                Integer id = messageItem.getId();
-                String type = messageItem.getType();
-                Timber.e("id&type "+id+"|"+type);
-                Timber.e("message : "+ data);
-                if (listener != null)
-                    listener.onReceive("", message);
-                else
-                    showNotify(data,type);
+               try{
+                   String message = msg.getData().getString("message");
+                   MessageItem messageItem = new Gson().fromJson(message,MessageItem.class);
+                   String data = messageItem.getMessage();
+                   Integer id = messageItem.getId();
+                   String type = messageItem.getType();
+                   Timber.e("id&type "+id+"|"+type);
+                   Timber.e("message : "+ data);
+                   if (listener != null)
+                       listener.onReceive("", message);
+                   else
+                       showNotify(data,type);
+               }catch (Exception e){
+                   Timber.e("error : "+e);
+               }
             }
             else {
                 if (listener != null)
