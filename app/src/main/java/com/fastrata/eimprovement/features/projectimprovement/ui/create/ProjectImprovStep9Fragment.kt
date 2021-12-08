@@ -202,8 +202,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             R.color.blue_500,
                             resources.getString(R.string.delete),
                             resources.getString(R.string.delete_confirmation_file_attachment),
-                            resources.getString(R.string.agree),
-                            resources.getString(R.string.not_agree),
+                            resources.getString(R.string.ok),
+                            resources.getString(R.string.no),
                             object : HelperNotification.CallBackNotificationYesNo {
                                 override fun onNotificationNo() {
 
@@ -386,7 +386,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
     private fun conditionImplementation(): Boolean {
         return when (data?.statusProposal?.id) {
-            5, 6, 9 -> {
+            6, 9 -> {
                 true
             }
             else -> {
@@ -513,7 +513,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.attachment?.size == 0 && ((action != DETAIL) && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9))) {
+                    stat = if (data?.attachment?.size == 0 && (action != DETAIL && conditionImplementation())) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.file_empty),

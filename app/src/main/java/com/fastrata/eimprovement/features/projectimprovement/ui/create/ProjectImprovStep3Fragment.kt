@@ -50,12 +50,12 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
         getData()
         setData()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
-            disableForm()
+        when (action) {
+            APPROVE, DETAIL -> disableForm()
         }
 
-        when (data?.statusProposal?.id) {
-            5, 6, 9 -> disableForm()
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -68,6 +68,17 @@ class ProjectImprovStep3Fragment : Fragment(), Injectable {
         binding.apply {
             identifikasiMasalah.isEnabled = false
             menetapkanTarget.isEnabled = false
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 

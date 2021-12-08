@@ -104,7 +104,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
     private fun conditionImplementation(): Boolean {
         return when (data?.statusProposal?.id) {
-            5, 6, 9 -> {
+            6, 9 -> {
                 true
             }
             else -> {

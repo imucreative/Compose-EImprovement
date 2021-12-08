@@ -132,7 +132,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
     private fun conditionImplementation(): Boolean {
         return when (data?.statusProposal?.id) {
-            5, 6, 9 -> {
+            6, 9 -> {
                 true
             }
             else -> {
@@ -346,7 +346,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 //                            R.drawable.ic_close, R.color.red_500)
 //                        memberTask.requestFocus()
 //                    }
-                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id == 1 && task.equals("Ketua") ->{
+                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id == 1 && task == "Ketua" ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_ketua),

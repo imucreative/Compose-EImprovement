@@ -13,6 +13,7 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCre
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.textLimitReplaceToDots
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChangesPointStep1Fragment: Fragment(), Injectable {
@@ -77,16 +78,21 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             position.setText(data?.position?.let { textLimitReplaceToDots(it) })
 
             date.setText(data?.date)
-            date.setOnClickListener {
-                datePicker.showDialog(object  : DatePickerCustom.Callback{
-                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
-                        val dayStr = if (dayOfMonth < 10)"0$dayOfMonth" else "$dayOfMonth"
-                        val mon = month + 1
-                        val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        date.setText("$year-$monthStr-$dayStr")
-                    }
-                })
+            try {
+                date.setOnClickListener {
+                    datePicker.showDialog(object : DatePickerCustom.Callback {
+                        override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                            val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                            val mon = month + 1
+                            val monthStr = if (mon < 10) "0$mon" else "$mon"
+                            date.setText("$year-$monthStr-$dayStr")
+                        }
+                    })
+                }
+            } catch (e: Exception) {
+                Timber.e("Err : $e")
             }
+
             desc.setText(data?.description)
 
             setData()
@@ -152,6 +158,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                                 userId = data?.userId,
                                 orgId = data?.orgId,
                                 warehouseId = data?.warehouseId,
+                                historyApproval = data?.historyApproval,
                                 source = source
                             )
                             stat = true

@@ -34,7 +34,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 import javax.inject.Inject
 import android.view.View.*
-import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalSs
 
 class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
     @Inject
@@ -156,61 +156,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                             source = SS_DETAIL_DATA
                                         )
 
-                                        val dataCreateModel = HawkUtils().getTempDataCreateSs(source)
-                                        when (ssAction) {
-                                            APPROVE -> {
-                                                when (dataCreateModel?.statusProposal?.id) {
-                                                    2, 7 -> {
-                                                        update(dataCreateModel, false)
-
-                                                        HawkUtils().setTempDataCreateSs(
-                                                            id = result.data?.data?.get(0)?.id,
-                                                            ssNo = result.data?.data?.get(0)?.ssNo,
-                                                            title = result.data?.data?.get(0)?.title,
-                                                            listCategory = result.data?.data?.get(0)?.categoryImprovement,
-                                                            name = result.data?.data?.get(0)?.name,
-                                                            nik = result.data?.data?.get(0)?.nik,
-                                                            branchCode = result.data?.data?.get(0)?.branchCode,
-                                                            branch = result.data?.data?.get(0)?.branch,
-                                                            department = result.data?.data?.get(0)?.department,
-                                                            directMgr = result.data?.data?.get(0)?.directMgr,
-                                                            suggestion = result.data?.data?.get(0)?.suggestion?.let {
-                                                                HtmlCompat.fromHtml(
-                                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                                ).toString()
-                                                            },
-                                                            problem = result.data?.data?.get(0)?.problem?.let {
-                                                                HtmlCompat.fromHtml(
-                                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                                ).toString()
-                                                            },
-                                                            statusImplementation = result.data?.data?.get(0)?.statusImplementation,
-                                                            teamMember = result.data?.data?.get(0)?.teamMember,
-                                                            attachment = result.data?.data?.get(0)?.attachment,
-                                                            statusProposal = result.data?.data?.get(0)?.statusProposal?.id?.plus(1)
-                                                                ?.let {
-                                                                    StatusProposalItem(id = it, status = "")
-                                                                },
-                                                            proses = result.data?.data?.get(0)?.proses,
-                                                            result = result.data?.data?.get(0)?.result,
-
-                                                            headId = result.data?.data?.get(0)?.headId,
-                                                            userId = result.data?.data?.get(0)?.userId,
-                                                            orgId = result.data?.data?.get(0)?.orgId,
-                                                            warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                                            historyApproval = result.data?.data?.get(0)?.historyApproval,
-
-                                                            activityType = SS,
-                                                            submitType = 1,
-                                                            comment = "",
-
-                                                            source = SS_DETAIL_DATA
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                        }
-
                                         initToolbar(argsTitle)
                                         initComponent()
                                         Timber.d("###-- Success getDetailSsItem")
@@ -243,7 +188,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 HawkUtils().setTempDataCreateSs(
                     id = 0,
                     ssNo = "",
-                    name = HawkUtils().getDataLogin().USER_NAME,
+                    name = HawkUtils().getDataLogin().FULL_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
@@ -333,78 +278,55 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
     }
 
     private fun buttonAction(key: Int, color: Int, title: String, description: String, buttonString: String) {
-        val dataCreateModel = HawkUtils().getTempDataCreateSs(source)
-        Timber.e("stat Props: "+ dataCreateModel?.statusProposal?.id)
+        data = HawkUtils().getTempDataCreateSs(source)
         binding.apply {
-            if (key == 1){
-                notification.showNotificationYesNoWithRating(
-                    this@SuggestionSystemCreateWizard,
-                    applicationContext, color, title, description, buttonString,
-                    resources.getString(R.string.cancel),dataCreateModel?.statusProposal?.id,
-                    object : HelperNotification.CallBackNotificationYesNoWithRating {
-                        override fun onNotificationNo() {
-                        }
+            notification.showNotificationYesNoWithRating(
+                this@SuggestionSystemCreateWizard,
+                applicationContext, color, title, description, buttonString,
+                resources.getString(R.string.cancel), data?.statusProposal?.id, key,
+                object : HelperNotification.CallBackNotificationYesNoWithRating {
+                    override fun onNotificationNo() {
+                    }
 
-                        override fun onNotificationYes(comment: String,rate : Int) {
-                            data = HawkUtils().getTempDataCreateSs(source)
-                            Timber.e("rate: $rate")
-                            if (comment != "") {
-                                val updateProposal = SuggestionSystemCreateModel(
-                                    data?.id, data?.ssNo, data?.date, data?.name,
-                                    userId = userId,
-                                    data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
-                                    data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
-                                    data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
-                                    data?.department, data?.teamMember, data?.statusProposal, data?.proses,
-                                    data?.result, data?.historyApproval,
-                                    activityType = SS, submitType = key, comment = comment
-                                )
-                                update(updateProposal, true)
-                            } else {
-                                SnackBarCustom.snackBarIconInfo(
-                                    binding.root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500
-                                )
+                    override fun onNotificationYes(comment: String, rate : Int) {
+                        Timber.e("rate: $rate")
+
+                        if (comment != "") {
+                            val updateProposal = SuggestionSystemCreateModel(
+                                data?.id, data?.ssNo, data?.date, data?.name,
+                                userId = userId,
+                                data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
+                                data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
+                                data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
+                                data?.department, data?.teamMember, data?.statusProposal, data?.proses,
+                                data?.result, data?.historyApproval,
+                                activityType = SS, submitType = key, comment = comment
+                            )
+
+                            UpdateStatusProposalSs(
+                                viewModel,
+                                context = applicationContext,
+                                owner = this@SuggestionSystemCreateWizard
+                            ).updateSs(
+                                data = updateProposal,
+                                context = applicationContext,
+                                owner = this@SuggestionSystemCreateWizard
+                            ) {
+                                if(it){
+                                    finish()
+                                    HawkUtils().removeDataCreateProposal(source)
+                                }
                             }
+                        } else {
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.wrong_field),
+                                R.drawable.ic_close, R.color.red_500
+                            )
                         }
                     }
-                )
-            }else{
-                notification.showNotificationYesNoWithComment(
-                    this@SuggestionSystemCreateWizard,
-                    applicationContext, color, title, description, buttonString,
-                    resources.getString(R.string.cancel),
-                    object : HelperNotification.CallBackNotificationYesNoWithComment {
-                        override fun onNotificationNo() {
-
-                        }
-
-                        override fun onNotificationYes(comment: String) {
-                            data = HawkUtils().getTempDataCreateSs(source)
-                            if (comment != "") {
-                                val updateProposal = SuggestionSystemCreateModel(
-                                    data?.id, data?.ssNo, data?.date, data?.name,
-                                    userId = userId,
-                                    data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
-                                    data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
-                                    data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
-                                    data?.department, data?.teamMember, data?.statusProposal, data?.proses,
-                                    data?.result, data?.historyApproval,
-                                    activityType = SS, submitType = key, comment = comment
-                                )
-                                update(updateProposal, true)
-                            } else {
-                                SnackBarCustom.snackBarIconInfo(
-                                    binding.root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500
-                                )
-                            }
-                        }
-                    }
-                )
-            }
+                }
+            )
         }
     }
 
@@ -553,19 +475,11 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                             }
                         }
                     }
-                    2 -> {
-                        initialTypeProposal = "Check"
-                        buttonInitialTypeProposal = "Check"
-                    }
-                    5 -> {
-                        initialTypeProposal = "Implementation"
-                        buttonInitialTypeProposal = "Implementation"
-                    }
-                    6 -> {
+                    5, 9 -> {
                         initialTypeProposal = "Submit Laporan Akhir"
                         buttonInitialTypeProposal = "Send"
                     }
-                    7, 9 -> {
+                    8 -> {
                         initialTypeProposal = "Review"
                         buttonInitialTypeProposal = "Review"
                     }
@@ -587,9 +501,37 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                             override fun onNotificationYes() {
                                 if (data?.ssNo.isNullOrEmpty()) {
-                                    submit(data!!)
+                                    UpdateStatusProposalSs(
+                                        viewModel,
+                                        context = applicationContext,
+                                        owner = this@SuggestionSystemCreateWizard
+                                    ).submitSs(
+                                        data = data!!,
+                                        context = applicationContext,
+                                        owner = this@SuggestionSystemCreateWizard
+                                    ) {
+                                        if(it){
+                                            finish()
+                                            HawkUtils().removeDataCreateProposal(source)
+                                        }
+                                    }
+
                                 } else {
-                                    update(data!!, true)
+                                    UpdateStatusProposalSs(
+                                        viewModel,
+                                        context = applicationContext,
+                                        owner = this@SuggestionSystemCreateWizard
+                                    ).updateSs(
+                                        data = data!!,
+                                        context = applicationContext,
+                                        owner = this@SuggestionSystemCreateWizard
+                                    ) {
+                                        if(it){
+                                            finish()
+                                            HawkUtils().removeDataCreateProposal(source)
+                                        }
+                                    }
+
                                 }
                             }
                         }
@@ -597,134 +539,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 }
                 // }
             }
-        }
-    }
-
-    private fun submit(data: SuggestionSystemCreateModel){
-        try {
-            viewModel.setPostSubmitCreateSs(data)
-            viewModel.postSubmitCreateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
-                resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(
-                                    this@SuggestionSystemCreateWizard,
-                                    "",
-                                    false
-                                )
-                                Timber.d("###-- Loading postSubmitCreateSs")
-                            }
-                            Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
-
-                                Timber.e("${result.data?.message}")
-
-                                Toast.makeText(
-                                    this@SuggestionSystemCreateWizard,
-                                    result.data?.message,
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                                finish()
-
-                                HawkUtils().removeDataCreateProposal(source)
-
-                                Timber.d("###-- Success postSubmitCreateSs")
-                            }
-                            Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
-                                Toast.makeText(
-                                    this@SuggestionSystemCreateWizard,
-                                    result.message,
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                                finish()
-
-                                Timber.d("###-- Error postSubmitCreateSs")
-                            }
-
-                        }
-                    }
-                })
-            }
-        }catch (err : Exception){
-            HelperLoading.hideLoading()
-            Toast.makeText(
-                this@SuggestionSystemCreateWizard,
-                err.message,
-                Toast.LENGTH_LONG
-            ).show()
-
-            finish()
-
-            Timber.d("###-- Error postSubmitCreateSs")
-        }
-    }
-
-    private fun update(data: SuggestionSystemCreateModel, clearPage: Boolean){
-        try {
-            viewModel.setPostSubmitUpdateSs(data)
-            viewModel.putSubmitUpdateSs.observeEvent(this@SuggestionSystemCreateWizard) { resultObserve ->
-                resultObserve.observe(this@SuggestionSystemCreateWizard, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(
-                                    this@SuggestionSystemCreateWizard,
-                                    "",
-                                    false
-                                )
-                                Timber.d("###-- Loading putSubmitUpdateSs")
-                            }
-                            Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
-
-                                Timber.e("${result.data?.message}")
-
-                                when (clearPage){
-                                    true -> {
-                                        Toast.makeText(
-                                            this@SuggestionSystemCreateWizard,
-                                            result.data?.message,
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        finish()
-                                        HawkUtils().removeDataCreateProposal(source)
-                                    }
-                                }
-
-                                Timber.d("###-- Success putSubmitUpdateSs")
-                            }
-                            Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
-                                Toast.makeText(
-                                    this@SuggestionSystemCreateWizard,
-                                    result.message,
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                                finish()
-
-                                Timber.d("###-- Error putSubmitUpdateSs")
-                            }
-
-                        }
-                    }
-                })
-            }
-        }catch (err: Exception){
-            HelperLoading.hideLoading()
-            Toast.makeText(
-                this@SuggestionSystemCreateWizard,
-                err.message,
-                Toast.LENGTH_LONG
-            ).show()
-
-            finish()
-
-            Timber.d("###-- Error putSubmitUpdateSs")
         }
     }
 

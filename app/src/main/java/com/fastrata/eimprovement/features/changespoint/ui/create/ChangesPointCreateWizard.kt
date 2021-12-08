@@ -23,6 +23,7 @@ import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.ui.ListApprovalHistoryStatusCpFragment
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalCp
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.google.android.material.snackbar.Snackbar
@@ -269,7 +270,21 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                 data?.position,data?.date,data?.description,data?.reward,data?.statusProposal,
                                 data?.historyApproval, activityType = CP, submitType = key, comment = comment,data?.branchCode
                             )
-                            update(updateProposal)
+
+                            UpdateStatusProposalCp(
+                                viewModel,
+                                context = applicationContext,
+                                owner = this@ChangesPointCreateWizard
+                            ).updateCp(
+                                data = updateProposal,
+                                context = applicationContext,
+                                owner = this@ChangesPointCreateWizard
+                            ) {
+                                if(it){
+                                    finish()
+                                    HawkUtils().removeDataCreateProposal(source)
+                                }
+                            }
                         } else {
                             Snackbar.make(binding.root, resources.getString(R.string.wrong_field), Snackbar.LENGTH_SHORT).show()
                         }
@@ -394,11 +409,35 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             override fun onNotificationYes() {
                                 if (data?.cpNo.isNullOrEmpty()){
-                                    Timber.e("data create Cp : $data")
-                                    submit(data!!)
+                                    UpdateStatusProposalCp(
+                                        viewModel,
+                                        context = applicationContext,
+                                        owner = this@ChangesPointCreateWizard
+                                    ).submitCp(
+                                        data = data!!,
+                                        context = applicationContext,
+                                        owner = this@ChangesPointCreateWizard
+                                    ) {
+                                        if(it){
+                                            finish()
+                                            HawkUtils().removeDataCreateProposal(source)
+                                        }
+                                    }
                                 }else{
-                                    Timber.e("data update Cp : $data")
-                                    update(data!!)
+                                    UpdateStatusProposalCp(
+                                        viewModel,
+                                        context = applicationContext,
+                                        owner = this@ChangesPointCreateWizard
+                                    ).updateCp(
+                                        data = data!!,
+                                        context = applicationContext,
+                                        owner = this@ChangesPointCreateWizard
+                                    ) {
+                                        if(it){
+                                            finish()
+                                            HawkUtils().removeDataCreateProposal(source)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -408,117 +447,6 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
             }
         }
     }
-
-
-    private fun submit(data: ChangePointCreateModel){
-        try {
-            viewModel.setPostSubmitCreateCp(data)
-            viewModel.postSubmitCreateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
-                resultObserve.observe(this@ChangesPointCreateWizard, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(
-                                    this@ChangesPointCreateWizard,
-                                    "",
-                                    false
-                                )
-                                Timber.d("###-- Loading postSubmitCreateCp")
-                            }
-                            Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
-
-                                Timber.e("${result.data?.message}")
-
-                                Toast.makeText(
-                                    this@ChangesPointCreateWizard,
-                                    result.data?.message,
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                                finish()
-
-                                HawkUtils().removeDataCreateProposal(source)
-
-                                Timber.d("###-- Success postSubmitCreateCp")
-                            }
-                            Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
-                                Toast.makeText(
-                                    this@ChangesPointCreateWizard,
-                                    result.data?.message,
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                                finish()
-
-                                Timber.d("###-- Error postSubmitCreateCp")
-                            }
-
-                        }
-                    }
-                })
-            }
-        }catch (err: Exception){
-            HelperLoading.hideLoading()
-            Toast.makeText(
-                this@ChangesPointCreateWizard,
-               err.message,
-                Toast.LENGTH_LONG
-            ).show()
-
-            finish()
-
-            Timber.d("###-- Error postSubmitCreateCp")
-        }
-    }
-
-    private fun update(data : ChangePointCreateModel){
-        viewModel.setPutSubmitUpdateCp(data)
-        viewModel.putSubmitUpdateCp.observeEvent(this@ChangesPointCreateWizard) { resultObserve ->
-            resultObserve.observe(this@ChangesPointCreateWizard, { result ->
-                if (result != null) {
-                    when (result.status) {
-                        Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(this@ChangesPointCreateWizard,"",false)
-                            Timber.d("###-- Loading putSubmitUpdateCp")
-                        }
-                        Result.Status.SUCCESS -> {
-                            HelperLoading.hideLoading()
-
-                            Timber.e("${result.data?.message}")
-
-                            Toast.makeText(
-                                this@ChangesPointCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            HawkUtils().removeDataCreateProposal(source)
-
-                            Timber.d("###-- Success putSubmitUpdateCp")
-                        }
-                        Result.Status.ERROR -> {
-                            HelperLoading.hideLoading()
-                            Toast.makeText(
-                                this@ChangesPointCreateWizard,
-                                result.data?.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            finish()
-
-                            Timber.d("###-- Error putSubmitUpdateCp")
-                        }
-
-                    }
-                }
-            })
-        }
-    }
-
 
     override fun onBackPressed() {
         finish()

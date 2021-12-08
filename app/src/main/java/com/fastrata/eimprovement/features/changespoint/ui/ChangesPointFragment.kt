@@ -30,7 +30,6 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -86,6 +85,8 @@ class ChangesPointFragment : Fragment(), Injectable {
         masterBranchViewModel = injectViewModel(viewModelFactory)
         checkPeriodViewModel = injectViewModel(viewModelFactory)
 
+        notification = HelperNotification()
+
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = false, fragmentManager = parentFragmentManager
@@ -128,6 +129,7 @@ class ChangesPointFragment : Fragment(), Injectable {
     private fun getDataListCp(){
         try{
             adapter.clear()
+            page = 1
             val listChangePointRemoteRequest = ChangePointRemoteRequest(
                 userId, limit, page, roleName, CP,
                 userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
@@ -235,7 +237,6 @@ class ChangesPointFragment : Fragment(), Injectable {
     }
 
     private fun getStatusCheckPeriod() {
-        notification = HelperNotification()
         checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
             resultObserve.observe(viewLifecycleOwner, { result ->
                 if (result != null) {
@@ -263,7 +264,7 @@ class ChangesPointFragment : Fragment(), Injectable {
 
                                         override fun onNotificationYes() {
                                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                                toolbarTitle = "Create ChangePoint", action = ADD , idCp = 0 , cpNo = "", type = "",statusProposal = statusProposal
+                                                toolbarTitle = "Create Redeem Point", action = ADD , idCp = 0 , cpNo = "", type = "",statusProposal = statusProposal
                                             )
                                             requireView().findNavController().navigate(direction)
                                         }
@@ -508,32 +509,35 @@ class ChangesPointFragment : Fragment(), Injectable {
                     viewSubmit = data.isSubmit,
                     viewImplementation = data.isImplementation,
                     viewCheck = data.isCheck,
+                    viewCheckFinal = data.isCheckFinal,
                     viewSubmitLaporan = data.isSubmitlaporan,
                     viewReview = data.isReview,
+                    viewReviewFinal = data.isReviewFinal,
                     viewDelete = data.isDelete,
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                                 toolbarTitle = "Detail Redeem Point", action = DETAIL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP, statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
                                 toolbarTitle = "Edit Redeem Point", action = EDIT,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
+                                idCp = data.idCp, cpNo = data.cpNo, type = CP, statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
-                            /*val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Submit Changes Point", action = SUBMIT_PROPOSAL,
-                                idCp = data.idCp, cpNo = data.cpNo, type = CP,statusProposal = data.status)
-                            requireView().findNavController().navigate(direction)*/
+
                         }
 
                         override fun onCheck() {
+
+                        }
+
+                        override fun onCheckFinal() {
 
                         }
 
@@ -549,8 +553,27 @@ class ChangesPointFragment : Fragment(), Injectable {
 
                         }
 
+                        override fun onReviewFinal() {
+
+                        }
+
                         override fun onDelete() {
-                            removeListCp(data)
+                            notification.shownotificationyesno(
+                                requireActivity(),
+                                requireContext(),
+                                R.color.blue_500,
+                                resources.getString(R.string.delete),
+                                resources.getString(R.string.delete_confirmation),
+                                resources.getString(R.string.ok),
+                                resources.getString(R.string.no),
+                                object : HelperNotification.CallBackNotificationYesNo {
+                                    override fun onNotificationNo() {
+                                    }
+                                    override fun onNotificationYes() {
+                                        removeListCp(data)
+                                    }
+                                }
+                            )
                         }
                     }
                 )
@@ -582,21 +605,14 @@ class ChangesPointFragment : Fragment(), Injectable {
                                 getDataListCp()
 
                                 result.data?.let {
-                                    Snackbar.make(
-                                        binding.root,
-                                        it.message,
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                                     Timber.d("###-- Success get doRemoveCp sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Snackbar.make(
-                                    binding.root,
-                                    result.data?.message.toString(),
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
+
+                                Toast.makeText(requireContext(), result.data?.message.toString(), Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error get doRemoveCp Error ${result.data}")
                             }
                         }
@@ -604,11 +620,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                 })
             }
         }catch (err: Exception){
-            Snackbar.make(
-                binding.root,
-                "Error doRemoveSs : ${err.message}",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), "Error doRemove : ${err.message}", Toast.LENGTH_LONG).show()
             Timber.e("### Error doRemoveSs : ${err.message}")
         }
     }
@@ -617,7 +629,7 @@ class ChangesPointFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Change Point (CP)")
+        setToolbar(toolbar, "Redeem Point (RP)")
     }
 
     private fun initNavigationMenu() {

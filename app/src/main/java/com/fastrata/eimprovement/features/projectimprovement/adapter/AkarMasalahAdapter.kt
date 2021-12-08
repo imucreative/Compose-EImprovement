@@ -48,7 +48,7 @@ class AkarMasalahAdapter(action: String?, statusProposalId: Int?, val clickedIte
                     detilLangkah.isEnabled = false
                 } else {
                     when (statusProposalId) {
-                         5, 6 -> {
+                         6 -> {
                             whyTerakhir.isEnabled = false
                             imprvementDilakukan.isEnabled = false
                             detilLangkah.isEnabled = false

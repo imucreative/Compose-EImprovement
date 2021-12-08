@@ -45,9 +45,11 @@ class HelperNotification {
         fun onEdit()
         fun onSubmit()
         fun onCheck()
+        fun onCheckFinal()
         fun onImplementation()
         fun onSubmitLaporan()
         fun onReview()
+        fun onReviewFinal()
         fun onDelete()
     }
 
@@ -205,6 +207,7 @@ class HelperNotification {
         yesText: String,
         noText: String,
         statProposal: Int?,
+        key: Int?,
         listener: CallBackNotificationYesNoWithRating
     ){
         val dialog = Dialog(activity)
@@ -219,9 +222,11 @@ class HelperNotification {
         lp.copyFrom(dialog.window!!.attributes)
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        when(statProposal){
-            8 ->{
+        when {
+            (statProposal == 8 && key == 1) -> {
                 (dialog.findViewById<View>(R.id.linear_rating) as LinearLayout).visibility  = View.VISIBLE
+            } else -> {
+                (dialog.findViewById<View>(R.id.linear_rating) as LinearLayout).visibility  = View.GONE
             }
         }
         (dialog.findViewById<View>(R.id.relative_layout_comment) as RelativeLayout).visibility = View.VISIBLE
@@ -251,8 +256,10 @@ class HelperNotification {
                      viewDelete : Boolean,
                      viewSubmit : Boolean,
                      viewCheck : Boolean,
+                     viewCheckFinal : Boolean,
                      viewSubmitLaporan : Boolean,
-                     viewReview:Boolean,
+                     viewReview : Boolean,
+                     viewReviewFinal : Boolean,
                      listener: CallbackList){
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -272,6 +279,9 @@ class HelperNotification {
         if (!viewCheck){
                 (dialog.findViewById<View>(R.id.btn_check) as LinearLayout).visibility = View.GONE
         }
+        if (!viewCheckFinal){
+            (dialog.findViewById<View>(R.id.btn_check_final) as LinearLayout).visibility = View.GONE
+        }
         if(!viewImplementation){
                 (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).visibility = View.GONE
         }
@@ -280,6 +290,9 @@ class HelperNotification {
         }
         if (!viewReview){
                 (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewReviewFinal){
+            (dialog.findViewById<View>(R.id.btn_review_final) as LinearLayout).visibility = View.GONE
         }
         if (!viewDelete){
                 (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
@@ -300,6 +313,10 @@ class HelperNotification {
             dialog.dismiss()
             if (listener != null)listener.onCheck()
         }
+        (dialog.findViewById<View>(R.id.btn_check_final) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onCheckFinal()
+        }
         (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).setOnClickListener {
             dialog.dismiss()
             if (listener != null)listener.onImplementation()
@@ -311,6 +328,10 @@ class HelperNotification {
         (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).setOnClickListener {
             dialog.dismiss()
             if (listener != null)listener.onReview()
+        }
+        (dialog.findViewById<View>(R.id.btn_review_final) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onReviewFinal()
         }
         (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).setOnClickListener {
             dialog.dismiss()
