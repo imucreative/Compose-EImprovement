@@ -77,6 +77,7 @@ class UpdateStatusProposalPi(
                                     orgId = result.data?.data?.get(0)?.orgId,
                                     warehouseId = result.data?.data?.get(0)?.warehouseId,
                                     historyApproval = result.data?.data?.get(0)?.historyApproval,
+                                    score = result.data?.data?.get(0)?.score,
 
                                     activityType = PI,
                                     submitType = 1,

@@ -300,7 +300,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     }
 
                     override fun onNotificationYes(comment: String, rate: Int) {
-                        Timber.e("rate: $rate")
+                        val score = if (key == 1) rate else 0
 
                         if (comment != "") {
                             val updateProposal = ProjectImprovementCreateModel(
@@ -311,7 +311,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 data?.title,data?.statusImplementationModel,data?.identification,
                                 data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
                                 data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
-                                data?.attachment,data?.statusProposal,data?.historyApproval,
+                                data?.attachment,data?.statusProposal,data?.historyApproval, score,
                                 activityType = PI,submitType = key, comment = comment
                             )
 

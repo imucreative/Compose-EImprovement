@@ -289,7 +289,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     }
 
                     override fun onNotificationYes(comment: String, rate : Int) {
-                        Timber.e("rate: $rate")
+                        val score = if (key == 1) rate else 0
 
                         if (comment != "") {
                             val updateProposal = SuggestionSystemCreateModel(
@@ -299,7 +299,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
                                 data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
                                 data?.department, data?.teamMember, data?.statusProposal, data?.proses,
-                                data?.result, data?.historyApproval,
+                                data?.result, data?.historyApproval, score,
                                 activityType = SS, submitType = key, comment = comment
                             )
 
@@ -555,7 +555,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 lytNext.visibility = VISIBLE
                 actionBottom.visibility = GONE
                 if (currentStep == 1) {
-                    lytBack.visibility = View.INVISIBLE
+                    lytBack.visibility = INVISIBLE
                 }
             }
         }
