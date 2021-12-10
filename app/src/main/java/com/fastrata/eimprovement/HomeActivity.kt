@@ -13,9 +13,6 @@ import androidx.navigation.findNavController
 import com.fastrata.eimprovement.api.AMQPConsumer
 import com.fastrata.eimprovement.databinding.ActivityHomeBinding
 import com.fastrata.eimprovement.features.dashboard.ui.DashboardFragmentDirections
-import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.SnackBarCustom
-import com.fastrata.eimprovement.utils.Tools
 import com.google.gson.Gson
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -23,8 +20,8 @@ import timber.log.Timber
 import java.net.URL
 import javax.inject.Inject
 import com.fastrata.eimprovement.data.model.MessageItem
-
-
+import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.utils.HawkUtils
 
 
 class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
@@ -65,20 +62,22 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun changeDestinationFragment( type :String,doc: String){
         try {
             when(type){
-                "SS" ->{
-                    HawkUtils().setDocId(doc)
-                    val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
+                SS ->{
+                    val direction = DashboardFragmentDirections.
+                    actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = doc)
                     navController.navigate(direction)
                 }
-                "PI"->{
-                    HawkUtils().setDocId(doc)
-                    val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
+                PI->{
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = doc)
                     navController.navigate(direction)
                 }
-                "CP"->{
-                    HawkUtils().setDocId(doc)
-                    val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
+                CP->{
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = doc)
                     navController.navigate(direction)
+                }
+                "APPR"->{
+                    val directions = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval), docId = doc)
+                    navController.navigate(directions)
                 }
             }
         }catch (e: Exception){

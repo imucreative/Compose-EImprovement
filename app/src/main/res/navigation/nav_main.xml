@@ -42,6 +42,12 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+
+        <argument
+            android:name="docId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_listApprovalFragment_to_suggestionSystemCreateWizard"
             app:destination="@id/suggestionSystemCreateWizard" />
@@ -65,6 +71,11 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="docId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_suggestionSystemFragment_to_suggestionSystemCreateWizard"
             app:destination="@id/suggestionSystemCreateWizard" />
@@ -127,6 +138,11 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="docId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_projectImprovementFragment_to_projectImprovementCreateWizard"
             app:destination="@id/projectImprovementCreateWizard"
@@ -143,6 +159,11 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="docId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_changesPointFragment_to_changesPointCreateWizard"
             app:destination="@id/changesPointCreateWizard"
@@ -159,7 +180,6 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
-
         <argument
             android:name="action"
             android:defaultValue="add"

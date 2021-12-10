@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
@@ -69,6 +70,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private val sdf = SimpleDateFormat("dd-MM-yyyy")
     private lateinit var layoutManager: LinearLayoutManager
 
+    private val args : SuggestionSystemFragmentArgs by navArgs()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,6 +81,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         _binding = FragmentSuggestionSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
+
+        var docId = args.docId!!
 
         listSsViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
@@ -94,7 +100,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                 userId, limit, page, roleName,
-                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
+                userName = userName, ssNo = docId, statusId = 0, title = "", category = "",orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 
