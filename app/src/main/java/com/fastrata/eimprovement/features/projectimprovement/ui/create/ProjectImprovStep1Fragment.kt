@@ -65,11 +65,12 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
 
             setData()
 
-            if ((action == APPROVE) || (action == DETAIL)) {
-                disableForm()
+            when (action){
+                APPROVE, DETAIL -> disableForm()
             }
-            when (data?.statusProposal?.id) {
-                5, 6, 9 -> disableForm()
+
+            when {
+                conditionImplementation() -> disableForm()
             }
         }
     }
@@ -83,6 +84,17 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
         binding.apply {
             title.isEnabled = false
             //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 

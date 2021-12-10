@@ -10,6 +10,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.core.content.ContextCompat
 import com.fastrata.eimprovement.R
 import com.google.android.material.textfield.TextInputEditText
@@ -26,6 +27,11 @@ class HelperNotification {
         fun onNotificationNo()
     }
 
+    interface CallBackNotificationYesNoWithRating {
+        fun onNotificationYes(comment: String = "",rate: Int = 0)
+        fun onNotificationNo()
+    }
+
     interface CallbackRetry{
         fun onRetry()
     }
@@ -39,9 +45,11 @@ class HelperNotification {
         fun onEdit()
         fun onSubmit()
         fun onCheck()
+        fun onCheckFinal()
         fun onImplementation()
         fun onSubmitLaporan()
         fun onReview()
+        fun onReviewFinal()
         fun onDelete()
     }
 
@@ -190,6 +198,57 @@ class HelperNotification {
         dialog.window!!.attributes = lp
     }
 
+    fun showNotificationYesNoWithRating(
+        activity: Activity,
+        context: Context,
+        headerColor: Int,
+        header: String,
+        content: String,
+        yesText: String,
+        noText: String,
+        statProposal: Int?,
+        key: Int?,
+        listener: CallBackNotificationYesNoWithRating
+    ){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_yesno)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        (dialog.findViewById<View>(R.id.linear_header)as LinearLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
+        (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
+        (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        when {
+            (statProposal == 8 && key == 1) -> {
+                (dialog.findViewById<View>(R.id.linear_rating) as LinearLayout).visibility  = View.VISIBLE
+            } else -> {
+                (dialog.findViewById<View>(R.id.linear_rating) as LinearLayout).visibility  = View.GONE
+            }
+        }
+        (dialog.findViewById<View>(R.id.relative_layout_comment) as RelativeLayout).visibility = View.VISIBLE
+
+        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = yesText
+        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null) {
+                val comment = (dialog.findViewById<View>(R.id.comment) as TextInputEditText).text
+                val rate = (dialog.findViewById<View>(R.id.rating_bar)as AppCompatRatingBar).rating
+                listener.onNotificationYes(comment.toString(), rate.toInt())
+            }
+        }
+        (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
+        (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
     fun showListEdit(activity: Activity,header: String,
                      view: Boolean,
                      viewEdit : Boolean,
@@ -197,8 +256,10 @@ class HelperNotification {
                      viewDelete : Boolean,
                      viewSubmit : Boolean,
                      viewCheck : Boolean,
+                     viewCheckFinal : Boolean,
                      viewSubmitLaporan : Boolean,
-                     viewReview:Boolean,
+                     viewReview : Boolean,
+                     viewReviewFinal : Boolean,
                      listener: CallbackList){
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -218,6 +279,9 @@ class HelperNotification {
         if (!viewCheck){
                 (dialog.findViewById<View>(R.id.btn_check) as LinearLayout).visibility = View.GONE
         }
+        if (!viewCheckFinal){
+            (dialog.findViewById<View>(R.id.btn_check_final) as LinearLayout).visibility = View.GONE
+        }
         if(!viewImplementation){
                 (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).visibility = View.GONE
         }
@@ -226,6 +290,9 @@ class HelperNotification {
         }
         if (!viewReview){
                 (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).visibility = View.GONE
+        }
+        if (!viewReviewFinal){
+            (dialog.findViewById<View>(R.id.btn_review_final) as LinearLayout).visibility = View.GONE
         }
         if (!viewDelete){
                 (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).visibility = View.GONE
@@ -246,6 +313,10 @@ class HelperNotification {
             dialog.dismiss()
             if (listener != null)listener.onCheck()
         }
+        (dialog.findViewById<View>(R.id.btn_check_final) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onCheckFinal()
+        }
         (dialog.findViewById<View>(R.id.btn_implementation) as LinearLayout).setOnClickListener {
             dialog.dismiss()
             if (listener != null)listener.onImplementation()
@@ -257,6 +328,10 @@ class HelperNotification {
         (dialog.findViewById<View>(R.id.btn_review) as LinearLayout).setOnClickListener {
             dialog.dismiss()
             if (listener != null)listener.onReview()
+        }
+        (dialog.findViewById<View>(R.id.btn_review_final) as LinearLayout).setOnClickListener {
+            dialog.dismiss()
+            if (listener != null)listener.onReviewFinal()
         }
         (dialog.findViewById<View>(R.id.btn_delete) as LinearLayout).setOnClickListener {
             dialog.dismiss()

@@ -21,9 +21,15 @@ import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
+import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
+import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalCp
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalPi
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalSs
 import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
@@ -42,6 +48,9 @@ class ListApprovalFragment : Fragment(), Injectable {
     private val binding get() = _binding!!
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var listApproveViewModel: ListApprovalViewModel
+    private lateinit var listSsViewModel: SuggestionSystemViewModel
+    private lateinit var listPiViewModel: ProjectImprovementViewModel
+    private lateinit var listCpViewModel: ChangesPointCreateViewModel
     private lateinit var masterDataStatusProposalViewModel: StatusProposalViewModel
     private lateinit var masterBranchViewModel: BranchViewModel
 
@@ -68,6 +77,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private var roleName: String = ""
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var notification: HelperNotification
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +91,11 @@ class ListApprovalFragment : Fragment(), Injectable {
         listApproveViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
         masterBranchViewModel = injectViewModel(viewModelFactory)
+        listSsViewModel = injectViewModel(viewModelFactory)
+        listPiViewModel = injectViewModel(viewModelFactory)
+        listCpViewModel = injectViewModel(viewModelFactory)
+
+        notification = HelperNotification()
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
@@ -497,14 +512,16 @@ class ListApprovalFragment : Fragment(), Injectable {
                             viewSubmit = data.isSubmit,
                             viewImplementation = data.isImplementation,
                             viewCheck = data.isCheck,
+                            viewCheckFinal = data.isCheckFinal,
                             viewSubmitLaporan = data.isSubmitlaporan,
                             viewReview = data.isReview,
+                            viewReviewFinal = data.isReviewFinal,
                             viewDelete = data.isDelete,
                             listener = object : HelperNotification.CallbackList {
                                 override fun onView() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                            toolbarTitle = "View Suggestion System",
+                                            toolbarTitle = "Detail Suggestion System",
                                             action = DETAIL,
                                             idSs = data.id,
                                             ssNo = data.typeNo,
@@ -523,6 +540,34 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
+                                    HelperNotification().shownotificationyesno(
+                                        requireActivity(), requireContext(), R.color.blue_500,
+                                        "Check Proposal", resources.getString(R.string.submit_desc),
+                                        "Check", resources.getString(R.string.no),
+                                        object : HelperNotification.CallBackNotificationYesNo {
+                                            override fun onNotificationNo() {
+
+                                            }
+                                            override fun onNotificationYes() {
+                                                UpdateStatusProposalSs(
+                                                    listSsViewModel,
+                                                    context = requireContext(),
+                                                    owner = this@ListApprovalFragment
+                                                ).getDetailDataSs(
+                                                    id = data.id,
+                                                    userId = data.userId,
+                                                    userNameSubmit = userId,
+                                                ) {
+                                                    if(it){
+                                                        onStart()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+
+                                override fun onCheckFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
                                             toolbarTitle = "Check Suggestion System",
@@ -544,6 +589,34 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onReview() {
+                                    HelperNotification().shownotificationyesno(
+                                        requireActivity(), requireContext(), R.color.blue_500,
+                                        "Review Proposal", resources.getString(R.string.submit_desc),
+                                        "Review", resources.getString(R.string.no),
+                                        object : HelperNotification.CallBackNotificationYesNo {
+                                            override fun onNotificationNo() {
+
+                                            }
+                                            override fun onNotificationYes() {
+                                                UpdateStatusProposalSs(
+                                                    listSsViewModel,
+                                                    context = requireContext(),
+                                                    owner = this@ListApprovalFragment
+                                                ).getDetailDataSs(
+                                                    id = data.id,
+                                                    userId = data.userId,
+                                                    userNameSubmit = userId,
+                                                ) {
+                                                    if(it){
+                                                        onStart()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+
+                                override fun onReviewFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
                                             toolbarTitle = "Review Suggestion System",
@@ -570,14 +643,16 @@ class ListApprovalFragment : Fragment(), Injectable {
                             viewSubmit = data.isSubmit,
                             viewImplementation = data.isImplementation,
                             viewCheck = data.isCheck,
+                            viewCheckFinal = data.isCheckFinal,
                             viewSubmitLaporan = data.isSubmitlaporan,
                             viewReview = data.isReview,
+                            viewReviewFinal = data.isReviewFinal,
                             viewDelete = data.isDelete,
                             listener = object : HelperNotification.CallbackList {
                                 override fun onView() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
-                                            toolbarTitle = "View Project Improvement",
+                                            toolbarTitle = "Detail Project Improvement",
                                             action = DETAIL,
                                             idPi = data.id,
                                             piNo = data.typeNo,
@@ -596,6 +671,34 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
+                                    HelperNotification().shownotificationyesno(
+                                        requireActivity(), requireContext(), R.color.blue_500,
+                                        "Check Proposal", resources.getString(R.string.submit_desc),
+                                        "Check", resources.getString(R.string.no),
+                                        object : HelperNotification.CallBackNotificationYesNo {
+                                            override fun onNotificationNo() {
+
+                                            }
+                                            override fun onNotificationYes() {
+                                                UpdateStatusProposalPi(
+                                                    listPiViewModel,
+                                                    context = requireContext(),
+                                                    owner = this@ListApprovalFragment
+                                                ).getDetailDataPi(
+                                                    id = data.id,
+                                                    userId = data.userId,
+                                                    userNameSubmit = userId,
+                                                ) {
+                                                    if(it){
+                                                        onStart()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+
+                                override fun onCheckFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
                                             toolbarTitle = "Check Project Improvement",
@@ -617,6 +720,34 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onReview() {
+                                    HelperNotification().shownotificationyesno(
+                                        requireActivity(), requireContext(), R.color.blue_500,
+                                        "Review Proposal", resources.getString(R.string.submit_desc),
+                                        "Review", resources.getString(R.string.no),
+                                        object : HelperNotification.CallBackNotificationYesNo {
+                                            override fun onNotificationNo() {
+
+                                            }
+                                            override fun onNotificationYes() {
+                                                UpdateStatusProposalPi(
+                                                    listPiViewModel,
+                                                    context = requireContext(),
+                                                    owner = this@ListApprovalFragment
+                                                ).getDetailDataPi(
+                                                    id = data.id,
+                                                    userId = data.userId,
+                                                    userNameSubmit = userId,
+                                                ) {
+                                                    if(it){
+                                                        onStart()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+
+                                override fun onReviewFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
                                             toolbarTitle = "Review Project Improvement",
@@ -643,14 +774,16 @@ class ListApprovalFragment : Fragment(), Injectable {
                             viewSubmit = data.isSubmit,
                             viewImplementation = data.isImplementation,
                             viewCheck = data.isCheck,
+                            viewCheckFinal = data.isCheckFinal,
                             viewSubmitLaporan = data.isSubmitlaporan,
                             viewReview = data.isReview,
+                            viewReviewFinal = data.isReviewFinal,
                             viewDelete = data.isDelete,
                             listener = object : HelperNotification.CallbackList {
                                 override fun onView() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                            toolbarTitle = "Detail Change Point",
+                                            toolbarTitle = "Detail Redeem Point",
                                             action = DETAIL,
                                             idCp = data.id,
                                             cpNo = data.typeNo,
@@ -669,16 +802,35 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
-                                    val direction =
-                                        ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                            toolbarTitle = "Check Redeem Point",
-                                            action = APPROVE,
-                                            idCp = data.id,
-                                            cpNo = data.typeNo,
-                                            type = APPR,
-                                            statusProposal = data.status
-                                        )
-                                    requireView().findNavController().navigate(direction)
+                                    HelperNotification().shownotificationyesno(
+                                        requireActivity(), requireContext(), R.color.blue_500,
+                                        "Check Redeem Point", resources.getString(R.string.submit_desc),
+                                        "Check", resources.getString(R.string.no),
+                                        object : HelperNotification.CallBackNotificationYesNo {
+                                            override fun onNotificationNo() {
+
+                                            }
+                                            override fun onNotificationYes() {
+                                                UpdateStatusProposalCp(
+                                                    listCpViewModel,
+                                                    context = requireContext(),
+                                                    owner = this@ListApprovalFragment
+                                                ).getDetailDataCp(
+                                                    id = data.id,
+                                                    userId = data.userId,
+                                                    userNameSubmit = userId,
+                                                ) {
+                                                    if(it){
+                                                        onStart()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+
+                                override fun onCheckFinal() {
+
                                 }
 
                                 override fun onImplementation() {
@@ -700,6 +852,10 @@ class ListApprovalFragment : Fragment(), Injectable {
                                             statusProposal = data.status
                                         )
                                     requireView().findNavController().navigate(direction)
+                                }
+
+                                override fun onReviewFinal() {
+
                                 }
 
                                 override fun onDelete() {

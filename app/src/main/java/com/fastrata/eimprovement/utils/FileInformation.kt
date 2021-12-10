@@ -13,8 +13,30 @@ import java.text.CharacterIterator
 import java.text.StringCharacterIterator
 import kotlin.math.abs
 import android.annotation.TargetApi
+import android.content.Intent
+import android.widget.Toast
 
 class FileInformation {
+
+    /**
+     * View File using for download file attachment
+     */
+    fun viewFile(context: Context, uri: Uri): Intent? {
+        context.let { ctx ->
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            val chooser = Intent.createChooser(intent, "Open with")
+
+            return if (intent.resolveActivity(ctx.packageManager) != null) {
+                chooser
+            } else {
+                Toast.makeText(ctx, "No suitable application to open file", Toast.LENGTH_LONG).show()
+                null
+            }
+        }
+    }
+
     /**
      * resource : https://gist.github.com/VassilisPallas/b88fb701c55cdace0c420356ee7c1464
      *

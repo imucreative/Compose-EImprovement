@@ -72,21 +72,12 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
         initComponent(binding)
 
-        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
-            disableForm()
+        when (ssAction){
+            APPROVE, DETAIL -> disableForm()
         }
 
-        when (data?.statusProposal?.id) {
-            9 -> {
-                binding.problem.isEnabled = false
-                binding.suggestion.isEnabled = false
-
-                binding.rbStatus1.isClickable = false
-                binding.rbStatus2.isClickable = false
-            }
-            5, 6 -> {
-                disableForm()
-            }
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -110,18 +101,14 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
         }
     }
 
-    private fun enableForm() {
-        binding.apply {
-            problem.isEnabled = true
-            suggestion.isEnabled = true
-
-            rbStatus1.isClickable = true
-            etFromStatus1.isEnabled = true
-            etToStatus1.isEnabled = true
-
-            rbStatus2.isClickable = true
-            etFromStatus2.isEnabled = true
-            etToStatus2.isEnabled = true
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -156,6 +143,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                 R.drawable.ic_close, R.color.red_500)
                                 etFromStatus1.requestFocus()
                         }else{
+                            fromDate = sdf.parse(etFromStatus1.text.toString())
                             if (!toDate.after(fromDate)){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
@@ -196,6 +184,7 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                                 R.drawable.ic_close, R.color.red_500)
                             etFromStatus2.requestFocus()
                         }else{
+                            fromDate = sdf.parse(etFromStatus2.text.toString())
                             if (!toDate.after(fromDate)){
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
@@ -226,6 +215,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
     private fun setLogic(binding: FragmentSuggestionSystemStep2Binding) {
         binding.run {
+            edtProses = data?.proses.toString()
+            edtResult = data?.result.toString()
+
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     etFromStatus1.isEnabled = true
@@ -235,8 +227,6 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                     etToStatus2.isEnabled = false
                     etFromStatus2.setText("")
                     etToStatus2.setText("")
-                    edtProses = data?.proses.toString()
-                    edtResult = data?.result.toString()
                     HawkUtils().setStatusSuggestion(true)
                 }
             }
@@ -250,12 +240,11 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
                     etFromStatus2.isEnabled = true
                     etToStatus2.isEnabled = true
-                    if (ssAction == ADD) {
-                        edtProses = ""
-                        edtResult = ""
-                    } else {
-                        edtProses = data?.proses.toString()
-                        edtResult = data?.result.toString()
+                    when (ssAction) {
+                        ADD, EDIT -> {
+                            edtProses = ""
+                            edtResult = ""
+                        }
                     }
                     HawkUtils().setStatusSuggestion(false)
                 }

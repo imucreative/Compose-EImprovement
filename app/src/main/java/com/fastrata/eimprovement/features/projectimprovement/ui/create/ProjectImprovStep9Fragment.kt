@@ -2,19 +2,25 @@ package com.fastrata.eimprovement.features.projectimprovement.ui.create
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.stetho.server.http.HttpStatus
+import com.fastrata.eimprovement.BuildConfig
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentProjectImprovementStep9Binding
 import com.fastrata.eimprovement.di.Injectable
@@ -25,10 +31,18 @@ import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectI
 import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.featuresglobal.adapter.*
 import com.fastrata.eimprovement.featuresglobal.data.model.AttachmentItem
+import com.fastrata.eimprovement.featuresglobal.data.model.DownloadResult
 import com.fastrata.eimprovement.featuresglobal.viewmodel.AttachmentViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.google.android.material.snackbar.Snackbar
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -54,9 +68,9 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private lateinit var initFilePath: String
     private var source: String = PI_CREATE
     private lateinit var ext : String
-    private val fileNameExt = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
     private lateinit var notification: HelperNotification
     private lateinit var selectedAttachmentItem: AttachmentItem
+    private var fileUrl = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,50 +105,77 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
         _binding = FragmentProjectImprovementStep9Binding.bind(view)
 
-        binding.apply {
-            rvPiAttachment.setHasFixedSize(true)
-            rvPiAttachment.layoutManager = LinearLayoutManager(context)
-            rvPiAttachment.adapter = attachmentAdapter
+        if (hasPermissions(context, PERMISSIONS)) {
+            binding.apply {
+                rvPiAttachment.setHasFixedSize(true)
+                rvPiAttachment.layoutManager = LinearLayoutManager(context)
+                rvPiAttachment.adapter = attachmentAdapter
 
-            getAttachment.setOnClickListener {
-                val permission = ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-
-                if (permission != PackageManager.PERMISSION_GRANTED) {
-                    // We don't have permission so prompt the user
-                    ActivityCompat.requestPermissions(
-                        requireActivity(),
-                        PERMISSIONS_STORAGE,
-                        REQUEST_EXTERNAL_STORAGE
+                getAttachment.setOnClickListener {
+                    val permission = ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                     )
-                } else {
-                    openFolder()
+
+                    if (permission != PackageManager.PERMISSION_GRANTED) {
+                        // We don't have permission so prompt the user
+                        ActivityCompat.requestPermissions(
+                            requireActivity(),
+                            PERMISSIONS_STORAGE,
+                            REQUEST_EXTERNAL_STORAGE
+                        )
+                    } else {
+                        openFolder()
+                    }
+                }
+
+                addAttachment.setOnClickListener {
+                    when {
+                        fileName.text.isEmpty() -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.file_empty),
+                                R.drawable.ic_close, R.color.red_500
+                            )
+                        }
+                        else -> {
+                            uploadAttachment(uri)
+                        }
+                    }
                 }
             }
 
-            addAttachment.setOnClickListener {
-                when {
-                    fileName.text.isEmpty() -> {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            resources.getString(R.string.file_empty),
-                            R.drawable.ic_close, R.color.red_500
-                        )
-                    }
-                    else -> {
-                        uploadAttachment(uri)
-                    }
-                }
+            setValidation()
+
+            if ((action == APPROVE) || (action == DETAIL)) {
+                disableForm()
+            }
+
+            initList(data?.attachment)
+        } else {
+            requestPermissions(PERMISSIONS.toTypedArray(), FILE_PICKER_REQUEST_CODE)
+        }
+    }
+
+    private fun hasPermissions(context: Context?, permissions: List<String>): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
+            return permissions.all { permission ->
+                ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
             }
         }
 
-        initList(data?.attachment)
-        setValidation()
+        return true
+    }
 
-        if ((action == APPROVE) || (action == DETAIL)) {
-            disableForm()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == FILE_PICKER_REQUEST_CODE && hasPermissions(context, PERMISSIONS)) {
+            initList(data?.attachment)
         }
     }
 
@@ -161,8 +202,8 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             R.color.blue_500,
                             resources.getString(R.string.delete),
                             resources.getString(R.string.delete_confirmation_file_attachment),
-                            resources.getString(R.string.agree),
-                            resources.getString(R.string.not_agree),
+                            resources.getString(R.string.ok),
+                            resources.getString(R.string.no),
                             object : HelperNotification.CallBackNotificationYesNo {
                                 override fun onNotificationNo() {
 
@@ -179,21 +220,31 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             }
 
             override fun showAttachment(data: AttachmentItem) {
-                println("### Testing show attachment : ${data.name}")
-                println("### Testing path attachment : ${data.fileLocation}")
-                /*if (data.fileLocation.isEmpty()){
-                    println("### FILE EXIST : NOT EXIST")
-                    SnackBarCustom.snackBarIconInfo(
-                        binding.root, layoutInflater, resources, binding.root.context,
-                        resources.getString(R.string.file_not_found),
-                        R.drawable.ic_close, R.color.red_500)
-                }else{
-                    println("### FILE EXIST : EXIST")
-                    val intent = Intent()*/
-                //        .setType("*/*")
-                /*        .setAction(Intent.ACTION_GET_CONTENT)
-                    startActivityForResult(Intent.createChooser(intent, data.fileLocation), 111)
-                }*/
+                println("### Testing show attachment : $data")
+
+                if (data.id != 0) {
+                    fileUrl = data.fileLocation
+                    val name = data.name
+                    val folder = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                    val file = File(folder, name)
+                    val uri = context?.let {
+                        FileProvider.getUriForFile(it, "${BuildConfig.APPLICATION_ID}.provider", file)
+                    }
+                    val extension = MimeTypeMap.getFileExtensionFromUrl(uri?.path)
+                    val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+
+                    println("uri : $uri")
+                    println("fileUrl : $fileUrl")
+                    println("type : $type")
+
+                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    intent.setDataAndType(uri, type)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    intent.putExtra(Intent.EXTRA_TITLE, name)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    intent.addCategory(Intent.CATEGORY_OPENABLE)
+                    startActivityForResult(intent, DOWNLOAD_FILE_CODE)
+                }
             }
         })
 
@@ -232,38 +283,95 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                uri = data.data as Uri
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    uri = data.data as Uri
 
-                val fileData = FileUtils.getFile(requireContext(), uri)
-                val fileSize: Int = fileData.length().toInt()
-                Timber.e("### FILE SIZE: $fileSize")
+                    val fileData = FileUtils.getFile(requireContext(), uri)
+                    val fileSize: Int = fileData.length().toInt()
+                    Timber.e("### FILE SIZE: $fileSize")
 
-                if (fileSize == 0 || (fileData.length() / 1024) >= 2048) {
-                    SnackBarCustom.snackBarIconInfo(
-                        binding.root, layoutInflater, resources, binding.root.context,
-                        resources.getString(R.string.file_size),
-                        R.drawable.ic_close, R.color.red_500)
-                }else{
-                    initFileName = FileInformation().getName(requireContext(), uri).toString()
-                    initFileSize = FileInformation().getSize(requireContext(), uri).toString()
-                    initFilePath = FileInformation().getPath(requireContext(), uri).toString()
-                    if(initFileName.contains(".")){
-                        ext = initFileName.substring(initFileName.lastIndexOf("."))
-                        Timber.e("###EXT : $ext")
-                        val match = fileNameExt.filter { ext.contains(it,ignoreCase = true) }
-                        Timber.e("### MATCH SIZE: ${match.size}")
-                        if (match.isNotEmpty()){
-                            binding.fileName.text = initFileName
-                            Timber.e("### path uri : $uri")
-                            Timber.e("### file size : $initFileSize")
-                            Timber.e("### path : $initFilePath")
-                        }else{
-                            SnackBarCustom.snackBarIconInfo(
-                                binding.root, layoutInflater, resources, binding.root.context,
-                                resources.getString(R.string.file_ext),
-                                R.drawable.ic_close, R.color.red_500)
+                    if (fileSize == 0 || (fileData.length() / 1024) >= 2048) {
+                        SnackBarCustom.snackBarIconInfo(
+                            binding.root, layoutInflater, resources, binding.root.context,
+                            resources.getString(R.string.file_size),
+                            R.drawable.ic_close, R.color.red_500
+                        )
+                    } else {
+                        initFileName = FileInformation().getName(requireContext(), uri).toString()
+                        initFileSize = FileInformation().getSize(requireContext(), uri).toString()
+                        initFilePath = FileInformation().getPath(requireContext(), uri).toString()
+                        if (initFileName.contains(".")) {
+                            ext = initFileName.substring(initFileName.lastIndexOf("."))
+                            Timber.e("###EXT : $ext")
+                            val match = FILE_NAME_EXT.filter { ext.contains(it, ignoreCase = true) }
+                            Timber.e("### MATCH SIZE: ${match.size}")
+                            if (match.isNotEmpty()) {
+                                binding.fileName.text = initFileName
+                                Timber.e("### path uri : $uri")
+                                Timber.e("### file size : $initFileSize")
+                                Timber.e("### path : $initFilePath")
+                            } else {
+                                SnackBarCustom.snackBarIconInfo(
+                                    binding.root, layoutInflater, resources, binding.root.context,
+                                    resources.getString(R.string.file_ext),
+                                    R.drawable.ic_close, R.color.red_500
+                                )
+                            }
+                        }
+                    }
+                }
+            } else if (requestCode == DOWNLOAD_FILE_CODE && resultCode == Activity.RESULT_OK) {
+                data?.data?.let { uri ->
+                    context?.let { context ->
+                        downloadFile(context, fileUrl, uri)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun downloadFile(context: Context, url: String, file: Uri) {
+        val ktor = HttpClient(Android)
+
+        attachmentViewModel.setDownloading(true)
+        context.contentResolver.openOutputStream(file)?.let { outputStream ->
+            CoroutineScope(Dispatchers.IO).launch {
+                ktor.downloadFile(outputStream, url).collect {
+                    withContext(Dispatchers.Main) {
+                        binding.apply {
+                            when (it) {
+                                is DownloadResult.Success -> {
+                                    attachmentViewModel.setDownloading(false)
+                                    progress.progress = 0
+                                    progress.visibility = View.GONE
+
+                                    val viewFile = FileInformation().viewFile(context, file)
+                                    //startActivity(viewFile)
+                                    Toast.makeText(context, "Download Complete", Toast.LENGTH_LONG).show()
+
+                                    /*val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                                    //intent.setDataAndType(uri, data.type)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    //intent.putExtra(Intent.EXTRA_TITLE, name)
+                                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                                    intent.addCategory(Intent.CATEGORY_OPENABLE)
+                                    startActivityForResult(intent, DOWNLOAD_FILE_CODE)*/
+                                }
+
+                                is DownloadResult.Error -> {
+                                    progress.visibility = View.GONE
+                                    attachmentViewModel.setDownloading(false)
+
+                                    Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
+                                }
+
+                                is DownloadResult.Progress -> {
+                                    progress.visibility = View.VISIBLE
+                                    progress.progress = it.progress
+                                }
+                            }
                         }
                     }
                 }
@@ -277,13 +385,24 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 id = id,
                 name = initFileName,
                 type = type,
-                group = PROPOSAL,
+                group = if(conditionImplementation()) IMPLEMENT else PROPOSAL,
                 createdBy = userName,
                 fileLocation = fileLocation
             )
 
             piCreateAttachmentViewModel.addAttachment(addData, data?.attachment, data, source)
             fileName.text = ""
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -308,7 +427,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
         attachmentViewModel.file = body
         attachmentViewModel.type = PI
-        attachmentViewModel.group = PROPOSAL
+        attachmentViewModel.group = if(conditionImplementation()) IMPLEMENT else PROPOSAL
         attachmentViewModel.createdBy = userName
 
         try {
@@ -405,7 +524,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                 var stat: Boolean
 
                 binding.apply {
-                    stat = if (data?.attachment?.size == 0 && (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) {
+                    stat = if (data?.attachment?.size == 0 && (action != DETAIL && conditionImplementation())) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.file_empty),

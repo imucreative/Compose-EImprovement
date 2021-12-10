@@ -32,6 +32,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     lateinit var toDate: Date
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var source: String = PI_CREATE
+    private var edtResult : String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,18 +72,12 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         initComponent()
         setData()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
-            disableForm()
+        when (action){
+            APPROVE, DETAIL -> disableForm()
         }
 
-        when (data?.statusProposal?.id) {
-            4, 9 -> {
-                binding.rbStatus1.isClickable = false
-                binding.rbStatus2.isClickable = false
-            }
-            5, 6 -> {
-                disableForm()
-            }
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -118,29 +113,49 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         }
     }
 
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
     private fun setLogic() {
         binding.run {
+            edtResult = data?.implementationResult.toString()
+
             etFromStatus1.isEnabled = false
             etToStatus1.isEnabled = false
+
             linearLayoutAkan.visibility = View.GONE
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     etFromStatus1.isEnabled = true
                     etToStatus1.isEnabled = true
-                    HawkUtils().setStatusImplementation(true)
+
                     linearLayoutAkan.visibility = View.GONE
+                    HawkUtils().setStatusImplementation(true)
                 }
             }
 
             rbStatus2.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-                    HawkUtils().setStatusImplementation(false)
                     etFromStatus1.isEnabled = false
                     etToStatus1.isEnabled = false
                     etFromStatus1.setText("")
                     etToStatus1.setText("")
 
+                    when (action) {
+                        ADD, EDIT -> {
+                            edtResult = ""
+                        }
+                    }
                     linearLayoutAkan.visibility = View.VISIBLE
+                    HawkUtils().setStatusImplementation(false)
                 }
             }
         }
@@ -176,6 +191,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 etFromStatus1.requestFocus()
                             }else{
+                                fromDate = sdf.parse(etFromStatus1.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -220,6 +236,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                    R.drawable.ic_close, R.color.red_500)
 //                                etFromIdentifikasi.requestFocus()
 //                            }else{
+                                fromDate = sdf.parse(etFromIdentifikasi.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -264,6 +281,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                    R.drawable.ic_close, R.color.red_500)
 //                                etFromAnalisaData.requestFocus()
 //                            }else{
+                                fromDate = sdf.parse(etFromAnalisaData.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -308,6 +326,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                    R.drawable.ic_close, R.color.red_500)
 //                                etFromAnalisaAkarMasalah.requestFocus()
 //                            }else{
+                                fromDate = sdf.parse(etFromAnalisaAkarMasalah.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -352,6 +371,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                    R.drawable.ic_close, R.color.red_500)
 //                                etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
 //                            }else{
+                                fromDate = sdf.parse(etFromMenyusunRencanaPenanggulanganMasalah.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -396,6 +416,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                    R.drawable.ic_close, R.color.red_500)
 //                                etFromImplementasiRencanaPerbaikan.requestFocus()
 //                            }else{
+                                fromDate = sdf.parse(etFromImplementasiRencanaPerbaikan.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -440,6 +461,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 //                                    R.drawable.ic_close, R.color.red_500)
 //                                etFromAnalisaPeriksaDanEvaluasi.requestFocus()
 //                            }else{
+                                fromDate = sdf.parse(etFromAnalisaPeriksaDanEvaluasi.text.toString())
                                 if (!toDate.after(fromDate)){
                                     SnackBarCustom.snackBarIconInfo(
                                         root, layoutInflater, resources, root.context,
@@ -460,7 +482,6 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
             if (data?.statusImplementationModel?.sudah?.from != "") {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
-
 
                 etFromStatus1.setText(data?.statusImplementationModel?.sudah?.from)
                 etToStatus1.setText(data?.statusImplementationModel?.sudah?.to)
@@ -620,7 +641,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                                 nqiModel = data?.nqiModel,
                                 teamMember = data?.teamMember,
                                 categoryFixing = data?.categoryFixing,
-                                hasilImplementasi = data?.implementationResult,
+                                hasilImplementasi = edtResult,
                                 attachment = data?.attachment,
                                 statusProposal = data?.statusProposal,
                                 headId = data?.headId,

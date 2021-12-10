@@ -32,7 +32,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.model.DeviceInfo
-import com.fastrata.eimprovement.features.login.data.model.RoleEntity
 import com.google.android.material.bottomappbar.BottomAppBar
 import java.lang.Exception
 import java.lang.StringBuilder
@@ -467,21 +466,22 @@ object Tools {
 
     //mathematics
     fun sumValues(value1: String, value2: String): String {
-        println("vl1:$value1+$value2")
-        var int1: Int
-        var int2: Int
-        if (value1 == "" || value1.isNullOrEmpty()){
-            int1 = 0
-        }else{
-            int1 = value1.toInt()
-        }
-        if(value2 == "" || value2.isNullOrEmpty()){
-            int2 = 0
-        }else{
-            int2  = value2.toInt()
-        }
-        println("vlint : ${int1.toString()}+ ${int2.toString()}")
+        println("vl1:$value1 + $value2")
+        val int1: Int = if (value1 == "" || value1.isEmpty()) 0 else value1.toInt()
+        val int2: Int = if (value2 == "" || value2.isEmpty()) 0 else value2.toInt()
+
+        println("vlint : $int1 + $int2")
         val nums = int1 + int2
+        return nums.toString()
+    }
+
+    fun minusValues(value1: String, value2: String): String {
+        println("vl1:$value1 - $value2")
+        val int1: Int = if (value1 == "" || value1.isEmpty()) 0 else value1.toInt()
+        val int2: Int = if (value2 == "" || value2.isEmpty()) 0 else value2.toInt()
+
+        println("vlint : $int1 - $int2")
+        val nums = int1 - int2
         return nums.toString()
     }
 

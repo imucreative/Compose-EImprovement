@@ -68,12 +68,13 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         _binding = FragmentProjectImprovementStep8Binding.bind(view)
 
         binding.apply {
-            if (data?.statusImplementationModel?.sudah?.from == "") {
+            /*if (data?.statusImplementationModel?.sudah?.from == "") {
                 cardViewHasilImplementasi.visibility = View.GONE
             } else {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
                 hasilImplementasiImprovement.setText(data?.implementationResult)
-            }
+            }*/
+            hasilImplementasiImprovement.setText(data?.implementationResult)
             data?.categoryFixing?.let { category ->
                 listCategory.addAll(category)
             }
@@ -82,18 +83,41 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         setInitCategory()
         setData()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
-            disableForm()
-        } else {
-            when (data?.statusProposal?.id) {
-                5, 6, 9 -> {
-                    binding.apply {
-                        checkboxOther.isEnabled = false
-                        tvCheckboxOther.isClickable = false
-                        edtLainLain.isEnabled = false
+        when (action){
+            APPROVE, DETAIL -> disableForm()
+            ADD, EDIT -> {
+                when {
+                    statusImplement -> {
+                        binding.apply {
+                            checkboxOther.isEnabled = true
+                            tvCheckboxOther.isClickable = true
+                            edtLainLain.isEnabled = true
 
-                        cardViewHasilImplementasi.visibility = View.VISIBLE
+                            hasilImplementasiImprovement.isEnabled = true
+                        }
                     }
+                    else -> disableForm()
+                }
+            }
+            SUBMIT_PROPOSAL -> {
+                when {
+                    conditionImplementation() -> {
+                        binding.hasilImplementasiImprovement.isEnabled = true
+                    }
+                    else -> disableForm()
+                }
+            }
+        }
+
+        when {
+            conditionImplementation() -> {
+                binding.apply {
+                    checkboxOther.isEnabled = false
+                    tvCheckboxOther.isClickable = false
+                    edtLainLain.isEnabled = false
+
+                    cardViewHasilImplementasi.visibility = View.VISIBLE
+                    hasilImplementasiImprovement.setText(data?.implementationResult)
                 }
             }
         }
@@ -111,6 +135,17 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             edtLainLain.isEnabled = false
 
             hasilImplementasiImprovement.isEnabled = false
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -221,7 +256,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             edtLainLain.requestFocus()
                             stat = false
                         }
-                        hasilImplementasiImprovement.text.isNullOrEmpty() && (data?.statusImplementationModel?.sudah?.from != "" || (data?.statusProposal?.id == 5 || data?.statusProposal?.id == 6 || data?.statusProposal?.id == 9)) -> {
+                        hasilImplementasiImprovement.text.isNullOrEmpty() && (statusImplement || ((conditionImplementation()) && (action == SUBMIT_PROPOSAL))) -> {
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.result_empty),
