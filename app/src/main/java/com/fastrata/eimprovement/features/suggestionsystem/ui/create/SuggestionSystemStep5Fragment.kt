@@ -223,7 +223,7 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
             override fun showAttachment(data: AttachmentItem) {
                 println("### Testing show attachment : $data")
 
-                if (ssAction != ADD) {
+                if (data.id != 0) {
                     fileUrl = data.fileLocation
                     val name = data.name
                     val folder = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
@@ -233,6 +233,10 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                     }
                     val extension = MimeTypeMap.getFileExtensionFromUrl(uri?.path)
                     val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+
+                    println("uri : $uri")
+                    println("fileUrl : $fileUrl")
+                    println("type : $type")
 
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
                     intent.setDataAndType(uri, type)
@@ -346,18 +350,23 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                                     progress.visibility = View.GONE
 
                                     val viewFile = FileInformation().viewFile(context, file)
-                                    startActivity(viewFile)
+                                    //startActivity(viewFile)
+                                    Toast.makeText(context, "Download Complete", Toast.LENGTH_LONG).show()
+
+                                    /*val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                                    //intent.setDataAndType(uri, data.type)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    //intent.putExtra(Intent.EXTRA_TITLE, name)
+                                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                                    intent.addCategory(Intent.CATEGORY_OPENABLE)
+                                    startActivityForResult(intent, DOWNLOAD_FILE_CODE)*/
                                 }
 
                                 is DownloadResult.Error -> {
                                     progress.visibility = View.GONE
                                     attachmentViewModel.setDownloading(false)
 
-                                    Toast.makeText(
-                                        context,
-                                        "Error while downloading file",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                    Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
                                 }
 
                                 is DownloadResult.Progress -> {

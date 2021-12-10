@@ -94,46 +94,76 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 data = HawkUtils().getTempDataCreatePi(source)
+
+                val countFormAkarMasalah = data?.akarMasalah?.filter { itemAkarMasalah ->
+                    when {
+                        itemAkarMasalah?.aksi == "" -> {
+                            false
+                        }
+                        itemAkarMasalah?.detail_langkah == "" -> {
+                            false
+                        }
+                        itemAkarMasalah?.kenapa == "" -> {
+                            false
+                        }
+                        else -> {
+                            true
+                        }
+                    }
+                }
+
                 binding.apply {
-                    stat = if (data?.akarMasalah?.size == 0) {
-                        SnackBarCustom.snackBarIconInfo(
-                            root, layoutInflater, resources, root.context,
-                            resources.getString(R.string.problem_suggest),
-                            R.drawable.ic_close, R.color.red_500)
-                        false
-                    } else {
-                        HawkUtils().setTempDataCreatePi(
-                            id = data?.id,
-                            piNo = data?.piNo,
-                            date = data?.date,
-                            title = data?.title,
-                            branch = data?.branch,
-                            subBranch = data?.subBranch,
-                            department = data?.department,
-                            years = data?.years,
-                            statusImplementationModel = data?.statusImplementationModel,
-                            identification = data?.identification,
-                            target = data?.target,
-                            sebabMasalah = data?.sebabMasalah,
-                            akarMasalah = data?.akarMasalah,
-                            nilaiOutput = data?.nilaiOutput,
-                            nqiModel = data?.nqiModel,
-                            teamMember = data?.teamMember,
-                            categoryFixing = data?.categoryFixing,
-                            hasilImplementasi = data?.implementationResult,
-                            attachment = data?.attachment,
-                            statusProposal = data?.statusProposal,
-                            headId = data?.headId,
-                            userId = data?.userId,
-                            orgId = data?.orgId,
-                            warehouseId = data?.warehouseId,
-                            historyApproval = data?.historyApproval,
-                            activityType = data?.activityType,
-                            submitType = data?.submitType,
-                            comment = data?.comment,
-                            source = source
-                        )
-                        true
+                    stat = when {
+                        data?.akarMasalah?.size == 0 -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.problem_suggest),
+                                R.drawable.ic_close, R.color.red_500
+                            )
+                            false
+                        }
+                        data?.akarMasalah?.size != countFormAkarMasalah?.size -> {
+                            SnackBarCustom.snackBarIconInfo(
+                                root, layoutInflater, resources, root.context,
+                                resources.getString(R.string.problem_suggest),
+                                R.drawable.ic_close, R.color.red_500
+                            )
+                            false
+                        }
+                        else -> {
+                            HawkUtils().setTempDataCreatePi(
+                                id = data?.id,
+                                piNo = data?.piNo,
+                                date = data?.date,
+                                title = data?.title,
+                                branch = data?.branch,
+                                subBranch = data?.subBranch,
+                                department = data?.department,
+                                years = data?.years,
+                                statusImplementationModel = data?.statusImplementationModel,
+                                identification = data?.identification,
+                                target = data?.target,
+                                sebabMasalah = data?.sebabMasalah,
+                                akarMasalah = data?.akarMasalah,
+                                nilaiOutput = data?.nilaiOutput,
+                                nqiModel = data?.nqiModel,
+                                teamMember = data?.teamMember,
+                                categoryFixing = data?.categoryFixing,
+                                hasilImplementasi = data?.implementationResult,
+                                attachment = data?.attachment,
+                                statusProposal = data?.statusProposal,
+                                headId = data?.headId,
+                                userId = data?.userId,
+                                orgId = data?.orgId,
+                                warehouseId = data?.warehouseId,
+                                historyApproval = data?.historyApproval,
+                                activityType = data?.activityType,
+                                submitType = data?.submitType,
+                                comment = data?.comment,
+                                source = source
+                            )
+                            true
+                        }
                     }
                 }
 

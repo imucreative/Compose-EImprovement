@@ -275,18 +275,24 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
     private fun initList(teamMember: ArrayList<TeamMemberItem?>?) {
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
-            override fun removeClicked(data: TeamMemberItem) {
+            override fun removeClicked(dataMember: TeamMemberItem) {
                 if ((action != APPROVE) && (action != DETAIL)) {
                     if (!conditionImplementation()) {
-                        teamMember?.remove(data)
+                        if (dataMember.task?.task == "Ketua" && data?.teamMember?.size!! >= 2) {
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, binding.root.context,
+                                resources.getString(R.string.ketua_not_found),
+                                R.drawable.ic_close, R.color.red_500)
+                        } else {
+                            teamMember?.remove(dataMember)
 
-                        listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                teamMemberAdapter.setListTeamMember(it)
-                                Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
-                            }
-                        })
+                            listTeamMemberViewModel.updateTeamMember(teamMember, source)
+                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                                if (it != null) {
+                                    teamMemberAdapter.setListTeamMember(it)
+                                }
+                            })
+                        }
                     }
                 }
             }
@@ -310,6 +316,11 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 val name = memberName.text.toString()
                 val department = memberDepartment.text.toString()
                 val task = memberTask.text.toString()
+
+                val checkDuplicateMember = data?.teamMember?.filter { nameValue ->
+                    nameValue?.name?.name == name
+                }
+
                 when {
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
@@ -332,26 +343,32 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
                     }
-                    data?.teamMember.isNullOrEmpty() && task != "Ketua"->{
+                    data?.teamMember.isNullOrEmpty() && selectedTask.task != "Ketua" -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.ketua_not_found),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
-//                    data?.teamMember?.size.isGreaterThan(1) ->{
-//                        SnackBarCustom.snackBarIconInfo(
-//                            root, layoutInflater, resources, root.context,
-//                            resources.getString(R.string.maximal_team),
-//                            R.drawable.ic_close, R.color.red_500)
-//                        memberTask.requestFocus()
-//                    }
-                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id == 1 && task == "Ketua" ->{
+                    /*data?.teamMember?.size.isGreaterThan(1) ->{
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.maximal_team),
+                            R.drawable.ic_close, R.color.red_500)
+                        memberTask.requestFocus()
+                    }*/
+                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)?.task?.id == 1 && selectedTask.task == "Ketua" ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_ketua),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
+                    }
+                    checkDuplicateMember?.size.isGreaterThan(0) -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.duplicate_member),
+                            R.drawable.ic_close, R.color.red_500)
                     }
                     else -> {
                         val memberNameObj = MemberNameItem(

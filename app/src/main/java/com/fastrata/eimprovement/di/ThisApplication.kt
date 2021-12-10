@@ -6,7 +6,6 @@ import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import dagger.android.DispatchingAndroidInjector
 import com.fastrata.eimprovement.BuildConfig
-import com.fastrata.eimprovement.utils.HawkUtils
 import com.orhanobut.hawk.Hawk
 import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector
