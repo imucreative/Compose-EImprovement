@@ -82,12 +82,12 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
         initList(data?.sebabMasalah)
         setValidation()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
-            disableForm()
+        when (action){
+            APPROVE, DETAIL -> disableForm()
         }
 
-        when (data?.statusProposal?.id) {
-            5, 6, 9 -> disableForm()
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -102,6 +102,17 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
         }
     }
 
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
     private fun initList(sebabMasalah: ArrayList<SebabMasalahModel?>?) {
         adapter.setSebabMslhCallback(object : SebabMasalahCallback{
             override fun onItemClicked(data: SebabMasalahModel) {
@@ -111,7 +122,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
             override fun onItemRemoved(data: SebabMasalahModel, position: Int) {
                 binding.apply {
                     if (action != APPROVE && action != DETAIL) {
-                        if (this@ProjectImprovStep4Fragment.data?.statusProposal?.id != 5 && this@ProjectImprovStep4Fragment.data?.statusProposal?.id != 6 && this@ProjectImprovStep4Fragment.data?.statusProposal?.id != 9) {
+                        if (!conditionImplementation()) {
                             activity?.let { activity ->
                                 notification.shownotificationyesno(
                                     activity,

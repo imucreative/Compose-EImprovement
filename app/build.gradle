@@ -134,6 +134,7 @@ dependencies {
     def coroutine = '1.5.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
+    implementation "io.ktor:ktor-client-android:1.2.5"
 
     // database room -----------------------------------------------------------------------------
     def roomVersion = '2.2.5'

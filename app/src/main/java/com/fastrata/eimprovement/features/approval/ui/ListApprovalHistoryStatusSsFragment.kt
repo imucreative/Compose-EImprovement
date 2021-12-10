@@ -91,7 +91,6 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
         (activity as SuggestionSystemCreateWizard).setSsCreateCallback(object :
             SuggestionSystemCreateCallback {
             override fun onDataPass(): Boolean {
-
                 HawkUtils().setTempDataCreateSs(
                     ssNo = data?.ssNo,
                     date = data?.date,

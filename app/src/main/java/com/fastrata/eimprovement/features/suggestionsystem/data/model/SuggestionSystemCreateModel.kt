@@ -58,6 +58,8 @@ data class SuggestionSystemCreateModel(
     var result : String?,
     @SerializedName("HISTORY_APPROVAL")
     var historyApproval : ArrayList<ApprovalHistoryStatusModel?>?,
+    @SerializedName("SCORE")
+    var score : Int?,
     @SerializedName("ACTIVITY_TYPE")
     var activityType : String?,     // SS/PI/RP
     @SerializedName("SUBMIT_TYPE")

@@ -37,6 +37,7 @@ class SuggestionSystemAdapter : RecyclerView.Adapter<SuggestionSystemAdapter.Sug
 
             binding.apply {
                 ssNo.text = data.ssNo
+                createBy.text = data.createdBy
                 date.text = data.date
                 title.text = data.title
                 status.text = data.status.status

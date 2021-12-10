@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.BuildConfig
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
@@ -63,7 +62,6 @@ class SettingsFragment : Fragment(), Injectable {
             }
 
             btnChangePassword.setOnClickListener {
-                //Navigation.findNavController(it).navigate(R.id.action_settingsFragment_to_changesPasswordFragment)
                 val directions = SettingsFragmentDirections.actionSettingsToChangePasswordFragment(resources.getString(R.string.change_password))
                 it.findNavController().navigate(directions)
             }
@@ -75,8 +73,8 @@ class SettingsFragment : Fragment(), Injectable {
                     R.color.blue_500,
                     resources.getString(R.string.info),
                     resources.getString(R.string.log_out),
-                    resources.getString(R.string.agree),
-                    resources.getString(R.string.not_agree),
+                    resources.getString(R.string.ok),
+                    resources.getString(R.string.no),
                 object  :CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 
@@ -88,6 +86,7 @@ class SettingsFragment : Fragment(), Injectable {
                         HawkUtils().removeDataCreateProposal(SS)
                         HawkUtils().removeDataCreateProposal(CP)
                         HawkUtils().removeDataCreateProposal(PI)
+                        activity.finish()
                         startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })

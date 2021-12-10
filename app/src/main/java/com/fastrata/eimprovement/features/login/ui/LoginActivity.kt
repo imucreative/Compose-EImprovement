@@ -18,7 +18,6 @@ import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import timber.log.Timber
 import javax.inject.Inject
@@ -155,6 +154,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
     }
 
     override fun onBackPressed() {
+        finish()
     }
 
 }

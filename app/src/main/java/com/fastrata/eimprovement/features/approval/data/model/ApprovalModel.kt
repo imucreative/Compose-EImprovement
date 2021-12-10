@@ -17,6 +17,8 @@ data class ApprovalModel(
     val status: StatusProposalItem,
     @SerializedName("TYPE")
     val type: String,
+    @SerializedName("USER_ID")
+    val userId: Int,
     @SerializedName("NAME")
     val name: String,
     @SerializedName("BRANCH")
@@ -37,8 +39,12 @@ data class ApprovalModel(
     val isSubmit : Boolean,
     @SerializedName("IS_CHECK")
     val isCheck : Boolean,
+    @SerializedName("IS_CHECK_FINAL")
+    val isCheckFinal : Boolean,
     @SerializedName("IS_SUBMIT_LAPORAN")
     val isSubmitlaporan : Boolean,
     @SerializedName("IS_REVIEW")
-    val isReview : Boolean
+    val isReview : Boolean,
+    @SerializedName("IS_REVIEW_FINAL")
+    val isReviewFinal : Boolean
 ): Parcelable

@@ -103,9 +103,12 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
+        when (ssAction){
+            APPROVE, DETAIL -> disableForm()
+        }
 
-        if ((ssAction == APPROVE) || (ssAction == DETAIL)) {
-            disableForm()
+        when {
+            conditionImplementation() -> disableForm()
         }
     }
 
@@ -121,6 +124,17 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             memberTask.isEnabled = false
 
             addTeamMember.isClickable = false
+        }
+    }
+
+    private fun conditionImplementation(): Boolean {
+        return when (data?.statusProposal?.id) {
+            6, 9 -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -264,15 +278,23 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
         teamMemberAdapter.teamMemberCreateCallback(object : TeamMemberCallback {
             override fun removeClicked(dataMember: TeamMemberItem) {
                 if ((ssAction != APPROVE) && (ssAction != DETAIL)) {
-                    teamMember?.remove(dataMember)
+                    if (!conditionImplementation()) {
+                        if (dataMember.task?.task == "Ketua" && data?.teamMember?.size!! >= 2) {
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, binding.root.context,
+                                resources.getString(R.string.ketua_not_found),
+                                R.drawable.ic_close, R.color.red_500)
+                        } else {
+                            teamMember?.remove(dataMember)
 
-                    listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                    listTeamMemberViewModel.getSuggestionSystemTeamMember()
-                        .observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                teamMemberAdapter.setListTeamMember(it)
-                            }
-                        })
+                            listTeamMemberViewModel.updateTeamMember(teamMember, source)
+                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                                if (it != null) {
+                                    teamMemberAdapter.setListTeamMember(it)
+                                }
+                            })
+                        }
+                    }
                 }
             }
         })
@@ -296,6 +318,10 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 val department = memberDepartment.text.toString()
                 val task = memberTask.text.toString()
 
+                val checkDuplicateMember = data?.teamMember?.filter { nameValue ->
+                    nameValue?.name?.name == name
+                }
+
                 when {
                     task.isEmpty() -> {
                         SnackBarCustom.snackBarIconInfo(
@@ -318,26 +344,32 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             R.drawable.ic_close, R.color.red_500)
                         memberName.requestFocus()
                     }
-                    data?.teamMember.isNullOrEmpty() && task != "Ketua"->{
+                    data?.teamMember.isNullOrEmpty() && selectedTask.task != "Ketua" -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.ketua_not_found),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
-                    data?.teamMember?.size.isGreaterThan(1) ->{
+                    data?.teamMember?.size.isGreaterThan(1) -> {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_team),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
                     }
-                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)!!.task!!.id!! == 1 && task.equals("Ketua") ->{
+                    !data?.teamMember.isNullOrEmpty() && data?.teamMember?.get(0)?.task?.id == 1 && selectedTask.task == "Ketua" ->{
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.maximal_ketua),
                             R.drawable.ic_close, R.color.red_500)
                         memberTask.requestFocus()
+                    }
+                    checkDuplicateMember?.size.isGreaterThan(0) -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.duplicate_member),
+                            R.drawable.ic_close, R.color.red_500)
                     }
                     else -> {
                         val memberNameObj = MemberNameItem(

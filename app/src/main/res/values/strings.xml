@@ -151,7 +151,7 @@
     <string name="why_required">Why 1 harus diisi</string>
     <string name="problem_root">Silahkan Isi Kolom Akar Masalah Dengan Sesuai</string>
     <string name="problem_root_reason">Silahkan Tambah Sebab/Akar Masalah</string>
-    <string name="problem_suggest">Silahkan Isi Kolom Saran/Akar Masalah Dengan Sesuai</string>
+    <string name="problem_suggest">Silahkan Lengkapi Akar Masalah</string>
     <string name="problem_empty">Silahkan Isi Masalah Dengan Sesuai</string>
     <string name="suggest_empty">Silahkan Isi Saran atau Ide Dengan Sesuai</string>
     <string name="value_estimasi_empty">Silahkan Isi Kolom Estimasi Dengan Sesuai</string>
@@ -175,9 +175,10 @@
     <string name="new_pass_empty">Masukan Password Baru Anda</string>
     <string name="conf_pass_empty">Masukan Password Konfirmasi Anda</string>
     <string name="not_match_conf_password">Pastikan Password Konfirmasi sama dengan Password Baru Anda</string>
-    <string name="ketua_not_found">Pastikan Ketua ditambahkan di awal</string>
+    <string name="ketua_not_found">Ketua diharuskan pada posisi pertama</string>
     <string name="maximal_team">Maksimal anggota hanya 2 orang</string>
     <string name="maximal_ketua">Ketua hanya boleh ada satu dalam satu team</string>
+    <string name="duplicate_member">Anggota sudah ditambahkan</string>
 
     <string name="ide_perbaikan_empty">Pastikan kolom Proses Pelaksanaan Ide Perbaikan sudah terisi</string>
     <string name="hasil_implementasi_empty">Pastikan kolom Hasil Implementasi atas Saran dan Ide sudah terisi</string>
@@ -209,14 +210,16 @@
     <string name="reject">Revisi</string>
     <string name="loading">Loading</string>
     <string name="hi">Hi</string>
-    <string name="look">Lihat</string>
+    <string name="look">View</string>
     <string name="edit">Edit</string>
     <string name="implementation">Implementasi</string>
     <string name="submit">Submit</string>
     <string name="check">Check</string>
     <string name="submit_laporan">Submit Laporan Akhir</string>
     <string name="review">Review</string>
-
+    <string name="send">Send</string>
 
     <string name="internal_storage">Internal Storage</string>
+    <string name="check_final">Check Project</string>
+    <string name="review_final">Review Final Project</string>
 </resources>

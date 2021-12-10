@@ -49,6 +49,7 @@ internal class HawkUtils {
         result: String? = null,
         historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreateSs?.historyApproval == null) arrayListOf() else null,
         activityType: String? = null,
+        score: Int? = null,
         submitType: Int? = null,
         comment: String? = null,
         source: String = SS_CREATE
@@ -79,6 +80,7 @@ internal class HawkUtils {
             orgId = orgId ?: if (source == SS_CREATE) getDataCreateSs?.orgId else getDataDetailSs?.orgId,
             warehouseId = warehouseId ?: if (source == SS_CREATE) getDataCreateSs?.warehouseId else getDataDetailSs?.warehouseId,
             historyApproval = historyApproval ?: if (source == SS_CREATE) getDataCreateSs?.historyApproval else getDataDetailSs?.historyApproval,
+            score = score ?: if (source == SS_CREATE) getDataCreateSs?.score else getDataDetailSs?.score,
             activityType = activityType ?: if (source == SS_CREATE) getDataCreateSs?.activityType else getDataDetailSs?.activityType,
             submitType = submitType ?: if (source == SS_CREATE) getDataCreateSs?.submitType else getDataDetailSs?.submitType,
             comment = comment ?: if (source == SS_CREATE) getDataCreateSs?.comment else getDataDetailSs?.comment
@@ -180,6 +182,7 @@ internal class HawkUtils {
         orgId: Int? = null,
         warehouseId: Int? = null,
         historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreatePi?.historyApproval == null) arrayListOf() else null,
+        score: Int? = null,
         activityType: String? = null,
         submitType: Int? = null,
         comment: String? = null,
@@ -214,6 +217,7 @@ internal class HawkUtils {
             orgId = orgId ?: if (source == PI_CREATE) getDataCreatePi?.orgId else getDataDetailPi?.orgId,
             warehouseId = warehouseId ?: if (source == PI_CREATE) getDataCreatePi?.warehouseId else getDataDetailPi?.warehouseId,
             historyApproval = historyApproval ?: if (source == PI_CREATE) getDataCreatePi?.historyApproval else getDataDetailPi?.historyApproval,
+            score = score ?: if (source == PI_CREATE) getDataCreatePi?.score else getDataDetailPi?.score,
             activityType = activityType ?: if (source == PI_CREATE) getDataCreatePi?.activityType else getDataDetailPi?.activityType,
             submitType = submitType ?: if (source == PI_CREATE) getDataCreatePi?.submitType else getDataDetailPi?.submitType,
             comment = comment ?: if (source == PI_CREATE) getDataCreatePi?.comment else getDataDetailPi?.comment
