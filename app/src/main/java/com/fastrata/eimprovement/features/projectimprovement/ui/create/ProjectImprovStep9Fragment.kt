@@ -343,21 +343,26 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                         binding.apply {
                             when (it) {
                                 is DownloadResult.Success -> {
-                                    attachmentViewModel.setDownloading(false)
-                                    progress.progress = 0
-                                    progress.visibility = View.GONE
+                                    try {
+                                        attachmentViewModel.setDownloading(false)
+                                        progress.progress = 0
+                                        progress.visibility = View.GONE
 
-                                    val viewFile = FileInformation().viewFile(context, file)
-                                    //startActivity(viewFile)
-                                    Toast.makeText(context, "Download Complete", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(context, "Download Complete", Toast.LENGTH_LONG).show()
+                                        val viewFile = FileInformation().viewFile(context, file)
+                                        startActivity(viewFile)
 
-                                    /*val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                                    //intent.setDataAndType(uri, data.type)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                    //intent.putExtra(Intent.EXTRA_TITLE, name)
-                                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                                    intent.addCategory(Intent.CATEGORY_OPENABLE)
-                                    startActivityForResult(intent, DOWNLOAD_FILE_CODE)*/
+                                        /*val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                                        //intent.setDataAndType(uri, data.type)
+                                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                        //intent.putExtra(Intent.EXTRA_TITLE, name)
+                                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                                        intent.addCategory(Intent.CATEGORY_OPENABLE)
+                                        startActivityForResult(intent, DOWNLOAD_FILE_CODE)*/
+                                    } catch (e: Exception) {
+                                        Toast.makeText(context, "Error : ${e.message}", Toast.LENGTH_LONG).show()
+                                        Timber.e("### Error : ${e.message}")
+                                    }
                                 }
 
                                 is DownloadResult.Error -> {
