@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.fastrata.eimprovement.BuildConfig
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
@@ -87,6 +88,7 @@ class SettingsFragment : Fragment(), Injectable {
                         HawkUtils().removeDataCreateProposal(CP)
                         HawkUtils().removeDataCreateProposal(PI)
                         activity.finish()
+                        HomeActivity.stopAMQPConsumer()
                         startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })

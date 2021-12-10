@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
@@ -31,7 +32,6 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,9 +70,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
+    private var docId = ""
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var notification: HelperNotification
+
+    private val args : SuggestionSystemFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,6 +85,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         _binding = FragmentSuggestionSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
+
+        docId = args.docId.toString()
 
         listSsViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
@@ -130,7 +135,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             page = 1
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                 userId, limit, page, roleName, SS,
-                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
+                userName = userName, ssNo = docId, statusId = 0, title = "", category = "",orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 

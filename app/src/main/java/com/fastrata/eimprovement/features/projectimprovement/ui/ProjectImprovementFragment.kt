@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
@@ -72,9 +73,12 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
+    private var docId = ""
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var notification: HelperNotification
+
+    private val args : ProjectImprovementFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +88,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         _binding = FragmentProjectImprovementBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
+
+        docId = args.docId.toString()
 
         listPiViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
@@ -135,7 +141,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                 userId, limit, page, roleName, PI,
-                userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
+                userName = userName, piNo = docId, statusId = 0, title = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 

@@ -57,6 +57,18 @@ class DashboardFragment: Fragment(), Injectable {
         setHasOptionsMenu(true);
         greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
 
+        initToolbar()
+        initData()
+        initComponent(requireActivity())
+        return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDataBalance()
+    }
+
+    private fun getDataBalance() {
         try {
             balanceViewModel.setBalance(userId)
             balanceViewModel.getBalance.observeEvent(this){resultObserve->
@@ -93,11 +105,6 @@ class DashboardFragment: Fragment(), Injectable {
             Timber.e("Error balance : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
         }
-
-        initToolbar()
-        initData()
-        initComponent(requireActivity())
-        return binding.root
     }
 
     private fun initToolbar() {
@@ -146,6 +153,7 @@ class DashboardFragment: Fragment(), Injectable {
     }
 
     private fun initComponent(activity: FragmentActivity) {
+        val docId = ""
         binding.apply {
             welcome.text = greetings
 
@@ -160,36 +168,36 @@ class DashboardFragment: Fragment(), Injectable {
             }
 
             btnSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
                 it.findNavController().navigate(direction)
             }
 
             btnProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
                 it.findNavController().navigate(direction)
             }
 
             btnChangePoint.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
                 it.findNavController().navigate(direction)
             }
 
             // action menu
             menuApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval), docId = docId)
                 it.findNavController().navigate(direction)
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
                 it.findNavController().navigate(direction)
             }
             menuProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
                 it.findNavController().navigate(direction)
             }
             menuPointExchange.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point))
+                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
                 it.findNavController().navigate(direction)
             }
 

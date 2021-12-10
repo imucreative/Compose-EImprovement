@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
@@ -67,9 +68,12 @@ class ChangesPointFragment : Fragment(), Injectable {
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
+    private var docId = ""
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var notification: HelperNotification
+
+    private val args : ChangesPointFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,6 +83,8 @@ class ChangesPointFragment : Fragment(), Injectable {
         _binding = FragmentChangesPointSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
+
+        docId = args.docId.toString()
 
         listCpViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
@@ -132,7 +138,7 @@ class ChangesPointFragment : Fragment(), Injectable {
             page = 1
             val listChangePointRemoteRequest = ChangePointRemoteRequest(
                 userId, limit, page, roleName, CP,
-                userName = userName, cpNo = "", statusId = 0, description = "", createdBy = "", orgId = 0,
+                userName = userName, cpNo = docId, statusId = 0, description = "", createdBy = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 
