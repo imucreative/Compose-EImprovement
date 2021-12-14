@@ -126,7 +126,7 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun setLogic() {
         binding.run {
-            edtResult = data?.implementationResult.toString()
+            edtResult = if (data?.implementationResult == "null") "" else data?.implementationResult.toString()
 
             etFromStatus1.isEnabled = false
             etToStatus1.isEnabled = false

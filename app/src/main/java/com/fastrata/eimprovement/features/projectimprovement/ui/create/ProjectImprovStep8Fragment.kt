@@ -74,7 +74,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
                 hasilImplementasiImprovement.setText(data?.implementationResult)
             }*/
-            hasilImplementasiImprovement.setText(data?.implementationResult)
+            hasilImplementasiImprovement.setText(if (data?.implementationResult == "null") "" else data?.implementationResult)
             data?.categoryFixing?.let { category ->
                 listCategory.addAll(category)
             }
@@ -96,13 +96,21 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             hasilImplementasiImprovement.isEnabled = true
                         }
                     }
-                    else -> disableForm()
+                    else -> {
+                        if (data?.statusProposal?.id == 4) {
+                            binding.edtLainLain.isEnabled = true
+                        } else {
+                            disableForm()
+                        }
+                    }
                 }
             }
             SUBMIT_PROPOSAL -> {
                 when {
                     conditionImplementation() -> {
-                        binding.hasilImplementasiImprovement.isEnabled = true
+                        binding.apply {
+                            binding.hasilImplementasiImprovement.isEnabled = true
+                        }
                     }
                     else -> disableForm()
                 }
