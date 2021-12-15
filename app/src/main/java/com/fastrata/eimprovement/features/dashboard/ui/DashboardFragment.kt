@@ -193,14 +193,17 @@ class DashboardFragment: Fragment(), Injectable {
             menuSuggestionSystem.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
                 it.findNavController().navigate(direction)
+                drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuProjectImprovement.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
                 it.findNavController().navigate(direction)
+                drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuPointExchange.setOnClickListener {
                 val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
                 it.findNavController().navigate(direction)
+                drawerLayout.closeDrawer(GravityCompat.START)
             }
 
         }

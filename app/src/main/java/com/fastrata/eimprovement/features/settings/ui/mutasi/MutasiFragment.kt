@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentMutasiBinding
@@ -33,11 +35,13 @@ class MutasiFragment : Fragment(),Injectable {
     private lateinit var toolbarBinding: ToolbarBinding
     private lateinit var adapter: MutasiAdapter
     private lateinit var listMutasiModel: MutasiViewCreateModel
-    var userId: Int = 0
-    var limit: Int = 10
-    var page: Int = 1
-    var roleName: String = ""
-
+    private var userId: Int = 0
+    private var roleName: String = ""
+    private var limit: Int = 10
+    private var page: Int = 1
+    private var totalPage: Int = 1
+    private var isLoading = false
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,19 +55,31 @@ class MutasiFragment : Fragment(),Injectable {
         context ?: return binding.root
         setHasOptionsMenu(true);
 
-        try {
-            userId = HawkUtils().getDataLogin().USER_ID
-            roleName = HawkUtils().getDataLogin().ROLE_NAME
-            listMutasiModel.setMutasi(userId,limit,page)
-        }catch (e :Exception){
-            Timber.e("Error setListCp : $e")
-            Toast.makeText(requireContext(),"Error : $e", Toast.LENGTH_LONG).show()
-        }
+        userId = HawkUtils().getDataLogin().USER_ID
+        roleName = HawkUtils().getDataLogin().ROLE_NAME
 
         adapter = MutasiAdapter()
         adapter.notifyDataSetChanged()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDataListDetailSaldo()
+    }
+
+    private fun getDataListDetailSaldo() {
+        try {
+            adapter.clear()
+            page = 1
+
+            listMutasiModel.setMutasi(userId, limit, page)
+
+        } catch (e: Exception){
+            Timber.e("Error getDataListDetailSaldo : $e")
+            Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,16 +88,40 @@ class MutasiFragment : Fragment(),Injectable {
 
         _binding = FragmentMutasiBinding.bind(view)
         initToolbar()
-        initComponent(requireActivity())
 
         binding.apply {
+            layoutManager = LinearLayoutManager(activity)
             rvMutasi.setHasFixedSize(true)
-            rvMutasi.layoutManager = LinearLayoutManager(activity)
+            rvMutasi.layoutManager = layoutManager
             rvMutasi.adapter = adapter
+
+            rvMutasi.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val visibleItemCount = layoutManager.childCount
+                    val pastVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                    val total  = adapter.itemCount
+
+                    if (!isLoading && page < totalPage){
+                        if (visibleItemCount + pastVisibleItem >= total){
+                            page++
+
+                            listMutasiModel.setMutasi(userId,limit,page)
+
+                            initComponent()
+                        }
+                    }
+
+                }
+            })
 
             swipe.setOnRefreshListener {
                 swipe.isRefreshing  = true
+                page = 1
                 try {
+                    adapter.clear()
+
                     listMutasiModel.setMutasi(userId,limit,page)
                     swipe.isRefreshing = false
                 }catch (e: Exception){
@@ -97,10 +137,15 @@ class MutasiFragment : Fragment(),Injectable {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        initComponent()
+    }
 
-    private fun initComponent(activity: FragmentActivity) {
+    private fun initComponent() {
         try {
-            listMutasiModel.getListMutasi.observeEvent(activity) { resultObserve ->
+            isLoading = true
+            listMutasiModel.getListMutasi.observeEvent(this) { resultObserve ->
                 resultObserve.observe(viewLifecycleOwner, { result ->
                     if (result != null) {
                         when (result.status) {
@@ -111,20 +156,26 @@ class MutasiFragment : Fragment(),Injectable {
                             Result.Status.SUCCESS -> {
                                 HelperLoading.hideLoading()
 
-                                if (result.data?.data.isNullOrEmpty()) {
-                                    binding.rvMutasi.visibility == View.GONE
-                                    binding.noDataScreen.root.visibility = View.VISIBLE
-                                } else {
-                                    binding.rvMutasi.visibility = View.VISIBLE
-                                    binding.noDataScreen.root.visibility = View.GONE
-                                    adapter.clear()
-                                    adapter.setList(result.data?.data!!)
+                                val listResponse = result.data?.data
+                                if (listResponse != null) {
+                                    if (listResponse.isNullOrEmpty()) {
+                                        binding.noDataScreen.root.visibility = VISIBLE
+                                    } else {
+                                        totalPage = result.data.totalPage
 
-                                    Timber.d("###-- Success get List Mutasi")
+                                        binding.rvMutasi.visibility = VISIBLE
+                                        binding.noDataScreen.root.visibility = GONE
+                                        //adapter.clear()
+                                        adapter.setList(listResponse)
+
+                                        Timber.d("###-- Success get List Mutasi")
+                                    }
                                 }
+                                isLoading = false
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
+                                isLoading = false
                                 Toast.makeText(
                                     requireContext(),
                                     "Error : ${result.message}",
@@ -138,6 +189,7 @@ class MutasiFragment : Fragment(),Injectable {
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()
+            isLoading = false
             Toast.makeText(
                 requireContext(),
                 "Error : ${err.message}",
