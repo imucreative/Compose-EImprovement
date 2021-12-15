@@ -140,8 +140,16 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                             teamMember = result.data?.data?.get(0)?.teamMember,
                                             attachment = result.data?.data?.get(0)?.attachment,
                                             statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                            proses = result.data?.data?.get(0)?.proses,
-                                            result = result.data?.data?.get(0)?.result,
+                                            proses = result.data?.data?.get(0)?.proses?.let {
+                                                HtmlCompat.fromHtml(
+                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                ).toString()
+                                            },
+                                            result = result.data?.data?.get(0)?.result?.let {
+                                                HtmlCompat.fromHtml(
+                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                ).toString()
+                                            },
 
                                             headId = result.data?.data?.get(0)?.headId,
                                             userId = result.data?.data?.get(0)?.userId,
