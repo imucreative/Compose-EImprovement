@@ -99,11 +99,11 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private fun disableForm() {
         binding.apply {
             titleSuggestion.isEnabled = false
-            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+            // edtLayoutTitle.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
             checkboxOther.isEnabled = false
             tvCheckboxOther.isClickable = false
             edtLainLain.isEnabled = false
-            //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+            // edtLayoutLainLain.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
         }
     }
 

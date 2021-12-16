@@ -196,7 +196,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             override fun removeClicked(data: AttachmentItem) {
                 if ((action != APPROVE) && (action != DETAIL)) {
                     activity?.let { activity ->
-                        notification.shownotificationyesno(
+                        notification.showNotificationYesNo(
                             activity,
                             requireContext(),
                             R.color.blue_500,

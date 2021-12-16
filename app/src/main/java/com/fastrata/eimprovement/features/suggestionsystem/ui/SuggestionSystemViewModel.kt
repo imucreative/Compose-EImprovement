@@ -42,9 +42,9 @@ class SuggestionSystemViewModel @Inject constructor(private val repository: SsRe
     private val _postSubmitCreateSs = MutableLiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemResponseModel>>>>>()
     val postSubmitCreateSs: LiveData<Event<LiveData<Result<ResultsResponse<SuggestionSystemResponseModel>>>>> get() = _postSubmitCreateSs
 
-    fun setPostSubmitCreateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel) {
+    fun setPostSubmitCreateSs(suggestionSystemCreateModel: SuggestionSystemCreateModel, action: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreateSs(suggestionSystemCreateModel) }
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreateSs(suggestionSystemCreateModel, action) }
             _postSubmitCreateSs.value = Event(result)
         }
     }

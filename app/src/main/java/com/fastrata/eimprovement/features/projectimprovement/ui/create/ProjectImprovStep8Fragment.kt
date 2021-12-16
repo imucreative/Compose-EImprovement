@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -74,7 +75,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
                 hasilImplementasiImprovement.setText(data?.implementationResult)
             }*/
-            hasilImplementasiImprovement.setText(if (data?.implementationResult == "null") "" else data?.implementationResult)
+            hasilImplementasiImprovement.setText(if (data?.implementationResult == "null" || data?.implementationResult == null) "" else data?.implementationResult)
             data?.categoryFixing?.let { category ->
                 listCategory.addAll(category)
             }
@@ -97,10 +98,14 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         }
                     }
                     else -> {
-                        if (data?.statusProposal?.id == 4) {
-                            binding.edtLainLain.isEnabled = true
-                        } else {
-                            disableForm()
+                        when (data?.statusProposal?.id) {
+                            1, 11, 4 -> {
+                                binding.apply {
+                                    edtLainLain.isEnabled = true
+                                    cardViewHasilImplementasi.visibility = View.GONE
+                                }
+                            }
+                            else -> disableForm()
                         }
                     }
                 }
@@ -109,7 +114,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                 when {
                     conditionImplementation() -> {
                         binding.apply {
-                            binding.hasilImplementasiImprovement.isEnabled = true
+                            hasilImplementasiImprovement.isEnabled = true
                         }
                     }
                     else -> disableForm()
@@ -143,6 +148,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             edtLainLain.isEnabled = false
 
             hasilImplementasiImprovement.isEnabled = false
+            edtLayoutHasilImplementasiImprovement.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
         }
     }
 

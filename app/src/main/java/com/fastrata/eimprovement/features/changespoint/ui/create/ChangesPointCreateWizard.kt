@@ -394,7 +394,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 }
                 notification = HelperNotification()
                 binding.apply {
-                    notification.shownotificationyesno(
+                    notification.showNotificationYesNo(
                         this@ChangesPointCreateWizard,
                         applicationContext,
                         R.color.blue_500,

@@ -196,7 +196,7 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
             override fun removeClicked(data: AttachmentItem) {
                 if ((ssAction != APPROVE)&&(ssAction != DETAIL)) {
                     activity?.let { activity ->
-                        notification.shownotificationyesno(
+                        notification.showNotificationYesNo(
                             activity,
                             requireContext(),
                             R.color.blue_500,

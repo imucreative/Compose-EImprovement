@@ -381,7 +381,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 HelperLoading.hideLoading()
                                 val statusProposal = result.data?.data?.get(0)
                                 if (statusProposal?.id == 11) {
-                                    notification.shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(),
                                         requireContext(),
                                         R.color.blue_500,
@@ -621,7 +621,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onSubmit() {
-                            HelperNotification().shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(), requireContext(), R.color.blue_500,
                                 "Submit Proposal", resources.getString(R.string.submit_desc),
                                 "Submit", resources.getString(R.string.no),
@@ -657,7 +657,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onImplementation() {
-                            HelperNotification().shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(), requireContext(), R.color.blue_500,
                                 "Implementation Proposal", resources.getString(R.string.submit_desc),
                                 "Implementation", resources.getString(R.string.no),
@@ -700,7 +700,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onDelete() {
-                            notification.shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
                                 R.color.blue_500,

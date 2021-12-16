@@ -34,7 +34,6 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -392,7 +391,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 val statusProposal = result.data?.data?.get(0)
                                 Timber.e("Period : $statusProposal")
                                 if (statusProposal?.id == 11) {
-                                    notification.shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(),
                                         requireContext(),
                                         R.color.blue_500,
@@ -632,7 +631,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onSubmit() {
-                            HelperNotification().shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(), requireContext(), R.color.blue_500,
                                 "Submit Proposal", resources.getString(R.string.submit_desc),
                                 "Submit", resources.getString(R.string.no),
@@ -651,6 +650,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                             userNameSubmit = userId,
                                         ) {
                                             if(it){
+                                                //HawkUtils().removeDataCreateProposal(PI_DETAIL_DATA)
                                                 onStart()
                                             }
                                         }
@@ -668,7 +668,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onImplementation() {
-                            HelperNotification().shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(), requireContext(), R.color.blue_500,
                                 "Implementation Proposal", resources.getString(R.string.submit_desc),
                                 "Implementation", resources.getString(R.string.no),
@@ -711,7 +711,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onDelete() {
-                            notification.shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
                                 R.color.blue_500,
@@ -728,7 +728,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 }
                             )
                         }
-                    })
+                    }
+                )
             }
         })
 

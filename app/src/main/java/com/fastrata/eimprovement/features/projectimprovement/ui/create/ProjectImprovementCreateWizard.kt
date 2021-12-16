@@ -551,36 +551,81 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                 notification = HelperNotification()
                 binding.apply {
-                    notification.shownotificationyesno(
-                        this@ProjectImprovementCreateWizard,
-                        applicationContext,
-                        R.color.blue_500,
-                        initialTypeProposal,
-                        resources.getString(R.string.submit_desc),
-                        buttonInitialTypeProposal,
-                        resources.getString(R.string.cancel),
-                        object  : HelperNotification.CallBackNotificationYesNo {
-                            override fun onNotificationNo() {
+                    if (data?.piNo.isNullOrEmpty()) {
+                        notification.showNotificationYesNoSubmit(
+                            this@ProjectImprovementCreateWizard,
+                            applicationContext,
+                            R.color.blue_500,
+                            initialTypeProposal,
+                            resources.getString(R.string.submit_desc),
+                            buttonInitialTypeProposal,
+                            resources.getString(R.string.submit),
+                            resources.getString(R.string.cancel),
+                            object : HelperNotification.CallBackNotificationYesNoSubmit {
+                                override fun onNotificationNo() {
 
-                            }
+                                }
 
-                            override fun onNotificationYes() {
-                                if (data?.piNo.isNullOrEmpty()){
+                                override fun onNotificationYes() {
                                     UpdateStatusProposalPi(
                                         viewModel,
                                         context = applicationContext,
                                         owner = this@ProjectImprovementCreateWizard
                                     ).submitPi(
                                         data = data!!,
+                                        action = "save",
                                         context = applicationContext,
                                         owner = this@ProjectImprovementCreateWizard
                                     ) {
-                                        if(it){
+                                        if (it) {
                                             finish()
                                             HawkUtils().removeDataCreateProposal(source)
                                         }
                                     }
-                                }else {
+                                }
+
+                                override fun onNotificationSubmit() {
+                                    if (data?.statusProposal?.id == 1) {
+                                        UpdateStatusProposalPi(
+                                            viewModel,
+                                            context = applicationContext,
+                                            owner = this@ProjectImprovementCreateWizard
+                                        ).submitPi(
+                                            data = data!!,
+                                            action = "submit",
+                                            context = applicationContext,
+                                            owner = this@ProjectImprovementCreateWizard
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
+                                        }
+                                    } else {
+                                        SnackBarCustom.snackBarIconInfo(
+                                            root, layoutInflater, resources, root.context,
+                                            resources.getString(R.string.title_past_period),
+                                            R.drawable.ic_close, R.color.red_500
+                                        )
+                                    }
+                                }
+                            }
+                        )
+                    } else {
+                        notification.showNotificationYesNo(
+                            this@ProjectImprovementCreateWizard,
+                            applicationContext,
+                            R.color.blue_500,
+                            initialTypeProposal,
+                            resources.getString(R.string.submit_desc),
+                            buttonInitialTypeProposal,
+                            resources.getString(R.string.cancel),
+                            object : HelperNotification.CallBackNotificationYesNo {
+                                override fun onNotificationNo() {
+
+                                }
+
+                                override fun onNotificationYes() {
                                     UpdateStatusProposalPi(
                                         viewModel,
                                         context = applicationContext,
@@ -590,15 +635,15 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                         context = applicationContext,
                                         owner = this@ProjectImprovementCreateWizard
                                     ) {
-                                        if(it){
+                                        if (it) {
                                             finish()
                                             HawkUtils().removeDataCreateProposal(source)
                                         }
                                     }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
 
             }

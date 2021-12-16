@@ -126,12 +126,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun setLogic() {
         binding.run {
-            edtResult = if (data?.implementationResult == "null") "" else data?.implementationResult.toString()
+            edtResult = if (data?.implementationResult == "null" || data?.implementationResult == null) "" else data?.implementationResult.toString()
 
             etFromStatus1.isEnabled = false
             etToStatus1.isEnabled = false
 
             linearLayoutAkan.visibility = View.GONE
+
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     etFromStatus1.isEnabled = true
@@ -163,16 +164,17 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun initComponent() {
         binding.apply {
-            etFromStatus1.setOnClickListener {datePickerSudah.showDialog(object : DatePickerCustom.Callback {
-                override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
-                    val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-                    val mon = month + 1
-                    val monthStr = if (mon < 10) "0$mon" else "$mon"
-                    etFromStatus1.setText("$year-$monthStr-$dayStr")
-                    fromDate = sdf.parse(etFromStatus1.text.toString())
-                    etToStatus1.text!!.clear()
-                }
-            })
+            etFromStatus1.setOnClickListener {
+                datePickerSudah.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+                        etFromStatus1.setText("$year-$monthStr-$dayStr")
+                        fromDate = sdf.parse(etFromStatus1.text.toString())
+                        etToStatus1.text!!.clear()
+                    }
+                })
             }
 
             etToStatus1.setOnClickListener {

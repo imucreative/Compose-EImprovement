@@ -511,7 +511,7 @@ class ListApprovalFragment : Fragment(), Injectable {
             override fun onItemClicked(data: ApprovalModel) {
                 when (data.type) {
                     SS -> {
-                        HelperNotification().showListEdit(requireActivity(),
+                        notification.showListEdit(requireActivity(),
                             resources.getString(R.string.select),
                             view = data.isView,
                             viewEdit = data.isEdit,
@@ -546,7 +546,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
-                                    HelperNotification().shownotificationyesno(
+                                    HelperNotification().showNotificationYesNo(
                                         requireActivity(), requireContext(), R.color.blue_500,
                                         "Check Proposal", resources.getString(R.string.submit_desc),
                                         "Check", resources.getString(R.string.no),
@@ -595,7 +595,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onReview() {
-                                    HelperNotification().shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(), requireContext(), R.color.blue_500,
                                         "Review Proposal", resources.getString(R.string.submit_desc),
                                         "Review", resources.getString(R.string.no),
@@ -677,7 +677,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
-                                    HelperNotification().shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(), requireContext(), R.color.blue_500,
                                         "Check Proposal", resources.getString(R.string.submit_desc),
                                         "Check", resources.getString(R.string.no),
@@ -726,7 +726,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onReview() {
-                                    HelperNotification().shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(), requireContext(), R.color.blue_500,
                                         "Review Proposal", resources.getString(R.string.submit_desc),
                                         "Review", resources.getString(R.string.no),
@@ -808,7 +808,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
-                                    HelperNotification().shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(), requireContext(), R.color.blue_500,
                                         "Check Redeem Point", resources.getString(R.string.submit_desc),
                                         "Check", resources.getString(R.string.no),

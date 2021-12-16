@@ -74,9 +74,10 @@ interface AppService {
         @Field("userId") userId: Int
     ): Response<ResultsResponse<SuggestionSystemCreateModel>>
 
-    @POST("ss/create")
+    @POST("ss/create/{ACTIONS}")
     suspend fun submitCreateSs(
-        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel
+        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel,
+        @Path("ACTIONS") action : String
     ): Response<ResultsResponse<SuggestionSystemResponseModel>>
 
     @PUT("ss/remove/{SS_H_ID}")
@@ -103,9 +104,10 @@ interface AppService {
         @Field("userId") userId: Int
     ): Response<ResultsResponse<ProjectImprovementCreateModel>>
 
-    @POST("pi/create")
+    @POST("pi/create/{ACTIONS}")
     suspend fun submitCreatePi(
-        @Body projectImprovementCreateModel: ProjectImprovementCreateModel
+        @Body projectImprovementCreateModel: ProjectImprovementCreateModel,
+        @Path("ACTIONS") action : String
     ): Response<ResultsResponse<ProjectImprovementResponseModel>>
 
 

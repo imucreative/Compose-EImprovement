@@ -22,6 +22,12 @@ class HelperNotification {
         fun onNotificationNo()
     }
 
+    interface CallBackNotificationYesNoSubmit {
+        fun onNotificationYes()
+        fun onNotificationSubmit()
+        fun onNotificationNo()
+    }
+
     interface CallBackNotificationYesNoWithComment {
         fun onNotificationYes(comment: String = "")
         fun onNotificationNo()
@@ -112,7 +118,7 @@ class HelperNotification {
     }
 
 
-    fun shownotificationyesno(
+    fun showNotificationYesNo(
         activity: Activity,
         context : Context,
         headerColor : Int,
@@ -126,7 +132,7 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_yesno)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.linear_header)as LinearLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
+        (dialog.findViewById<View>(R.id.relative_layout_header)as RelativeLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
         (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
         dialog.setCancelable(false)
@@ -143,12 +149,70 @@ class HelperNotification {
             dialog.dismiss()
             if (listener != null)listener.onNotificationYes()
         }
+
         if (noText.isNullOrEmpty()){
             (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = "No"
         }else{
             (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
         }
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+
+        (dialog.findViewById<View>(R.id.bt_close) as ImageButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
+    fun showNotificationYesNoSubmit(
+        activity: Activity,
+        context : Context,
+        headerColor : Int,
+        header: String,
+        content: String,
+        yesText : String,
+        submitText : String,
+        noText : String,
+        listener : CallBackNotificationYesNoSubmit
+    ){
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_yesno_submit)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        (dialog.findViewById<View>(R.id.relative_layout_header) as RelativeLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
+        (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
+        (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+        if (yesText.isNullOrEmpty()){
+            (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = "SAVE"
+        }else{
+            (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = yesText
+        }
+        (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationYes()
+        }
+
+        if (submitText.isNullOrEmpty()){
+            (dialog.findViewById<View>(R.id.bt_submit) as AppCompatButton).text = "SUBMIT"
+        }else{
+            (dialog.findViewById<View>(R.id.bt_submit) as AppCompatButton).text = submitText
+        }
+        (dialog.findViewById<View>(R.id.bt_submit) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationSubmit()
+        }
+
+        (dialog.findViewById<View>(R.id.bt_close) as ImageButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationNo()
         }
@@ -170,7 +234,7 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_yesno)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.linear_header)as LinearLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
+        (dialog.findViewById<View>(R.id.relative_layout_header)as RelativeLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
         (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
         dialog.setCancelable(false)
@@ -189,8 +253,14 @@ class HelperNotification {
                 listener.onNotificationYes(comment.toString())
             }
         }
+
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+
+        (dialog.findViewById<View>(R.id.bt_close) as ImageButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationNo()
         }
@@ -214,7 +284,7 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_yesno)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.linear_header)as LinearLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
+        (dialog.findViewById<View>(R.id.relative_layout_header)as RelativeLayout).setBackgroundColor(ContextCompat.getColor(context, headerColor))
         (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
         (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
         dialog.setCancelable(false)
@@ -240,8 +310,14 @@ class HelperNotification {
                 listener.onNotificationYes(comment.toString(), rate.toInt())
             }
         }
+
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).text = noText
         (dialog.findViewById<View>(R.id.bt_no) as AppCompatButton).setOnClickListener { v ->
+            dialog.dismiss()
+            if (listener != null)listener.onNotificationNo()
+        }
+
+        (dialog.findViewById<View>(R.id.bt_close) as ImageButton).setOnClickListener { v ->
             dialog.dismiss()
             if (listener != null)listener.onNotificationNo()
         }

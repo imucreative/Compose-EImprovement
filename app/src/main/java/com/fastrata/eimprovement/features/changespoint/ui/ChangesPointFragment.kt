@@ -255,7 +255,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                             HelperLoading.hideLoading()
                             val statusProposal = result.data?.data?.get(0)
                             if (statusProposal?.id == 11) {
-                                notification.shownotificationyesno(
+                                notification.showNotificationYesNo(
                                     requireActivity(),
                                     requireContext(),
                                     R.color.blue_500,
@@ -564,7 +564,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                         }
 
                         override fun onDelete() {
-                            notification.shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
                                 R.color.blue_500,

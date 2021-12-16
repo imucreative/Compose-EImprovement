@@ -215,8 +215,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
     private fun setLogic(binding: FragmentSuggestionSystemStep2Binding) {
         binding.run {
-            edtProses = data?.proses.toString()
-            edtResult = data?.result.toString()
+            edtProses = if (data?.proses == "null" || data?.proses == null) "" else data?.proses.toString()
+            edtResult = if (data?.result == "null" || data?.result == null) "" else data?.result.toString()
 
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fastrata.eimprovement.R
@@ -70,8 +71,8 @@ class SuggestionSystemStep4Fragment : Fragment(), Injectable {
             idePerbaikan.isEnabled = false
             hasilImplementasi.isEnabled = false
 
-            idePerbaikan.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-            hasilImplementasi.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+            edtLayoutIdePerbaikan.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
+            edtLayoutHasilImplementasi.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
         }
     }
 

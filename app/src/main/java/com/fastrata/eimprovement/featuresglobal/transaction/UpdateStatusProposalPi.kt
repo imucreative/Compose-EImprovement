@@ -158,12 +158,13 @@ class UpdateStatusProposalPi(
     // submit for create
     fun submitPi(
         data: ProjectImprovementCreateModel,
+        action: String,
         context: Context,
         owner: LifecycleOwner,
         complete: (Boolean) -> Unit
     ) {
         try {
-            listPiViewModel.setPostSubmitCreatePi(data)
+            listPiViewModel.setPostSubmitCreatePi(data, action)
             listPiViewModel.postSubmitCreatePi.observeEvent(owner) { resultObserve ->
                 resultObserve.observe(owner, { result ->
                     if (result != null) {

@@ -98,6 +98,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 ssNo = argsSsNo
 
                 source = SS_DETAIL_DATA
+                //HawkUtils().removeDataCreateProposal(source)
+
                 try {
                     viewModel.setDetailSs(argsIdSs, userId)
 
@@ -207,8 +209,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     userId = userId,
                     orgId = orgId,
                     warehouseId = warehouseId,
-                    proses = "",
-                    result = "",
                     activityType = SS,
                     submitType = 1,
                     comment = "",
@@ -494,27 +494,29 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 }
 
                 binding.apply {
-                    notification.shownotificationyesno(
-                        this@SuggestionSystemCreateWizard,
-                        applicationContext,
-                        R.color.blue_500,
-                        initialTypeProposal,
-                        resources.getString(R.string.submit_desc),
-                        buttonInitialTypeProposal,
-                        resources.getString(R.string.cancel),
-                        object : HelperNotification.CallBackNotificationYesNo {
-                            override fun onNotificationNo() {
+                    if (data?.ssNo.isNullOrEmpty()) {
+                        notification.showNotificationYesNoSubmit(
+                            this@SuggestionSystemCreateWizard,
+                            applicationContext,
+                            R.color.blue_500,
+                            initialTypeProposal,
+                            resources.getString(R.string.submit_desc),
+                            buttonInitialTypeProposal,
+                            resources.getString(R.string.submit),
+                            resources.getString(R.string.cancel),
+                            object : HelperNotification.CallBackNotificationYesNoSubmit {
+                                override fun onNotificationNo() {
 
-                            }
+                                }
 
-                            override fun onNotificationYes() {
-                                if (data?.ssNo.isNullOrEmpty()) {
+                                override fun onNotificationYes() {
                                     UpdateStatusProposalSs(
                                         viewModel,
                                         context = applicationContext,
                                         owner = this@SuggestionSystemCreateWizard
                                     ).submitSs(
                                         data = data!!,
+                                        action = "save",
                                         context = applicationContext,
                                         owner = this@SuggestionSystemCreateWizard
                                     ) {
@@ -523,8 +525,50 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                             HawkUtils().removeDataCreateProposal(source)
                                         }
                                     }
+                                }
 
-                                } else {
+                                override fun onNotificationSubmit() {
+                                    if (data?.statusProposal?.id == 1) {
+                                        UpdateStatusProposalSs(
+                                            viewModel,
+                                            context = applicationContext,
+                                            owner = this@SuggestionSystemCreateWizard
+                                        ).submitSs(
+                                            data = data!!,
+                                            action = "submit",
+                                            context = applicationContext,
+                                            owner = this@SuggestionSystemCreateWizard
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
+                                        }
+                                    } else {
+                                        SnackBarCustom.snackBarIconInfo(
+                                            root, layoutInflater, resources, root.context,
+                                            resources.getString(R.string.title_past_period),
+                                            R.drawable.ic_close, R.color.red_500
+                                        )
+                                    }
+                                }
+                            }
+                        )
+                    } else {
+                        notification.showNotificationYesNo(
+                            this@SuggestionSystemCreateWizard,
+                            applicationContext,
+                            R.color.blue_500,
+                            initialTypeProposal,
+                            resources.getString(R.string.submit_desc),
+                            buttonInitialTypeProposal,
+                            resources.getString(R.string.cancel),
+                            object : HelperNotification.CallBackNotificationYesNo {
+                                override fun onNotificationNo() {
+
+                                }
+
+                                override fun onNotificationYes() {
                                     UpdateStatusProposalSs(
                                         viewModel,
                                         context = applicationContext,
@@ -534,16 +578,15 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         context = applicationContext,
                                         owner = this@SuggestionSystemCreateWizard
                                     ) {
-                                        if(it){
+                                        if (it) {
                                             finish()
                                             HawkUtils().removeDataCreateProposal(source)
                                         }
                                     }
-
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
                 // }
             }

@@ -14,8 +14,8 @@ class PiRemoteRepository @Inject constructor(private val remoteDataSource: PiRem
         networkCall = { remoteDataSource.requestDetailPi(id, userId) }
     )
 
-    fun observeSubmitCreatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.postSubmitCreatePi(projectImprovementCreateModel) }
+    fun observeSubmitCreatePi(projectImprovementCreateModel: ProjectImprovementCreateModel, action: String) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.postSubmitCreatePi(projectImprovementCreateModel, action) }
     )
 
     fun observeSubmitUpdatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) = resultMutableLiveDataRemote(

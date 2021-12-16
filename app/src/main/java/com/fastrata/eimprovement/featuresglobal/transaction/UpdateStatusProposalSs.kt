@@ -150,12 +150,13 @@ class UpdateStatusProposalSs(
     // submit for create
     fun submitSs(
         data: SuggestionSystemCreateModel,
+        action: String,
         context: Context,
         owner: LifecycleOwner,
         complete: (Boolean) -> Unit
     ){
         try {
-            listSsViewModel.setPostSubmitCreateSs(data)
+            listSsViewModel.setPostSubmitCreateSs(data, action)
             listSsViewModel.postSubmitCreateSs.observeEvent(owner) { resultObserve ->
                 resultObserve.observe(owner, { result ->
                     if (result != null) {

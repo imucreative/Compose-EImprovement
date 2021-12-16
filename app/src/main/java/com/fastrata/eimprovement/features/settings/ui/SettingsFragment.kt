@@ -68,7 +68,7 @@ class SettingsFragment : Fragment(), Injectable {
             }
 
             btnLogout.setOnClickListener {
-                notification.shownotificationyesno(
+                notification.showNotificationYesNo(
                     activity,
                     requireContext(),
                     R.color.blue_500,

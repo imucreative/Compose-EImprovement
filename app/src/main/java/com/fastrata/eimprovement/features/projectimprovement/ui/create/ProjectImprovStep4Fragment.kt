@@ -124,7 +124,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                     if (action != APPROVE && action != DETAIL) {
                         if (!conditionImplementation()) {
                             activity?.let { activity ->
-                                notification.shownotificationyesno(
+                                notification.showNotificationYesNo(
                                     activity,
                                     requireContext(),
                                     R.color.blue_500,

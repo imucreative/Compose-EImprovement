@@ -142,27 +142,24 @@
                 android:drawableEnd="@drawable/ic_save_white"
                 android:paddingLeft="@dimen/spacing_mlarge"
                 android:paddingRight="@dimen/spacing_mlarge"
-                android:text="@string/ok"
+                android:text="@string/save"
                 android:textColor="@android:color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_no"
+                android:id="@+id/bt_submit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:background="@drawable/btn_rounded_red"
-                android:drawableEnd="@drawable/ic_close"
+                android:background="@drawable/btn_rounded_primary"
+                android:drawableEnd="@drawable/ic_send_white"
                 android:paddingLeft="@dimen/spacing_mlarge"
                 android:paddingRight="@dimen/spacing_mlarge"
-                android:text="@string/no"
+                android:text="@string/submit"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
 
-
     </LinearLayout>
-
-
 
 </androidx.cardview.widget.CardView>
