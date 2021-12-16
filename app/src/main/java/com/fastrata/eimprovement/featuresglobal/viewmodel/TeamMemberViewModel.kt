@@ -22,12 +22,11 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     val getTeamMemberName: LiveData<Event<LiveData<Result<ResultsResponse<MemberNameItem>>>>> get() = _listTeamMemberName
 
     fun setTeamMemberName(
-        departmentId: Int,
-        orgId: Int,
-        warehouseId: Int,
+        departmentName: String,
+        userId: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(departmentId, orgId, warehouseId) }
+            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(departmentName, userId) }
             _listTeamMemberName.value = Event(result)
         }
     }
@@ -37,14 +36,12 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
     val getDepartment: LiveData<Event<LiveData<Result<ResultsResponse<MemberDepartmentItem>>>>> get() = _listDepartment
 
     fun setDepartment(
-        departmentId: Int,
-        orgId: Int,
-        warehouseId: Int,
+        userId: Int,
         proposalType: String
     ) {
         viewModelScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.Default) { repository.observeListDepartment(
-                departmentId, orgId, warehouseId, proposalType
+                userId, proposalType
             ) }
             _listDepartment.value = Event(result)
         }

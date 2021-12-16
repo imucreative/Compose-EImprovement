@@ -11,20 +11,17 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
     }
 
     suspend fun requestListTeamMember(
-        departmentId: Int,
-        orgId: Int,
-        warehouseId: Int,
+        departmentName: String,
+        userId: Int
     ) = getResult {
-        service.listTeamMember(departmentId, orgId, warehouseId)
+        service.listTeamMember(departmentName, userId)
     }
 
     suspend fun requestListDepartment(
-        departmentId: Int,
-        orgId: Int,
-        warehouseId: Int,
+        userId: Int,
         proposalType: String
     ) = getResult {
-        service.listDepartment(departmentId, orgId, warehouseId, proposalType)
+        service.listDepartment(userId, proposalType)
     }
 
     suspend fun requestListTeamRole() = getResult {

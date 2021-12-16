@@ -30,18 +30,15 @@ interface AppService {
     @GET("master/category")
     suspend fun listCategory(): Response<ResultsResponse<CategoryImprovementItem>>
 
-    @GET("master/teammember/{DEPARTMENT_ID}/{ORG_ID}/{WAREHOUSE_ID}")
+    @GET("master/teammember/{DEPARTMENT_NAME}/{USER_ID}")
     suspend fun listTeamMember(
-        @Path("DEPARTMENT_ID") departmentId: Int,
-        @Path("ORG_ID") orgId: Int,
-        @Path("WAREHOUSE_ID") warehouseId: Int,
+        @Path("DEPARTMENT_NAME") departmentName: String,
+        @Path("USER_ID") userId: Int
     ): Response<ResultsResponse<MemberNameItem>>
 
-    @GET("master/department/{DEPARTMENT_ID}/{ORG_ID}/{WAREHOUSE_ID}/{PROPOSAL_TYPE}")
+    @GET("master/department/{USER_ID}/{PROPOSAL_TYPE}")
     suspend fun listDepartment(
-        @Path("DEPARTMENT_ID") departmentId: Int,
-        @Path("ORG_ID") orgId: Int,
-        @Path("WAREHOUSE_ID") warehouseId: Int,
+        @Path("USER_ID") userId: Int,
         @Path("PROPOSAL_TYPE") proposalType: String
     ): Response<ResultsResponse<MemberDepartmentItem>>
 

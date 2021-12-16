@@ -48,6 +48,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
     private var source: String = SS_CREATE
     private var departmentId: Int? = 0
     private var orgId: Int? = 0
+    private var userId: Int? = 0
     private var warehouseId: Int? = 0
 
     override fun onCreateView(
@@ -69,12 +70,13 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
 
         departmentId = HawkUtils().getDataLogin().DEPARTMENT_ID
         orgId = HawkUtils().getDataLogin().ORG_ID
+        userId = HawkUtils().getDataLogin().USER_ID
         warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
         val proposalType = SS
 
         masterDataTeamMemberViewModel.setTeamRole()
         masterDataTeamMemberViewModel.setDepartment(
-            departmentId!!, orgId!!, warehouseId!!, proposalType
+            userId!!, proposalType
         )
 
         teamMemberAdapter = TeamMemberAdapter()
@@ -248,9 +250,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 selectedDepartment = listDepartmentItem!![i]
                 memberName.setText("")
                 masterDataTeamMemberViewModel.setTeamMemberName(
-                    listDepartmentItem!![i].id,
-                    orgId!!,
-                    warehouseId!!
+                    listDepartmentItem!![i].department,
+                    userId!!
                 )
                 hideKeyboard()
             }
