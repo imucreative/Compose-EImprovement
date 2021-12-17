@@ -115,62 +115,73 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                     }
                                     Result.Status.SUCCESS -> {
                                         HelperLoading.hideLoading()
-                                        binding.bottomNavigationBar.visibility = View.VISIBLE
-
-                                        HawkUtils().setTempDataCreatePi(
-                                            id = result.data?.data?.get(0)?.id,
-                                            piNo = result.data?.data?.get(0)?.piNo,
-                                            department = result.data?.data?.get(0)?.department,
-                                            years = result.data?.data?.get(0)?.years,
-                                            date = result.data?.data?.get(0)?.date,
-                                            branchCode = result.data?.data?.get(0)?.branchCode,
-                                            branch = result.data?.data?.get(0)?.branch,
-                                            subBranch = result.data?.data?.get(0)?.subBranch,
-                                            title = result.data?.data?.get(0)?.title,
-                                            statusImplementationModel = result.data?.data?.get(0)?.statusImplementationModel,
-                                            identification = result.data?.data?.get(0)?.identification?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            target = result.data?.data?.get(0)?.target?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            sebabMasalah = result.data?.data?.get(0)?.sebabMasalah,
-                                            akarMasalah = result.data?.data?.get(0)?.akarMasalah,
-                                            nilaiOutput = result.data?.data?.get(0)?.nilaiOutput?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            nqiModel = result.data?.data?.get(0)?.nqiModel,
-                                            teamMember = result.data?.data?.get(0)?.teamMember,
-                                            categoryFixing = result.data?.data?.get(0)?.categoryFixing,
-                                            hasilImplementasi = result.data?.data?.get(0)?.implementationResult?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            attachment = result.data?.data?.get(0)?.attachment,
-                                            statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                            nik = result.data?.data?.get(0)?.nik,
-                                            headId = result.data?.data?.get(0)?.headId,
-                                            userId = result.data?.data?.get(0)?.userId,
-                                            orgId = result.data?.data?.get(0)?.orgId,
-                                            warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                            historyApproval = result.data?.data?.get(0)?.historyApproval,
-
-                                            activityType = PI,
-                                            submitType = if (argsAction == EDIT) 2 else 1,
-                                            comment = "",
-                                            source = PI_DETAIL_DATA
-                                        )
-
                                         initToolbar(argsTitle)
-                                        initComponent()
-                                        Timber.d("###-- Success getDetailPiItem")
+
+                                        if (result.data?.data?.isEmpty() == true) {
+                                            SnackBarCustom.snackBarIconInfo(
+                                                binding.root, layoutInflater, resources, binding.root.context,
+                                                result.data.message,
+                                                R.drawable.ic_close, R.color.red_500
+                                            )
+
+                                            binding.noDataScreen.root.visibility = View.VISIBLE
+                                        } else {
+                                            binding.bottomNavigationBar.visibility = View.VISIBLE
+
+                                            HawkUtils().setTempDataCreatePi(
+                                                id = result.data?.data?.get(0)?.id,
+                                                piNo = result.data?.data?.get(0)?.piNo,
+                                                department = result.data?.data?.get(0)?.department,
+                                                years = result.data?.data?.get(0)?.years,
+                                                date = result.data?.data?.get(0)?.date,
+                                                branchCode = result.data?.data?.get(0)?.branchCode,
+                                                branch = result.data?.data?.get(0)?.branch,
+                                                subBranch = result.data?.data?.get(0)?.subBranch,
+                                                title = result.data?.data?.get(0)?.title,
+                                                statusImplementationModel = result.data?.data?.get(0)?.statusImplementationModel,
+                                                identification = result.data?.data?.get(0)?.identification?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                target = result.data?.data?.get(0)?.target?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                sebabMasalah = result.data?.data?.get(0)?.sebabMasalah,
+                                                akarMasalah = result.data?.data?.get(0)?.akarMasalah,
+                                                nilaiOutput = result.data?.data?.get(0)?.nilaiOutput?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                nqiModel = result.data?.data?.get(0)?.nqiModel,
+                                                teamMember = result.data?.data?.get(0)?.teamMember,
+                                                categoryFixing = result.data?.data?.get(0)?.categoryFixing,
+                                                hasilImplementasi = result.data?.data?.get(0)?.implementationResult?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                attachment = result.data?.data?.get(0)?.attachment,
+                                                statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                                nik = result.data?.data?.get(0)?.nik,
+                                                headId = result.data?.data?.get(0)?.headId,
+                                                userId = result.data?.data?.get(0)?.userId,
+                                                orgId = result.data?.data?.get(0)?.orgId,
+                                                warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                                historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                                activityType = PI,
+                                                submitType = if (argsAction == EDIT) 2 else 1,
+                                                comment = "",
+                                                source = PI_DETAIL_DATA
+                                            )
+
+                                            initComponent()
+                                            Timber.d("###-- Success getDetailPiItem")
+                                        }
                                     }
                                     Result.Status.ERROR -> {
                                         binding.bottomNavigationBar.visibility = View.GONE

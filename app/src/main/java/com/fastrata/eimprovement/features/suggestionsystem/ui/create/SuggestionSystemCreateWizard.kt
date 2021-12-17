@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -115,60 +114,71 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     }
                                     Result.Status.SUCCESS -> {
                                         HelperLoading.hideLoading()
-                                        binding.bottomNavigationBar.visibility = VISIBLE
-
-                                        HawkUtils().setTempDataCreateSs(
-                                            id = result.data?.data?.get(0)?.id,
-                                            ssNo = result.data?.data?.get(0)?.ssNo,
-                                            title = result.data?.data?.get(0)?.title,
-                                            listCategory = result.data?.data?.get(0)?.categoryImprovement,
-                                            name = result.data?.data?.get(0)?.name,
-                                            nik = result.data?.data?.get(0)?.nik,
-                                            branchCode = result.data?.data?.get(0)?.branchCode,
-                                            branch = result.data?.data?.get(0)?.branch,
-                                            department = result.data?.data?.get(0)?.department,
-                                            directMgr = result.data?.data?.get(0)?.directMgr,
-                                            suggestion = result.data?.data?.get(0)?.suggestion?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            problem = result.data?.data?.get(0)?.problem?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            statusImplementation = result.data?.data?.get(0)?.statusImplementation,
-                                            teamMember = result.data?.data?.get(0)?.teamMember,
-                                            attachment = result.data?.data?.get(0)?.attachment,
-                                            statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                            proses = result.data?.data?.get(0)?.proses?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            result = result.data?.data?.get(0)?.result?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-
-                                            headId = result.data?.data?.get(0)?.headId,
-                                            userId = result.data?.data?.get(0)?.userId,
-                                            orgId = result.data?.data?.get(0)?.orgId,
-                                            warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                            historyApproval = result.data?.data?.get(0)?.historyApproval,
-
-                                            activityType = SS,
-                                            submitType = if (argsAction == EDIT) 2 else 1,
-                                            comment = "",
-
-                                            source = SS_DETAIL_DATA
-                                        )
-
                                         initToolbar(argsTitle)
-                                        initComponent()
-                                        Timber.d("###-- Success getDetailSsItem")
+
+                                        if (result.data?.data?.isEmpty() == true) {
+                                            SnackBarCustom.snackBarIconInfo(
+                                                binding.root, layoutInflater, resources, binding.root.context,
+                                                result.data.message,
+                                                R.drawable.ic_close, R.color.red_500
+                                            )
+
+                                            binding.noDataScreen.root.visibility = VISIBLE
+                                        } else {
+                                            binding.bottomNavigationBar.visibility = VISIBLE
+
+                                            HawkUtils().setTempDataCreateSs(
+                                                id = result.data?.data?.get(0)?.id,
+                                                ssNo = result.data?.data?.get(0)?.ssNo,
+                                                title = result.data?.data?.get(0)?.title,
+                                                listCategory = result.data?.data?.get(0)?.categoryImprovement,
+                                                name = result.data?.data?.get(0)?.name,
+                                                nik = result.data?.data?.get(0)?.nik,
+                                                branchCode = result.data?.data?.get(0)?.branchCode,
+                                                branch = result.data?.data?.get(0)?.branch,
+                                                department = result.data?.data?.get(0)?.department,
+                                                directMgr = result.data?.data?.get(0)?.directMgr,
+                                                suggestion = result.data?.data?.get(0)?.suggestion?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                problem = result.data?.data?.get(0)?.problem?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                statusImplementation = result.data?.data?.get(0)?.statusImplementation,
+                                                teamMember = result.data?.data?.get(0)?.teamMember,
+                                                attachment = result.data?.data?.get(0)?.attachment,
+                                                statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                                proses = result.data?.data?.get(0)?.proses?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                result = result.data?.data?.get(0)?.result?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+
+                                                headId = result.data?.data?.get(0)?.headId,
+                                                userId = result.data?.data?.get(0)?.userId,
+                                                orgId = result.data?.data?.get(0)?.orgId,
+                                                warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                                historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                                activityType = SS,
+                                                submitType = if (argsAction == EDIT) 2 else 1,
+                                                comment = "",
+
+                                                source = source
+                                            )
+
+                                            initComponent()
+                                            Timber.d("###-- Success getDetailSsItem")
+                                        }
                                     }
                                     Result.Status.ERROR -> {
                                         HelperLoading.hideLoading()
@@ -212,7 +222,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     activityType = SS,
                     submitType = 1,
                     comment = "",
-                    source = SS_CREATE
+                    source = source
                 )
 
                 initToolbar(argsTitle)

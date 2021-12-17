@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.BuildConfig
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
@@ -106,8 +107,7 @@ class SettingsFragment : Fragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-//                if (!findNavController().popBackStack()) activity?.finish()
-                activity?.finish()
+                if (!findNavController().popBackStack()) activity?.finish()
             }
         }
 
