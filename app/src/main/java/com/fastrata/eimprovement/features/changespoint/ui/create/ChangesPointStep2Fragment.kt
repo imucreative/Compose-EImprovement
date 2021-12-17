@@ -91,7 +91,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
+        if (conditionDetail()) {
             disableForm()
         }
     }
@@ -107,6 +107,17 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
             keteranganCp.isEnabled = false
 
             addReward.isClickable = false
+        }
+    }
+
+    private fun conditionDetail(): Boolean {
+        return when (action) {
+            DETAIL, APPROVE -> {
+                true
+            }
+            else -> {
+                false
+            }
         }
     }
 
@@ -187,7 +198,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
     }
 
     private fun totalBalance(): Int {
-        Timber.e("data_reward : "+ data?.reward)
+        Timber.e("data_reward : ${data?.reward}")
         if(data?.reward != null){
             val itemCount = data?.reward!!.map { values ->
                 values!!.nilai
@@ -269,7 +280,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 stat = false
                             }
-                            intSaldo < totalHadiah -> {
+                            !conditionDetail() && (intSaldo < totalHadiah) -> {
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.saldo_kurang),
