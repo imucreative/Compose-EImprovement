@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -97,7 +98,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 ssNo = argsSsNo
 
                 source = SS_DETAIL_DATA
-                //HawkUtils().removeDataCreateProposal(source)
+                initToolbar(argsTitle)
 
                 try {
                     viewModel.setDetailSs(argsIdSs, userId)
@@ -114,7 +115,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     }
                                     Result.Status.SUCCESS -> {
                                         HelperLoading.hideLoading()
-                                        initToolbar(argsTitle)
 
                                         if (result.data?.data?.isEmpty() == true) {
                                             SnackBarCustom.snackBarIconInfo(
@@ -183,6 +183,8 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     Result.Status.ERROR -> {
                                         HelperLoading.hideLoading()
                                         binding.bottomNavigationBar.visibility = GONE
+                                        binding.noDataScreen.root.visibility = VISIBLE
+
                                         Toast.makeText(
                                             this,
                                             "Error : ${result.message}",
@@ -196,6 +198,9 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                         })
                     }
                 } catch (e: Exception) {
+                    binding.bottomNavigationBar.visibility = GONE
+                    binding.noDataScreen.root.visibility = VISIBLE
+
                     Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                     Timber.d("###-- Error onCreate")
                 }

@@ -100,6 +100,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
+                initToolbar(argsTitle)
+
                 try {
                     viewModel.setDetailPi(argsIdPi, userId)
 
@@ -115,7 +117,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                     }
                                     Result.Status.SUCCESS -> {
                                         HelperLoading.hideLoading()
-                                        initToolbar(argsTitle)
 
                                         if (result.data?.data?.isEmpty() == true) {
                                             SnackBarCustom.snackBarIconInfo(
@@ -185,7 +186,9 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                     }
                                     Result.Status.ERROR -> {
                                         binding.bottomNavigationBar.visibility = View.GONE
+                                        binding.noDataScreen.root.visibility = View.VISIBLE
                                         HelperLoading.hideLoading()
+
                                         Toast.makeText(
                                             this,
                                             "Error : ${result.message}",
@@ -199,6 +202,9 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                         })
                     }
                 } catch (e: Exception) {
+                    binding.bottomNavigationBar.visibility = View.GONE
+                    binding.noDataScreen.root.visibility = View.VISIBLE
+
                     Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                     Timber.d("###-- Error onCreate")
                 }

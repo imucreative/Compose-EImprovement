@@ -96,74 +96,94 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
-                viewModel.setDetailCp(argsIdCp, userId)
-                viewModel.getDetailCp.observeEvent(this) { resultObserve ->
-                    resultObserve.observe(this, { result ->
-                        if (result != null) {
-                            when (result.status) {
-                                Result.Status.LOADING -> {
-                                    HelperLoading.displayLoadingWithText(this,"",false)
-                                    binding.bottomNavigationBar.visibility = View.GONE
+                initToolbar(argsTitle)
 
-                                    Timber.d("###-- Loading get Branch")
-                                }
-                                Result.Status.SUCCESS -> {
-                                    HelperLoading.hideLoading()
-                                    initToolbar(argsTitle)
+                try {
+                    viewModel.setDetailCp(argsIdCp, userId)
 
-                                    if (result.data?.data?.isEmpty() == true) {
-                                        SnackBarCustom.snackBarIconInfo(
-                                            binding.root, layoutInflater, resources, binding.root.context,
-                                            result.data.message,
-                                            R.drawable.ic_close, R.color.red_500
-                                        )
+                    viewModel.getDetailCp.observeEvent(this) { resultObserve ->
+                        resultObserve.observe(this, { result ->
+                            if (result != null) {
+                                when (result.status) {
+                                    Result.Status.LOADING -> {
+                                        HelperLoading.displayLoadingWithText(this, "", false)
+                                        binding.bottomNavigationBar.visibility = View.GONE
 
-                                        binding.noDataScreen.root.visibility = View.VISIBLE
-                                    } else {
-                                        binding.bottomNavigationBar.visibility = View.VISIBLE
-
-                                        HawkUtils().setTempDataCreateCp(
-                                            id = result.data?.data?.get(0)?.id,
-                                            cpNo = result.data?.data?.get(0)?.cpNo,
-                                            saldo = result.data?.data?.get(0)?.saldo,
-                                            name = result.data?.data?.get(0)?.name,
-                                            nik = result.data?.data?.get(0)?.nik,
-                                            branch = result.data?.data?.get(0)?.branch,
-                                            subBranch = result.data?.data?.get(0)?.subBranch,
-                                            branchCode = result.data?.data?.get(0)?.branchCode,
-                                            departement = result.data?.data?.get(0)?.department,
-                                            position = result.data?.data?.get(0)?.position,
-                                            date = result.data?.data?.get(0)?.date,
-                                            keterangan = result.data?.data?.get(0)?.description,
-                                            rewardData = result.data?.data?.get(0)?.reward,
-                                            statusProposal = result.data?.data?.get(0)?.statusProposal,
-
-                                            headId = result.data?.data?.get(0)?.headId,
-                                            userId = result.data?.data?.get(0)?.userId,
-                                            orgId = result.data?.data?.get(0)?.orgId,
-                                            warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                            historyApproval = result.data?.data?.get(0)?.historyApproval,
-
-                                            activityType = CP,
-                                            submitType = if (argsAction == EDIT) 2 else 1,
-                                            comment = result.data?.data?.get(0)?.statusProposal?.status,
-                                            source = CP_DETAIL_DATA
-                                        )
-
-                                        initComponent()
-                                        Timber.d("###-- Success get Branch")
+                                        Timber.d("###-- Loading get Branch")
                                     }
-                                }
-                                Result.Status.ERROR -> {
-                                    binding.bottomNavigationBar.visibility = View.GONE
-                                    HelperLoading.hideLoading()
-                                    Toast.makeText(this,"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                                    Timber.d("###-- Error get Branch")
-                                }
+                                    Result.Status.SUCCESS -> {
+                                        HelperLoading.hideLoading()
 
+                                        if (result.data?.data?.isEmpty() == true) {
+                                            SnackBarCustom.snackBarIconInfo(
+                                                binding.root,
+                                                layoutInflater,
+                                                resources,
+                                                binding.root.context,
+                                                result.data.message,
+                                                R.drawable.ic_close,
+                                                R.color.red_500
+                                            )
+
+                                            binding.noDataScreen.root.visibility = View.VISIBLE
+                                        } else {
+                                            binding.bottomNavigationBar.visibility = View.VISIBLE
+
+                                            HawkUtils().setTempDataCreateCp(
+                                                id = result.data?.data?.get(0)?.id,
+                                                cpNo = result.data?.data?.get(0)?.cpNo,
+                                                saldo = result.data?.data?.get(0)?.saldo,
+                                                name = result.data?.data?.get(0)?.name,
+                                                nik = result.data?.data?.get(0)?.nik,
+                                                branch = result.data?.data?.get(0)?.branch,
+                                                subBranch = result.data?.data?.get(0)?.subBranch,
+                                                branchCode = result.data?.data?.get(0)?.branchCode,
+                                                departement = result.data?.data?.get(0)?.department,
+                                                position = result.data?.data?.get(0)?.position,
+                                                date = result.data?.data?.get(0)?.date,
+                                                keterangan = result.data?.data?.get(0)?.description,
+                                                rewardData = result.data?.data?.get(0)?.reward,
+                                                statusProposal = result.data?.data?.get(0)?.statusProposal,
+
+                                                headId = result.data?.data?.get(0)?.headId,
+                                                userId = result.data?.data?.get(0)?.userId,
+                                                orgId = result.data?.data?.get(0)?.orgId,
+                                                warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                                historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                                activityType = CP,
+                                                submitType = if (argsAction == EDIT) 2 else 1,
+                                                comment = result.data?.data?.get(0)?.statusProposal?.status,
+                                                source = CP_DETAIL_DATA
+                                            )
+
+                                            initComponent()
+                                            Timber.d("###-- Success get Branch")
+                                        }
+                                    }
+                                    Result.Status.ERROR -> {
+                                        binding.bottomNavigationBar.visibility = View.GONE
+                                        binding.noDataScreen.root.visibility = View.VISIBLE
+                                        HelperLoading.hideLoading()
+
+                                        Toast.makeText(
+                                            this,
+                                            "Error : ${result.message}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        Timber.d("###-- Error get Branch")
+                                    }
+
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
+                } catch (e: Exception) {
+                    binding.bottomNavigationBar.visibility = View.GONE
+                    binding.noDataScreen.root.visibility = View.VISIBLE
+
+                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                    Timber.d("###-- Error onCreate")
                 }
             }
             ADD -> {
