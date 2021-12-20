@@ -70,12 +70,12 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             }
 
             cpNo.setText(data?.cpNo)
-            name.setText(data?.name?.let { textLimitReplaceToDots(it) })
+            name.setText(data?.name?.let { textLimitReplaceToDots(it, 13) })
             nik.setText(data?.nik)
-            branch.setText(data?.branch?.let { textLimitReplaceToDots(it) })
-            subBranch.setText(data?.subBranch?.let { textLimitReplaceToDots(it) })
-            department.setText(data?.department?.let { textLimitReplaceToDots(it) })
-            position.setText(data?.position?.let { textLimitReplaceToDots(it) })
+            branch.setText(data?.branch?.let { textLimitReplaceToDots(it, 13) })
+            subBranch.setText(data?.subBranch?.let { textLimitReplaceToDots(it, 13) })
+            department.setText(data?.department?.let { textLimitReplaceToDots(it, 13) })
+            position.setText(data?.position?.let { textLimitReplaceToDots(it, 13) })
 
             date.setText(data?.date)
             try {

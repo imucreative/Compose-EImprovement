@@ -193,7 +193,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 HawkUtils().setTempDataCreateCp(
                     id = 0,
                     cpNo = "",
-                    name = HawkUtils().getDataLogin().USER_NAME,
+                    name = HawkUtils().getDataLogin().FULL_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
