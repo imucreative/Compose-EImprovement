@@ -49,7 +49,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     private lateinit var selectedDepartment: MemberDepartmentItem
     private lateinit var selectedTask: MemberTaskItem
     private var source: String = PI_CREATE
-    private var departmentId: Int? = 0
+    // private var departmentId: Int? = 0
     private var orgId: Int? = 0
     private var userId: Int? = 0
     private var warehouseId: Int? = 0
@@ -71,7 +71,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         data = HawkUtils().getTempDataCreatePi(source)
         listTeamMemberViewModel.setSuggestionSystemTeamMember(source)
 
-        departmentId = HawkUtils().getDataLogin().DEPARTMENT_ID
+        // departmentId = HawkUtils().getDataLogin().DEPARTMENT_ID
         orgId = HawkUtils().getDataLogin().ORG_ID
         userId = HawkUtils().getDataLogin().USER_ID
         warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
@@ -376,7 +376,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             id = selectedMember.id, name = selectedMember.name
                         )
                         val memberDepartmentObj = MemberDepartmentItem(
-                            id = selectedDepartment.id, department = selectedDepartment.department
+                            department = selectedDepartment.department
                         )
                         val memberTaskObj = MemberTaskItem(
                             id = selectedTask.id, task = selectedTask.task

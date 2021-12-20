@@ -38,6 +38,8 @@ data class SuggestionSystemCreateModel(
 	var headId: Int?,
     @SerializedName("HEAD_NAME")
 	var directMgr: String?,
+    @SerializedName("HEAD_NIK")
+    var directMgrNik: String?,
     @SerializedName("PROBLEM")
 	var problem: String?,
     @SerializedName("SUGGESTION")

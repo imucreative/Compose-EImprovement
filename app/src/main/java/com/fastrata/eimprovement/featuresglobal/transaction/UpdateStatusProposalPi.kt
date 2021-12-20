@@ -73,6 +73,8 @@ class UpdateStatusProposalPi(
                                     statusProposal = result.data?.data?.get(0)?.statusProposal,
                                     nik = result.data?.data?.get(0)?.nik,
                                     headId = result.data?.data?.get(0)?.headId,
+                                    directMgr = result.data?.data?.get(0)?.directMgr,
+                                    directMgrNik = result.data?.data?.get(0)?.directMgrNik,
                                     userId = userNameSubmit,
                                     orgId = result.data?.data?.get(0)?.orgId,
                                     warehouseId = result.data?.data?.get(0)?.warehouseId,

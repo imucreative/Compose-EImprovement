@@ -671,7 +671,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             notification.showNotificationYesNo(
                                 requireActivity(), requireContext(), R.color.blue_500,
                                 "Implementation Proposal", resources.getString(R.string.submit_desc),
-                                "Implementation", resources.getString(R.string.no),
+                                "Implement", resources.getString(R.string.no),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -137,6 +136,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                                 branchCode = result.data?.data?.get(0)?.branchCode,
                                                 branch = result.data?.data?.get(0)?.branch,
                                                 department = result.data?.data?.get(0)?.department,
+                                                directMgrNik = result.data?.data?.get(0)?.directMgrNik,
                                                 directMgr = result.data?.data?.get(0)?.directMgr,
                                                 suggestion = result.data?.data?.get(0)?.suggestion?.let {
                                                     HtmlCompat.fromHtml(
@@ -219,6 +219,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     branch = HawkUtils().getDataLogin().BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,
+                    directMgrNik = HawkUtils().getDataLogin().DIRECT_MANAGER_NIK,
                     statusProposal = statusProposal,
                     headId = headId,
                     userId = userId,
@@ -319,7 +320,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 data?.id, data?.ssNo, data?.date, data?.name,
                                 userId = userId,
                                 data?.nik, data?.statusImplementation, data?.title, data?.orgId, data?.warehouseId,
-                                data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr,
+                                data?.branchCode, data?.branch, data?.subBranch, data?.headId, data?.directMgr, data?.directMgrNik,
                                 data?.problem, data?.suggestion, data?.attachment, data?.categoryImprovement,
                                 data?.department, data?.teamMember, data?.statusProposal, data?.proses,
                                 data?.result, data?.historyApproval, score,

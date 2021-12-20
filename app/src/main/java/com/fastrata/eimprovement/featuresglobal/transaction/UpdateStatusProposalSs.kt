@@ -47,6 +47,7 @@ class UpdateStatusProposalSs(
                                     subBranch = "",
                                     department = result.data?.data?.get(0)?.department,
                                     directMgr = result.data?.data?.get(0)?.directMgr,
+                                    directMgrNik = result.data?.data?.get(0)?.directMgrNik,
                                     suggestion = result.data?.data?.get(0)?.suggestion?.let {
                                         HtmlCompat.fromHtml(
                                             it, HtmlCompat.FROM_HTML_MODE_LEGACY

@@ -169,6 +169,8 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                                 statusProposal = result.data?.data?.get(0)?.statusProposal,
                                                 nik = result.data?.data?.get(0)?.nik,
                                                 headId = result.data?.data?.get(0)?.headId,
+                                                directMgrNik = result.data?.data?.get(0)?.directMgrNik,
+                                                directMgr = result.data?.data?.get(0)?.directMgr,
                                                 userId = result.data?.data?.get(0)?.userId,
                                                 orgId = result.data?.data?.get(0)?.orgId,
                                                 warehouseId = result.data?.data?.get(0)?.warehouseId,
@@ -219,9 +221,12 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
+                    subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     statusProposal = statusProposal,
                     headId = headId,
+                    directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,
+                    directMgrNik = HawkUtils().getDataLogin().DIRECT_MANAGER_NIK,
                     userId = userId,
                     orgId = orgId,
                     warehouseId = warehouseId,
@@ -323,12 +328,12 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                             val updateProposal = ProjectImprovementCreateModel(
                                 data?.id,data?.piNo,
                                 userId = userId,
-                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,data?.department,
+                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,directMgr = data?.directMgr,directMgrNik = data?.directMgrNik,data?.department,
                                 data?.years, data?.date,data?.branchCode,data?.branch,data?.subBranch,
                                 data?.title,data?.statusImplementationModel,data?.identification,
                                 data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
                                 data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
-                                data?.attachment,data?.statusProposal,data?.historyApproval, score,
+                                data?.attachment,data?.statusProposal,historyApproval = data?.historyApproval, score = score,
                                 activityType = PI,submitType = key, comment = comment
                             )
 

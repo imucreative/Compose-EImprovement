@@ -7,7 +7,6 @@ import com.fastrata.eimprovement.featuresglobal.data.model.CategoryImprovementIt
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.TeamMemberItem
 import com.google.gson.annotations.SerializedName
-
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -26,6 +25,10 @@ data class ProjectImprovementCreateModel(
     var warehouseId: Int?,
     @SerializedName("HEAD_ID")
     var headId: Int?,
+    @SerializedName("HEAD_NAME")
+    var directMgr: String?,
+    @SerializedName("HEAD_NIK")
+    var directMgrNik: String?,
     @SerializedName("DEPARTMENT")
     var department: String?,
     @SerializedName("TAHUN")
