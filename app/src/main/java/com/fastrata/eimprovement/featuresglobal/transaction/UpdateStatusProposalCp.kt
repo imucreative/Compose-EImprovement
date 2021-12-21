@@ -29,6 +29,7 @@ class UpdateStatusProposalCp(
                         when (result.status) {
                             Result.Status.LOADING -> {
                                 Timber.d("###-- Loading getDetailRpItem to submit ")
+                                HelperLoading.displayLoadingWithText(context, "", false)
                             }
                             Result.Status.SUCCESS -> {
                                 val dataCreateModel = ChangePointCreateModel(
@@ -61,10 +62,11 @@ class UpdateStatusProposalCp(
                                 updateCp(dataCreateModel, context, owner) { status(it) }
 
                                 Timber.d("###-- Success getDetailRpItem to submit $dataCreateModel")
+                                HelperLoading.hideLoading()
                             }
                             Result.Status.ERROR -> {
                                 status(false)
-
+                                HelperLoading.hideLoading()
                                 Toast.makeText(context, "Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error getDetailRpItem to submit ")
                             }
@@ -75,6 +77,7 @@ class UpdateStatusProposalCp(
             }
         } catch (e: Exception) {
             status(false)
+            HelperLoading.hideLoading()
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             Timber.d("###-- Error onCreate")
         }

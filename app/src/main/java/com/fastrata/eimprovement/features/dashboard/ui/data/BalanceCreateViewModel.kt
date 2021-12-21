@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
-import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointModel
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +16,7 @@ class BalanceCreateViewModel @Inject constructor(private val repo :BalanceRemote
 
     private val _balance = MutableLiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>>()
     val getBalance : LiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>> get() = _balance
+    var userId: Int = 0
 
     fun setBalance(
         userId: Int
@@ -26,5 +26,9 @@ class BalanceCreateViewModel @Inject constructor(private val repo :BalanceRemote
             }
             _balance.value = Event(result)
         }
+    }
+
+    val observeGetBalance by lazy {
+        repo.observeBalance(userId)
     }
 }

@@ -31,6 +31,7 @@ class UpdateStatusProposalSs(
                         when (result.status) {
                             Result.Status.LOADING -> {
                                 Timber.d("###-- Loading getDetailSsItem to submit ")
+                                HelperLoading.displayLoadingWithText(context, "", false)
                             }
                             Result.Status.SUCCESS -> {
 
@@ -80,10 +81,11 @@ class UpdateStatusProposalSs(
                                 updateSs(dataCreateModel, context, owner) { status(it) }
 
                                 Timber.d("###-- Success getDetailSsItem to submit ")
+                                HelperLoading.hideLoading()
                             }
                             Result.Status.ERROR -> {
                                 status(false)
-
+                                HelperLoading.hideLoading()
                                 Toast.makeText(context, "Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error getDetailSsItem to submit ")
                             }
@@ -94,6 +96,7 @@ class UpdateStatusProposalSs(
             }
         } catch (e: Exception) {
             status(false)
+            HelperLoading.hideLoading()
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             Timber.d("###-- Error onCreate")
         }

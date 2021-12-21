@@ -1,8 +1,11 @@
 package com.fastrata.eimprovement.features.approval.ui
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ItemListApprovalBinding
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.utils.Tools
@@ -45,6 +48,13 @@ class ListApprovalAdapter : RecyclerView.Adapter<ListApprovalAdapter.ApprovalVie
                 type.text = data.type
                 name.text = data.name
                 date.text = data.date
+
+                status.setTextColor(
+                    when (data.status.id) {
+                        2, 7 -> ContextCompat.getColor(binding.root.context, R.color.blue_800)
+                        else -> Color.BLACK
+                    }
+                )
             }
         }
     }

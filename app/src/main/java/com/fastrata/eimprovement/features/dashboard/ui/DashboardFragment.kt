@@ -1,5 +1,6 @@
 package com.fastrata.eimprovement.features.dashboard.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -63,24 +65,30 @@ class DashboardFragment: Fragment(), Injectable {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
+        binding.apply {
+            saldoTxt.text = "Rp. 0"
+            countApproval.text = "0 Available"
+            countApprovalMenu.text = "0 Available"
+        }
         getDataBalance()
     }
 
     private fun getDataBalance() {
         try {
-            balanceViewModel.setBalance(userId)
-            balanceViewModel.getBalance.observeEvent(this){resultObserve->
-                resultObserve.observe(viewLifecycleOwner,{ result->
+            balanceViewModel.userId = userId
+            balanceViewModel.observeGetBalance.observe(viewLifecycleOwner, Observer { result ->
+                //resultObserve.observe(viewLifecycleOwner,{ result->
                     if (result != null){
                         when(result.status){
                             Result.Status.LOADING  -> {
-                                HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                                //HelperLoading.displayLoadingWithText(requireContext(),"",false)
                                 Timber.d("###-- Loading get balance")
                             }
                             Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
+                                //HelperLoading.hideLoading()
                                 binding.apply {
                                     val valCountApproval = result.data!!.data[0].countApproval
                                     val valTotal = result.data.data[0].total
@@ -92,16 +100,16 @@ class DashboardFragment: Fragment(), Injectable {
                                 }
                             }
                             Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
+                                //HelperLoading.hideLoading()
                                 Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Loading error balance $result")
                             }
                         }
                     }
-                })
-            }
+                //})
+            })
         }catch (e : Exception){
-            HelperLoading.hideLoading()
+            //HelperLoading.hideLoading()
             Timber.e("Error balance : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
         }

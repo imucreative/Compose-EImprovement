@@ -30,6 +30,7 @@ class UpdateStatusProposalPi(
                         when (result.status) {
                             Result.Status.LOADING -> {
                                 Timber.d("###-- Loading getDetailPiItem to submit ")
+                                HelperLoading.displayLoadingWithText(context, "", false)
                             }
                             Result.Status.SUCCESS -> {
 
@@ -89,10 +90,11 @@ class UpdateStatusProposalPi(
                                 updatePi(dataCreateModel, context, owner) { status(it) }
 
                                 Timber.d("###-- Success getDetailPiItem to submit ")
+                                HelperLoading.hideLoading()
                             }
                             Result.Status.ERROR -> {
                                 status(false)
-
+                                HelperLoading.hideLoading()
                                 Toast.makeText(context, "Error : ${result.message}", Toast.LENGTH_LONG).show()
                                 Timber.d("###-- Error getDetailPiItem to submit ")
                             }
@@ -103,6 +105,7 @@ class UpdateStatusProposalPi(
             }
         } catch (e: Exception) {
             status(false)
+            HelperLoading.hideLoading()
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             Timber.d("###-- Error onCreate")
         }
