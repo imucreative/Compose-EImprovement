@@ -123,41 +123,58 @@ class DashboardFragment: Fragment(), Injectable {
     }
 
     private fun initData(){
-        val joblevel = HawkUtils().getDataLogin().POSITION_ID
-        val roles = HawkUtils().getDataLogin().ROLE_ID
-        Timber.e("data Login :${HawkUtils().getDataLogin().POSITION_ID}")
-        when (roles) {
-            5, 8 -> {
-                when (joblevel) {
-                    1, 2 -> {
-                        binding.btnListApproval.isEnabled = false
-                        binding.btnListApproval.isClickable = false
-                        binding.btnListApproval.isFocusable = false
-                        binding.btnListApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                        binding.menuApproval.isEnabled = false
-                        binding.menuApproval.isClickable = false
-                        binding.menuApproval.isFocusable = false
-                        binding.menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                        binding.btnProjectImprovement.isEnabled = false
-                        binding.btnProjectImprovement.isClickable = false
-                        binding.btnProjectImprovement.isFocusable = false
-                        binding.btnProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                        binding.menuProjectImprovement.isEnabled = false
-                        binding.menuProjectImprovement.isClickable = false
-                        binding.menuProjectImprovement.isFocusable = false
-                        binding.menuProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                    }
-                    3, 4, 5 -> {
-                        binding.btnListApproval.isEnabled = false
-                        binding.btnListApproval.isClickable = false
-                        binding.btnListApproval.isFocusable = false
-                        binding.btnListApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                        binding.menuApproval.isEnabled = false
-                        binding.menuApproval.isClickable = false
-                        binding.menuApproval.isFocusable = false
-                        binding.menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
-                    }
-                }
+        Timber.e("data Login :${HawkUtils().getDataLogin().ROLES}")
+
+        val checkMenuApproval = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "6" }
+        val checkMenuPi = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "8" }
+        val checkMenuSs = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "7" }
+        val checkMenuCp = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "9" }
+
+        if (checkMenuApproval?.size == 0) {
+            binding.apply {
+                btnListApproval.isEnabled = false
+                btnListApproval.isClickable = false
+                btnListApproval.isFocusable = false
+                btnListApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                menuApproval.isEnabled = false
+                menuApproval.isClickable = false
+                menuApproval.isFocusable = false
+            }
+        }
+
+        if (checkMenuPi?.size == 0) {
+            binding.apply {
+                btnProjectImprovement.isEnabled = false
+                btnProjectImprovement.isClickable = false
+                btnProjectImprovement.isFocusable = false
+                btnProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                menuProjectImprovement.isEnabled = false
+                menuProjectImprovement.isClickable = false
+                menuProjectImprovement.isFocusable = false
+            }
+        }
+
+        if (checkMenuSs?.size == 0) {
+            binding.apply {
+                btnSuggestionSystem.isEnabled = false
+                btnSuggestionSystem.isClickable = false
+                btnSuggestionSystem.isFocusable = false
+                btnSuggestionSystem.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                menuSuggestionSystem.isEnabled = false
+                menuSuggestionSystem.isClickable = false
+                menuSuggestionSystem.isFocusable = false
+            }
+        }
+
+        if (checkMenuCp?.size == 0) {
+            binding.apply {
+                btnChangePoint.isEnabled = false
+                btnChangePoint.isClickable = false
+                btnChangePoint.isFocusable = false
+                btnChangePoint.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                menuPointExchange.isEnabled = false
+                menuPointExchange.isClickable = false
+                menuPointExchange.isFocusable = false
             }
         }
     }

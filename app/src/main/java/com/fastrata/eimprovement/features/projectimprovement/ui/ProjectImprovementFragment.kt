@@ -72,6 +72,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
+    private var jobLevelId: Int = 0
     private var docId = ""
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private lateinit var layoutManager: LinearLayoutManager
@@ -105,6 +106,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         userId = HawkUtils().getDataLogin().USER_ID
         userName = HawkUtils().getDataLogin().USER_NAME
         roleName = HawkUtils().getDataLogin().ROLE_NAME
+        jobLevelId = HawkUtils().getDataLogin().POSITION_ID!!
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -208,13 +210,24 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             })
 
             createPi.setOnClickListener {
-                try{
-                    checkPeriodViewModel.setCheckPeriod(PI)
-                    getStatusCheckPeriod()
-                }catch (err : Exception){
-                    Timber.e("Error setCheckPeriod : $err")
-                    HelperLoading.hideLoading()
-                    Toast.makeText(requireContext(), "Error : $err", Toast.LENGTH_LONG).show()
+                when (jobLevelId) {
+                    3, 5 -> {
+                        try {
+                            checkPeriodViewModel.setCheckPeriod(PI)
+                            getStatusCheckPeriod()
+                        } catch (err: Exception) {
+                            Timber.e("Error setCheckPeriod : $err")
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(), "Error : $err", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                    else -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.level_not_eligible),
+                            R.drawable.ic_close, R.color.red_500)
+                    }
                 }
             }
 
