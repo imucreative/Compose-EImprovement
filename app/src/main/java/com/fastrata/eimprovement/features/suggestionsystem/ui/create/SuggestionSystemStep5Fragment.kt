@@ -226,7 +226,7 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                 if (data.id != 0) {
                     fileUrl = data.fileLocation
                     val name = data.name
-                    val folder = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                    val folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                     val file = File(folder, name)
                     val uri = context?.let {
                         FileProvider.getUriForFile(it, "${BuildConfig.APPLICATION_ID}.provider", file)
@@ -238,13 +238,18 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                     println("fileUrl : $fileUrl")
                     println("type : $type")
 
-                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    /*val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
                     intent.setDataAndType(uri, type)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.putExtra(Intent.EXTRA_TITLE, name)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     intent.addCategory(Intent.CATEGORY_OPENABLE)
-                    startActivityForResult(intent, DOWNLOAD_FILE_CODE)
+                    startActivityForResult(intent, DOWNLOAD_FILE_CODE)*/
+
+                    if (uri != null) {
+                        context?.let { downloadFile(it, fileUrl, uri) }
+                    }
+
                 }
             }
         })

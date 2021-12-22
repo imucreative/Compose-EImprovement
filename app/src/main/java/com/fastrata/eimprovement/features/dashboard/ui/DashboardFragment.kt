@@ -76,6 +76,12 @@ class DashboardFragment: Fragment(), Injectable {
         getDataBalance()
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun onResume() {
+        super.onResume()
+        HelperLoading.hideLoading()
+    }
+
     private fun getDataBalance() {
         try {
             balanceViewModel.userId = userId
