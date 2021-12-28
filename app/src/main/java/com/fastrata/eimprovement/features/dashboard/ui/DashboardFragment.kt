@@ -1,6 +1,6 @@
 package com.fastrata.eimprovement.features.dashboard.ui
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -11,16 +11,19 @@ import androidx.fragment.app.FragmentActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.FragmentDashboardBinding
 import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
+import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
+import com.fastrata.eimprovement.featuresglobal.transaction.CheckUserActive
+import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckUserViewModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import timber.log.Timber
@@ -36,6 +39,7 @@ class DashboardFragment: Fragment(), Injectable {
     private var greetings: String = ""
     private var userId : Int = 0
     private lateinit var balanceViewModel : BalanceCreateViewModel
+    private lateinit var checkUserViewModel : CheckUserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +51,7 @@ class DashboardFragment: Fragment(), Injectable {
         context ?: return binding.root
 
         balanceViewModel = injectViewModel(viewModelFactory)
+        checkUserViewModel = injectViewModel(viewModelFactory)
 
         notification = HelperNotification()
         userId = HawkUtils().getDataLogin().USER_ID
@@ -56,7 +61,7 @@ class DashboardFragment: Fragment(), Injectable {
             minDateIsCurrentDate = true, parentFragmentManager
         )
 
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
         greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
 
         initToolbar()
@@ -65,7 +70,6 @@ class DashboardFragment: Fragment(), Injectable {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
         binding.apply {
@@ -74,9 +78,9 @@ class DashboardFragment: Fragment(), Injectable {
             countApprovalMenu.text = "0 Available"
         }
         getDataBalance()
+        checkUser()
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         HelperLoading.hideLoading()
@@ -84,9 +88,9 @@ class DashboardFragment: Fragment(), Injectable {
 
     private fun getDataBalance() {
         try {
-            balanceViewModel.userId = userId
-            balanceViewModel.observeGetBalance.observe(viewLifecycleOwner, Observer { result ->
-                //resultObserve.observe(viewLifecycleOwner,{ result->
+            balanceViewModel.setBalance(userId)
+            balanceViewModel.getBalance.observeEvent(this) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner,{ result->
                     if (result != null){
                         when(result.status){
                             Result.Status.LOADING  -> {
@@ -112,12 +116,55 @@ class DashboardFragment: Fragment(), Injectable {
                             }
                         }
                     }
-                //})
-            })
+                })
+            }
         }catch (e : Exception){
             //HelperLoading.hideLoading()
             Timber.e("Error balance : $e")
             Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun checkUser() {
+        CheckUserActive(
+            checkUserViewModel,
+            requireContext(),
+            viewLifecycleOwner
+        ).getUserActive(userId){
+            HawkUtils().setUserActive(it)
+            if (!HawkUtils().getUserActive()){
+                dialogLogOut()
+            }
+        }
+    }
+
+    private fun dialogLogOut() {
+        if (!HawkUtils().getUserActive()) {
+            notification.showNotificationYesNo(
+                requireActivity(),
+                requireContext(),
+                R.color.blue_500,
+                resources.getString(R.string.log_out),
+                resources.getString(R.string.account_inactive),
+                resources.getString(R.string.ok),
+                resources.getString(R.string.no),
+                object : HelperNotification.CallBackNotificationYesNo {
+                    override fun onNotificationNo() {
+
+                    }
+
+                    override fun onNotificationYes() {
+                        HawkUtils().setStatusLogin(false)
+                        HawkUtils().setDataLogin(null)
+                        HawkUtils().removeDataCreateProposal(SS)
+                        HawkUtils().removeDataCreateProposal(CP)
+                        HawkUtils().removeDataCreateProposal(PI)
+                        activity?.finish()
+                        HomeActivity.stopAMQPConsumer()
+                        startActivity(Intent(activity, SplashScreenActivity::class.java))
+                    }
+                }
+            )
         }
     }
 
@@ -196,44 +243,76 @@ class DashboardFragment: Fragment(), Injectable {
             }
 
             btnListApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
             }
 
             btnSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
             }
 
             btnProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
             }
 
             btnChangePoint.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
             }
 
             // action menu
             menuApproval.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToListApprovalFragment(resources.getString(R.string.list_approval))
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuSuggestionSystem.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToSuggestionSystemFragment(resources.getString(R.string.suggestion_system), docId = docId)
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuProjectImprovement.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToProjectImprovementFragment(resources.getString(R.string.project_improvement), docId = docId)
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             menuPointExchange.setOnClickListener {
-                val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
-                it.findNavController().navigate(direction)
+                if (HawkUtils().getUserActive()) {
+                    val direction = DashboardFragmentDirections.actionDashboardFragmentToChangesPointFragment(resources.getString(R.string.change_point), docId = docId)
+                    it.findNavController().navigate(direction)
+                } else {
+                    dialogLogOut()
+                }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
 

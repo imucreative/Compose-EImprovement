@@ -26,6 +26,9 @@ interface AppService {
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRemoteRequest): Response<ResultsResponse<LoginEntity>>
 
+    @GET("auth/checkuser/{USER_ID}")
+    suspend fun checkUser(@Path("USER_ID") userId: Int): Response<ResultsResponse<ResponseUserItem>>
+
     // Master
     @GET("master/category")
     suspend fun listCategory(): Response<ResultsResponse<CategoryImprovementItem>>

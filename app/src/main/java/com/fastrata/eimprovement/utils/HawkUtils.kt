@@ -332,4 +332,12 @@ internal class HawkUtils {
     fun removeDataCreateProposal(typeProposal: String){
         Hawk.delete(typeProposal)
     }
+
+    fun setUserActive(status : Boolean = true){
+        Hawk.put(HAWK_STATUS_USER_ACTIVE, status)
+    }
+
+    fun getUserActive(): Boolean {
+        return Hawk.get(HAWK_STATUS_USER_ACTIVE)
+    }
 }

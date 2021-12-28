@@ -50,4 +50,8 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     fun observeCheckPeriod(typeProposal: String) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestCheckPeriod(typeProposal) }
     )
+
+    fun observeCheckUser(userId: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestCheckUser(userId) }
+    )
 }

@@ -19,6 +19,7 @@ const val HAWK_DEVICE_NAME = "device_name"
 const val HAWK_SUCCESS_LOGIN = "succes"
 const val HAWK_BALANCE = "balance"
 const val HAWK_DOC_ID ="doc_id"
+const val HAWK_STATUS_USER_ACTIVE ="status_user_active"
 
 // MENU --------------------------------------------------------------------------
 const val MENU_DASHBOARD = "DASHBOARD"

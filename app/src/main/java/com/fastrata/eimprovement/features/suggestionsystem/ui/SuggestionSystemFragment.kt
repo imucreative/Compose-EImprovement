@@ -126,7 +126,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
     override fun onStart() {
         super.onStart()
-       getDataListSs()
+        getDataListSs()
     }
 
     private fun getDataListSs() {

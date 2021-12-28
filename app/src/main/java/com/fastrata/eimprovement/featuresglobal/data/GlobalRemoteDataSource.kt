@@ -51,4 +51,8 @@ class GlobalRemoteDataSource @Inject constructor(private val service: AppService
     suspend fun requestCheckPeriod(typeProposal: String) = getResult {
         service.checkPeriod(typeProposal)
     }
+
+    suspend fun requestCheckUser(userId: Int) = getResult {
+        service.checkUser(userId)
+    }
 }

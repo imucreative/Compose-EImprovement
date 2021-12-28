@@ -213,7 +213,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 HawkUtils().setTempDataCreateSs(
                     id = 0,
                     ssNo = "",
-                    name = HawkUtils().getDataLogin().FULL_NAME,
+                    name = Tools.textLimitReplaceToDots(HawkUtils().getDataLogin().FULL_NAME, 13),
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,

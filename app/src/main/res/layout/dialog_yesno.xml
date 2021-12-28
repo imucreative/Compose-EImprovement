@@ -139,7 +139,7 @@
                 android:layout_weight="1"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:background="@drawable/btn_rounded_green"
-                android:drawableEnd="@drawable/ic_save_white"
+                android:drawableEnd="@drawable/ic_check_white"
                 android:paddingLeft="@dimen/spacing_mlarge"
                 android:paddingRight="@dimen/spacing_mlarge"
                 android:text="@string/ok"
@@ -160,9 +160,6 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
-
-
 
 </androidx.cardview.widget.CardView>

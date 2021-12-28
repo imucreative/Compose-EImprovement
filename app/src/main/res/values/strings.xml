@@ -167,9 +167,10 @@
     <string name="saldo_kurang">Saldo anda tidak cukup untuk melakukan transaksi ini</string>
 
     <string name="log_out_info">Apakah Anda Yakin Keluar Akun?</string>
-    <string name="log_out">Keluar Akun</string>
+    <string name="log_out">Logout account</string>
+    <string name="account_inactive">This account is inactive</string>
     <string name="no_internet">Gagal Terhubung Server. Silahkan Cek Kembali Koneksi Anda</string>
-    <string name="data_not_found">Data Tidak Tersedia</string>
+    <string name="data_not_found">Data Not Found</string>
     <string name="leader_required">Anda harus memilih Ketua Tim terlebih dahulu!</string>
 
     <string name="old_pass_empty">Masukan Password Lama Anda</string>
