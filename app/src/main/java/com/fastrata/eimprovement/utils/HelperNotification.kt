@@ -64,19 +64,14 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
         dialog.setContentView(R.layout.dialog_error)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.title_warning) as TextView).setText(header)
-        (dialog.findViewById<View>(R.id.content_warning) as TextView).setText(content)
+        (dialog.findViewById<View>(R.id.title_warning) as TextView).text = header
+        (dialog.findViewById<View>(R.id.content_warning) as TextView).text = content
         dialog.setCancelable(true)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         (dialog.findViewById<View>(R.id.bt_close) as AppCompatButton).setOnClickListener { v ->
-            Toast.makeText(
-                activity,
-                (v as AppCompatButton).text.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
             dialog.dismiss()
         }
         dialog.show()
@@ -88,8 +83,8 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_notification)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
-        (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
+        (dialog.findViewById<View>(R.id.txt_1) as TextView).text = header
+        (dialog.findViewById<View>(R.id.txt_2) as TextView).text = content
         dialog.setCancelable(true)
         (dialog.findViewById<View>(R.id.btn_dismiss) as TextView).setOnClickListener { v ->
             dialog.dismiss()
@@ -102,12 +97,12 @@ class HelperNotification {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_notification)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        (dialog.findViewById<View>(R.id.txt_1) as TextView).setText(header)
-        (dialog.findViewById<View>(R.id.txt_2) as TextView).setText(content)
+        (dialog.findViewById<View>(R.id.txt_1) as TextView).text = header
+        (dialog.findViewById<View>(R.id.txt_2) as TextView).text = content
         dialog.setCancelable(false)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         (dialog.findViewById<View>(R.id.btn_dismiss) as TextView).setOnClickListener { v ->
             dialog.dismiss()
@@ -138,7 +133,7 @@ class HelperNotification {
         dialog.setCancelable(false)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         if (yesText.isNullOrEmpty()){
             (dialog.findViewById<View>(R.id.bt_ok) as AppCompatButton).text = "OK"
@@ -189,7 +184,7 @@ class HelperNotification {
         dialog.setCancelable(false)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
 
         if (yesText.isNullOrEmpty()){
@@ -240,7 +235,7 @@ class HelperNotification {
         dialog.setCancelable(false)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
 
         (dialog.findViewById<View>(R.id.relative_layout_comment) as RelativeLayout).visibility = View.VISIBLE
@@ -290,7 +285,7 @@ class HelperNotification {
         dialog.setCancelable(false)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         when {
             (statProposal == 8 && key == 1) -> {
