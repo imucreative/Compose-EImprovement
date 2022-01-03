@@ -79,7 +79,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         val statusProposal = args.statusProposal
 
         try {
-            nik = HawkUtils().getDataLogin().NIK
+            nik = HawkUtils().getDataLogin().NIK.toString()
             userId = HawkUtils().getDataLogin().USER_ID
             orgId = HawkUtils().getDataLogin().ORG_ID
             warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID

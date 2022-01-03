@@ -12,17 +12,20 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.provider.OpenableColumns;
 import android.webkit.MimeTypeMap;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Comparator;
+import java.util.HashSet;
 
-import kotlin.jvm.Throws;
+import timber.log.Timber;
 
 /**
  * @version 2009-07-03
@@ -243,15 +246,13 @@ public class FileUtils {
     public static String getPath(final Context context, final Uri uri) {
 
         if (DEBUG)
-            Log.d(TAG + " File -",
-                    "Authority: " + uri.getAuthority() +
-                            ", Fragment: " + uri.getFragment() +
-                            ", Port: " + uri.getPort() +
-                            ", Query: " + uri.getQuery() +
-                            ", Scheme: " + uri.getScheme() +
-                            ", Host: " + uri.getHost() +
-                            ", Segments: " + uri.getPathSegments().toString()
-            );
+            Timber.d("Authority: " + uri.getAuthority() +
+                    ", Fragment: " + uri.getFragment() +
+                    ", Port: " + uri.getPort() +
+                    ", Query: " + uri.getQuery() +
+                    ", Scheme: " + uri.getScheme() +
+                    ", Host: " + uri.getHost() +
+                    ", Segments: " + uri.getPathSegments().toString());
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
@@ -410,10 +411,10 @@ public class FileUtils {
      */
     public static Bitmap getThumbnail(Context context, Uri uri, String mimeType) {
         if (DEBUG)
-            Log.d(TAG, "Attempting to get thumbnail");
+            Timber.d("Attempting to get thumbnail");
 
         if (!isMediaUri(uri)) {
-            Log.e(TAG, "You can only retrieve thumbnails for images and videos.");
+            Timber.e("You can only retrieve thumbnails for images and videos.");
             return null;
         }
 
@@ -426,7 +427,7 @@ public class FileUtils {
                 if (cursor.moveToFirst()) {
                     final int id = cursor.getInt(0);
                     if (DEBUG)
-                        Log.d(TAG, "Got thumb ID: " + id);
+                        Timber.d("Got thumb ID: $id");
 
                     if (mimeType.contains("video")) {
                         bm = MediaStore.Video.Thumbnails.getThumbnail(
@@ -445,7 +446,7 @@ public class FileUtils {
                 }
             } catch (Exception e) {
                 if (DEBUG)
-                    Log.e(TAG, "getThumbnail", e);
+                    Timber.e(e, "getThumbnail");
             } finally {
                 if (cursor != null)
                     cursor.close();
@@ -523,6 +524,133 @@ public class FileUtils {
             }
         }
         return null;
+    }
+
+
+    // new upload file / 03.01.2022
+    private static final int EOF = -1;
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+
+    public static File from(Context context, Uri uri) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(uri);
+        String fileName = getFileName(context, uri);
+        String[] splitName = splitFileName(fileName);
+        File tempFile = File.createTempFile(splitName[0], splitName[1]);
+
+        tempFile = rename(tempFile, fileName);
+        tempFile.deleteOnExit();
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(tempFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (inputStream != null) {
+            copy(inputStream, out);
+            inputStream.close();
+        }
+
+        if (out != null) {
+            out.close();
+        }
+
+        return tempFile;
+    }
+
+    private static String[] splitFileName(String fileName) {
+        String name = fileName;
+        String extension = "";
+        int i = fileName.lastIndexOf(".");
+        if (i != -1) {
+            name = fileName.substring(0, i);
+            extension = fileName.substring(i);
+        }
+
+        return new String[]{name, extension};
+    }
+
+    private static String getFileName(Context context, Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf(File.separator);
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    private static File rename(File file, String newName) {
+        File newFile = new File(file.getParent(), newName);
+        if (!newFile.equals(file)) {
+            if (newFile.exists() && newFile.delete()) {
+                Timber.d("Delete old " + newName + " file");
+            }
+            if (file.renameTo(newFile)) {
+                Timber.d("Rename file to %s", newName);
+            }
+        }
+        return newFile;
+    }
+
+    private static long copy(InputStream input, OutputStream output) throws IOException {
+        long count = 0;
+        int n;
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        while (EOF != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+            count += n;
+        }
+        return count;
+    }
+
+    public static void removeFileCache(Context context, String fileName){
+        File file = new File(context.getCacheDir(), fileName);
+        if(file.exists()) {
+            file.delete();
+        }
+        Timber.e("Remove: %s", file.toString());
+    }
+
+    public static void removeAllFileCache(Context context) {
+        try {
+            File file = context.getCacheDir();
+            if (file != null && file.isDirectory()) {
+                clearFileDir(file);
+            }
+        } catch (Exception e) {
+            Timber.e( "Error: %s", e.toString());
+        }
+    }
+
+    public static boolean clearFileDir(File file) {
+        if (file != null && file.isDirectory()) {
+            String[] files = file.list();
+            for (int i = 0; i < files.length; i++) {
+                boolean success = clearFileDir(new File(file, files[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return file.delete();
     }
 
 }

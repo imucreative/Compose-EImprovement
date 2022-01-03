@@ -10,13 +10,13 @@ data class LoginEntity(
     @SerializedName("ROLE_NAME")
     val ROLE_NAME: String,
     @SerializedName("NIK")
-    val NIK: String,
+    val NIK: String?,
     @SerializedName("USER_NAME")
     val USER_NAME: String,
     @SerializedName("FULL_NAME")
-    val FULL_NAME: String,
+    val FULL_NAME: String?,
     @SerializedName("JABATAN")
-    val JABATAN: String,
+    val JABATAN: String?,
     @SerializedName("HEAD_ID")
     val DIRECT_MANAGER_ID: Int?,
     @SerializedName("HEAD_NAME")
@@ -24,7 +24,7 @@ data class LoginEntity(
     @SerializedName("HEAD_NIK")
     val DIRECT_MANAGER_NIK: String?,
     @SerializedName("JABATAN_ATASAN")
-    val JABATAN_ATASAN: String,
+    val JABATAN_ATASAN: String?,
     @SerializedName("EMAIL")
     val EMAIL: String?,
     @SerializedName("ORG_ID")

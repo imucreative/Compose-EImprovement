@@ -15,7 +15,9 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,15 +64,12 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     private lateinit var attachmentAdapter: AttachmentAdapter
     private lateinit var piCreateAttachmentViewModel: ProjectImprovementViewModel
     private lateinit var attachmentViewModel: AttachmentViewModel
-    private lateinit var uri: Uri
-    private lateinit var initFileSize: String
-    private lateinit var initFileName: String
-    private lateinit var initFilePath: String
     private var source: String = PI_CREATE
-    private lateinit var ext : String
     private lateinit var notification: HelperNotification
     private lateinit var selectedAttachmentItem: AttachmentItem
     private var fileUrl = ""
+    private lateinit var initFileName: String
+    private lateinit var file: File
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -125,7 +124,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             REQUEST_EXTERNAL_STORAGE
                         )
                     } else {
-                        openFolder()
+                        checkPermission()
                     }
                 }
 
@@ -139,7 +138,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                             )
                         }
                         else -> {
-                            uploadAttachment(uri)
+                            uploadAttachment()
                         }
                     }
                 }
@@ -260,29 +259,33 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
     }
 
     private fun openFolder() {
-        val intent = Intent()
-        intent.type = "*/*"
-        intent.action = Intent.ACTION_GET_CONTENT
+        try {
+            val intent = FileUtils.createGetContentIntent()
+            startActivityForResult(
+                Intent.createChooser(intent, "Select a File to Upload"),
+                FILE_PICKER_REQUEST_CODE
+            )
+        } catch (ex: Exception) {
+            Timber.e("Error :$ex")
+        }
+    }
 
-        /*
-        val mimeTypes = arrayOf("image/bmp", "image/jpeg", "image/jpg", "image/png", "text/comma-separated-values",
-        "application/msword", "application/pdf", "text/plain","application/vnd.ms-excel", "text/csv",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        */
-        intent.putExtra("return-data", true)
-        startActivityForResult(
-            Intent.createChooser(intent, "Complete action using"),
-            FILE_PICKER_REQUEST_CODE
-        )
-        //        Intent(Intent.ACTION_PICK).also {
-        //            it.type = "image/*"
-        //            val mimeTypes = arrayOf("image/jpeg", "image/png")
-        //            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        //            startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
-        //        }
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+                FILE_PICKER_REQUEST_CODE
+            )
+        } else {
+            openFolder()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -290,40 +293,58 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    uri = data.data as Uri
+                    try {
+                        val getUri = data.data as Uri
 
-                    val fileData = FileUtils.getFile(requireContext(), uri)
-                    val fileSize: Int = fileData.length().toInt()
-                    Timber.e("### FILE SIZE: $fileSize")
+                        val size = FileInformation().getSize(requireContext(), getUri)
+                        if (size?.toInt() == 0 || (size?.toLong()?.div(1024))!! >= 2048) {
+                            SnackBarCustom.snackBarIconInfo(
+                                binding.root, layoutInflater, resources, binding.root.context,
+                                resources.getString(R.string.file_size),
+                                R.drawable.ic_close, R.color.red_500
+                            )
+                        } else {
+                            val fileNew = FileUtils.from(requireContext(), getUri)
+                            val fileName = FileInformation().getName(requireContext(), getUri)
+                            val fileExt = fileNew.extension
+                            val fileSize = fileNew.length().toInt()
+                            val filePath = fileNew.absolutePath.toUri()
 
-                    if (fileSize == 0 || (fileData.length() / 1024) >= 2048) {
-                        SnackBarCustom.snackBarIconInfo(
-                            binding.root, layoutInflater, resources, binding.root.context,
-                            resources.getString(R.string.file_size),
-                            R.drawable.ic_close, R.color.red_500
-                        )
-                    } else {
-                        initFileName = FileInformation().getName(requireContext(), uri).toString()
-                        initFileSize = FileInformation().getSize(requireContext(), uri).toString()
-                        initFilePath = FileInformation().getPath(requireContext(), uri).toString()
-                        if (initFileName.contains(".")) {
-                            ext = initFileName.substring(initFileName.lastIndexOf("."))
-                            Timber.e("###EXT : $ext")
-                            val match = FILE_NAME_EXT.filter { ext.contains(it, ignoreCase = true) }
+                            Timber.e(getUri.toString())
+                            Timber.e(fileNew.toURI().toString())
+                            Timber.e(filePath.toString())
+                            Timber.e(fileNew.toString())
+
+                            Timber.e("### FILE NAME: $fileName")
+                            Timber.e("### FILE EXT: $fileExt")
+                            Timber.e("### FILE SIZE: $fileSize")
+
+                            if (fileName != null) {
+                                initFileName = fileName
+                                file = fileNew
+                            }
+
+                            val match = FILE_NAME_EXT.filter { fileExt.contains(it, ignoreCase = true) }
                             Timber.e("### MATCH SIZE: ${match.size}")
                             if (match.isNotEmpty()) {
-                                binding.fileName.text = initFileName
-                                Timber.e("### path uri : $uri")
-                                Timber.e("### file size : $initFileSize")
-                                Timber.e("### path : $initFilePath")
+                                binding.fileName.text = fileName
+                                Timber.e("### path uri : $filePath")
+                                Timber.e("### file size : $fileSize")
                             } else {
                                 SnackBarCustom.snackBarIconInfo(
-                                    binding.root, layoutInflater, resources, binding.root.context,
+                                    binding.root,
+                                    layoutInflater,
+                                    resources,
+                                    binding.root.context,
                                     resources.getString(R.string.file_ext),
-                                    R.drawable.ic_close, R.color.red_500
+                                    R.drawable.ic_close,
+                                    R.color.red_500
                                 )
                             }
                         }
+                    } catch (e: Exception){
+                        Timber.e("$e")
+                        Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
                     }
                 }
             } else if (requestCode == DOWNLOAD_FILE_CODE && resultCode == Activity.RESULT_OK) {
@@ -426,8 +447,7 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
         })
     }
 
-    private fun uploadAttachment(imageUri: Uri?) {
-        val file: File = FileUtils.getFile(requireContext(), imageUri)
+    private fun uploadAttachment() {
         val requestBodyFile: RequestBody = RequestBody.create("*/*".toMediaType(), file)
         val body: MultipartBody.Part = MultipartBody.Part.createFormData("file_images", file.name, requestBodyFile)
 
@@ -457,6 +477,9 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
                                     HelperLoading.hideLoading()
 
                                     setDataAttachmentToHawk(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
+
+                                    FileUtils.removeFileCache(requireContext(), initFileName)
+                                    FileUtils.removeAllFileCache(requireContext())
                                 }
 
                                 Timber.d("###-- Success get Upload sukses $response")
