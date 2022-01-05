@@ -636,7 +636,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                             owner = this@SuggestionSystemFragment,
                                         ).getDetailDataSs(
                                             id = data.idSs,
-                                            userId = data.userId,
+                                            ssNo = data.ssNo,
+                                            statusProposal = data.status,
                                             userNameSubmit = userId,
                                         ) {
                                             if(it){
@@ -672,7 +673,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                             owner = this@SuggestionSystemFragment,
                                         ).getDetailDataSs(
                                             id = data.idSs,
-                                            userId = data.userId,
+                                            ssNo = data.ssNo,
+                                            statusProposal = data.status,
                                             userNameSubmit = userId,
                                         ) {
                                             if(it){

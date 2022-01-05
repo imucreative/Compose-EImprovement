@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCreateModel
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.utils.*
 import timber.log.Timber
 
@@ -16,71 +17,37 @@ class UpdateStatusProposalCp(
 ) {
     fun getDetailDataCp(
         id: Int,
-        userId: Int,
+        cpNo: String,
+        statusProposal: StatusProposalItem,
         userNameSubmit: Int,
         status: (Boolean) -> Unit
     ) {
-        try {
-            listCpViewModel.setDetailCp(id, userId)
+        val dataCreateModel = ChangePointCreateModel(
+            id = id,
+            cpNo = cpNo,
+            saldo = 0,
+            name = "",
+            nik = "",
+            branch = "",
+            subBranch = "",
+            branchCode = "",
+            department = "",
+            position = "",
+            date = "",
+            description = "",
+            reward = null,
+            statusProposal = statusProposal,
+            headId = 0,
+            userId = userNameSubmit,
+            orgId = 0,
+            warehouseId = 0,
+            historyApproval = null,
+            activityType = CP,
+            submitType = 1,
+            comment = ""
+        )
 
-            listCpViewModel.getDetailCp.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                Timber.d("###-- Loading getDetailRpItem to submit ")
-                                HelperLoading.displayLoadingWithText(context, "", false)
-                            }
-                            Result.Status.SUCCESS -> {
-                                val dataCreateModel = ChangePointCreateModel(
-                                    id = result.data?.data?.get(0)?.id,
-                                    cpNo = result.data?.data?.get(0)?.cpNo,
-                                    saldo = result.data?.data?.get(0)?.saldo,
-                                    name = result.data?.data?.get(0)?.name,
-                                    nik = result.data?.data?.get(0)?.nik,
-                                    branch = result.data?.data?.get(0)?.branch,
-                                    subBranch = result.data?.data?.get(0)?.subBranch,
-                                    branchCode = result.data?.data?.get(0)?.branchCode,
-                                    department = result.data?.data?.get(0)?.department,
-                                    position = result.data?.data?.get(0)?.position,
-                                    date = result.data?.data?.get(0)?.date,
-                                    description = result.data?.data?.get(0)?.description,
-                                    reward = result.data?.data?.get(0)?.reward,
-                                    statusProposal = result.data?.data?.get(0)?.statusProposal,
-
-                                    headId = result.data?.data?.get(0)?.headId,
-                                    userId = userNameSubmit,
-                                    orgId = result.data?.data?.get(0)?.orgId,
-                                    warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                    historyApproval = result.data?.data?.get(0)?.historyApproval,
-
-                                    activityType = CP,
-                                    submitType = 1,
-                                    comment = ""
-                                )
-
-                                updateCp(dataCreateModel, context, owner) { status(it) }
-
-                                Timber.d("###-- Success getDetailRpItem to submit $dataCreateModel")
-                                HelperLoading.hideLoading()
-                            }
-                            Result.Status.ERROR -> {
-                                status(false)
-                                HelperLoading.hideLoading()
-                                Toast.makeText(context, "Error : ${result.message}", Toast.LENGTH_LONG).show()
-                                Timber.d("###-- Error getDetailRpItem to submit ")
-                            }
-
-                        }
-                    }
-                })
-            }
-        } catch (e: Exception) {
-            status(false)
-            HelperLoading.hideLoading()
-            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-            Timber.d("###-- Error onCreate")
-        }
+        updateCp(dataCreateModel, context, owner) { status(it) }
     }
 
     fun updateCp(

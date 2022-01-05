@@ -528,6 +528,7 @@ public class FileUtils {
 
 
     // new upload file / 03.01.2022
+    // https://stackoverflow.com/a/52095352/7923039
     private static final int EOF = -1;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 

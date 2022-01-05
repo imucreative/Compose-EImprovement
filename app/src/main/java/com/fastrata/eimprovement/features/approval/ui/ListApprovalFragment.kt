@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,9 +37,11 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import kotlinx.coroutines.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.Executors
 import javax.inject.Inject
 import kotlin.Exception
 
@@ -561,7 +564,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                                                     owner = this@ListApprovalFragment
                                                 ).getDetailDataSs(
                                                     id = data.id,
-                                                    userId = data.userId,
+                                                    ssNo = data.typeNo,
+                                                    statusProposal = data.status,
                                                     userNameSubmit = userId,
                                                 ) {
                                                     if(it){
@@ -610,7 +614,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                                                     owner = this@ListApprovalFragment
                                                 ).getDetailDataSs(
                                                     id = data.id,
-                                                    userId = data.userId,
+                                                    ssNo = data.typeNo,
+                                                    statusProposal = data.status,
                                                     userNameSubmit = userId,
                                                 ) {
                                                     if(it){
@@ -692,7 +697,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                                                     owner = this@ListApprovalFragment
                                                 ).getDetailDataPi(
                                                     id = data.id,
-                                                    userId = data.userId,
+                                                    piNo = data.typeNo,
+                                                    statusProposal = data.status,
                                                     userNameSubmit = userId,
                                                 ) {
                                                     if(it){
@@ -741,7 +747,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                                                     owner = this@ListApprovalFragment
                                                 ).getDetailDataPi(
                                                     id = data.id,
-                                                    userId = data.userId,
+                                                    piNo = data.typeNo,
+                                                    statusProposal = data.status,
                                                     userNameSubmit = userId,
                                                 ) {
                                                     if(it){
@@ -823,7 +830,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                                                     owner = this@ListApprovalFragment
                                                 ).getDetailDataCp(
                                                     id = data.id,
-                                                    userId = data.userId,
+                                                    cpNo = data.typeNo,
+                                                    statusProposal = data.status,
                                                     userNameSubmit = userId,
                                                 ) {
                                                     if(it){

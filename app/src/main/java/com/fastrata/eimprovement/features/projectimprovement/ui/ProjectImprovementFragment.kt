@@ -659,7 +659,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                             owner = this@ProjectImprovementFragment
                                         ).getDetailDataPi(
                                             id = data.idPi,
-                                            userId = data.userId,
+                                            piNo = data.piNo,
+                                            statusProposal = data.status,
                                             userNameSubmit = userId,
                                         ) {
                                             if(it){
@@ -696,7 +697,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                             owner = this@ProjectImprovementFragment
                                         ).getDetailDataPi(
                                             id = data.idPi,
-                                            userId = data.userId,
+                                            piNo = data.piNo,
+                                            statusProposal = data.status,
                                             userNameSubmit = userId,
                                         ) {
                                             if(it){
