@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Comparator;
-import java.util.HashSet;
 
 import timber.log.Timber;
 
@@ -535,6 +534,18 @@ public class FileUtils {
     public static File from(Context context, Uri uri) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
         String fileName = getFileName(context, uri);
+
+        // https://stackoverflow.com/a/41733735/14795594
+        File dir = context.getCacheDir();
+        File folder = new File(dir, "");
+        if (!folder.exists()) {
+            if (!folder.mkdir()) {
+                Timber.e("Cannot create a directory!");
+            } else {
+                folder.mkdirs();
+            }
+        }
+
         String[] splitName = splitFileName(fileName);
         File tempFile = File.createTempFile(splitName[0], splitName[1]);
 

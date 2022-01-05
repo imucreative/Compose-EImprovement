@@ -478,7 +478,6 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
 
                                     setDataAttachmentToHawk(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
 
-                                    FileUtils.removeFileCache(requireContext(), initFileName)
                                     FileUtils.removeAllFileCache(requireContext())
                                 }
 
