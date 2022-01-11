@@ -41,7 +41,6 @@ import kotlinx.coroutines.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
 import javax.inject.Inject
 import kotlin.Exception
 
@@ -515,7 +514,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                 when (data.type) {
                     SS -> {
                         notification.showListEdit(requireActivity(),
-                            resources.getString(R.string.select),
+                            data.typeNo, SS,
                             view = data.isView,
                             viewEdit = data.isEdit,
                             viewSubmit = data.isSubmit,
@@ -549,7 +548,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 }
 
                                 override fun onCheck() {
-                                    HelperNotification().showNotificationYesNo(
+                                    notification.showNotificationYesNo(
                                         requireActivity(), requireContext(), R.color.blue_500,
                                         "Check Proposal", resources.getString(R.string.submit_desc),
                                         "Check", resources.getString(R.string.no),
@@ -558,18 +557,30 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                             }
                                             override fun onNotificationYes() {
-                                                UpdateStatusProposalSs(
-                                                    listSsViewModel,
-                                                    context = requireContext(),
-                                                    owner = this@ListApprovalFragment
-                                                ).getDetailDataSs(
-                                                    id = data.id,
-                                                    ssNo = data.typeNo,
-                                                    statusProposal = data.status,
-                                                    userNameSubmit = userId,
-                                                ) {
-                                                    if(it){
-                                                        onStart()
+                                                lifecycleScope.launch {
+                                                    UpdateStatusProposalSs(
+                                                        listSsViewModel,
+                                                        context = requireContext(),
+                                                    ).getDetailDataSs(
+                                                        id = data.id,
+                                                        ssNo = data.typeNo,
+                                                        statusProposal = data.status,
+                                                        userNameSubmit = userId,
+                                                    ) {
+                                                        if (it) {
+                                                            Timber.e("### $it")
+
+                                                            val direction =
+                                                                ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                                    toolbarTitle = "Check Suggestion System",
+                                                                    action = APPROVE,
+                                                                    idSs = data.id,
+                                                                    ssNo = data.typeNo,
+                                                                    type = APPR,
+                                                                    statusProposal = data.status
+                                                                )
+                                                            requireView().findNavController().navigate(direction)
+                                                        }
                                                     }
                                                 }
                                             }
@@ -608,18 +619,30 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                             }
                                             override fun onNotificationYes() {
-                                                UpdateStatusProposalSs(
-                                                    listSsViewModel,
-                                                    context = requireContext(),
-                                                    owner = this@ListApprovalFragment
-                                                ).getDetailDataSs(
-                                                    id = data.id,
-                                                    ssNo = data.typeNo,
-                                                    statusProposal = data.status,
-                                                    userNameSubmit = userId,
-                                                ) {
-                                                    if(it){
-                                                        onStart()
+                                                lifecycleScope.launch {
+                                                    UpdateStatusProposalSs(
+                                                        listSsViewModel,
+                                                        context = requireContext(),
+                                                    ).getDetailDataSs(
+                                                        id = data.id,
+                                                        ssNo = data.typeNo,
+                                                        statusProposal = data.status,
+                                                        userNameSubmit = userId,
+                                                    ) {
+                                                        if(it){
+                                                            Timber.e("### $it")
+
+                                                            val direction =
+                                                                ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                                    toolbarTitle = "Review Suggestion System",
+                                                                    action = APPROVE,
+                                                                    idSs = data.id,
+                                                                    ssNo = data.typeNo,
+                                                                    type = APPR,
+                                                                    statusProposal = data.status
+                                                                )
+                                                            requireView().findNavController().navigate(direction)
+                                                        }
                                                     }
                                                 }
                                             }
@@ -647,8 +670,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                         )
                     }
                     PI -> {
-                        HelperNotification().showListEdit(requireActivity(),
-                            resources.getString(R.string.select),
+                        notification.showListEdit(requireActivity(),
+                            data.typeNo, PI,
                             view = data.isView,
                             viewEdit = data.isEdit,
                             viewSubmit = data.isSubmit,
@@ -691,18 +714,30 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                             }
                                             override fun onNotificationYes() {
-                                                UpdateStatusProposalPi(
-                                                    listPiViewModel,
-                                                    context = requireContext(),
-                                                    owner = this@ListApprovalFragment
-                                                ).getDetailDataPi(
-                                                    id = data.id,
-                                                    piNo = data.typeNo,
-                                                    statusProposal = data.status,
-                                                    userNameSubmit = userId,
-                                                ) {
-                                                    if(it){
-                                                        onStart()
+                                                lifecycleScope.launch {
+                                                    UpdateStatusProposalPi(
+                                                        listPiViewModel,
+                                                        context = requireContext(),
+                                                    ).getDetailDataPi(
+                                                        id = data.id,
+                                                        piNo = data.typeNo,
+                                                        statusProposal = data.status,
+                                                        userNameSubmit = userId,
+                                                    ) {
+                                                        if (it) {
+                                                            Timber.e("### $it")
+
+                                                            val direction =
+                                                                ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                                    toolbarTitle = "Check Project Improvement",
+                                                                    action = APPROVE,
+                                                                    idPi = data.id,
+                                                                    piNo = data.typeNo,
+                                                                    type = APPR,
+                                                                    statusProposal = data.status
+                                                                )
+                                                            requireView().findNavController().navigate(direction)
+                                                        }
                                                     }
                                                 }
                                             }
@@ -741,18 +776,30 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                             }
                                             override fun onNotificationYes() {
-                                                UpdateStatusProposalPi(
-                                                    listPiViewModel,
-                                                    context = requireContext(),
-                                                    owner = this@ListApprovalFragment
-                                                ).getDetailDataPi(
-                                                    id = data.id,
-                                                    piNo = data.typeNo,
-                                                    statusProposal = data.status,
-                                                    userNameSubmit = userId,
-                                                ) {
-                                                    if(it){
-                                                        onStart()
+                                                lifecycleScope.launch {
+                                                    UpdateStatusProposalPi(
+                                                        listPiViewModel,
+                                                        context = requireContext(),
+                                                    ).getDetailDataPi(
+                                                        id = data.id,
+                                                        piNo = data.typeNo,
+                                                        statusProposal = data.status,
+                                                        userNameSubmit = userId,
+                                                    ) {
+                                                        if (it) {
+                                                            Timber.e("### $it")
+
+                                                            val direction =
+                                                                ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                                    toolbarTitle = "Review Project Improvement",
+                                                                    action = APPROVE,
+                                                                    idPi = data.id,
+                                                                    piNo = data.typeNo,
+                                                                    type = APPR,
+                                                                    statusProposal = data.status
+                                                                )
+                                                            requireView().findNavController().navigate(direction)
+                                                        }
                                                     }
                                                 }
                                             }
@@ -780,8 +827,8 @@ class ListApprovalFragment : Fragment(), Injectable {
                         )
                     }
                     CP -> {
-                        HelperNotification().showListEdit(requireActivity(),
-                            resources.getString(R.string.select),
+                        notification.showListEdit(requireActivity(),
+                            data.typeNo, CP,
                             view = data.isView,
                             viewEdit = data.isEdit,
                             viewSubmit = data.isSubmit,
@@ -824,18 +871,31 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                             }
                                             override fun onNotificationYes() {
-                                                UpdateStatusProposalCp(
-                                                    listCpViewModel,
-                                                    context = requireContext(),
-                                                    owner = this@ListApprovalFragment
-                                                ).getDetailDataCp(
-                                                    id = data.id,
-                                                    cpNo = data.typeNo,
-                                                    statusProposal = data.status,
-                                                    userNameSubmit = userId,
-                                                ) {
-                                                    if(it){
-                                                        onStart()
+                                                lifecycleScope.launch {
+                                                    UpdateStatusProposalCp(
+                                                        listCpViewModel,
+                                                        context = requireContext(),
+                                                    ).getDetailDataCp(
+                                                        id = data.id,
+                                                        cpNo = data.typeNo,
+                                                        statusProposal = data.status,
+                                                        userNameSubmit = userId,
+                                                    ) {
+                                                        if (it) {
+                                                            Timber.e("### $it")
+
+                                                            val direction =
+                                                                ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                                                    toolbarTitle = "Review Redeem Point",
+                                                                    action = APPROVE,
+                                                                    idCp = data.id,
+                                                                    cpNo = data.typeNo,
+                                                                    type = APPR,
+                                                                    statusProposal = data.status
+                                                                )
+                                                            requireView().findNavController()
+                                                                .navigate(direction)
+                                                        }
                                                     }
                                                 }
                                             }

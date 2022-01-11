@@ -33,7 +33,9 @@ import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 import javax.inject.Inject
 import android.view.View.*
+import androidx.lifecycle.lifecycleScope
 import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalSs
+import kotlinx.coroutines.launch
 
 class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
     @Inject
@@ -327,18 +329,18 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 activityType = SS, submitType = key, comment = comment
                             )
 
-                            UpdateStatusProposalSs(
-                                viewModel,
-                                context = applicationContext,
-                                owner = this@SuggestionSystemCreateWizard
-                            ).updateSs(
-                                data = updateProposal,
-                                context = applicationContext,
-                                owner = this@SuggestionSystemCreateWizard
-                            ) {
-                                if(it){
-                                    finish()
-                                    HawkUtils().removeDataCreateProposal(source)
+                            lifecycleScope.launch {
+                                UpdateStatusProposalSs(
+                                    viewModel,
+                                    context = applicationContext,
+                                ).updateSs(
+                                    data = updateProposal,
+                                    context = applicationContext,
+                                ) {
+                                    if (it) {
+                                        finish()
+                                        HawkUtils().removeDataCreateProposal(source)
+                                    }
                                 }
                             }
                         } else {
@@ -529,7 +531,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                     UpdateStatusProposalSs(
                                         viewModel,
                                         context = applicationContext,
-                                        owner = this@SuggestionSystemCreateWizard
                                     ).submitSs(
                                         data = data!!,
                                         action = "save",
@@ -548,7 +549,6 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                         UpdateStatusProposalSs(
                                             viewModel,
                                             context = applicationContext,
-                                            owner = this@SuggestionSystemCreateWizard
                                         ).submitSs(
                                             data = data!!,
                                             action = "submit",
@@ -585,18 +585,18 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                                 }
 
                                 override fun onNotificationYes() {
-                                    UpdateStatusProposalSs(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@SuggestionSystemCreateWizard
-                                    ).updateSs(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@SuggestionSystemCreateWizard
-                                    ) {
-                                        if (it) {
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalSs(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).updateSs(
+                                            data = data!!,
+                                            context = applicationContext,
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
                                         }
                                     }
                                 }

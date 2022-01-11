@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
@@ -31,6 +32,7 @@ import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -302,18 +304,18 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                 data?.historyApproval, activityType = CP, submitType = key, comment = comment,data?.branchCode
                             )
 
-                            UpdateStatusProposalCp(
-                                viewModel,
-                                context = applicationContext,
-                                owner = this@ChangesPointCreateWizard
-                            ).updateCp(
-                                data = updateProposal,
-                                context = applicationContext,
-                                owner = this@ChangesPointCreateWizard
-                            ) {
-                                if(it){
-                                    finish()
-                                    HawkUtils().removeDataCreateProposal(source)
+                            lifecycleScope.launch {
+                                UpdateStatusProposalCp(
+                                    viewModel,
+                                    context = applicationContext,
+                                ).updateCp(
+                                    data = updateProposal,
+                                    context = applicationContext,
+                                ) {
+                                    if (it) {
+                                        finish()
+                                        HawkUtils().removeDataCreateProposal(source)
+                                    }
                                 }
                             }
                         } else {
@@ -440,33 +442,34 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             override fun onNotificationYes() {
                                 if (data?.cpNo.isNullOrEmpty()){
-                                    UpdateStatusProposalCp(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ).submitCp(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ) {
-                                        if(it){
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalCp(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).submitCp(
+                                            data = data!!,
+                                            context = applicationContext,
+                                            owner = this@ChangesPointCreateWizard
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
                                         }
                                     }
                                 }else{
-                                    UpdateStatusProposalCp(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ).updateCp(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ) {
-                                        if(it){
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalCp(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).updateCp(
+                                            data = data!!,
+                                            context = applicationContext,
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
                                         }
                                     }
                                 }

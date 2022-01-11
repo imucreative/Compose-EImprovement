@@ -21,6 +21,7 @@
             android:background="@color/colorMainEImprovement"
             android:text="@string/info"
             android:id="@+id/txt_title"
+            android:textSize="20sp"
             android:textColor="@android:color/white"
             android:padding="10dp"
             android:gravity="center_horizontal"

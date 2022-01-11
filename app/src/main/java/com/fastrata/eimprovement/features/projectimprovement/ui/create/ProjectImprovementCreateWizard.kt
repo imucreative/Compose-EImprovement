@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
@@ -33,6 +34,7 @@ import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -336,19 +338,18 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 data?.attachment,data?.statusProposal,historyApproval = data?.historyApproval, score = score,
                                 activityType = PI,submitType = key, comment = comment
                             )
-
-                            UpdateStatusProposalPi(
-                                viewModel,
-                                context = applicationContext,
-                                owner = this@ProjectImprovementCreateWizard
-                            ).updatePi(
-                                data = updateProposal,
-                                context = applicationContext,
-                                owner = this@ProjectImprovementCreateWizard
-                            ) {
-                                if(it){
-                                    finish()
-                                    HawkUtils().removeDataCreateProposal(source)
+                            lifecycleScope.launch {
+                                UpdateStatusProposalPi(
+                                    viewModel,
+                                    context = applicationContext,
+                                ).updatePi(
+                                    data = updateProposal,
+                                    context = applicationContext,
+                                ) {
+                                    if (it) {
+                                        finish()
+                                        HawkUtils().removeDataCreateProposal(source)
+                                    }
                                 }
                             }
                         } else {
@@ -592,7 +593,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                     UpdateStatusProposalPi(
                                         viewModel,
                                         context = applicationContext,
-                                        owner = this@ProjectImprovementCreateWizard
                                     ).submitPi(
                                         data = data!!,
                                         action = "save",
@@ -611,7 +611,6 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                         UpdateStatusProposalPi(
                                             viewModel,
                                             context = applicationContext,
-                                            owner = this@ProjectImprovementCreateWizard
                                         ).submitPi(
                                             data = data!!,
                                             action = "submit",
@@ -648,18 +647,18 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                 }
 
                                 override fun onNotificationYes() {
-                                    UpdateStatusProposalPi(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@ProjectImprovementCreateWizard
-                                    ).updatePi(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@ProjectImprovementCreateWizard
-                                    ) {
-                                        if (it) {
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalPi(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).updatePi(
+                                            data = data!!,
+                                            context = applicationContext,
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
                                         }
                                     }
                                 }

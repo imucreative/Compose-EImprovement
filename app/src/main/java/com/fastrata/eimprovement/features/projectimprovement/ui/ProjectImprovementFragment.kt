@@ -9,6 +9,7 @@ import android.R.layout.simple_list_item_1
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -34,6 +35,7 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -617,7 +619,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun initComponent() {
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementModel) {
-                notification.showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),
+                    data.piNo, PI,
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -653,19 +656,21 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalPi(
-                                            listPiViewModel,
-                                            context = requireContext(),
-                                            owner = this@ProjectImprovementFragment
-                                        ).getDetailDataPi(
-                                            id = data.idPi,
-                                            piNo = data.piNo,
-                                            statusProposal = data.status,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                //HawkUtils().removeDataCreateProposal(PI_DETAIL_DATA)
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalPi(
+                                                listPiViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataPi(
+                                                id = data.idPi,
+                                                piNo = data.piNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if (it) {
+                                                    //HawkUtils().removeDataCreateProposal(PI_DETAIL_DATA)
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
                                             }
                                         }
                                     }
@@ -691,18 +696,20 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalPi(
-                                            listPiViewModel,
-                                            context = requireContext(),
-                                            owner = this@ProjectImprovementFragment
-                                        ).getDetailDataPi(
-                                            id = data.idPi,
-                                            piNo = data.piNo,
-                                            statusProposal = data.status,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalPi(
+                                                listPiViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataPi(
+                                                id = data.idPi,
+                                                piNo = data.piNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if (it) {
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
                                             }
                                         }
                                     }
@@ -712,7 +719,12 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onSubmitLaporan() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Submit Project Improvement",
+                                action = SUBMIT_PROPOSAL,
+                                idPi = data.idPi,
+                                piNo = data.piNo,
+                                type = "",
+                                statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }

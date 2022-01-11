@@ -8,14 +8,15 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointCre
 import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.workers.service
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 class UpdateStatusProposalCp(
     private val listCpViewModel: ChangesPointCreateViewModel,
     private val context: Context,
-    private val owner: LifecycleOwner
 ) {
-    fun getDetailDataCp(
+    suspend fun getDetailDataCp(
         id: Int,
         cpNo: String,
         statusProposal: StatusProposalItem,
@@ -47,47 +48,29 @@ class UpdateStatusProposalCp(
             comment = ""
         )
 
-        updateCp(dataCreateModel, context, owner) { status(it) }
+        updateCp(dataCreateModel, context) { status(it) }
     }
 
-    fun updateCp(
+    suspend fun updateCp(
         data: ChangePointCreateModel,
         context: Context,
-        owner: LifecycleOwner,
         complete: (Boolean) -> Unit
     ){
         try {
-            listCpViewModel.setPutSubmitUpdateCp(data)
-            listCpViewModel.putSubmitUpdateCp.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(context, "", false)
-                                Timber.d("###-- Loading putSubmitUpdateCp")
-                            }
-                            Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
+            coroutineScope {
+                service().submitUpdateCp(data).let {
+                    if (it.isSuccessful) {
+                        HelperLoading.hideLoading()
 
-                                Timber.e("${result.data?.message}")
+                        Toast.makeText(context, it.body()?.message, Toast.LENGTH_LONG).show()
+                        complete(true)
+                    } else {
+                        complete(false)
 
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
-
-                                Timber.d("###-- Success putSubmitUpdateCp")
-
-                                complete(true)
-                            }
-                            Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
-                                Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
-                                Timber.d("###-- Error putSubmitUpdateCp")
-
-                                complete(false)
-                            }
-
-                        }
+                        HelperLoading.hideLoading()
+                        Toast.makeText(context, it.body()?.message, Toast.LENGTH_LONG).show()
                     }
-                })
+                }
             }
 
         } catch (err: Exception) {

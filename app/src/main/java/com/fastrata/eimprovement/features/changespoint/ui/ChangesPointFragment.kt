@@ -9,6 +9,7 @@ import android.R.layout.simple_list_item_1
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,12 +26,15 @@ import com.fastrata.eimprovement.features.changespoint.data.model.ChangePointRem
 import com.fastrata.eimprovement.featuresglobal.data.model.BranchItem
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.featuresglobal.data.model.SubBranchItem
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalCp
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalPi
 import com.fastrata.eimprovement.featuresglobal.viewmodel.BranchViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckPeriodViewModel
 import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewModel
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -509,7 +513,8 @@ class ChangesPointFragment : Fragment(), Injectable {
     private fun initComponent() {
         adapter.setChangeRewardCallback(object : ChangesPointCallback {
             override fun onItemClicked(data: ChangePointModel) {
-                HelperNotification().showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),
+                    data.cpNo, CP,
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -536,7 +541,35 @@ class ChangesPointFragment : Fragment(), Injectable {
                         }
 
                         override fun onSubmit() {
+                            notification.showNotificationYesNo(
+                                requireActivity(), requireContext(), R.color.blue_500,
+                                "Submit Redeem Point", resources.getString(R.string.submit_desc),
+                                "Submit", resources.getString(R.string.no),
+                                object : HelperNotification.CallBackNotificationYesNo {
+                                    override fun onNotificationNo() {
 
+                                    }
+                                    override fun onNotificationYes() {
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalCp(
+                                                listCpViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataCp(
+                                                id = data.idCp,
+                                                cpNo = data.cpNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if (it) {
+                                                    //HawkUtils().removeDataCreateProposal(PI_DETAIL_DATA)
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            )
                         }
 
                         override fun onCheck() {

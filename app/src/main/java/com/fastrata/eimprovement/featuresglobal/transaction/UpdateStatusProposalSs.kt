@@ -9,15 +9,16 @@ import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
 import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.workers.service
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 class UpdateStatusProposalSs(
     private val listSsViewModel: SuggestionSystemViewModel,
     private val context: Context,
-    private val owner: LifecycleOwner
     ) {
 
-    fun getDetailDataSs(
+    suspend fun getDetailDataSs(
         id: Int,
         ssNo: String,
         statusProposal: StatusProposalItem,
@@ -56,48 +57,32 @@ class UpdateStatusProposalSs(
             submitType = 1,
             comment = ""
         )
-        updateSs(dataCreateModel, context, owner) { status(it) }
+        updateSs(dataCreateModel, context) { status(it) }
     }
 
     // update for edit and update proposal
-    fun updateSs(
+    suspend fun updateSs(
         data: SuggestionSystemCreateModel,
         context: Context,
-        owner: LifecycleOwner,
         complete: (Boolean) -> Unit
     ) {
+        HelperLoading.displayLoadingWithText(context, "", false)
+
         try {
-            listSsViewModel.setPostSubmitUpdateSs(data)
-            listSsViewModel.putSubmitUpdateSs.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(context, "", false)
-                                Timber.d("###-- Loading putSubmitUpdateSs")
-                            }
-                            Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
+            coroutineScope {
+                service().submitUpdateSs(data).let {
+                    if (it.isSuccessful) {
+                        HelperLoading.hideLoading()
 
-                                Timber.e("${result.data?.message}")
+                        Toast.makeText(context, it.body()?.message, Toast.LENGTH_LONG).show()
+                        complete(true)
+                    } else {
+                        complete(false)
 
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
-
-                                Timber.d("###-- Success putSubmitUpdateSs")
-
-                                complete(true)
-                            }
-                            Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
-                                Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
-                                Timber.d("###-- Error putSubmitUpdateSs")
-
-                                complete(false)
-                            }
-
-                        }
+                        HelperLoading.hideLoading()
+                        Toast.makeText(context, it.body()?.message, Toast.LENGTH_LONG).show()
                     }
-                })
+                }
             }
 
         } catch (err: Exception) {

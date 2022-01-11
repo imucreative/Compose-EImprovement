@@ -14,6 +14,7 @@
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/activity_welcome_message.xml" value="0.2942708333333333" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/dialog_error.xml" value="0.2942708333333333" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/dialog_form_create_sebab_masalah.xml" value="0.28974358974358977" />
+        <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/dialog_list.xml" value="0.28703703703703703" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/dialog_notification.xml" value="0.2942708333333333" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/dialog_yesno.xml" value="0.28974358974358977" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/fragment_add_akar_masalah.xml" value="0.2942708333333333" />
@@ -39,7 +40,7 @@
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_category_suggestion.xml" value="0.28974358974358977" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_changes_point.xml" value="0.2942708333333333" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_changes_reward.xml" value="0.28974358974358977" />
-        <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_list_approval.xml" value="0.28974358974358977" />
+        <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_list_approval.xml" value="0.4528302049755674" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_list_approval_history_status.xml" value="0.28974358974358977" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_project_improvment.xml" value="0.28974358974358977" />
         <entry key="..\:/FB/backup/e-improvement/app/src/main/res/layout/item_sebab_masalah_pi.xml" value="0.28974358974358977" />

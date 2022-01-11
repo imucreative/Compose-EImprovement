@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ItemListApprovalBinding
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
+import com.fastrata.eimprovement.utils.CP
+import com.fastrata.eimprovement.utils.PI
+import com.fastrata.eimprovement.utils.SS
 import com.fastrata.eimprovement.utils.Tools
 
 class ListApprovalAdapter : RecyclerView.Adapter<ListApprovalAdapter.ApprovalViewHolder>() {
@@ -55,6 +58,36 @@ class ListApprovalAdapter : RecyclerView.Adapter<ListApprovalAdapter.ApprovalVie
                         else -> Color.BLACK
                     }
                 )
+
+                when (data.type) {
+                    SS -> {
+                        type.setTextColor(ContextCompat.getColor(binding.root.context, R.color.yellow_800))
+                        proposalIndicator.setBackgroundColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.yellow_800
+                            )
+                        )
+                    }
+                    PI -> {
+                        type.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue_800))
+                        proposalIndicator.setBackgroundColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.blue_800
+                            )
+                        )
+                    }
+                    CP -> {
+                        type.setTextColor(ContextCompat.getColor(binding.root.context, R.color.green_800))
+                        proposalIndicator.setBackgroundColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.green_800
+                            )
+                        )
+                    }
+                }
             }
         }
     }

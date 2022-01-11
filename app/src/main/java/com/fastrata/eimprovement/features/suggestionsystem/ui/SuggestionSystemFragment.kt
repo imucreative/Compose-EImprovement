@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -32,6 +33,7 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -594,7 +596,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
                 Timber.e("### $data")
-                notification.showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),
+                    data.ssNo, SS,
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -630,18 +633,20 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalSs(
-                                            listSsViewModel,
-                                            context = requireContext(),
-                                            owner = this@SuggestionSystemFragment,
-                                        ).getDetailDataSs(
-                                            id = data.idSs,
-                                            ssNo = data.ssNo,
-                                            statusProposal = data.status,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalSs(
+                                                listSsViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataSs(
+                                                id = data.idSs,
+                                                ssNo = data.ssNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if(it){
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
                                             }
                                         }
                                     }
@@ -667,18 +672,29 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalSs(
-                                            listSsViewModel,
-                                            context = requireContext(),
-                                            owner = this@SuggestionSystemFragment,
-                                        ).getDetailDataSs(
-                                            id = data.idSs,
-                                            ssNo = data.ssNo,
-                                            statusProposal = data.status,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalSs(
+                                                listSsViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataSs(
+                                                id = data.idSs,
+                                                ssNo = data.ssNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if(it){
+                                                    Timber.e("### $it")
+
+                                                    val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
+                                                        toolbarTitle = "Submit Suggestion System",
+                                                        action = SUBMIT_PROPOSAL,
+                                                        idSs = data.idSs,
+                                                        ssNo = data.ssNo,
+                                                        type = "",
+                                                        statusProposal = data.status,
+                                                    )
+                                                    requireView().findNavController().navigate(direction)
+                                                }
                                             }
                                         }
                                     }
@@ -688,7 +704,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                         override fun onSubmitLaporan() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Submit Suggestion System",
+                                action = SUBMIT_PROPOSAL,
+                                idSs = data.idSs,
+                                ssNo = data.ssNo,
+                                type = "",
+                                statusProposal = data.status,
                             )
                             requireView().findNavController().navigate(direction)
                         }

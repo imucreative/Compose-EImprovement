@@ -320,7 +320,7 @@ class HelperNotification {
         dialog.window!!.attributes = lp
     }
 
-    fun showListEdit(activity: Activity,header: String,
+    fun showListEdit(activity: Activity,header: String,type: String,
                      view: Boolean,
                      viewEdit : Boolean,
                      viewImplementation : Boolean,
@@ -337,6 +337,11 @@ class HelperNotification {
         dialog.setContentView(R.layout.dialog_list)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         (dialog.findViewById<View>(R.id.txt_title) as TextView).text = header
+        when (type) {
+            SS -> (dialog.findViewById<View>(R.id.txt_title) as TextView).setBackgroundColor(ContextCompat.getColor(dialog.context, R.color.yellow_800))
+            PI -> (dialog.findViewById<View>(R.id.txt_title) as TextView).setBackgroundColor(ContextCompat.getColor(dialog.context, R.color.blue_800))
+            CP -> (dialog.findViewById<View>(R.id.txt_title) as TextView).setBackgroundColor(ContextCompat.getColor(dialog.context, R.color.green_800))
+        }
 
         if (!view){
                 (dialog.findViewById<View>(R.id.btn_view) as LinearLayout).visibility = View.GONE
