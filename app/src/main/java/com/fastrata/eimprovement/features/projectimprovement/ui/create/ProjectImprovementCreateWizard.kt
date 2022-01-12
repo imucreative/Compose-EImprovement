@@ -562,7 +562,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                             }
                         }
                     }
-                    5, 9 ->{
+                    6, 9 ->{
                         initialTypeProposal = "Submit Laporan Akhir"
                         buttonInitialTypeProposal = "Send"
                     }

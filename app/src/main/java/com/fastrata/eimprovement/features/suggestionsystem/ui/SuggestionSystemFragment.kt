@@ -684,16 +684,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                             ) {
                                                 if(it){
                                                     Timber.e("### $it")
-
-                                                    val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                                        toolbarTitle = "Submit Suggestion System",
-                                                        action = SUBMIT_PROPOSAL,
-                                                        idSs = data.idSs,
-                                                        ssNo = data.ssNo,
-                                                        type = "",
-                                                        statusProposal = data.status,
-                                                    )
-                                                    requireView().findNavController().navigate(direction)
+                                                    onStart()
                                                 }
                                             }
                                         }
