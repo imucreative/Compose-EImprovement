@@ -192,6 +192,7 @@ class DashboardFragment: Fragment(), Injectable {
                 menuApproval.isEnabled = false
                 menuApproval.isClickable = false
                 menuApproval.isFocusable = false
+                menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
             }
         }
 
@@ -204,6 +205,7 @@ class DashboardFragment: Fragment(), Injectable {
                 menuProjectImprovement.isEnabled = false
                 menuProjectImprovement.isClickable = false
                 menuProjectImprovement.isFocusable = false
+                menuProjectImprovement.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
             }
         }
 
@@ -216,6 +218,7 @@ class DashboardFragment: Fragment(), Injectable {
                 menuSuggestionSystem.isEnabled = false
                 menuSuggestionSystem.isClickable = false
                 menuSuggestionSystem.isFocusable = false
+                menuSuggestionSystem.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
             }
         }
 
@@ -228,6 +231,7 @@ class DashboardFragment: Fragment(), Injectable {
                 menuPointExchange.isEnabled = false
                 menuPointExchange.isClickable = false
                 menuPointExchange.isFocusable = false
+                menuPointExchange.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
             }
         }
     }

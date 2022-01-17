@@ -110,6 +110,7 @@ dependencies {
     implementation "com.mikhaellopez:circularimageview:4.3.0"           // circle image view
     implementation "com.orhanobut:hawk:2.0.1"                           // Secure, simple key-value storage for android
     implementation 'com.rabbitmq:amqp-client:5.14.0'                    //rabbit messaging
+    implementation 'com.cottacush:CurrencyEditText:0.0.9'
 
     // navigation
     def navigation = '2.3.5'
