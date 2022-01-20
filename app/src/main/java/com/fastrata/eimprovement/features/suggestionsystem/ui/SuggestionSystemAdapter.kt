@@ -1,6 +1,5 @@
 package com.fastrata.eimprovement.features.suggestionsystem.ui
 
-import android.content.res.Resources
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ItemSuggestionSystemBinding
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemModel
 import com.fastrata.eimprovement.utils.Tools
-import kotlin.coroutines.coroutineContext
 
 class SuggestionSystemAdapter : RecyclerView.Adapter<SuggestionSystemAdapter.SuggestionSystemViewHolder>() {
 

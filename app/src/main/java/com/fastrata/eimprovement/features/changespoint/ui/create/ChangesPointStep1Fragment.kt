@@ -14,6 +14,8 @@ import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
 import com.fastrata.eimprovement.utils.Tools.textLimitReplaceToDots
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class ChangesPointStep1Fragment: Fragment(), Injectable {
@@ -25,6 +27,9 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
     private var source :String = CP_CREATE
     private var action: String? = ""
     private var cpNo: String? = ""
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var dateFormat: Date
     private lateinit var datePicker: DatePickerCustom
     private var intSaldo : Int = 0
 
@@ -77,7 +82,11 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
             department.setText(data?.department?.let { textLimitReplaceToDots(it, 13) })
             position.setText(data?.position?.let { textLimitReplaceToDots(it, 13) })
 
-            date.setText(data?.date)
+            if (data?.date != null) {
+                dateFormat = formatDateOriginalValue.parse(data?.date)
+                date.setText(formatDateDisplay.format(dateFormat))
+            }
+
             try {
                 date.setOnClickListener {
                     datePicker.showDialog(object : DatePickerCustom.Callback {
@@ -85,7 +94,9 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            date.setText("$year-$monthStr-$dayStr")
+
+                            dateFormat = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            date.setText(formatDateDisplay.format(dateFormat))
                         }
                     })
                 }
@@ -146,7 +157,7 @@ class ChangesPointStep1Fragment: Fragment(), Injectable {
                                 branch = branch.text.toString(),
                                 departement = department.text.toString(),
                                 position = position.text.toString(),
-                                date = date.text.toString(),
+                                date = formatDateOriginalValue.format(dateFormat),
                                 keterangan = desc.text.toString(),
                                 id = data?.id,
                                 subBranch = data?.subBranch,

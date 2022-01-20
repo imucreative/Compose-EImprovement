@@ -15,8 +15,9 @@ import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectImp
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 
 class ProjectImprovStep1Fragment: Fragment(), Injectable {
@@ -28,6 +29,12 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
     private var piNo: String? = ""
     private var action: String? = ""
     private var source: String = PI_CREATE
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var currentDateTime: LocalDateTime
+    private lateinit var yearFormat: String
+    private lateinit var parseDateNow: Date
+    private lateinit var dateFormat: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +58,16 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProjectImprovementStep1Binding.bind(view)
 
-        val currentDateTime = LocalDateTime.now()
+        currentDateTime = LocalDateTime.now()
+
+        parseDateNow = formatDateOriginalValue.parse(if (source == PI_CREATE) currentDateTime.toString() else data?.date)
+        yearFormat = if (source == PI_CREATE) currentDateTime.year.toString() else data?.years.toString()
+        dateFormat = formatDateDisplay.format(parseDateNow)
 
         binding.apply {
             piNo.setText(data?.piNo)
-            year.setText(currentDateTime.year.toString())
-            createdDate.setText(currentDateTime.format(DateTimeFormatter.ISO_DATE).toString())
+            year.setText(yearFormat)
+            createdDate.setText(dateFormat)
             branch.setText(data?.branch)
             department.setText(data?.department)
             subBranch.setText(data?.subBranch)
@@ -114,10 +125,12 @@ class ProjectImprovStep1Fragment: Fragment(), Injectable {
                             stat = false
                         }
                         else -> {
+                            val displayDate = formatDateOriginalValue.format(parseDateNow)
+                            println(displayDate)
                             HawkUtils().setTempDataCreatePi(
                                 id = data?.id,
                                 piNo = piNo.text.toString(),
-                                date = createdDate.text.toString(),
+                                date = displayDate,
                                 title = title.text.toString(),
                                 branch = branch.text.toString(),
                                 subBranch = subBranch.text.toString(),

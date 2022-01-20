@@ -59,14 +59,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var listStatusProposalItem: List<StatusProposalItem>? = null
     private var listBranchItem: List<BranchItem>? = null
     private var listSubBranchItem: List<SubBranchItem>? = null
-    private lateinit var selectedStatusProposal: StatusProposalItem
-    private lateinit var selectedBranch: BranchItem
-    private lateinit var selectedSubBranch: SubBranchItem
     private var statusProposalId = 0
     private var branchId = 0
     private var subBranchId = 0
-    lateinit var fromDate: Date
-    lateinit var toDate: Date
     private var userId: Int = 0
     private var userName: String = ""
     private var limit: Int = 10
@@ -76,9 +71,15 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var roleName: String = ""
     private var jobLevelId: Int = 0
     private var docId = ""
-    private val sdf = SimpleDateFormat("yyyy-MM-dd")
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var fromDate: Date
+    private lateinit var toDate: Date
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var notification: HelperNotification
+    private lateinit var selectedStatusProposal: StatusProposalItem
+    private lateinit var selectedBranch: BranchItem
+    private lateinit var selectedSubBranch: SubBranchItem
 
     private val args : ProjectImprovementFragmentArgs by navArgs()
 
@@ -196,11 +197,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 subBranchId = selectedSubBranch.warehouseId
                             }
 
+                            val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                            val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                                 userId, limit, page, roleName, PI,
                                 userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
-                                startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
+                                startDate = startDate, endDate = endDate
                             )
 
                             listPiViewModel.setListPi(listProjectImprovementRemoteRequest)
@@ -838,8 +842,10 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtFromDate.setText("$year-$monthStr-$dayStr")
-                        fromDate = sdf.parse(edtFromDate.text.toString())
+
+                        fromDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                        edtFromDate.setText(formatDateDisplay.format(fromDate))
+
                         edtToDate.text!!.clear()
                     }
                 })
@@ -851,22 +857,17 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtToDate.setText("$year-$monthStr-$dayStr")
-                        toDate = sdf.parse(edtToDate.text.toString())
-                        if (edtFromDate.text.isNullOrEmpty()){
+
+                        toDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                        if (edtFromDate.text.isNullOrEmpty() || !toDate.after(fromDate)){
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                            edtFromDate.requestFocus()
-                        }else{
-                            if (!toDate.after(fromDate)){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                edtToDate.text!!.clear()
-                            }
+                            edtToDate.text!!.clear()
+                        } else {
+                            edtToDate.setText(formatDateDisplay.format(toDate))
                         }
                     }
                 })
@@ -904,7 +905,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             userId, limit, page, roleName, PI,
                             userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
-                            startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
+                            startDate = formatDateOriginalValue.format(fromDate), endDate = formatDateOriginalValue.format(toDate)
                         )
 
                         listPiViewModel.setListPi(listPiRemoteRequest)

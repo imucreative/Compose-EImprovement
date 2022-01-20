@@ -493,6 +493,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
+                actionBottom.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }

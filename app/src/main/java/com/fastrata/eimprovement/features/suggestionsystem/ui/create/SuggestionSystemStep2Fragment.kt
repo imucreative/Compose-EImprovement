@@ -26,14 +26,15 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
     private var data: SuggestionSystemCreateModel? = null
     private var ssNo: String? = ""
     private var ssAction: String? = ""
-    private lateinit var datePickerSudah: DatePickerCustom
-    private lateinit var datePickerAkan : DatePickerCustom
     private var source: String = SS_CREATE
-    lateinit var fromDate: Date
-    lateinit var toDate: Date
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var edtProses : String = ""
     private var edtResult : String = ""
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var fromDate: Date
+    private lateinit var toDate: Date
+    private lateinit var datePickerSudah: DatePickerCustom
+    private lateinit var datePickerAkan: DatePickerCustom
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -121,8 +122,10 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etFromStatus1.setText("$year-$monthStr-$dayStr")
-                        fromDate = sdf.parse(etFromStatus1.text.toString())
+
+                        fromDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                        etFromStatus1.setText(formatDateDisplay.format(fromDate))
+
                         etToStatus1.text!!.clear()
                     }
                 })
@@ -134,24 +137,19 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etToStatus1.setText("$year-$monthStr-$dayStr")
-                        toDate = sdf.parse(etToStatus1.text.toString())
-                        if (etFromStatus1.text.isNullOrEmpty()){
+
+                        toDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                        if (etFromStatus1.text.isNullOrEmpty() || !toDate.after(fromDate)){
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
-                        }else{
-                            fromDate = sdf.parse(etFromStatus1.text.toString())
-                            if (!toDate.after(fromDate)){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etToStatus1.text!!.clear()
-                            }
+                            etToStatus1.text!!.clear()
+                        } else {
+                            etToStatus1.setText(formatDateDisplay.format(toDate))
                         }
+
                     }
                 })
             }
@@ -162,8 +160,9 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etFromStatus2.setText("$year-$monthStr-$dayStr")
-                        fromDate = sdf.parse(etFromStatus2.text.toString())
+
+                        fromDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                        etFromStatus2.setText(formatDateDisplay.format(fromDate))
                         etToStatus2.text!!.clear()
                     }
                 })
@@ -175,24 +174,19 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        etToStatus2.setText("$year-$monthStr-$dayStr")
-                        toDate = sdf.parse(etToStatus2.text.toString())
-                        if (etFromStatus2.text.isNullOrEmpty()){
+
+                        toDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                        if (etFromStatus2.text.isNullOrEmpty() || !toDate.after(fromDate)){
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                            etFromStatus2.requestFocus()
-                        }else{
-                            fromDate = sdf.parse(etFromStatus2.text.toString())
-                            if (!toDate.after(fromDate)){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                etToStatus2.text!!.clear()
-                            }
+                            etToStatus2.text!!.clear()
+                        } else {
+                            etToStatus2.setText(formatDateDisplay.format(toDate))
                         }
+
                     }
                 })
             }
@@ -257,13 +251,15 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
 
             problem.setText(data?.problem.toString())
             suggestion.setText(data?.suggestion.toString())
+            fromDate = formatDateOriginalValue.parse(data?.statusImplementation?.from)
+            toDate = formatDateOriginalValue.parse(data?.statusImplementation?.to)
 
             if (data?.statusImplementation?.status == 1) {
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
 
-                etFromStatus1.setText(data?.statusImplementation?.from)
-                etToStatus1.setText(data?.statusImplementation?.to)
+                etFromStatus1.setText(formatDateDisplay.format(fromDate))
+                etToStatus1.setText(formatDateDisplay.format(toDate))
 
                 etFromStatus2.setText("")
                 etToStatus2.setText("")
@@ -274,8 +270,8 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                 etFromStatus1.setText("")
                 etToStatus1.setText("")
 
-                etFromStatus2.setText(data?.statusImplementation?.from)
-                etToStatus2.setText(data?.statusImplementation?.to)
+                etFromStatus2.setText(formatDateDisplay.format(fromDate))
+                etToStatus2.setText(formatDateDisplay.format(toDate))
             }
 
         }
@@ -286,25 +282,6 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
                 binding.apply {
-                    val tempStatus: Int?
-                    lateinit var tempFrom: String
-                    lateinit var tempTo: String
-
-                    if (rbStatus1.isChecked) {
-                        tempStatus = 1
-                        tempFrom = etFromStatus1.text.toString()
-                        tempTo = etToStatus1.text.toString()
-                    } else {
-                        tempStatus = 0
-                        tempFrom = etFromStatus2.text.toString()
-                        tempTo = etToStatus2.text.toString()
-                    }
-
-                    val status = StatusImplementation(
-                        status = tempStatus,
-                        from = tempFrom,
-                        to = tempTo
-                    )
 
                     when{
                         problem.text.isNullOrEmpty() -> {
@@ -355,6 +332,12 @@ class SuggestionSystemStep2Fragment : Fragment(), Injectable {
                         }
 
                         else -> {
+                            val status = StatusImplementation(
+                                status = if (rbStatus1.isChecked) 1 else 0,
+                                from = formatDateOriginalValue.format(fromDate),
+                                to = formatDateOriginalValue.format(toDate)
+                            )
+
                             HawkUtils().setTempDataCreateSs(
                                 id = data?.id,
                                 ssNo = data?.ssNo,

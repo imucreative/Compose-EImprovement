@@ -31,7 +31,7 @@ data class ProjectImprovementCreateModel(
     var directMgrNik: String?,
     @SerializedName("DEPARTMENT")
     var department: String?,
-    @SerializedName("TAHUN")
+    @SerializedName("YEAR")
     var years: String?,
     @SerializedName("CREATED_DATE")
     var date: String?,
