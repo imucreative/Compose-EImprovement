@@ -855,12 +855,15 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     try {
                         adapter.clear()
 
+                        val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                        val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                         val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                             userId, limit, page, roleName, SS,
                             userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), category = edtCategory.text.toString(), orgId = branchId,
-                            warehouseId = subBranchId, startDate = formatDateOriginalValue.format(fromDate),
-                            endDate = formatDateOriginalValue.format(toDate)
+                            warehouseId = subBranchId, startDate = startDate,
+                            endDate = endDate
                         )
 
                         listSsViewModel.setListSs(listSsRemoteRequest)

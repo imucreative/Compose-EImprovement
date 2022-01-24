@@ -1024,11 +1024,14 @@ class ListApprovalFragment : Fragment(), Injectable {
                     try {
                         adapter.clear()
 
+                        val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                        val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                         val listApprovalRemoteRequest = ApprovalRemoteRequest(
                             userId, limit, page, roleName, APPR,
                             userName = userName, docNo = edtNoDoc.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
-                            startDate = formatDateOriginalValue.format(fromDate), endDate = formatDateOriginalValue.format(toDate)
+                            startDate = startDate, endDate = endDate
                         )
 
                         listApproveViewModel.setListApproval(listApprovalRemoteRequest)

@@ -554,12 +554,30 @@ class ProjectImprovStep9Fragment : Fragment(), Injectable {
             override fun onDataPass(): Boolean {
                 var stat: Boolean
 
+                val newAttachment = data?.attachment?.filter { item ->
+                    when (item?.id) {
+                        0 -> {
+                            true
+                        }
+                        else -> {
+                            false
+                        }
+                    }
+                }
+
                 binding.apply {
                     stat = if (data?.attachment?.size == 0 && (action != DETAIL && conditionImplementation())) {
                         SnackBarCustom.snackBarIconInfo(
                             root, layoutInflater, resources, root.context,
                             resources.getString(R.string.file_empty),
                             R.drawable.ic_close, R.color.red_500)
+                        false
+                    } else if (conditionImplementation() && newAttachment?.size == 0) {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.file_required),
+                            R.drawable.ic_close, R.color.red_500
+                        )
                         false
                     } else {
                         true

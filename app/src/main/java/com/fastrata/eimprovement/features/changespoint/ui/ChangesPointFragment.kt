@@ -742,12 +742,15 @@ class ChangesPointFragment : Fragment(), Injectable {
                     try {
                         adapter.clear()
 
+                        val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                        val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                         val listCpRemoteRequest = ChangePointRemoteRequest(
                             userId, limit, page, roleName, CP,
                             userName = userName, cpNo = edtNoCp.text.toString(), statusId = statusProposalId,
                             description = edtKeterangan.text.toString(), createdBy = edtCreatedBy.text.toString(),
-                            orgId = branchId, warehouseId = subBranchId, startDate = formatDateOriginalValue.format(fromDate),
-                            endDate = formatDateOriginalValue.format(toDate)
+                            orgId = branchId, warehouseId = subBranchId, startDate = startDate,
+                            endDate = endDate
                         )
 
                         listCpViewModel.setListCp(listCpRemoteRequest)

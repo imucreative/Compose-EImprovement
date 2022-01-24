@@ -901,11 +901,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     try {
                         adapter.clear()
 
+                        val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                        val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                         val listPiRemoteRequest = ProjectImprovementRemoteRequest(
                             userId, limit, page, roleName, PI,
                             userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
-                            startDate = formatDateOriginalValue.format(fromDate), endDate = formatDateOriginalValue.format(toDate)
+                            startDate = startDate, endDate = endDate
                         )
 
                         listPiViewModel.setListPi(listPiRemoteRequest)
