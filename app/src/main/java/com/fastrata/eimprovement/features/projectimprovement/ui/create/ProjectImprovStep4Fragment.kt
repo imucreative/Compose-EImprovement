@@ -131,7 +131,7 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
                                     resources.getString(R.string.delete),
                                     resources.getString(R.string.delete_confirmation),
                                     resources.getString(R.string.agree),
-                                    resources.getString(R.string.not_agree),
+                                    resources.getString(R.string.cancel),
                                     object : HelperNotification.CallBackNotificationYesNo {
                                         override fun onNotificationNo() {
 
@@ -142,11 +142,11 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
 
                                             viewModel.updateSebabMasalah(sebabMasalah, source)
                                             viewModel.getSebabMasalah()
-                                                .observe(viewLifecycleOwner, {
+                                                .observe(viewLifecycleOwner) {
                                                     if (it != null) {
                                                         adapter.setList(it)
                                                     }
-                                                })
+                                                }
                                             viewModel.removeAkarMasalah(
                                                 position,
                                                 this@ProjectImprovStep4Fragment.data?.akarMasalah,
@@ -162,11 +162,11 @@ class ProjectImprovStep4Fragment : Fragment(), Injectable {
             }
         })
 
-        viewModel.getSebabMasalah().observe(viewLifecycleOwner,{
-            if(it != null){
+        viewModel.getSebabMasalah().observe(viewLifecycleOwner) {
+            if (it != null) {
                 adapter.setList(it)
             }
-        })
+        }
     }
 
     private fun dialogCreateSebabMasalah(activity: Activity) {

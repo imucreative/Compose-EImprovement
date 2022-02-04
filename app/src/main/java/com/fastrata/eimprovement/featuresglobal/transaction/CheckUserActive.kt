@@ -20,7 +20,7 @@ class CheckUserActive(
         try {
             checkUserViewModel.setCheckUser(userId)
             checkUserViewModel.getCheckUserItem.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
+                resultObserve.observe(owner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -29,19 +29,24 @@ class CheckUserActive(
                             Result.Status.SUCCESS -> {
                                 if (result.data?.data?.size == 0) {
                                     status(false)
-                                    Toast.makeText(context, result.data.message, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(context, result.data.message, Toast.LENGTH_LONG)
+                                        .show()
                                 } else {
                                     status(true)
                                 }
                                 Timber.d("###-- Success checkUser ${result.data}")
                             }
                             Result.Status.ERROR -> {
-                                Toast.makeText(context, "Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    context,
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.e("###-- Loading error checkUser $result")
                             }
                         }
                     }
-                })
+                }
             }
         }catch (e : Exception){
             Timber.e("Error checkUser : $e")

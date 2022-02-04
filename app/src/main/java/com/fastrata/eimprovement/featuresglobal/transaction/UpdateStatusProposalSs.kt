@@ -104,7 +104,7 @@ class UpdateStatusProposalSs(
         try {
             listSsViewModel.setPostSubmitCreateSs(data, action)
             listSsViewModel.postSubmitCreateSs.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
+                resultObserve.observe(owner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -116,7 +116,8 @@ class UpdateStatusProposalSs(
 
                                 Timber.e("${result.data?.message}")
 
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG)
+                                    .show()
 
                                 complete(true)
 
@@ -133,7 +134,7 @@ class UpdateStatusProposalSs(
 
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()

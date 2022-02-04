@@ -254,11 +254,11 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
             }
         })
 
-        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner) {
             if (it != null) {
                 attachmentAdapter.setList(it)
             }
-        })
+        }
     }
 
     private fun openFolder() {
@@ -443,11 +443,11 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
         listAttachment?.remove(selectedAttachmentItem)
 
         ssCreateAttachmentViewModel.updateAttachment(listAttachment, data, source)
-        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner, {
+        ssCreateAttachmentViewModel.getSuggestionSystemAttachment().observe(viewLifecycleOwner) {
             if (it != null) {
                 attachmentAdapter.setList(it)
             }
-        })
+        }
     }
 
     private fun uploadAttachment() {
@@ -463,12 +463,12 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
             attachmentViewModel.processSubmitAttachment()
 
             attachmentViewModel.doSubmitAttachment.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
                                 Timber.d("###-- Loading get upload loading")
                             }
                             Result.Status.SUCCESS -> {
@@ -476,7 +476,11 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                                 if (response?.code == HttpStatus.HTTP_OK) {
                                     HelperLoading.hideLoading()
 
-                                    setDataAttachmentToHawk(response.data[0].id, response.data[0].type, response.data[0].fileLocation)
+                                    setDataAttachmentToHawk(
+                                        response.data[0].id,
+                                        response.data[0].type,
+                                        response.data[0].fileLocation
+                                    )
 
                                     FileUtils.removeAllFileCache(requireContext())
                                 }
@@ -485,12 +489,16 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.d("###-- Error get Upload Error $result")
                             }
                         }
                     }
-                })
+                }
             }
         } catch (err: Exception) {
             Snackbar.make(
@@ -507,12 +515,12 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
             attachmentViewModel.processRemoveAttachment(selectedAttachmentItem.id, selectedAttachmentItem.name, SS)
 
             attachmentViewModel.doRemoveAttachment.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                                HelperLoading.displayLoadingWithText(requireContext(), "", false)
                                 Timber.d("###-- Loading get doRemoveAttachment loading")
                             }
                             Result.Status.SUCCESS -> {
@@ -523,20 +531,29 @@ class SuggestionSystemStep5Fragment: Fragment(), Injectable {
 
                                 result.data?.let {
                                     SnackBarCustom.snackBarIconInfo(
-                                        binding.root, layoutInflater, resources, binding.root.context,
+                                        binding.root,
+                                        layoutInflater,
+                                        resources,
+                                        binding.root.context,
                                         it.message,
-                                        R.drawable.ic_close, R.color.red_500)
+                                        R.drawable.ic_close,
+                                        R.color.red_500
+                                    )
                                     Timber.d("###-- Success get doRemoveAttachment sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.d("###-- Error get doRemoveAttachment Error ${result.data}")
                             }
                         }
                     }
-                })
+                }
             }
         } catch (err: Exception) {
             Snackbar.make(

@@ -142,7 +142,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
 
     private fun retrieveDataMemberName(){
         masterDataTeamMemberViewModel.getTeamMemberName.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -163,13 +163,13 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataDepartment(){
         masterDataTeamMemberViewModel.getDepartment.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -190,13 +190,13 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataTeamRole(){
         masterDataTeamMemberViewModel.getTeamRole.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -217,7 +217,7 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                     }
 
                 }
-            })
+            }
         }
     }
 

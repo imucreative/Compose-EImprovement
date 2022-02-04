@@ -352,7 +352,6 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
         }
     }
 
-
     // === Remove List PI
     private val _removeListPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>>()
     val doRemovePi : LiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>> get() = _removeListPi

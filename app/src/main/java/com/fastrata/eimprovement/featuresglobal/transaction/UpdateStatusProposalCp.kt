@@ -90,7 +90,7 @@ class UpdateStatusProposalCp(
         try {
             listCpViewModel.setPostSubmitCreateCp(data)
             listCpViewModel.postSubmitCreateCp.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
+                resultObserve.observe(owner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -102,7 +102,8 @@ class UpdateStatusProposalCp(
 
                                 Timber.e("${result.data?.message}")
 
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG)
+                                    .show()
 
                                 complete(true)
 
@@ -110,7 +111,8 @@ class UpdateStatusProposalCp(
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG)
+                                    .show()
 
                                 complete(true)
 
@@ -119,7 +121,7 @@ class UpdateStatusProposalCp(
 
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             HelperLoading.hideLoading()

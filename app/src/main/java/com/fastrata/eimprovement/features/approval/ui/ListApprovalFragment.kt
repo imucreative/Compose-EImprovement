@@ -533,7 +533,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onView() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                            toolbarTitle = "Detail Suggestion System",
+                                            toolbarTitle = "Detail Sistem Saran",
                                             action = DETAIL,
                                             idSs = data.id,
                                             ssNo = data.typeNo,
@@ -553,9 +553,9 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                 override fun onCheck() {
                                     notification.showNotificationYesNo(
-                                        requireActivity(), requireContext(), R.color.blue_500,
-                                        "Check Proposal", resources.getString(R.string.submit_desc),
-                                        "Check", resources.getString(R.string.no),
+                                        requireActivity(), requireContext(), R.color.yellow_800,
+                                        "Pengecekan Proposal", resources.getString(R.string.check_desc),
+                                        "Pengecekan", resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -576,7 +576,7 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                                             val direction =
                                                                 ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                                                    toolbarTitle = "Check Suggestion System",
+                                                                    toolbarTitle = "Pengecekan Sistem Saran",
                                                                     action = APPROVE,
                                                                     idSs = data.id,
                                                                     ssNo = data.typeNo,
@@ -595,7 +595,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onCheckFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                            toolbarTitle = "Check Suggestion System",
+                                            toolbarTitle = "Pengecekan Sistem Saran",
                                             action = APPROVE,
                                             idSs = data.id,
                                             ssNo = data.typeNo,
@@ -615,9 +615,9 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                 override fun onReview() {
                                     notification.showNotificationYesNo(
-                                        requireActivity(), requireContext(), R.color.blue_500,
-                                        "Review Proposal", resources.getString(R.string.submit_desc),
-                                        "Review", resources.getString(R.string.no),
+                                        requireActivity(), requireContext(), R.color.yellow_800,
+                                        "Review Proposal", resources.getString(R.string.review_desc),
+                                        "Review", resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -638,7 +638,7 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                                             val direction =
                                                                 ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                                                    toolbarTitle = "Review Suggestion System",
+                                                                    toolbarTitle = "Review Sistem Saran",
                                                                     action = APPROVE,
                                                                     idSs = data.id,
                                                                     ssNo = data.typeNo,
@@ -657,7 +657,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onReviewFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
-                                            toolbarTitle = "Review Suggestion System",
+                                            toolbarTitle = "Review Sistem Saran",
                                             action = APPROVE,
                                             idSs = data.id,
                                             ssNo = data.typeNo,
@@ -710,9 +710,9 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                 override fun onCheck() {
                                     notification.showNotificationYesNo(
-                                        requireActivity(), requireContext(), R.color.blue_500,
-                                        "Check Proposal", resources.getString(R.string.submit_desc),
-                                        "Check", resources.getString(R.string.no),
+                                        requireActivity(), requireContext(), R.color.blue_800,
+                                        "Pengecekan Proposal", resources.getString(R.string.check_desc),
+                                        "Pengecekan", resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -733,7 +733,7 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                                             val direction =
                                                                 ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
-                                                                    toolbarTitle = "Check Project Improvement",
+                                                                    toolbarTitle = "Pengecekan Project Improvement",
                                                                     action = APPROVE,
                                                                     idPi = data.id,
                                                                     piNo = data.typeNo,
@@ -752,7 +752,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onCheckFinal() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
-                                            toolbarTitle = "Check Project Improvement",
+                                            toolbarTitle = "Pengecekan Project Improvement",
                                             action = APPROVE,
                                             idPi = data.id,
                                             piNo = data.typeNo,
@@ -772,9 +772,9 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                 override fun onReview() {
                                     notification.showNotificationYesNo(
-                                        requireActivity(), requireContext(), R.color.blue_500,
-                                        "Review Proposal", resources.getString(R.string.submit_desc),
-                                        "Review", resources.getString(R.string.no),
+                                        requireActivity(), requireContext(), R.color.blue_800,
+                                        "Review Proposal", resources.getString(R.string.review_desc),
+                                        "Review", resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -847,7 +847,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onView() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                            toolbarTitle = "Detail Redeem Point",
+                                            toolbarTitle = "Detail Penukaran Poin",
                                             action = DETAIL,
                                             idCp = data.id,
                                             cpNo = data.typeNo,
@@ -867,9 +867,9 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                 override fun onCheck() {
                                     notification.showNotificationYesNo(
-                                        requireActivity(), requireContext(), R.color.blue_500,
-                                        "Check Redeem Point", resources.getString(R.string.submit_desc),
-                                        "Check", resources.getString(R.string.no),
+                                        requireActivity(), requireContext(), R.color.green_800,
+                                        "Pengecekan Penukaran Poin", resources.getString(R.string.check_desc),
+                                        "Pengecekan", resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -890,7 +890,7 @@ class ListApprovalFragment : Fragment(), Injectable {
 
                                                             val direction =
                                                                 ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                                                    toolbarTitle = "Review Redeem Point",
+                                                                    toolbarTitle = "Review Penukaran Poin",
                                                                     action = APPROVE,
                                                                     idCp = data.id,
                                                                     cpNo = data.typeNo,
@@ -922,7 +922,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                                 override fun onReview() {
                                     val direction =
                                         ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
-                                            toolbarTitle = "Review Redeem Point",
+                                            toolbarTitle = "Review Penukaran Poin",
                                             action = APPROVE,
                                             idCp = data.id,
                                             cpNo = data.typeNo,
@@ -953,7 +953,7 @@ class ListApprovalFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "List Approval")
+        setToolbar(toolbar, "Daftar Persetujuan")
     }
 
     private fun initNavigationMenu() {

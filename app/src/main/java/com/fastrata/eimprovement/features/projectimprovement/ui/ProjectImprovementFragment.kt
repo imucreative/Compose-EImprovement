@@ -295,7 +295,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         isLoading = true
         try {
             listPiViewModel.getListPiItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -337,7 +337,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             HelperLoading.hideLoading()
@@ -354,7 +354,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun retrieveDataStatusProposal(){
         try {
             masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -381,7 +381,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtStatusProposal.isEnabled = false
@@ -398,7 +398,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun getStatusCheckPeriod(){
         try {
             checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -417,7 +417,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                         resources.getString(R.string.title_past_period),
                                         "",
                                         resources.getString(R.string.agree),
-                                        resources.getString(R.string.not_agree),
+                                        resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -426,7 +426,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                             override fun onNotificationYes() {
                                                 val direction =
                                                     ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                                        toolbarTitle = "Create Project Improvement",
+                                                        toolbarTitle = "Buat Project Improvement",
                                                         action = ADD,
                                                         idPi = 0,
                                                         piNo = "",
@@ -441,7 +441,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 } else {
                                     val direction =
                                         ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                            toolbarTitle = "Create Project Improvement",
+                                            toolbarTitle = "Buat Project Improvement",
                                             action = ADD,
                                             idPi = 0,
                                             piNo = "",
@@ -463,7 +463,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             HelperLoading.hideLoading()
@@ -479,7 +479,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun retrieveDataBranch(){
         try {
             masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -506,7 +506,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtBranch.isEnabled = false
@@ -523,7 +523,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun retrieveDataSubBranch(){
         try {
             masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -550,7 +550,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                     }
-                })
+                }
             }
         }catch (err: Exception){
             binding.edtSubBranch.isEnabled = false
@@ -652,9 +652,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onSubmit() {
                             notification.showNotificationYesNo(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Submit Proposal", resources.getString(R.string.submit_desc),
-                                "Submit", resources.getString(R.string.no),
+                                requireActivity(), requireContext(), R.color.blue_800,
+                                "Kirim Proposal", resources.getString(R.string.submit_desc),
+                                "Kirim", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
@@ -692,9 +692,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onImplementation() {
                             notification.showNotificationYesNo(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Implementation Proposal", resources.getString(R.string.submit_desc),
-                                "Implement", resources.getString(R.string.no),
+                                requireActivity(), requireContext(), R.color.blue_800,
+                                "Implementasi Proposal", resources.getString(R.string.implementation_desc),
+                                "Implementasi", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
@@ -723,7 +723,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onSubmitLaporan() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Submit Project Improvement",
+                                toolbarTitle = "Kirim Project Improvement",
                                 action = SUBMIT_PROPOSAL,
                                 idPi = data.idPi,
                                 piNo = data.piNo,
@@ -745,11 +745,11 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
-                                R.color.blue_500,
+                                R.color.red_800,
                                 resources.getString(R.string.delete),
                                 resources.getString(R.string.delete_confirmation),
                                 resources.getString(R.string.ok),
-                                resources.getString(R.string.no),
+                                resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
                                     }
@@ -771,10 +771,10 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         try{
             listPiViewModel.deletePiList(data.idPi)
             listPiViewModel.doRemovePi.observeEvent(this@ProjectImprovementFragment){ resultObserve ->
-                resultObserve.observe(viewLifecycleOwner,{result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
-                    if (result != null){
-                        when(result.status) {
+                    if (result != null) {
+                        when (result.status) {
                             Result.Status.LOADING -> {
                                 HelperLoading.displayLoadingWithText(
                                     requireContext(),
@@ -783,7 +783,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 )
                                 Timber.d("###-- Loading get doRemoveSs loading")
                             }
-                            Result.Status.SUCCESS  -> {
+                            Result.Status.SUCCESS -> {
                                 HelperLoading.hideLoading()
                                 clearFormFilter()
                                 getDataListPi()
@@ -801,7 +801,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             Toast.makeText(requireContext(), "Error doRemove : ${err.message}", Toast.LENGTH_LONG).show()
@@ -813,7 +813,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Project Improvement (PI)")
+        setToolbar(toolbar, "Project Improvement")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

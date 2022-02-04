@@ -167,7 +167,7 @@ object DataDummySs {
         )
     }*/
 
-    fun generateDummyApprovalHistoryStatus(): ArrayList<ApprovalHistoryStatusModel> {
+    /*fun generateDummyApprovalHistoryStatus(): ArrayList<ApprovalHistoryStatusModel> {
         val data = ArrayList<ApprovalHistoryStatusModel>()
         data.add(ApprovalHistoryStatusModel(
             pic = "Tyas Febriatmoko", status = "Proposal Disubmit", comment = "Proposal Disubmit", date = "2021-08-31 09:39:26"
@@ -182,5 +182,5 @@ object DataDummySs {
             pic = "Tyas Febriatmoko", status = "Implementasi Project", comment = "Implementasi Project", date = "2021-08-31 09:40:39"
         ))
         return data
-    }
+    }*/
 }

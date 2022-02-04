@@ -273,7 +273,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         try {
             isLoading = true
             listSsViewModel.getListSsItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -316,7 +316,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()
@@ -333,7 +333,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun retrieveDataStatusProposal(){
         try {
             masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -359,7 +359,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtStatusProposal.isEnabled = false
@@ -375,7 +375,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun getStatusCheckPeriod(){
         try {
             checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -393,7 +393,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                         resources.getString(R.string.title_past_period),
                                         "",
                                         resources.getString(R.string.agree),
-                                        resources.getString(R.string.not_agree),
+                                        resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -402,7 +402,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                             override fun onNotificationYes() {
                                                 val direction =
                                                     SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                                        toolbarTitle = "Create Suggestion System",
+                                                        toolbarTitle = "Buat Sistem Saran",
                                                         action = ADD,
                                                         idSs = 0,
                                                         ssNo = "",
@@ -417,7 +417,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 } else {
                                     val direction =
                                         SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                            toolbarTitle = "Create Suggestion System",
+                                            toolbarTitle = "Buat Sistem Saran",
                                             action = ADD,
                                             idSs = 0,
                                             ssNo = "",
@@ -442,7 +442,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()
@@ -458,7 +458,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun retrieveDataBranch(){
         try {
             masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -484,7 +484,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtBranch.isEnabled = false
@@ -500,7 +500,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun retrieveDataSubBranch(){
         try {
             masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -526,7 +526,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err: Exception){
             binding.edtSubBranch.isEnabled = false
@@ -614,23 +614,23 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Detail Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Detail Sistem Saran", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Edit Sistem Saran", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             notification.showNotificationYesNo(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Submit Proposal", resources.getString(R.string.submit_desc),
-                                "Submit", resources.getString(R.string.no),
+                                requireActivity(), requireContext(), R.color.yellow_800,
+                                "Kirim Proposal", resources.getString(R.string.submit_desc),
+                                "Kirim", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
@@ -667,9 +667,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                         override fun onImplementation() {
                             notification.showNotificationYesNo(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Implementation Proposal", resources.getString(R.string.submit_desc),
-                                "Implement", resources.getString(R.string.no),
+                                requireActivity(), requireContext(), R.color.yellow_800,
+                                "Implementasi Proposal", resources.getString(R.string.implementation_desc),
+                                "Implementasi", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
@@ -698,7 +698,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                         override fun onSubmitLaporan() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Submit Suggestion System",
+                                toolbarTitle = "Kirim Sistem Saran",
                                 action = SUBMIT_PROPOSAL,
                                 idSs = data.idSs,
                                 ssNo = data.ssNo,
@@ -720,11 +720,11 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
-                                R.color.blue_500,
+                                R.color.red_800,
                                 resources.getString(R.string.delete),
                                 resources.getString(R.string.delete_confirmation),
                                 resources.getString(R.string.ok),
-                                resources.getString(R.string.no),
+                                resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
                                     }
@@ -747,10 +747,10 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         try {
             listSsViewModel.deleteSsList(data.idSs)
             listSsViewModel.doRemoveSs.observeEvent(this@SuggestionSystemFragment){ resultObserve ->
-                resultObserve.observe(viewLifecycleOwner,{result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
-                    if (result != null){
-                        when(result.status) {
+                    if (result != null) {
+                        when (result.status) {
                             Result.Status.LOADING -> {
                                 HelperLoading.displayLoadingWithText(requireContext(), "", false)
                                 Timber.d("###-- Loading get doRemoveSs loading")
@@ -760,19 +760,24 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 getDataListSs()
 
                                 result.data?.let {
-                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                                        .show()
                                     Timber.d("###-- Success get doRemoveSs sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
 
-                                Toast.makeText(requireContext(), result.data?.message.toString(), Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    result.data?.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.d("###-- Error get doRemoveSs Error ${result.data}")
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             Toast.makeText(requireContext(), "Error doRemoveSs : ${err.message}", Toast.LENGTH_LONG).show()
@@ -784,7 +789,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Suggestion System (SS)")
+        setToolbar(toolbar, "Sistem Saran")
     }
 
     private fun initNavigationMenu() {

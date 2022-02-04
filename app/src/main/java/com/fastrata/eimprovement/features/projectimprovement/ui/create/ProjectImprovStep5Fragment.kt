@@ -78,11 +78,11 @@ class ProjectImprovStep5Fragment : Fragment(), Injectable {
             }
         })
 
-        viewModel.getAkarMasalah().observe(viewLifecycleOwner,{
-            if(it != null){
+        viewModel.getAkarMasalah().observe(viewLifecycleOwner) {
+            if (it != null) {
                 adapter.setList(it)
             }
-        })
+        }
     }
 
     private fun changeItemListener(akarMasalahModel: AkarMasalahModel, index: Int) {

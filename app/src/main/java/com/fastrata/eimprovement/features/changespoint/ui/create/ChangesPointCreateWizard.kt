@@ -104,7 +104,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     viewModel.setDetailCp(argsIdCp, userId)
 
                     viewModel.getDetailCp.observeEvent(this) { resultObserve ->
-                        resultObserve.observe(this, { result ->
+                        resultObserve.observe(this) { result ->
                             if (result != null) {
                                 when (result.status) {
                                     Result.Status.LOADING -> {
@@ -178,7 +178,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                                 }
                             }
-                        })
+                        }
                     }
                 } catch (e: Exception) {
                     binding.bottomNavigationBar.visibility = View.GONE
@@ -422,8 +422,8 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     initialTypeProposal = "Check"
                     buttonInitialTypeProposal = "Check"
                 } else {
-                    initialTypeProposal = "Save"
-                    buttonInitialTypeProposal = "Save"
+                    initialTypeProposal = "Simpan"
+                    buttonInitialTypeProposal = "Simpan"
                 }
                 notification = HelperNotification()
                 binding.apply {

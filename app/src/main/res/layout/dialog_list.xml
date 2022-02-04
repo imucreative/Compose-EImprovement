@@ -419,7 +419,7 @@
                     android:text="@string/delete"
                     android:textStyle="bold"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Bold"
-                    android:textColor="@color/red_300" />
+                    android:textColor="@color/red_800" />
 
                 <View
                     android:layout_width="@dimen/spacing_large"

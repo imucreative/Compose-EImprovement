@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
             try {
                 viewModel.processLogin(username, password)
                 viewModel.doLiveLogin.observeEvent(this) { loginObserver ->
-                    loginObserver.observe(this, { result ->
+                    loginObserver.observe(this) { result ->
                         when (result.status) {
                             Result.Status.LOADING -> {
                                 Timber.d("###-- LOADING")
@@ -148,7 +148,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                                 )
                             }
                         }
-                    })
+                    }
                 }
             }catch (err: Exception){
                 Toast.makeText(this,"Failed login",Toast.LENGTH_SHORT).show()

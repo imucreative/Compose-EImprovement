@@ -145,7 +145,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
     private fun retrieveDataMemberName(){
         masterDataTeamMemberViewModel.getTeamMemberName.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -158,20 +158,24 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get team member name")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataDepartment(){
         masterDataTeamMemberViewModel.getDepartment.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -184,20 +188,24 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get Department")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataTeamRole(){
         masterDataTeamMemberViewModel.getTeamRole.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -210,14 +218,18 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get Team role")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
@@ -288,23 +300,23 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             teamMember?.remove(dataMember)
 
                             listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner) {
                                 if (it != null) {
                                     teamMemberAdapter.setListTeamMember(it)
                                 }
-                            })
+                            }
                         }
                     }
                 }
             }
         })
 
-        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner) {
             if (it != null) {
                 teamMemberAdapter.setListTeamMember(it)
                 Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
             }
-        })
+        }
     }
 
     /*private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->

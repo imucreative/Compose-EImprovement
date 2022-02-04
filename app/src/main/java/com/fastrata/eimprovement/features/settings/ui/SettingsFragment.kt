@@ -74,9 +74,9 @@ class SettingsFragment : Fragment(), Injectable {
                     requireContext(),
                     R.color.blue_500,
                     resources.getString(R.string.info),
-                    resources.getString(R.string.log_out),
+                    resources.getString(R.string.log_out_info),
                     resources.getString(R.string.ok),
-                    resources.getString(R.string.no),
+                    resources.getString(R.string.cancel),
                 object  :CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 

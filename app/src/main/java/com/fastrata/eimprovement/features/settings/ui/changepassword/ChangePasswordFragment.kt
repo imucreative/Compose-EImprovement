@@ -39,7 +39,6 @@ class ChangePasswordFragment : Fragment(), Injectable {
     private var userId : Int = 0
     private var userName : String = ""
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -117,11 +116,11 @@ class ChangePasswordFragment : Fragment(), Injectable {
     }
 
     private fun sendData(oldPassword: String, newPassword: String) {
-        Timber.d("message Req:"+oldPassword+"/"+newPassword+"/"+userId+"/"+userName)
+        Timber.d("message Req: $oldPassword / $newPassword / $userId / $userName")
         try {
             viewModel.setChangePassword(userId, userName, oldPassword, newPassword)
             viewModel.getChangePassword.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -159,7 +158,7 @@ class ChangePasswordFragment : Fragment(), Injectable {
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()

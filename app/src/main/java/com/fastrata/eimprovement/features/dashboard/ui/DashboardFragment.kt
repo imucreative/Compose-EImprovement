@@ -90,10 +90,10 @@ class DashboardFragment: Fragment(), Injectable {
         try {
             balanceViewModel.setBalance(userId)
             balanceViewModel.getBalance.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner,{ result->
-                    if (result != null){
-                        when(result.status){
-                            Result.Status.LOADING  -> {
+                resultObserve.observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
                                 //HelperLoading.displayLoadingWithText(requireContext(),"",false)
                                 Timber.d("###-- Loading get balance")
                             }
@@ -111,12 +111,16 @@ class DashboardFragment: Fragment(), Injectable {
                             }
                             Result.Status.ERROR -> {
                                 //HelperLoading.hideLoading()
-                                Toast.makeText(requireContext(),"Error : ${result.message}",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Error : ${result.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.d("###-- Loading error balance $result")
                             }
                         }
                     }
-                })
+                }
             }
         }catch (e : Exception){
             //HelperLoading.hideLoading()
@@ -147,7 +151,7 @@ class DashboardFragment: Fragment(), Injectable {
                 resources.getString(R.string.log_out),
                 resources.getString(R.string.account_inactive),
                 resources.getString(R.string.ok),
-                resources.getString(R.string.no),
+                resources.getString(R.string.cancel),
                 object : HelperNotification.CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 

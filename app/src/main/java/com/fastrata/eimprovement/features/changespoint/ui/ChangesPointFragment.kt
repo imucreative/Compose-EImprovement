@@ -250,11 +250,11 @@ class ChangesPointFragment : Fragment(), Injectable {
 
     private fun getStatusCheckPeriod() {
         checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            HelperLoading.displayLoadingWithText(requireContext(), "", false)
                             Timber.d("###-- Loading get CheckPeriod")
                         }
                         Result.Status.SUCCESS -> {
@@ -268,24 +268,36 @@ class ChangesPointFragment : Fragment(), Injectable {
                                     resources.getString(R.string.title_past_period),
                                     "",
                                     resources.getString(R.string.agree),
-                                    resources.getString(R.string.not_agree),
+                                    resources.getString(R.string.cancel),
                                     object : HelperNotification.CallBackNotificationYesNo {
                                         override fun onNotificationNo() {
 
                                         }
 
                                         override fun onNotificationYes() {
-                                            val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                                toolbarTitle = "Create Redeem Point", action = ADD , idCp = 0 , cpNo = "", type = "",statusProposal = statusProposal
-                                            )
+                                            val direction =
+                                                ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                                    toolbarTitle = "Buat Penukaran Poin",
+                                                    action = ADD,
+                                                    idCp = 0,
+                                                    cpNo = "",
+                                                    type = "",
+                                                    statusProposal = statusProposal
+                                                )
                                             requireView().findNavController().navigate(direction)
                                         }
                                     }
                                 )
                             } else {
-                                val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                    toolbarTitle = "Create ChangePoint", action = ADD , idCp = 0 , cpNo = "", type = "",statusProposal = statusProposal
-                                )
+                                val direction =
+                                    ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
+                                        toolbarTitle = "Buat Penukaran Poin",
+                                        action = ADD,
+                                        idCp = 0,
+                                        cpNo = "",
+                                        type = "",
+                                        statusProposal = statusProposal
+                                    )
                                 requireView().findNavController().navigate(direction)
                             }
 
@@ -299,7 +311,7 @@ class ChangesPointFragment : Fragment(), Injectable {
                     }
 
                 }
-            })
+            }
         }
     }
 
@@ -327,11 +339,11 @@ class ChangesPointFragment : Fragment(), Injectable {
         isLoading = true
 
         listCpViewModel.getListCpItem.observeEvent(this){ resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
-                    when (result.status){
+                    when (result.status) {
                         Result.Status.LOADING -> {
-                            HelperLoading.displayLoadingWithText(requireContext(),"",false)
+                            HelperLoading.displayLoadingWithText(requireContext(), "", false)
                             Timber.d("###-- Loading get List CP")
                         }
                         Result.Status.SUCCESS -> {
@@ -359,19 +371,23 @@ class ChangesPointFragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             isLoading = false
                             Timber.d("###-- Error get List CP")
                         }
                     }
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataStatusProposal(){
         masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -387,20 +403,24 @@ class ChangesPointFragment : Fragment(), Injectable {
                         Result.Status.ERROR -> {
                             binding.edtStatusProposal.isEnabled = false
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get status proposal")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataBranch(){
         masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -416,20 +436,24 @@ class ChangesPointFragment : Fragment(), Injectable {
                         Result.Status.ERROR -> {
                             binding.edtBranch.isEnabled = false
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get Branch")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataSubBranch(){
         masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -445,14 +469,18 @@ class ChangesPointFragment : Fragment(), Injectable {
                         Result.Status.ERROR -> {
                             binding.edtSubBranch.isEnabled = false
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get sub Branch")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
@@ -530,23 +558,23 @@ class ChangesPointFragment : Fragment(), Injectable {
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Detail Redeem Point", action = DETAIL,
+                                toolbarTitle = "Detail Penukaran Poin", action = DETAIL,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP, statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = ChangesPointFragmentDirections.actionChangesPointFragmentToChangesPointCreateWizard(
-                                toolbarTitle = "Edit Redeem Point", action = EDIT,
+                                toolbarTitle = "Edit Penukaran Poin", action = EDIT,
                                 idCp = data.idCp, cpNo = data.cpNo, type = CP, statusProposal = data.status)
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
                             notification.showNotificationYesNo(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Submit Redeem Point", resources.getString(R.string.submit_desc),
-                                "Submit", resources.getString(R.string.no),
+                                requireActivity(), requireContext(), R.color.green_800,
+                                "Kirim Penukaran Poin", resources.getString(R.string.submit_desc),
+                                "Kirim", resources.getString(R.string.no),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
@@ -602,11 +630,11 @@ class ChangesPointFragment : Fragment(), Injectable {
                             notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
-                                R.color.blue_500,
+                                R.color.red_800,
                                 resources.getString(R.string.delete),
                                 resources.getString(R.string.delete_confirmation),
                                 resources.getString(R.string.ok),
-                                resources.getString(R.string.no),
+                                resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
                                     }
@@ -629,10 +657,10 @@ class ChangesPointFragment : Fragment(), Injectable {
         try {
             listCpViewModel.deleteCpList(data.idCp)
             listCpViewModel.doRemoveCp.observeEvent(this@ChangesPointFragment){ resultObserve ->
-                resultObserve.observe(viewLifecycleOwner,{result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
-                    if (result != null){
-                        when(result.status) {
+                    if (result != null) {
+                        when (result.status) {
                             Result.Status.LOADING -> {
                                 HelperLoading.displayLoadingWithText(
                                     requireContext(),
@@ -646,19 +674,24 @@ class ChangesPointFragment : Fragment(), Injectable {
                                 getDataListCp()
 
                                 result.data?.let {
-                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                                        .show()
                                     Timber.d("###-- Success get doRemoveCp sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
 
-                                Toast.makeText(requireContext(), result.data?.message.toString(), Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    result.data?.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.d("###-- Error get doRemoveCp Error ${result.data}")
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             Toast.makeText(requireContext(), "Error doRemove : ${err.message}", Toast.LENGTH_LONG).show()
@@ -670,7 +703,7 @@ class ChangesPointFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Redeem Point (RP)")
+        setToolbar(toolbar, "Penukaran Poin")
     }
 
     private fun initNavigationMenu() {

@@ -120,7 +120,7 @@ class UpdateStatusProposalPi(
         try {
             listPiViewModel.setPostSubmitCreatePi(data, action)
             listPiViewModel.postSubmitCreatePi.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
+                resultObserve.observe(owner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -132,7 +132,11 @@ class UpdateStatusProposalPi(
 
                                 Timber.e("result : ${result.data?.message}")
                                 Timber.e("result success : ${result.data?.success}")
-                                Toast.makeText(context, result.data?.message.toString(), Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    context,
+                                    result.data?.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
 
                                 complete(true)
 
@@ -148,7 +152,7 @@ class UpdateStatusProposalPi(
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()

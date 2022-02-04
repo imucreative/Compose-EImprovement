@@ -105,7 +105,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     viewModel.setDetailSs(argsIdSs, userId)
 
                     viewModel.getDetailSsItem.observeEvent(this) { resultObserve ->
-                        resultObserve.observe(this, { result ->
+                        resultObserve.observe(this) { result ->
                             if (result != null) {
                                 when (result.status) {
                                     Result.Status.LOADING -> {
@@ -119,9 +119,13 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                                         if (result.data?.data?.isEmpty() == true) {
                                             SnackBarCustom.snackBarIconInfo(
-                                                binding.root, layoutInflater, resources, binding.root.context,
+                                                binding.root,
+                                                layoutInflater,
+                                                resources,
+                                                binding.root.context,
                                                 result.data.message,
-                                                R.drawable.ic_close, R.color.red_500
+                                                R.drawable.ic_close,
+                                                R.color.red_500
                                             )
 
                                             binding.noDataScreen.root.visibility = VISIBLE
@@ -197,7 +201,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
 
                                 }
                             }
-                        })
+                        }
                     }
                 } catch (e: Exception) {
                     binding.bottomNavigationBar.visibility = GONE
@@ -280,7 +284,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 buttonAction(
                     1, R.color.green_A700,
                     "Setuju",
-                    "Apakah Anda yakin ingin Menyetujui pengajuan ini?",
+                    "Apakah Anda yakin ingin Menyetujui proposal ini?",
                     "Setuju"
                 )
             }
@@ -288,7 +292,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 buttonAction(
                     2, R.color.blue_A700,
                     "Revisi",
-                    "Apakah Anda yakin ingin Merevisi pengajuan ini?",
+                    "Apakah Anda yakin ingin Merevisi proposal ini?",
                     "Revisi"
                 )
             }
@@ -296,7 +300,7 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                 buttonAction(
                     3, R.color.red_A700,
                     "Tolak",
-                    "Apakah Anda yakin ingin Menolak pengajuan ini?",
+                    "Apakah Anda yakin ingin Menolak proposal ini?",
                     "Tolak"
                 )
             }
@@ -492,18 +496,18 @@ class SuggestionSystemCreateWizard : AppCompatActivity(), HasSupportFragmentInje
                     1, 11, 4 -> {
                         when (ssAction) {
                             EDIT, ADD -> {
-                                initialTypeProposal = "Save"
-                                buttonInitialTypeProposal = "Save"
+                                initialTypeProposal = "Simpan Proposal"
+                                buttonInitialTypeProposal = "Simpan"
                             }
                             else -> {
-                                initialTypeProposal = "Submit"
-                                buttonInitialTypeProposal = "Send"
+                                initialTypeProposal = "Kirim Proposal"
+                                buttonInitialTypeProposal = "Kirim"
                             }
                         }
                     }
                     6, 9 -> {
-                        initialTypeProposal = "Submit Laporan Akhir"
-                        buttonInitialTypeProposal = "Send"
+                        initialTypeProposal = "Kirim Laporan Akhir"
+                        buttonInitialTypeProposal = "Kirim"
                     }
                     8 -> {
                         initialTypeProposal = "Review"

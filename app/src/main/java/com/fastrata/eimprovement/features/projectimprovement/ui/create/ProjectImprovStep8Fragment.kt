@@ -193,14 +193,18 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         })
 
         masterDataCategoryViewModel.getCategory.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
-                            categoryAdapter.setListCategoryImprovement(result.data?.data, listCategory, action!!)
+                            categoryAdapter.setListCategoryImprovement(
+                                result.data?.data,
+                                listCategory,
+                                action!!
+                            )
                             listCategory.map { checkList ->
                                 if (checkList?.id == 0) {
                                     binding.apply {
@@ -215,14 +219,18 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get master item getCategory")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 

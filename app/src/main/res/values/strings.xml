@@ -2,11 +2,11 @@
 
     <string name="message_snackbar">Message Snackbar</string>
     <string name="sign_up">SIGN UP FOR AN ACCOUNT?</string>
-    <string name="signin">S I G N I N</string>
+    <string name="signin">M A S U K</string>
     <string name="password">PASSWORD</string>
     <string name="username">USERNAME</string>
-    <string name="sign_in_to_continue">Sign in to continue</string>
-    <string name="welcome">Welcome E-Improvement</string>
+    <string name="sign_in_to_continue">Login untuk masuk E-Improvement</string>
+    <string name="welcome">E-Improvement</string>
     <string name="welcome_user">Hi,</string>
     <string name="back">KEMBALI</string>
     <string name="next">LANJUT</string>
@@ -25,7 +25,7 @@
     <string name="nik">NIK</string>
     <string name="name">Nama</string>
     <string name="profile_information">INFORMASI PROFIL</string>
-    <string name="point">POINT</string>
+    <string name="point">POIN</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="add">Tambah</string>
@@ -43,8 +43,7 @@
     <string name="start">Mulai</string>
     <string name="end">Selesai</string>
     <string name="apply">TERAPKAN</string>
-    <string name="confirm">Yes</string>
-    <string name="cancel">No</string>
+    <string name="cancel">Batal</string>
 
     <string name="suggestion_system_no">Sistem Saran No</string>
     <string name="please_fill_the_form_to_create_suggestion">Silahkan Isi Untuk Membuat Saran.</string>
@@ -66,10 +65,10 @@
     <string name="title_suggestion">Judul Saran</string>
 
     <!-- Navigation -->
-    <string name="list_approval">Approval</string>
+    <string name="list_approval">Persetujuan</string>
     <string name="suggestion_system">Sistem Saran</string>
     <string name="project_improvement">Project Improvement</string>
-    <string name="change_point">Penukaran Point</string>
+    <string name="change_point">Penukaran Poin</string>
     <string name="dashboard">Dashboard</string>
     <string name="other">Lain - lain</string>
     <string name="history_approval">Histori Persetujuan</string>
@@ -95,7 +94,7 @@
     <string name="w4">W4</string>
     <string name="w5">W5</string>
     <string name="add_sebab_akar_masalah">Add Sebab/ Akar Masalah</string>
-    <string name="save">Save</string>
+    <string name="save">Simpan</string>
     <string name="penyebab_masalah">Penyebab Masalah</string>
     <string name="akar_masalah_prioritas">Akar Masalah Prioritas</string>
     <string name="akar_masalah_why_terakhir">Akar Masalah (Why Terakhir)</string>
@@ -136,9 +135,11 @@
     <string name="desc_empty">Silahkan Isi Kolom keterangan Dengan Sesuai</string>
     <string name="title_empty">Silahkan Isi Kolom Judul Dengan Sesuai</string>
     <string name="reward_empty">Silahkan Tambahkan Hadiah yang ingin Di Tukarkan</string>
-    <string name="simpan">Simpan</string>
     <string name="title_past_period">Proposal Dibuat telah melewati periode</string>
-    <string name="submit_desc">Apakah Data yang Anda Kirim Sudah Sesuai?</string>
+    <string name="submit_desc">Data yang sudah dikirim tidak dapat diubah</string>
+    <string name="implementation_desc">Dengan ini Anda akan mengimplementasikan project</string>
+    <string name="check_desc">Apakah Anda ingin melakukan pengecekan proposal?</string>
+    <string name="review_desc">Apakah Anda ingin melakukan review laporan akhir?</string>
     <string name="pi_saved">Data Project Improvement Tersimpan</string>
     <string name="ss_saved">Data Sistem Saran Tersimpan</string>
     <string name="cp_saved">Data Penukaran Point Tersimpan</string>
@@ -168,8 +169,8 @@
     <string name="saldo_kurang">Saldo anda tidak cukup untuk melakukan transaksi ini</string>
 
     <string name="log_out_info">Apakah Anda Yakin Keluar Akun?</string>
-    <string name="log_out">Logout account</string>
-    <string name="account_inactive">This account is inactive</string>
+    <string name="log_out">Keluar</string>
+    <string name="account_inactive">Akun anda tidak aktif</string>
     <string name="no_internet">Gagal Terhubung Server. Silahkan Cek Kembali Koneksi Anda</string>
     <string name="data_not_found">Data Not Found</string>
     <string name="leader_required">Anda harus memilih Ketua Tim terlebih dahulu!</string>
@@ -202,7 +203,7 @@
     <string name="close">Close</string>
     <string name="tap_to_dismiss">Tap to dismiss!</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="ok">OK</string>
+    <string name="ok">YA</string>
     <string name="no">NO</string>
     <string name="poin_anda">Poin Anda</string>
     <string name="recent_activity">Recent Activity</string>
@@ -213,16 +214,16 @@
     <string name="reject">Revisi</string>
     <string name="loading">Loading</string>
     <string name="hi">Hi</string>
-    <string name="look">View</string>
+    <string name="look">Lihat</string>
     <string name="edit">Edit</string>
     <string name="implementation">Implementasi</string>
-    <string name="submit">Submit</string>
-    <string name="check">Check</string>
-    <string name="submit_laporan">Submit Laporan Akhir</string>
+    <string name="submit">Kirim</string>
+    <string name="check">Pengecekan</string>
+    <string name="submit_laporan">Kirim Laporan Akhir</string>
     <string name="review">Review</string>
     <string name="send">Send</string>
 
     <string name="internal_storage">Internal Storage</string>
-    <string name="check_final">Check Project</string>
+    <string name="check_final">Persetujuan</string>
     <string name="review_final">Review Final Project</string>
 </resources>

@@ -146,7 +146,7 @@ class MutasiFragment : Fragment(),Injectable {
         try {
             isLoading = true
             listMutasiModel.getListMutasi.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -185,7 +185,7 @@ class MutasiFragment : Fragment(),Injectable {
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()

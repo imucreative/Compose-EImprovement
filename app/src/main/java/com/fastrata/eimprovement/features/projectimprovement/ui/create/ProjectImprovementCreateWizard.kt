@@ -108,7 +108,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     viewModel.setDetailPi(argsIdPi, userId)
 
                     viewModel.getDetailPiItem.observeEvent(this) { resultObserve ->
-                        resultObserve.observe(this, { result ->
+                        resultObserve.observe(this) { result ->
                             if (result != null) {
                                 when (result.status) {
                                     Result.Status.LOADING -> {
@@ -122,9 +122,13 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                                         if (result.data?.data?.isEmpty() == true) {
                                             SnackBarCustom.snackBarIconInfo(
-                                                binding.root, layoutInflater, resources, binding.root.context,
+                                                binding.root,
+                                                layoutInflater,
+                                                resources,
+                                                binding.root.context,
                                                 result.data.message,
-                                                R.drawable.ic_close, R.color.red_500
+                                                R.drawable.ic_close,
+                                                R.color.red_500
                                             )
 
                                             binding.noDataScreen.root.visibility = View.VISIBLE
@@ -203,7 +207,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                                 }
                             }
-                        })
+                        }
                     }
                 } catch (e: Exception) {
                     binding.bottomNavigationBar.visibility = View.GONE
@@ -553,18 +557,18 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     1, 11, 4 -> {
                         when (action) {
                             EDIT, ADD -> {
-                                initialTypeProposal = "Save"
-                                buttonInitialTypeProposal = "Save"
+                                initialTypeProposal = "Simpan Proposal"
+                                buttonInitialTypeProposal = "Simpan"
                             }
                             else -> {
-                                initialTypeProposal = "Submit"
-                                buttonInitialTypeProposal = "Send"
+                                initialTypeProposal = "Kirim Proposal"
+                                buttonInitialTypeProposal = "Kirim"
                             }
                         }
                     }
                     6, 9 ->{
-                        initialTypeProposal = "Submit Laporan Akhir"
-                        buttonInitialTypeProposal = "Send"
+                        initialTypeProposal = "Kirim Laporan Akhir"
+                        buttonInitialTypeProposal = "Kirim"
                     }
                     8 -> {
                         initialTypeProposal = "Review"
