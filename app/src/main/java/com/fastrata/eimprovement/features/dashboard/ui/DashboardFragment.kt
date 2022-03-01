@@ -1,13 +1,15 @@
 package com.fastrata.eimprovement.features.dashboard.ui
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
@@ -16,30 +18,40 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.databinding.DialogFormCreateSebabMasalahBinding
+import com.fastrata.eimprovement.databinding.DialogListCalendarDashboardBinding
 import com.fastrata.eimprovement.databinding.FragmentDashboardBinding
 import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
+import com.fastrata.eimprovement.features.dashboard.ui.data.CalendarDashboardModel
 import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
 import com.fastrata.eimprovement.featuresglobal.transaction.CheckUserActive
 import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckUserViewModel
 import com.fastrata.eimprovement.utils.*
-import com.fastrata.eimprovement.utils.HawkUtils
+import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
-class DashboardFragment: Fragment(), Injectable {
+class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentDashboardBinding
+    private lateinit var bindingDialogListCalendar: DialogListCalendarDashboardBinding
     private lateinit var toolbarBinding: ToolbarDashboardBinding
     private lateinit var notification: HelperNotification
     private lateinit var datePicker: DatePickerCustom
     private var greetings: String = ""
     private var userId : Int = 0
+    private lateinit var dialog: Dialog
     private lateinit var balanceViewModel : BalanceCreateViewModel
     private lateinit var checkUserViewModel : CheckUserViewModel
+    private lateinit var calendar: Calendar
+    private lateinit var calendarThisMonth: List<CalendarDashboardModel>
+    private var thisMonth: Int = 0
+    private var thisYear: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +68,10 @@ class DashboardFragment: Fragment(), Injectable {
         notification = HelperNotification()
         userId = HawkUtils().getDataLogin().USER_ID
 
+        calendar = Calendar.getInstance()
+        thisMonth = calendar[Calendar.MONTH] + 1
+        thisYear = calendar[Calendar.YEAR]
+
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
             minDateIsCurrentDate = true, parentFragmentManager
@@ -66,7 +82,7 @@ class DashboardFragment: Fragment(), Injectable {
 
         initToolbar()
         initData()
-        initComponent(requireActivity())
+        initComponent()
         return binding.root
     }
 
@@ -197,6 +213,12 @@ class DashboardFragment: Fragment(), Injectable {
                 menuApproval.isClickable = false
                 menuApproval.isFocusable = false
                 menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                imageView.visibility = VISIBLE
+            }
+        } else {
+            binding.apply {
+                initCalendar()
+                robotoCalendarPicker.visibility = VISIBLE
             }
         }
 
@@ -240,7 +262,63 @@ class DashboardFragment: Fragment(), Injectable {
         }
     }
 
-    private fun initComponent(activity: FragmentActivity) {
+    private fun initCalendar(){
+        binding.apply {
+            // https://github.com/marcohc/roboto-calendar-view
+            robotoCalendarPicker.setRobotoCalendarListener(this@DashboardFragment)
+            robotoCalendarPicker.setShortWeekDays(false)
+            robotoCalendarPicker.showDateTitle(true)
+            robotoCalendarPicker.date = Date()
+        }
+
+        addEventOnCalendar(thisYear, thisMonth)
+    }
+
+    private fun addEventOnCalendar(varThisYear: Int, varThisMonth: Int) {
+        try {
+            balanceViewModel.setCalendarDashboard(varThisYear, varThisMonth)
+            balanceViewModel.getCalendarDashboard.observeEvent(this@DashboardFragment) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                Timber.d("###-- Loading get balance")
+                            }
+                            Result.Status.SUCCESS -> {
+                                binding.apply {
+                                    calendarThisMonth = result.data!!.data
+
+                                    calendarThisMonth.forEach { data ->
+                                        val docType = data.DOC_TYPE
+                                        val getDate = data.GET_DATE
+
+                                        calendar[Calendar.DAY_OF_MONTH] = getDate
+                                        calendar[Calendar.MONTH] = thisMonth - 1 // (-1 to index)
+                                        calendar[Calendar.YEAR] = thisYear
+
+                                        when (docType) {
+                                            SS -> robotoCalendarPicker.markCircleImage1(calendar.time)
+                                            PI -> robotoCalendarPicker.markCircleImage2(calendar.time)
+                                            else -> {}
+                                        }
+                                    }
+                                }
+                            }
+                            Result.Status.ERROR -> {
+                                Toast.makeText(requireContext(), "Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Loading error balance $result")
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (e : Exception) {
+            Timber.e("Error balance : $e")
+            Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun initComponent() {
         val docId = ""
         binding.apply {
             welcome.text = greetings
@@ -364,6 +442,85 @@ class DashboardFragment: Fragment(), Injectable {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // https://github.com/marcohc/roboto-calendar-view
+    override fun onDayClick(date: Date) {
+        try {
+            val today = date.formatToServerDateDefaults()
+            Toast.makeText(requireContext(), "onDayClick: $today", Toast.LENGTH_SHORT).show()
+
+            if (!calendarThisMonth.isNullOrEmpty()) {
+                /*calendarThisMonth.forEach {
+                    if (it.CREATED_DATE.substring(0, 10) == date.formatToServerDateDefaults()){
+                        Timber.e(it.toString())
+                        dialogListProposalCalendar(requireActivity())
+                    }
+                }*/
+                val checkListCalendar = calendarThisMonth.filter {
+                    it.CREATED_DATE.substring(0, 10) == today
+                }
+                if (checkListCalendar.isNotEmpty()){
+                    Timber.e(checkListCalendar.size.toString())
+                    dialogListProposalCalendar(requireActivity(), today)
+                }
+            }
+        } catch (e: Exception){
+            Toast.makeText(requireContext(), "Error. $e", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDayLongClick(date: Date?) {
+
+    }
+
+    override fun onRightButtonClick() {
+        if (thisMonth == 12){
+            thisMonth = 1
+            thisYear += 1
+        } else {
+            thisMonth += 1
+        }
+
+        /*Timber.e(thisMonth.toString())
+        Timber.e(thisYear.toString())
+        Timber.e(calendar.time.toString())*/
+
+        addEventOnCalendar(thisYear, thisMonth)
+    }
+
+    override fun onLeftButtonClick() {
+        if (thisMonth == 1){
+            thisMonth = 12
+            thisYear -= 1
+        } else {
+            thisMonth -= 1
+        }
+
+        addEventOnCalendar(thisYear, thisMonth)
+    }
+
+    private fun dialogListProposalCalendar(activity: Activity, calendarToday: String) {
+        bindingDialogListCalendar = DialogListCalendarDashboardBinding.inflate(layoutInflater)
+
+        dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        dialog.setContentView(bindingDialogListCalendar.root)
+        dialog.setCancelable(true)
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+
+        bindingDialogListCalendar.apply {
+            today.text = calendarToday
+            btnClose.setOnClickListener { dialog.dismiss() }
+        }
+
+        dialog.show()
+        dialog.window!!.attributes = lp
     }
 
 }

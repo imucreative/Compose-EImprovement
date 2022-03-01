@@ -14,17 +14,23 @@ import javax.inject.Inject
 
 class BalanceCreateViewModel @Inject constructor(private val repo :BalanceRemoteRepository) : ViewModel() {
 
-    private val _balance = MutableLiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>>()
-    val getBalance : LiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>> get() = _balance
     var userId: Int = 0
 
-    fun setBalance(
-        userId: Int
-    ){
+    private val _balance = MutableLiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>>()
+    val getBalance : LiveData<Event<LiveData<Result<ResultsResponse<BalanceModel>>>>> get() = _balance
+    fun setBalance(userId: Int){
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default){ repo.observeBalance(userId)
-            }
+            val result = withContext(Dispatchers.Default){ repo.observeBalance(userId) }
             _balance.value = Event(result)
+        }
+    }
+
+    private val _calendar = MutableLiveData<Event<LiveData<Result<ResultsResponse<CalendarDashboardModel>>>>>()
+    val getCalendarDashboard: LiveData<Event<LiveData<Result<ResultsResponse<CalendarDashboardModel>>>>> get() = _calendar
+    fun setCalendarDashboard(year: Int, month: Int){
+        viewModelScope.launch(Dispatchers.Main){
+            val result = withContext(Dispatchers.Default){ repo.observeCalendarDashboard(year, month) }
+            _calendar.value = Event(result)
         }
     }
 
