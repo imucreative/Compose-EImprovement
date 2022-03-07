@@ -33,9 +33,9 @@ class ChangePasswordFragment : Fragment(), Injectable {
     private lateinit var notification: HelperNotification
     private lateinit var viewModel : ChangePasswordCreateViewModel
 
-    private var old_password: String? = ""
-    private var new_password: String? = ""
-    private var conf_password: String? = ""
+    private var oldPasswordVal: String? = ""
+    private var newPasswordVal: String? = ""
+    private var confPasswordVal: String? = ""
     private var userId : Int = 0
     private var userName : String = ""
 
@@ -66,9 +66,9 @@ class ChangePasswordFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            old_password = oldPassword.text.toString()
-            new_password = newPassword.text.toString()
-            conf_password = confirmPassword.text.toString()
+            oldPasswordVal = oldPassword.text.toString()
+            newPasswordVal = newPassword.text.toString()
+            confPasswordVal = confirmPassword.text.toString()
 
             btnSubmit.setOnClickListener {
                 validateData()
