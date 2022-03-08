@@ -19,6 +19,8 @@ data class CalendarDashboardModel(
     var endDate: String,
     @SerializedName("CREATED_DATE")
     var createdDate: String,
+    @SerializedName("GET_YEAR")
+    var getYear: Int,
     @SerializedName("GET_MONTH")
     var getMonth: Int,
     @SerializedName("GET_DATE")

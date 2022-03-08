@@ -10,7 +10,7 @@ class BalanceRemoteRepository @Inject constructor(private val remoteDataSource: 
         networkCall = {remoteDataSource.requestBalance(userId)}
     )
 
-    fun observeCalendarDashboard(year: Int, month: Int) = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.requestCalendarDashboard(year, month) }
+    fun observeCalendarDashboard(year: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestCalendarDashboard(year) }
     )
 }

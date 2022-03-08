@@ -27,9 +27,9 @@ class BalanceCreateViewModel @Inject constructor(private val repo :BalanceRemote
 
     private val _calendar = MutableLiveData<Event<LiveData<Result<ResultsResponse<CalendarDashboardModel>>>>>()
     val getCalendarDashboard: LiveData<Event<LiveData<Result<ResultsResponse<CalendarDashboardModel>>>>> get() = _calendar
-    fun setCalendarDashboard(year: Int, month: Int){
+    fun setCalendarDashboard(year: Int){
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default){ repo.observeCalendarDashboard(year, month) }
+            val result = withContext(Dispatchers.Default){ repo.observeCalendarDashboard(year) }
             _calendar.value = Event(result)
         }
     }

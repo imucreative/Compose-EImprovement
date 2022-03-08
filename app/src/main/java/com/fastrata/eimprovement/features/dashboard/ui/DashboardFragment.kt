@@ -59,6 +59,7 @@ class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
     private lateinit var checkUserViewModel : CheckUserViewModel
     private lateinit var calendar: Calendar
     private lateinit var calendarThisMonth: List<CalendarDashboardModel>
+    private lateinit var calendarThisYear: List<CalendarDashboardModel>
     private lateinit var adapter: CalendarDashboardAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var listSsViewModel: SuggestionSystemViewModel
@@ -289,12 +290,12 @@ class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
             robotoCalendarPicker.date = Date()
         }
 
-        addEventOnCalendar(thisYear, thisMonth)
+        retrieveEventOnCalendar(thisYear)
     }
 
-    private fun addEventOnCalendar(varThisYear: Int, varThisMonth: Int) {
+    private fun retrieveEventOnCalendar(varThisYear: Int) {
         try {
-            balanceViewModel.setCalendarDashboard(varThisYear, varThisMonth)
+            balanceViewModel.setCalendarDashboard(varThisYear)
             balanceViewModel.getCalendarDashboard.observeEvent(this@DashboardFragment) { resultObserve ->
                 resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
@@ -303,24 +304,8 @@ class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
                                 Timber.d("###-- Loading get balance")
                             }
                             Result.Status.SUCCESS -> {
-                                binding.apply {
-                                    calendarThisMonth = result.data!!.data
-
-                                    calendarThisMonth.forEach { data ->
-                                        val docType = data.docType
-                                        val getDate = data.getDate
-
-                                        calendar[Calendar.DAY_OF_MONTH] = getDate
-                                        calendar[Calendar.MONTH] = thisMonth - 1 // (-1 to index)
-                                        calendar[Calendar.YEAR] = thisYear
-
-                                        when (docType) {
-                                            SS -> robotoCalendarPicker.markCircleImage1(calendar.time)
-                                            PI -> robotoCalendarPicker.markCircleImage2(calendar.time)
-                                            else -> {}
-                                        }
-                                    }
-                                }
+                                calendarThisYear = result.data!!.data
+                                calendarListThisMonth(calendar.time)
                             }
                             Result.Status.ERROR -> {
                                 Toast.makeText(requireContext(), "Error : ${result.message}", Toast.LENGTH_LONG).show()
@@ -462,9 +447,43 @@ class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun calendarListThisMonth(date: Date) {
+        Timber.e(date.toString())
+        binding.apply {
+            if (!calendarThisYear.isNullOrEmpty()) {
+                val today = date.formatToViewDateDefaults()
+                val getThisMonth = today.substring(3, 5).toInt()
+                val getThisYear = today.substring(6, 10).toInt()
+
+                val checkListProposalMonth = calendarThisYear.filter {
+                    (it.getMonth == getThisMonth) &&  (it.getYear == getThisYear)
+                }
+                Timber.e(checkListProposalMonth.toString())
+
+                calendarThisMonth = checkListProposalMonth
+
+                checkListProposalMonth.forEach { data ->
+                    val docType = data.docType
+                    val getDate = data.getDate
+
+                    calendar[Calendar.DAY_OF_MONTH] = getDate
+                    calendar[Calendar.MONTH] = thisMonth - 1 // (-1 to index)
+                    calendar[Calendar.YEAR] = thisYear
+
+                    when (docType) {
+                        SS -> robotoCalendarPicker.markCircleImage1(calendar.time)
+                        PI -> robotoCalendarPicker.markCircleImage2(calendar.time)
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+
     // https://github.com/marcohc/roboto-calendar-view
     override fun onDayClick(date: Date) {
         try {
+            //calendarListThisMonth(date)
             val today = date.formatToViewDateDefaults()
 
             if (!calendarThisMonth.isNullOrEmpty()) {
@@ -924,26 +943,33 @@ class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
         if (thisMonth == 12){
             thisMonth = 1
             thisYear += 1
+
+            calendar[Calendar.MONTH] = thisMonth - 1
+            calendar[Calendar.YEAR] = thisYear
+            retrieveEventOnCalendar(thisYear)
         } else {
             thisMonth += 1
+            Timber.e(thisMonth.toString())
+            calendar[Calendar.MONTH] = thisMonth - 1
         }
-        adapter.clear()
-        /*Timber.e(thisMonth.toString())
-        Timber.e(thisYear.toString())
-        Timber.e(calendar.time.toString())*/
 
-        addEventOnCalendar(thisYear, thisMonth)
+        calendarListThisMonth(calendar.time)
     }
 
     override fun onLeftButtonClick() {
         if (thisMonth == 1){
             thisMonth = 12
             thisYear -= 1
+
+            calendar[Calendar.MONTH] = thisMonth - 1
+            calendar[Calendar.YEAR] = thisYear
+            retrieveEventOnCalendar(thisYear)
         } else {
             thisMonth -= 1
+            Timber.e(thisMonth.toString())
+            calendar[Calendar.MONTH] = thisMonth - 1
         }
-        adapter.clear()
-        addEventOnCalendar(thisYear, thisMonth)
+        calendarListThisMonth(calendar.time)
     }
 
     private fun dialogListProposalCalendar(activity: Activity, calendarToday: String) {

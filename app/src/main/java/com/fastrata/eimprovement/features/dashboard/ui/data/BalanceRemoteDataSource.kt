@@ -10,7 +10,7 @@ class BalanceRemoteDataSource @Inject constructor(private val service:AppService
         service.getBalance(userId)
     }
 
-    suspend fun requestCalendarDashboard(year: Int, month: Int) = getResult {
-        service.getCalendarDashboard(year, month)
+    suspend fun requestCalendarDashboard(year: Int) = getResult {
+        service.getCalendarDashboard(year)
     }
 }

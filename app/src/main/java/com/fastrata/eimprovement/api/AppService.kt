@@ -64,10 +64,9 @@ interface AppService {
     @GET("transaction/checkperiod/{TYPE_PROPOSAL}")
     suspend fun checkPeriod(@Path("TYPE_PROPOSAL") typeProposal: String): Response<ResultsResponse<StatusProposalItem>>
 
-    @GET("dashboard/calender/{YEAR}/{MONTH}")
+    @GET("dashboard/calender/{YEAR}")
     suspend fun getCalendarDashboard(
-        @Path("YEAR") year: Int,
-        @Path("MONTH") month: Int
+        @Path("YEAR") year: Int
     ): Response<ResultsResponse<CalendarDashboardModel>>
 
     // Suggestion System
