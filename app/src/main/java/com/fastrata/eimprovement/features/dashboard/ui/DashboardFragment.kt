@@ -1,45 +1,72 @@
 package com.fastrata.eimprovement.features.dashboard.ui
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.databinding.DialogListCalendarDashboardBinding
 import com.fastrata.eimprovement.databinding.FragmentDashboardBinding
 import com.fastrata.eimprovement.databinding.ToolbarDashboardBinding
 import com.fastrata.eimprovement.di.Injectable
 import com.fastrata.eimprovement.di.injectViewModel
+import com.fastrata.eimprovement.features.approval.ui.ListApprovalFragmentDirections
+import com.fastrata.eimprovement.features.changespoint.ui.ChangesPointCreateViewModel
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceCreateViewModel
+import com.fastrata.eimprovement.features.dashboard.ui.data.CalendarDashboardModel
+import com.fastrata.eimprovement.features.projectimprovement.ui.ProjectImprovementViewModel
 import com.fastrata.eimprovement.features.splashscreen.SplashScreenActivity
+import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.featuresglobal.transaction.CheckUserActive
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalCp
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalPi
+import com.fastrata.eimprovement.featuresglobal.transaction.UpdateStatusProposalSs
 import com.fastrata.eimprovement.featuresglobal.viewmodel.CheckUserViewModel
 import com.fastrata.eimprovement.utils.*
-import com.fastrata.eimprovement.utils.HawkUtils
+import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
-class DashboardFragment: Fragment(), Injectable {
+class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentDashboardBinding
+    private lateinit var bindingDialogListCalendar: DialogListCalendarDashboardBinding
     private lateinit var toolbarBinding: ToolbarDashboardBinding
     private lateinit var notification: HelperNotification
     private lateinit var datePicker: DatePickerCustom
     private var greetings: String = ""
     private var userId : Int = 0
+    private lateinit var dialog: Dialog
     private lateinit var balanceViewModel : BalanceCreateViewModel
     private lateinit var checkUserViewModel : CheckUserViewModel
+    private lateinit var calendar: Calendar
+    private lateinit var calendarThisMonth: List<CalendarDashboardModel>
+    private lateinit var calendarThisYear: List<CalendarDashboardModel>
+    private lateinit var adapter: CalendarDashboardAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var listSsViewModel: SuggestionSystemViewModel
+    private lateinit var listPiViewModel: ProjectImprovementViewModel
+    private lateinit var listCpViewModel: ChangesPointCreateViewModel
+    private var thisMonth: Int = 0
+    private var thisYear: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,9 +79,16 @@ class DashboardFragment: Fragment(), Injectable {
 
         balanceViewModel = injectViewModel(viewModelFactory)
         checkUserViewModel = injectViewModel(viewModelFactory)
+        listSsViewModel = injectViewModel(viewModelFactory)
+        listPiViewModel = injectViewModel(viewModelFactory)
+        listCpViewModel = injectViewModel(viewModelFactory)
 
         notification = HelperNotification()
         userId = HawkUtils().getDataLogin().USER_ID
+
+        calendar = Calendar.getInstance()
+        thisMonth = calendar[Calendar.MONTH] + 1
+        thisYear = calendar[Calendar.YEAR]
 
         datePicker = DatePickerCustom(
             context = binding.root.context, themeDark = true,
@@ -64,9 +98,12 @@ class DashboardFragment: Fragment(), Injectable {
         setHasOptionsMenu(true)
         greetings = "${resources.getString(R.string.welcome_user)} ${HawkUtils().getDataLogin().FULL_NAME}"
 
+        adapter = CalendarDashboardAdapter()
+        adapter.notifyDataSetChanged()
+
         initToolbar()
         initData()
-        initComponent(requireActivity())
+        initComponent()
         return binding.root
     }
 
@@ -180,8 +217,6 @@ class DashboardFragment: Fragment(), Injectable {
     }
 
     private fun initData(){
-        Timber.e("data Login :${HawkUtils().getDataLogin().ROLES}")
-
         val checkMenuApproval = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "6" }
         val checkMenuPi = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "8" }
         val checkMenuSs = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "7" }
@@ -197,6 +232,12 @@ class DashboardFragment: Fragment(), Injectable {
                 menuApproval.isClickable = false
                 menuApproval.isFocusable = false
                 menuApproval.setBackgroundColor(resources.getColor(R.color.blue_grey_200))
+                imageView.visibility = VISIBLE
+            }
+        } else {
+            binding.apply {
+                initCalendar()
+                robotoCalendarPicker.visibility = VISIBLE
             }
         }
 
@@ -240,7 +281,47 @@ class DashboardFragment: Fragment(), Injectable {
         }
     }
 
-    private fun initComponent(activity: FragmentActivity) {
+    private fun initCalendar(){
+        binding.apply {
+            // https://github.com/marcohc/roboto-calendar-view
+            robotoCalendarPicker.setRobotoCalendarListener(this@DashboardFragment)
+            robotoCalendarPicker.setShortWeekDays(false)
+            robotoCalendarPicker.showDateTitle(true)
+            robotoCalendarPicker.date = Date()
+        }
+
+        retrieveEventOnCalendar(thisYear)
+    }
+
+    private fun retrieveEventOnCalendar(varThisYear: Int) {
+        try {
+            balanceViewModel.setCalendarDashboard(varThisYear)
+            balanceViewModel.getCalendarDashboard.observeEvent(this@DashboardFragment) { resultObserve ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result.status) {
+                            Result.Status.LOADING -> {
+                                Timber.d("###-- Loading get balance")
+                            }
+                            Result.Status.SUCCESS -> {
+                                calendarThisYear = result.data!!.data
+                                calendarListThisMonth(calendar.time)
+                            }
+                            Result.Status.ERROR -> {
+                                Toast.makeText(requireContext(), "Error : ${result.message}", Toast.LENGTH_LONG).show()
+                                Timber.d("###-- Loading error balance $result")
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (e : Exception) {
+            Timber.e("Error balance : $e")
+            Toast.makeText(requireContext(),"Error : $e",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun initComponent() {
         val docId = ""
         binding.apply {
             welcome.text = greetings
@@ -364,6 +445,562 @@ class DashboardFragment: Fragment(), Injectable {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun calendarListThisMonth(date: Date) {
+        Timber.e(date.toString())
+        binding.apply {
+            if (!calendarThisYear.isNullOrEmpty()) {
+                val today = date.formatToViewDateDefaults()
+                val getThisMonth = today.substring(3, 5).toInt()
+                val getThisYear = today.substring(6, 10).toInt()
+
+                val checkListProposalMonth = calendarThisYear.filter {
+                    (it.getMonth == getThisMonth) &&  (it.getYear == getThisYear)
+                }
+                Timber.e(checkListProposalMonth.toString())
+
+                calendarThisMonth = checkListProposalMonth
+
+                checkListProposalMonth.forEach { data ->
+                    val docType = data.docType
+                    val getDate = data.getDate
+
+                    calendar[Calendar.DAY_OF_MONTH] = getDate
+                    calendar[Calendar.MONTH] = thisMonth - 1 // (-1 to index)
+                    calendar[Calendar.YEAR] = thisYear
+
+                    when (docType) {
+                        SS -> robotoCalendarPicker.markCircleImage1(calendar.time)
+                        PI -> robotoCalendarPicker.markCircleImage2(calendar.time)
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+
+    // https://github.com/marcohc/roboto-calendar-view
+    override fun onDayClick(date: Date) {
+        try {
+            //calendarListThisMonth(date)
+            val today = date.formatToViewDateDefaults()
+
+            if (!calendarThisMonth.isNullOrEmpty()) {
+                val checkListProposalToday = calendarThisMonth.filter {
+                    it.createdDate == today
+                }
+                if (checkListProposalToday.isNotEmpty()){
+                    adapter.setList(checkListProposalToday)
+                    adapter.setSuggestionSystemCallback(object: CalendarDashboardCallback{
+                        override fun onItemClicked(data: CalendarDashboardModel) {
+
+                            when (data.docType) {
+                                SS -> {
+                                    notification.showListEdit(requireActivity(),
+                                        data.docNo, SS,
+                                        view = data.isView,
+                                        viewEdit = data.isEdit,
+                                        viewSubmit = data.isSubmit,
+                                        viewImplementation = data.isImplementation,
+                                        viewCheck = data.isCheck,
+                                        viewCheckFinal = data.isCheckFinal,
+                                        viewSubmitLaporan = data.isSubmitlaporan,
+                                        viewReview = data.isReview,
+                                        viewReviewFinal = data.isReviewFinal,
+                                        viewDelete = data.isDelete,
+                                        listener = object : HelperNotification.CallbackList {
+                                            override fun onView() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                        toolbarTitle = "Detail Sistem Saran",
+                                                        action = DETAIL,
+                                                        idSs = data.docId,
+                                                        ssNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onEdit() {
+
+                                            }
+
+                                            override fun onSubmit() {
+
+                                            }
+
+                                            override fun onCheck() {
+                                                notification.showNotificationYesNo(
+                                                    requireActivity(), requireContext(), R.color.yellow_800,
+                                                    "Pengecekan Proposal", resources.getString(R.string.check_desc),
+                                                    "Pengecekan", resources.getString(R.string.cancel),
+                                                    object : HelperNotification.CallBackNotificationYesNo {
+                                                        override fun onNotificationNo() {
+
+                                                        }
+                                                        override fun onNotificationYes() {
+                                                            lifecycleScope.launch {
+                                                                UpdateStatusProposalSs(
+                                                                    listSsViewModel,
+                                                                    context = requireContext(),
+                                                                ).getDetailDataSs(
+                                                                    id = data.docId,
+                                                                    ssNo = data.docNo,
+                                                                    statusProposal = data.status,
+                                                                    userNameSubmit = userId,
+                                                                ) {
+                                                                    if (it) {
+                                                                        Timber.e("### $it")
+
+                                                                        val direction =
+                                                                            ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                                                toolbarTitle = "Pengecekan Sistem Saran",
+                                                                                action = APPROVE,
+                                                                                idSs = data.docId,
+                                                                                ssNo = data.docNo,
+                                                                                type = APPR,
+                                                                                statusProposal = data.status
+                                                                            )
+                                                                        requireView().findNavController().navigate(direction)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            }
+
+                                            override fun onCheckFinal() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                        toolbarTitle = "Pengecekan Sistem Saran",
+                                                        action = APPROVE,
+                                                        idSs = data.docId,
+                                                        ssNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onImplementation() {
+
+                                            }
+
+                                            override fun onSubmitLaporan() {
+
+                                            }
+
+                                            override fun onReview() {
+                                                notification.showNotificationYesNo(
+                                                    requireActivity(), requireContext(), R.color.yellow_800,
+                                                    "Review Proposal", resources.getString(R.string.review_desc),
+                                                    "Review", resources.getString(R.string.cancel),
+                                                    object : HelperNotification.CallBackNotificationYesNo {
+                                                        override fun onNotificationNo() {
+
+                                                        }
+                                                        override fun onNotificationYes() {
+                                                            lifecycleScope.launch {
+                                                                UpdateStatusProposalSs(
+                                                                    listSsViewModel,
+                                                                    context = requireContext(),
+                                                                ).getDetailDataSs(
+                                                                    id = data.docId,
+                                                                    ssNo = data.docNo,
+                                                                    statusProposal = data.status,
+                                                                    userNameSubmit = userId,
+                                                                ) {
+                                                                    if(it){
+                                                                        Timber.e("### $it")
+
+                                                                        val direction =
+                                                                            ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                                                toolbarTitle = "Review Sistem Saran",
+                                                                                action = APPROVE,
+                                                                                idSs = data.docId,
+                                                                                ssNo = data.docNo,
+                                                                                type = APPR,
+                                                                                statusProposal = data.status
+                                                                            )
+                                                                        requireView().findNavController().navigate(direction)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            }
+
+                                            override fun onReviewFinal() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToSuggestionSystemCreateWizard(
+                                                        toolbarTitle = "Review Sistem Saran",
+                                                        action = APPROVE,
+                                                        idSs = data.docId,
+                                                        ssNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onDelete() {
+
+                                            }
+                                        }
+                                    )
+                                }
+                                PI -> {
+                                    notification.showListEdit(requireActivity(),
+                                        data.docNo, PI,
+                                        view = data.isView,
+                                        viewEdit = data.isEdit,
+                                        viewSubmit = data.isSubmit,
+                                        viewImplementation = data.isImplementation,
+                                        viewCheck = data.isCheck,
+                                        viewCheckFinal = data.isCheckFinal,
+                                        viewSubmitLaporan = data.isSubmitlaporan,
+                                        viewReview = data.isReview,
+                                        viewReviewFinal = data.isReviewFinal,
+                                        viewDelete = data.isDelete,
+                                        listener = object : HelperNotification.CallbackList {
+                                            override fun onView() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                        toolbarTitle = "Detail Project Improvement",
+                                                        action = DETAIL,
+                                                        idPi = data.docId,
+                                                        piNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onEdit() {
+
+                                            }
+
+                                            override fun onSubmit() {
+
+                                            }
+
+                                            override fun onCheck() {
+                                                notification.showNotificationYesNo(
+                                                    requireActivity(), requireContext(), R.color.blue_800,
+                                                    "Pengecekan Proposal", resources.getString(R.string.check_desc),
+                                                    "Pengecekan", resources.getString(R.string.cancel),
+                                                    object : HelperNotification.CallBackNotificationYesNo {
+                                                        override fun onNotificationNo() {
+
+                                                        }
+                                                        override fun onNotificationYes() {
+                                                            lifecycleScope.launch {
+                                                                UpdateStatusProposalPi(
+                                                                    listPiViewModel,
+                                                                    context = requireContext(),
+                                                                ).getDetailDataPi(
+                                                                    id = data.docId,
+                                                                    piNo = data.docNo,
+                                                                    statusProposal = data.status,
+                                                                    userNameSubmit = userId,
+                                                                ) {
+                                                                    if (it) {
+                                                                        Timber.e("### $it")
+
+                                                                        val direction =
+                                                                            ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                                                toolbarTitle = "Pengecekan Project Improvement",
+                                                                                action = APPROVE,
+                                                                                idPi = data.docId,
+                                                                                piNo = data.docNo,
+                                                                                type = APPR,
+                                                                                statusProposal = data.status
+                                                                            )
+                                                                        requireView().findNavController().navigate(direction)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            }
+
+                                            override fun onCheckFinal() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                        toolbarTitle = "Pengecekan Project Improvement",
+                                                        action = APPROVE,
+                                                        idPi = data.docId,
+                                                        piNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onImplementation() {
+
+                                            }
+
+                                            override fun onSubmitLaporan() {
+
+                                            }
+
+                                            override fun onReview() {
+                                                notification.showNotificationYesNo(
+                                                    requireActivity(), requireContext(), R.color.blue_800,
+                                                    "Review Proposal", resources.getString(R.string.review_desc),
+                                                    "Review", resources.getString(R.string.cancel),
+                                                    object : HelperNotification.CallBackNotificationYesNo {
+                                                        override fun onNotificationNo() {
+
+                                                        }
+                                                        override fun onNotificationYes() {
+                                                            lifecycleScope.launch {
+                                                                UpdateStatusProposalPi(
+                                                                    listPiViewModel,
+                                                                    context = requireContext(),
+                                                                ).getDetailDataPi(
+                                                                    id = data.docId,
+                                                                    piNo = data.docNo,
+                                                                    statusProposal = data.status,
+                                                                    userNameSubmit = userId,
+                                                                ) {
+                                                                    if (it) {
+                                                                        Timber.e("### $it")
+
+                                                                        val direction =
+                                                                            ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                                                toolbarTitle = "Review Project Improvement",
+                                                                                action = APPROVE,
+                                                                                idPi = data.docId,
+                                                                                piNo = data.docNo,
+                                                                                type = APPR,
+                                                                                statusProposal = data.status
+                                                                            )
+                                                                        requireView().findNavController().navigate(direction)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            }
+
+                                            override fun onReviewFinal() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToProjectImprovementCreateWizard(
+                                                        toolbarTitle = "Review Project Improvement",
+                                                        action = APPROVE,
+                                                        idPi = data.docId,
+                                                        piNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onDelete() {
+
+                                            }
+                                        }
+                                    )
+                                }
+                                CP -> {
+                                    notification.showListEdit(requireActivity(),
+                                        data.docNo, CP,
+                                        view = data.isView,
+                                        viewEdit = data.isEdit,
+                                        viewSubmit = data.isSubmit,
+                                        viewImplementation = data.isImplementation,
+                                        viewCheck = data.isCheck,
+                                        viewCheckFinal = data.isCheckFinal,
+                                        viewSubmitLaporan = data.isSubmitlaporan,
+                                        viewReview = data.isReview,
+                                        viewReviewFinal = data.isReviewFinal,
+                                        viewDelete = data.isDelete,
+                                        listener = object : HelperNotification.CallbackList {
+                                            override fun onView() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                                        toolbarTitle = "Detail Penukaran Poin",
+                                                        action = DETAIL,
+                                                        idCp = data.docId,
+                                                        cpNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onEdit() {
+
+                                            }
+
+                                            override fun onSubmit() {
+
+                                            }
+
+                                            override fun onCheck() {
+                                                notification.showNotificationYesNo(
+                                                    requireActivity(), requireContext(), R.color.green_800,
+                                                    "Pengecekan Penukaran Poin", resources.getString(R.string.check_desc),
+                                                    "Pengecekan", resources.getString(R.string.cancel),
+                                                    object : HelperNotification.CallBackNotificationYesNo {
+                                                        override fun onNotificationNo() {
+
+                                                        }
+                                                        override fun onNotificationYes() {
+                                                            lifecycleScope.launch {
+                                                                UpdateStatusProposalCp(
+                                                                    listCpViewModel,
+                                                                    context = requireContext(),
+                                                                ).getDetailDataCp(
+                                                                    id = data.docId,
+                                                                    cpNo = data.docNo,
+                                                                    statusProposal = data.status,
+                                                                    userNameSubmit = userId,
+                                                                ) {
+                                                                    if (it) {
+                                                                        Timber.e("### $it")
+
+                                                                        val direction =
+                                                                            ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                                                                toolbarTitle = "Review Penukaran Poin",
+                                                                                action = APPROVE,
+                                                                                idCp = data.docId,
+                                                                                cpNo = data.docNo,
+                                                                                type = APPR,
+                                                                                statusProposal = data.status
+                                                                            )
+                                                                        requireView().findNavController()
+                                                                            .navigate(direction)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            }
+
+                                            override fun onCheckFinal() {
+
+                                            }
+
+                                            override fun onImplementation() {
+
+                                            }
+
+                                            override fun onSubmitLaporan() {
+
+                                            }
+
+                                            override fun onReview() {
+                                                val direction =
+                                                    ListApprovalFragmentDirections.actionListApprovalFragmentToChangePointCreateWizard(
+                                                        toolbarTitle = "Review Penukaran Poin",
+                                                        action = APPROVE,
+                                                        idCp = data.docId,
+                                                        cpNo = data.docNo,
+                                                        type = APPR,
+                                                        statusProposal = data.status
+                                                    )
+                                                requireView().findNavController().navigate(direction)
+                                            }
+
+                                            override fun onReviewFinal() {
+
+                                            }
+
+                                            override fun onDelete() {
+
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+
+                        }
+                    })
+
+                    dialogListProposalCalendar(requireActivity(), today)
+                }
+            }
+        } catch (e: Exception){
+            Toast.makeText(requireContext(), "Error. $e", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDayLongClick(date: Date?) {
+
+    }
+
+    override fun onRightButtonClick() {
+        if (thisMonth == 12){
+            thisMonth = 1
+            thisYear += 1
+
+            calendar[Calendar.MONTH] = thisMonth - 1
+            calendar[Calendar.YEAR] = thisYear
+            retrieveEventOnCalendar(thisYear)
+        } else {
+            thisMonth += 1
+            Timber.e(thisMonth.toString())
+            calendar[Calendar.MONTH] = thisMonth - 1
+        }
+
+        calendarListThisMonth(calendar.time)
+    }
+
+    override fun onLeftButtonClick() {
+        if (thisMonth == 1){
+            thisMonth = 12
+            thisYear -= 1
+
+            calendar[Calendar.MONTH] = thisMonth - 1
+            calendar[Calendar.YEAR] = thisYear
+            retrieveEventOnCalendar(thisYear)
+        } else {
+            thisMonth -= 1
+            Timber.e(thisMonth.toString())
+            calendar[Calendar.MONTH] = thisMonth - 1
+        }
+        calendarListThisMonth(calendar.time)
+    }
+
+    private fun dialogListProposalCalendar(activity: Activity, calendarToday: String) {
+        bindingDialogListCalendar = DialogListCalendarDashboardBinding.inflate(layoutInflater)
+
+        dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        dialog.setContentView(bindingDialogListCalendar.root)
+        dialog.setCancelable(true)
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+
+        bindingDialogListCalendar.apply {
+            today.text = calendarToday
+            btnClose.setOnClickListener {
+                adapter.clear()
+                dialog.dismiss()
+            }
+
+            layoutManager = LinearLayoutManager(activity)
+            rv.setHasFixedSize(true)
+            rv.layoutManager = layoutManager
+            rv.adapter = adapter
+        }
+
+        dialog.show()
+        dialog.window!!.attributes = lp
     }
 
 }

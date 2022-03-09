@@ -151,7 +151,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
 
         _binding = FragmentSuggestionSystemBinding.bind(view)
 

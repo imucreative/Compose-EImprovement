@@ -112,6 +112,10 @@ dependencies {
     implementation 'com.rabbitmq:amqp-client:5.14.0'                    //rabbit messaging
     implementation 'com.cottacush:CurrencyEditText:0.0.9'
     implementation 'com.github.santalu:maskara:1.0.0'
+    implementation 'com.github.marcohc:robotocalendarview:3.6.1'
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
+
 
     // navigation
     def navigation = '2.3.5'

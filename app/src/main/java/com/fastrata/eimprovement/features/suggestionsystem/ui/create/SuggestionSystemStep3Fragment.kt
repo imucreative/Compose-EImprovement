@@ -289,22 +289,22 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                             teamMember?.remove(dataMember)
 
                             listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner) {
                                 if (it != null) {
                                     teamMemberAdapter.setListTeamMember(it)
                                 }
-                            })
+                            }
                         }
                     }
                 }
             }
         })
 
-        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner) {
             if (it != null) {
                 teamMemberAdapter.setListTeamMember(it)
             }
-        })
+        }
     }
 
     /*private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->

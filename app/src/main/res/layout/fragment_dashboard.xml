@@ -475,7 +475,15 @@
                     android:layout_marginVertical="50dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/app_name"
+                    android:visibility="gone"
                     android:src="@drawable/logo_eimprovement_full" />
+
+                <com.marcohc.robotocalendar.RobotoCalendarView
+                    android:id="@+id/robotoCalendarPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/custom_border" />
 
             </LinearLayout>
 

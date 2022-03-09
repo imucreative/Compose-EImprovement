@@ -274,7 +274,7 @@ class ListApprovalFragment : Fragment(), Injectable {
         try {
             isLoading = true
             listApproveViewModel.getListApprovalItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -316,7 +316,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             HelperLoading.hideLoading()
@@ -333,7 +333,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private fun retrieveDataStatusProposal(){
         try {
             masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -359,7 +359,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtStatusProposal.isEnabled = false
@@ -375,7 +375,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private fun retrieveDataBranch(){
         try {
             masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -401,7 +401,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtBranch.isEnabled = false
@@ -417,7 +417,7 @@ class ListApprovalFragment : Fragment(), Injectable {
     private fun retrieveDataSubBranch(){
         try {
             masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -443,7 +443,7 @@ class ListApprovalFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtSubBranch.isEnabled = false

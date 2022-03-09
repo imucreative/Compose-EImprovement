@@ -4,6 +4,7 @@ import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
+import com.fastrata.eimprovement.features.dashboard.ui.data.CalendarDashboardModel
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
@@ -63,6 +64,10 @@ interface AppService {
     @GET("transaction/checkperiod/{TYPE_PROPOSAL}")
     suspend fun checkPeriod(@Path("TYPE_PROPOSAL") typeProposal: String): Response<ResultsResponse<StatusProposalItem>>
 
+    @GET("dashboard/calender/{YEAR}")
+    suspend fun getCalendarDashboard(
+        @Path("YEAR") year: Int
+    ): Response<ResultsResponse<CalendarDashboardModel>>
 
     // Suggestion System
     @POST("ss/list")
