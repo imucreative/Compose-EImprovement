@@ -11,9 +11,10 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
 
     fun observeListTeamMember(
         departmentName: String,
-        userId: Int
+        userId: Int,
+        role: Int
     ) = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.requestListTeamMember(departmentName, userId) }
+        networkCall = { remoteDataSource.requestListTeamMember(departmentName, userId, role) }
     )
 
     fun observeListDepartment(

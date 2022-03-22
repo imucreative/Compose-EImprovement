@@ -23,10 +23,11 @@ class TeamMemberViewModel @Inject constructor(private val repository: GlobalRemo
 
     fun setTeamMemberName(
         departmentName: String,
-        userId: Int
+        userId: Int,
+        role: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(departmentName, userId) }
+            val result = withContext(Dispatchers.Default) { repository.observeListTeamMember(departmentName, userId, role) }
             _listTeamMemberName.value = Event(result)
         }
     }

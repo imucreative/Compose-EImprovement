@@ -251,7 +251,8 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
                 memberName.setText("")
                 masterDataTeamMemberViewModel.setTeamMemberName(
                     listDepartmentItem!![i].department,
-                    userId!!
+                    userId!!,
+                    selectedTask.id
                 )
                 hideKeyboard()
             }
@@ -269,6 +270,10 @@ class SuggestionSystemStep3Fragment: Fragment(), Injectable {
             memberTask.setAdapter(adapterMemberTask)
             memberTask.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
                 selectedTask = listTaskItem!![i]
+                memberDepartment.setText("")
+                memberName.setText("")
+                memberName.setAdapter(null)
+                listMemberItem = listOf()
                 hideKeyboard()
             }
         }
