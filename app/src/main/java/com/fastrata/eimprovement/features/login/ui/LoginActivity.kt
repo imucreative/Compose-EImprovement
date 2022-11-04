@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
             try {
                 viewModel.processLogin(username, password)
                 viewModel.doLiveLogin.observeEvent(this) { loginObserver ->
-                    loginObserver.observe(this, { result ->
+                    loginObserver.observe(this) { result ->
                         when (result.status) {
                             Result.Status.LOADING -> {
                                 Timber.d("###-- LOADING")
@@ -96,20 +96,24 @@ class LoginActivity : AppCompatActivity(), Injectable {
                                         NIK = result.data.data[0].NIK,
                                         USER_NAME = result.data.data[0].USER_NAME,
                                         FULL_NAME = result.data.data[0].FULL_NAME,
+                                        JABATAN = result.data.data[0].JABATAN,
                                         DIRECT_MANAGER_ID = result.data.data[0].DIRECT_MANAGER_ID,
                                         DIRECT_MANAGER = result.data.data[0].DIRECT_MANAGER,
+                                        DIRECT_MANAGER_NIK = result.data.data[0].DIRECT_MANAGER_NIK,
+                                        JABATAN_ATASAN = result.data.data[0].JABATAN_ATASAN,
                                         EMAIL = result.data.data[0].EMAIL,
                                         ORG_ID = result.data.data[0].ORG_ID,
                                         WAREHOUSE_ID = result.data.data[0].WAREHOUSE_ID,
+                                        LOKASI = result.data.data[0].LOKASI,
                                         BRANCH_CODE = result.data.data[0].BRANCH_CODE,
                                         BRANCH = result.data.data[0].BRANCH,
                                         SUB_BRANCH = result.data.data[0].SUB_BRANCH,
-                                        DEPARTMENT_ID = result.data.data[0].DEPARTMENT_ID,
+                                        // DEPARTMENT_ID = result.data.data[0].DEPARTMENT_ID,
                                         DEPARTMENT = result.data.data[0].DEPARTMENT,
                                         POSITION_ID = result.data.data[0].POSITION_ID,
                                         POSITION = result.data.data[0].POSITION,
-                                        JOB_TITLE_ID = result.data.data[0].JOB_TITLE_ID,
-                                        JOB_TITLE = result.data.data[0].JOB_TITLE,
+                                        /*JOB_TITLE_ID = result.data.data[0].JOB_TITLE_ID,
+                                        JOB_TITLE = result.data.data[0].JOB_TITLE,*/
                                         TOKEN = result.data.data[0].TOKEN,
                                         API_KEY = result.data.data[0].API_KEY,
                                         ROLES = result.data.data[0].ROLES,
@@ -144,7 +148,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                                 )
                             }
                         }
-                    })
+                    }
                 }
             }catch (err: Exception){
                 Toast.makeText(this,"Failed login",Toast.LENGTH_SHORT).show()

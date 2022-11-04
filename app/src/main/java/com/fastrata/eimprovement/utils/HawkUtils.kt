@@ -35,6 +35,7 @@ internal class HawkUtils {
         subBranch: String? = null,
         department: String? = null,
         directMgr: String? = null,
+        directMgrNik: String? = null,
         suggestion: String? = null,
         problem: String? = null,
         statusImplementation: StatusImplementation? = null,
@@ -67,6 +68,7 @@ internal class HawkUtils {
             subBranch = subBranch ?: if (source == SS_CREATE) getDataCreateSs?.subBranch else getDataDetailSs?.subBranch,
             department = department ?: if (source == SS_CREATE) getDataCreateSs?.department else getDataDetailSs?.department,
             directMgr = directMgr ?: if (source == SS_CREATE) getDataCreateSs?.directMgr else getDataDetailSs?.directMgr,
+            directMgrNik = directMgrNik ?: if (source == SS_CREATE) getDataCreateSs?.directMgrNik else getDataDetailSs?.directMgrNik,
             suggestion = suggestion ?: if (source == SS_CREATE) getDataCreateSs?.suggestion else getDataDetailSs?.suggestion,
             problem = problem ?: if (source == SS_CREATE) getDataCreateSs?.problem else getDataDetailSs?.problem,
             statusImplementation = statusImplementation ?: if (source == SS_CREATE) getDataCreateSs?.statusImplementation else getDataDetailSs?.statusImplementation,
@@ -114,6 +116,18 @@ internal class HawkUtils {
             return Hawk.get(HAWK_SUCCESS_LOGIN)
         }
         return false
+    }
+
+    fun setDocId(doc:String){
+        Hawk.put(HAWK_DOC_ID,doc)
+    }
+
+    fun getDocId():String{
+        return Hawk.get(HAWK_DOC_ID)
+    }
+
+    fun deleteDocId(){
+        Hawk.delete(HAWK_DOC_ID)
     }
 
     fun setStatusImplementation(status: Boolean){
@@ -179,6 +193,8 @@ internal class HawkUtils {
         nik: String? = null,
         userId: Int? = null,
         headId: Int? = null,
+        directMgr: String? = null,
+        directMgrNik: String? = null,
         orgId: Int? = null,
         warehouseId: Int? = null,
         historyApproval: ArrayList<ApprovalHistoryStatusModel?>? = if (getDataCreatePi?.historyApproval == null) arrayListOf() else null,
@@ -213,6 +229,8 @@ internal class HawkUtils {
 
             nik = nik ?: if (source == PI_CREATE) getDataCreatePi?.nik else getDataDetailPi?.nik,
             headId = headId ?: if (source == PI_CREATE) getDataCreatePi?.headId else getDataDetailPi?.headId,
+            directMgr = directMgr ?: if (source == PI_CREATE) getDataCreatePi?.directMgr else getDataDetailPi?.directMgr,
+            directMgrNik = directMgrNik ?: if (source == PI_CREATE) getDataCreatePi?.directMgrNik else getDataDetailPi?.directMgrNik,
             userId = userId ?: if (source == PI_CREATE) getDataCreatePi?.userId else getDataDetailPi?.userId,
             orgId = orgId ?: if (source == PI_CREATE) getDataCreatePi?.orgId else getDataDetailPi?.orgId,
             warehouseId = warehouseId ?: if (source == PI_CREATE) getDataCreatePi?.warehouseId else getDataDetailPi?.warehouseId,
@@ -313,5 +331,13 @@ internal class HawkUtils {
 
     fun removeDataCreateProposal(typeProposal: String){
         Hawk.delete(typeProposal)
+    }
+
+    fun setUserActive(status : Boolean = true){
+        Hawk.put(HAWK_STATUS_USER_ACTIVE, status)
+    }
+
+    fun getUserActive(): Boolean {
+        return Hawk.get(HAWK_STATUS_USER_ACTIVE)
     }
 }

@@ -1,5 +1,8 @@
 package com.fastrata.eimprovement.utils
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.ImageButton
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -21,6 +24,8 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.OutputStream
+import java.lang.ref.WeakReference
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 import java.text.SimpleDateFormat
 import java.util.*
@@ -172,6 +177,34 @@ fun <R> CoroutineScope.executeAsyncTask(
     }
     onPostExecute(result)
 }
+
+/*
+* https://stackoverflow.com/a/43510648/14795594
+**/
+interface MyTextWatcher: TextWatcher {
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+}
+
+fun EditText.setMaskingMoney(currencyText: String) {
+    this.addTextChangedListener(object: MyTextWatcher{
+        val editTextWeakReference: WeakReference<EditText> = WeakReference<EditText>(this@setMaskingMoney)
+        override fun afterTextChanged(editable: Editable?) {
+            val editText = editTextWeakReference.get() ?: return
+            val s = editable.toString()
+            editText.removeTextChangedListener(this)
+            val cleanString = s.replace("[Rp,. ]".toRegex(), "")
+            val newVal = currencyText + cleanString.monetize()
+
+            editText.setText(newVal)
+            editText.setSelection(newVal.length)
+            editText.addTextChangedListener(this)
+        }
+    })
+}
+
+fun String.monetize(): String = if (this.isEmpty()) "0"
+else DecimalFormat("#,###").format(this.replace("[^\\d]".toRegex(),"").toLong())
 
 /**
  * https://blog.kotlin-academy.com/show-download-progress-in-a-recyclerview-with-ktor-client-and-flow-asynchronous-data-stream-9debab3d2cb6

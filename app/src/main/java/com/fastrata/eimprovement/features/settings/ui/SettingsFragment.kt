@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.fastrata.eimprovement.BuildConfig
+import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.FragmentSettingsBinding
 import com.fastrata.eimprovement.databinding.ToolbarBinding
@@ -67,14 +69,14 @@ class SettingsFragment : Fragment(), Injectable {
             }
 
             btnLogout.setOnClickListener {
-                notification.shownotificationyesno(
+                notification.showNotificationYesNo(
                     activity,
                     requireContext(),
                     R.color.blue_500,
                     resources.getString(R.string.info),
-                    resources.getString(R.string.log_out),
+                    resources.getString(R.string.log_out_info),
                     resources.getString(R.string.ok),
-                    resources.getString(R.string.no),
+                    resources.getString(R.string.cancel),
                 object  :CallBackNotificationYesNo {
                     override fun onNotificationNo() {
 
@@ -87,6 +89,7 @@ class SettingsFragment : Fragment(), Injectable {
                         HawkUtils().removeDataCreateProposal(CP)
                         HawkUtils().removeDataCreateProposal(PI)
                         activity.finish()
+                        HomeActivity.stopAMQPConsumer()
                         startActivity(Intent(activity, SplashScreenActivity::class.java))
                     }
                 })
@@ -104,8 +107,7 @@ class SettingsFragment : Fragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-//                if (!findNavController().popBackStack()) activity?.finish()
-                activity?.finish()
+                if (!findNavController().popBackStack()) activity?.finish()
             }
         }
 

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.MaterialComponents.Light"
+    android:layout_margin="@dimen/spacing_large"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_300"
+            android:minHeight="120dp"
+            android:padding="@dimen/spacing_mlarge">
+
+            <ImageButton
+                android:id="@+id/bt_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/app_name"
+                android:paddingHorizontal="@dimen/spacing_middle"
+                android:paddingVertical="@dimen/spacing_middle"
+                app:srcCompat="@drawable/ic_close" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                app:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_error_outline"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/title_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/icon"
+                android:layout_marginTop="@dimen/spacing_middle"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/no_internet"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_mlarge">
+
+            <TextView
+                android:id="@+id/content_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="@string/are_you_sure"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/grey_60" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_rating"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/spacing_large"
+            android:paddingRight="@dimen/spacing_large"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                style="@style/Yellow.AppCompatRatingBar"
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="1"
+                android:theme="@style/Yellow.AppCompatRatingBar" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="@dimen/spacing_large">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:boxStrokeColor="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:lines="3"
+                    android:scrollbars="vertical|horizontal"
+                    android:textColor="@color/colorPrimary"
+                    tools:text="Perlunya arsitektur untuk setiap aplikasi / system" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lyt_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:weightSum="2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_ok"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:background="@drawable/btn_rounded_green"
+                android:drawableEnd="@drawable/ic_save_white"
+                android:paddingLeft="@dimen/spacing_mlarge"
+                android:paddingRight="@dimen/spacing_mlarge"
+                android:text="@string/save"
+                android:textColor="@android:color/white" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:background="@drawable/btn_rounded_primary"
+                android:drawableEnd="@drawable/ic_send_white"
+                android:paddingLeft="@dimen/spacing_mlarge"
+                android:paddingRight="@dimen/spacing_mlarge"
+                android:text="@string/submit"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

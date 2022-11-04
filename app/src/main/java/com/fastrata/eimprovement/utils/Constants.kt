@@ -18,6 +18,8 @@ const val HAWK_DEVICE_UID = "device_uid"
 const val HAWK_DEVICE_NAME = "device_name"
 const val HAWK_SUCCESS_LOGIN = "succes"
 const val HAWK_BALANCE = "balance"
+const val HAWK_DOC_ID ="doc_id"
+const val HAWK_STATUS_USER_ACTIVE ="status_user_active"
 
 // MENU --------------------------------------------------------------------------
 const val MENU_DASHBOARD = "DASHBOARD"
@@ -58,7 +60,7 @@ const val APPROVE = "approve"
 const val ACTION_DETAIL_DATA = "action_detail_data"
 
 // provide attachment
-val FILE_NAME_EXT = arrayOf(".JPEG", ".JPG",".PNG", ".PDF",".DOC","DOCX","XLS","XLSX")
+val FILE_NAME_EXT = arrayOf("JPEG","JPG","PNG","PDF","DOC","DOCX","XLS","XLSX")
 val PERMISSIONS = listOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 const val FILE_PICKER_REQUEST_CODE = 101
 const val DOWNLOAD_FILE_CODE = 102
@@ -69,3 +71,15 @@ val PERMISSIONS_STORAGE = arrayOf(
     Manifest.permission.READ_EXTERNAL_STORAGE,
     Manifest.permission.WRITE_EXTERNAL_STORAGE
 )
+
+/**
+ * Worker Variables
+ * **/
+
+@JvmField val VERBOSE_NOTIFICATION_CHANNEL_NAME: CharSequence = "Verbose WorkManager Notifications"
+const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION = "Shows notifications whenever work starts"
+@JvmField val NOTIFICATION_TITLE: CharSequence = "Syncing Process"
+const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
+const val NOTIFICATION_ID = 1
+
+const val DELAY_TIME_MILLIS: Long = 3000

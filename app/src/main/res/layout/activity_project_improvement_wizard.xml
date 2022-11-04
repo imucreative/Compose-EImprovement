@@ -17,6 +17,10 @@
         <include layout="@layout/toolbar"/>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <include
+        android:id="@+id/no_data_screen"
+        layout="@layout/nodata_screen"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

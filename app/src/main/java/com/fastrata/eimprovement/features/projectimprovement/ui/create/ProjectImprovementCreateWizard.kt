@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
@@ -33,6 +34,7 @@ import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -79,7 +81,7 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
         val statusProposal = args.statusProposal
 
         try {
-            nik = HawkUtils().getDataLogin().NIK
+            nik = HawkUtils().getDataLogin().NIK.toString()
             userId = HawkUtils().getDataLogin().USER_ID
             orgId = HawkUtils().getDataLogin().ORG_ID
             warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
@@ -100,11 +102,13 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                 piNo = argsPiNo
 
                 source = PI_DETAIL_DATA
+                initToolbar(argsTitle)
+
                 try {
                     viewModel.setDetailPi(argsIdPi, userId)
 
                     viewModel.getDetailPiItem.observeEvent(this) { resultObserve ->
-                        resultObserve.observe(this, { result ->
+                        resultObserve.observe(this) { result ->
                             if (result != null) {
                                 when (result.status) {
                                     Result.Status.LOADING -> {
@@ -115,66 +119,84 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                                     }
                                     Result.Status.SUCCESS -> {
                                         HelperLoading.hideLoading()
-                                        binding.bottomNavigationBar.visibility = View.VISIBLE
 
-                                        HawkUtils().setTempDataCreatePi(
-                                            id = result.data?.data?.get(0)?.id,
-                                            piNo = result.data?.data?.get(0)?.piNo,
-                                            department = result.data?.data?.get(0)?.department,
-                                            years = result.data?.data?.get(0)?.years,
-                                            date = result.data?.data?.get(0)?.date,
-                                            branchCode = result.data?.data?.get(0)?.branchCode,
-                                            branch = result.data?.data?.get(0)?.branch,
-                                            subBranch = result.data?.data?.get(0)?.subBranch,
-                                            title = result.data?.data?.get(0)?.title,
-                                            statusImplementationModel = result.data?.data?.get(0)?.statusImplementationModel,
-                                            identification = result.data?.data?.get(0)?.identification?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            target = result.data?.data?.get(0)?.target?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            sebabMasalah = result.data?.data?.get(0)?.sebabMasalah,
-                                            akarMasalah = result.data?.data?.get(0)?.akarMasalah,
-                                            nilaiOutput = result.data?.data?.get(0)?.nilaiOutput?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            nqiModel = result.data?.data?.get(0)?.nqiModel,
-                                            teamMember = result.data?.data?.get(0)?.teamMember,
-                                            categoryFixing = result.data?.data?.get(0)?.categoryFixing,
-                                            hasilImplementasi = result.data?.data?.get(0)?.implementationResult?.let {
-                                                HtmlCompat.fromHtml(
-                                                    it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                                ).toString()
-                                            },
-                                            attachment = result.data?.data?.get(0)?.attachment,
-                                            statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                            nik = result.data?.data?.get(0)?.nik,
-                                            headId = result.data?.data?.get(0)?.headId,
-                                            userId = result.data?.data?.get(0)?.userId,
-                                            orgId = result.data?.data?.get(0)?.orgId,
-                                            warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                            historyApproval = result.data?.data?.get(0)?.historyApproval,
+                                        if (result.data?.data?.isEmpty() == true) {
+                                            SnackBarCustom.snackBarIconInfo(
+                                                binding.root,
+                                                layoutInflater,
+                                                resources,
+                                                binding.root.context,
+                                                result.data.message,
+                                                R.drawable.ic_close,
+                                                R.color.red_500
+                                            )
 
-                                            activityType = PI,
-                                            submitType = if (argsAction == EDIT) 2 else 1,
-                                            comment = "",
-                                            source = PI_DETAIL_DATA
-                                        )
+                                            binding.noDataScreen.root.visibility = View.VISIBLE
+                                        } else {
+                                            binding.bottomNavigationBar.visibility = View.VISIBLE
 
-                                        initToolbar(argsTitle)
-                                        initComponent()
-                                        Timber.d("###-- Success getDetailPiItem")
+                                            HawkUtils().setTempDataCreatePi(
+                                                id = result.data?.data?.get(0)?.id,
+                                                piNo = result.data?.data?.get(0)?.piNo,
+                                                department = result.data?.data?.get(0)?.department,
+                                                years = result.data?.data?.get(0)?.years,
+                                                date = result.data?.data?.get(0)?.date,
+                                                branchCode = result.data?.data?.get(0)?.branchCode,
+                                                branch = result.data?.data?.get(0)?.branch,
+                                                subBranch = result.data?.data?.get(0)?.subBranch,
+                                                title = result.data?.data?.get(0)?.title,
+                                                statusImplementationModel = result.data?.data?.get(0)?.statusImplementationModel,
+                                                identification = result.data?.data?.get(0)?.identification?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                target = result.data?.data?.get(0)?.target?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                sebabMasalah = result.data?.data?.get(0)?.sebabMasalah,
+                                                akarMasalah = result.data?.data?.get(0)?.akarMasalah,
+                                                nilaiOutput = result.data?.data?.get(0)?.nilaiOutput?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                nqiModel = result.data?.data?.get(0)?.nqiModel,
+                                                teamMember = result.data?.data?.get(0)?.teamMember,
+                                                categoryFixing = result.data?.data?.get(0)?.categoryFixing,
+                                                hasilImplementasi = result.data?.data?.get(0)?.implementationResult?.let {
+                                                    HtmlCompat.fromHtml(
+                                                        it, HtmlCompat.FROM_HTML_MODE_LEGACY
+                                                    ).toString()
+                                                },
+                                                attachment = result.data?.data?.get(0)?.attachment,
+                                                statusProposal = result.data?.data?.get(0)?.statusProposal,
+                                                nik = result.data?.data?.get(0)?.nik,
+                                                headId = result.data?.data?.get(0)?.headId,
+                                                directMgrNik = result.data?.data?.get(0)?.directMgrNik,
+                                                directMgr = result.data?.data?.get(0)?.directMgr,
+                                                userId = result.data?.data?.get(0)?.userId,
+                                                orgId = result.data?.data?.get(0)?.orgId,
+                                                warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                                historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                                activityType = PI,
+                                                submitType = if (argsAction == EDIT) 2 else 1,
+                                                comment = "",
+                                                source = PI_DETAIL_DATA
+                                            )
+
+                                            initComponent()
+                                            Timber.d("###-- Success getDetailPiItem")
+                                        }
                                     }
                                     Result.Status.ERROR -> {
                                         binding.bottomNavigationBar.visibility = View.GONE
+                                        binding.noDataScreen.root.visibility = View.VISIBLE
                                         HelperLoading.hideLoading()
+
                                         Toast.makeText(
                                             this,
                                             "Error : ${result.message}",
@@ -185,9 +207,12 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                                 }
                             }
-                        })
+                        }
                     }
                 } catch (e: Exception) {
+                    binding.bottomNavigationBar.visibility = View.GONE
+                    binding.noDataScreen.root.visibility = View.VISIBLE
+
                     Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                     Timber.d("###-- Error onCreate")
                 }
@@ -202,9 +227,12 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
+                    subBranch = HawkUtils().getDataLogin().SUB_BRANCH,
                     department = HawkUtils().getDataLogin().DEPARTMENT,
                     statusProposal = statusProposal,
                     headId = headId,
+                    directMgr = HawkUtils().getDataLogin().DIRECT_MANAGER,
+                    directMgrNik = HawkUtils().getDataLogin().DIRECT_MANAGER_NIK,
                     userId = userId,
                     orgId = orgId,
                     warehouseId = warehouseId,
@@ -306,27 +334,26 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                             val updateProposal = ProjectImprovementCreateModel(
                                 data?.id,data?.piNo,
                                 userId = userId,
-                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,data?.department,
+                                data?.nik,data?.orgId, data?.warehouseId,data?.headId,directMgr = data?.directMgr,directMgrNik = data?.directMgrNik,data?.department,
                                 data?.years, data?.date,data?.branchCode,data?.branch,data?.subBranch,
                                 data?.title,data?.statusImplementationModel,data?.identification,
                                 data?.target,data?.sebabMasalah,data?.akarMasalah,data?.nilaiOutput,
                                 data?.nqiModel,data?.teamMember,data?.categoryFixing,data?.implementationResult,
-                                data?.attachment,data?.statusProposal,data?.historyApproval, score,
+                                data?.attachment,data?.statusProposal,historyApproval = data?.historyApproval, score = score,
                                 activityType = PI,submitType = key, comment = comment
                             )
-
-                            UpdateStatusProposalPi(
-                                viewModel,
-                                context = applicationContext,
-                                owner = this@ProjectImprovementCreateWizard
-                            ).updatePi(
-                                data = updateProposal,
-                                context = applicationContext,
-                                owner = this@ProjectImprovementCreateWizard
-                            ) {
-                                if(it){
-                                    finish()
-                                    HawkUtils().removeDataCreateProposal(source)
+                            lifecycleScope.launch {
+                                UpdateStatusProposalPi(
+                                    viewModel,
+                                    context = applicationContext,
+                                ).updatePi(
+                                    data = updateProposal,
+                                    context = applicationContext,
+                                ) {
+                                    if (it) {
+                                        finish()
+                                        HawkUtils().removeDataCreateProposal(source)
+                                    }
                                 }
                             }
                         } else {
@@ -530,18 +557,18 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
                     1, 11, 4 -> {
                         when (action) {
                             EDIT, ADD -> {
-                                initialTypeProposal = "Save"
-                                buttonInitialTypeProposal = "Save"
+                                initialTypeProposal = "Simpan Proposal"
+                                buttonInitialTypeProposal = "Simpan"
                             }
                             else -> {
-                                initialTypeProposal = "Submit"
-                                buttonInitialTypeProposal = "Send"
+                                initialTypeProposal = "Kirim Proposal"
+                                buttonInitialTypeProposal = "Kirim"
                             }
                         }
                     }
-                    5, 9 ->{
-                        initialTypeProposal = "Submit Laporan Akhir"
-                        buttonInitialTypeProposal = "Send"
+                    6, 9 ->{
+                        initialTypeProposal = "Kirim Laporan Akhir"
+                        buttonInitialTypeProposal = "Kirim"
                     }
                     8 -> {
                         initialTypeProposal = "Review"
@@ -551,54 +578,97 @@ class ProjectImprovementCreateWizard : AppCompatActivity(), HasSupportFragmentIn
 
                 notification = HelperNotification()
                 binding.apply {
-                    notification.shownotificationyesno(
-                        this@ProjectImprovementCreateWizard,
-                        applicationContext,
-                        R.color.blue_500,
-                        initialTypeProposal,
-                        resources.getString(R.string.submit_desc),
-                        buttonInitialTypeProposal,
-                        resources.getString(R.string.cancel),
-                        object  : HelperNotification.CallBackNotificationYesNo {
-                            override fun onNotificationNo() {
+                    if (data?.piNo.isNullOrEmpty()) {
+                        notification.showNotificationYesNoSubmit(
+                            this@ProjectImprovementCreateWizard,
+                            applicationContext,
+                            R.color.blue_500,
+                            initialTypeProposal,
+                            resources.getString(R.string.submit_desc),
+                            buttonInitialTypeProposal,
+                            resources.getString(R.string.submit),
+                            resources.getString(R.string.cancel),
+                            object : HelperNotification.CallBackNotificationYesNoSubmit {
+                                override fun onNotificationNo() {
 
-                            }
+                                }
 
-                            override fun onNotificationYes() {
-                                if (data?.piNo.isNullOrEmpty()){
+                                override fun onNotificationYes() {
                                     UpdateStatusProposalPi(
                                         viewModel,
                                         context = applicationContext,
-                                        owner = this@ProjectImprovementCreateWizard
                                     ).submitPi(
                                         data = data!!,
+                                        action = "save",
                                         context = applicationContext,
                                         owner = this@ProjectImprovementCreateWizard
                                     ) {
-                                        if(it){
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
-                                        }
-                                    }
-                                }else {
-                                    UpdateStatusProposalPi(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@ProjectImprovementCreateWizard
-                                    ).updatePi(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@ProjectImprovementCreateWizard
-                                    ) {
-                                        if(it){
+                                        if (it) {
                                             finish()
                                             HawkUtils().removeDataCreateProposal(source)
                                         }
                                     }
                                 }
+
+                                override fun onNotificationSubmit() {
+                                    if (data?.statusProposal?.id == 1) {
+                                        UpdateStatusProposalPi(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).submitPi(
+                                            data = data!!,
+                                            action = "submit",
+                                            context = applicationContext,
+                                            owner = this@ProjectImprovementCreateWizard
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
+                                        }
+                                    } else {
+                                        SnackBarCustom.snackBarIconInfo(
+                                            root, layoutInflater, resources, root.context,
+                                            resources.getString(R.string.title_past_period),
+                                            R.drawable.ic_close, R.color.red_500
+                                        )
+                                    }
+                                }
                             }
-                        }
-                    )
+                        )
+                    } else {
+                        notification.showNotificationYesNo(
+                            this@ProjectImprovementCreateWizard,
+                            applicationContext,
+                            R.color.blue_500,
+                            initialTypeProposal,
+                            resources.getString(R.string.submit_desc),
+                            buttonInitialTypeProposal,
+                            resources.getString(R.string.cancel),
+                            object : HelperNotification.CallBackNotificationYesNo {
+                                override fun onNotificationNo() {
+
+                                }
+
+                                override fun onNotificationYes() {
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalPi(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).updatePi(
+                                            data = data!!,
+                                            context = applicationContext,
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                    }
                 }
 
             }

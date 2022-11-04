@@ -334,9 +334,9 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
     private val _postSubmitCreatePi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>>()
     val postSubmitCreatePi: LiveData<Event<LiveData<Result<ResultsResponse<ProjectImprovementResponseModel>>>>> get() = _postSubmitCreatePi
 
-    fun setPostSubmitCreatePi(projectImprovementCreateModel: ProjectImprovementCreateModel) {
+    fun setPostSubmitCreatePi(projectImprovementCreateModel: ProjectImprovementCreateModel, action: String) {
         viewModelScope.launch(Dispatchers.Main){
-            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreatePi(projectImprovementCreateModel)}
+            val result = withContext(Dispatchers.Default) { repository.observeSubmitCreatePi(projectImprovementCreateModel, action)}
             _postSubmitCreatePi.value = Event(result)
         }
     }
@@ -351,7 +351,6 @@ class ProjectImprovementViewModel @Inject constructor(private val repository: Pi
                 _postSubmitUpdatePi.value = Event(result)
         }
     }
-
 
     // === Remove List PI
     private val _removeListPi = MutableLiveData<Event<LiveData<Result<ResultsResponse<ArrayList<String>>>>>>()

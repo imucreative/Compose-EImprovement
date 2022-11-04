@@ -6,9 +6,11 @@ import javax.inject.Inject
 
 class BalanceRemoteDataSource @Inject constructor(private val service:AppService) :BaseDataSource() {
 
-    suspend fun requestBalance(
-    userId:Int
-    ) = getResult {
+    suspend fun requestBalance(userId:Int) = getResult {
         service.getBalance(userId)
+    }
+
+    suspend fun requestCalendarDashboard(year: Int) = getResult {
+        service.getCalendarDashboard(year)
     }
 }

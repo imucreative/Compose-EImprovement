@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fastrata.eimprovement.api.ResultsResponse
 import com.fastrata.eimprovement.data.Result
-import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
 import com.fastrata.eimprovement.wrapper.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

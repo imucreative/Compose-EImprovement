@@ -76,12 +76,12 @@ class ListApprovalHistoryStatusSsFragment: Fragment(), Injectable {
 
     private fun initList() {
         try {
-            viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner, {
+            viewModelHistoryStatus.getApprovalHistoryStatus().observe(viewLifecycleOwner) {
                 if (it != null) {
                     adapter.setList(it)
                     Timber.i("### ambil dari getApprovalHistoryStatus $it")
                 }
-            })
+            }
         }catch (err : Exception){
             Toast.makeText(activity,"### error dari getApprovalHistoryStatus",Toast.LENGTH_SHORT).show()
         }

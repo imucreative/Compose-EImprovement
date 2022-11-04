@@ -21,6 +21,7 @@
             android:background="@color/colorMainEImprovement"
             android:text="@string/info"
             android:id="@+id/txt_title"
+            android:textSize="20sp"
             android:textColor="@android:color/white"
             android:padding="10dp"
             android:gravity="center_horizontal"
@@ -61,7 +62,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -102,7 +103,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -142,7 +143,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -182,7 +183,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -222,7 +223,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -262,7 +263,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -302,7 +303,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -342,7 +343,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -382,7 +383,7 @@
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"
@@ -418,13 +419,13 @@
                     android:text="@string/delete"
                     android:textStyle="bold"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Bold"
-                    android:textColor="@color/red_300" />
+                    android:textColor="@color/red_800" />
 
                 <View
                     android:layout_width="@dimen/spacing_large"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
+                <ImageView
                     android:layout_width="@dimen/spacing_xmlarge"
                     android:layout_height="@dimen/spacing_xmlarge"
                     android:background="@android:color/transparent"

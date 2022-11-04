@@ -10,20 +10,18 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
     )
 
     fun observeListTeamMember(
-        departmentId: Int,
-        orgId: Int,
-        warehouseId: Int,
+        departmentName: String,
+        userId: Int,
+        role: Int
     ) = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.requestListTeamMember(departmentId, orgId, warehouseId) }
+        networkCall = { remoteDataSource.requestListTeamMember(departmentName, userId, role) }
     )
 
     fun observeListDepartment(
-        departmentId: Int,
-        orgId: Int,
-        warehouseId: Int,
+        userId: Int,
         proposalType: String
     ) = resultMutableLiveDataRemote(
-        networkCall = { remoteDataSource.requestListDepartment(departmentId, orgId, warehouseId, proposalType) }
+        networkCall = { remoteDataSource.requestListDepartment(userId, proposalType) }
     )
 
     fun observeListTeamRole() = resultMutableLiveDataRemote(
@@ -52,5 +50,9 @@ class GlobalRemoteRepository @Inject constructor(private val remoteDataSource: G
 
     fun observeCheckPeriod(typeProposal: String) = resultMutableLiveDataRemote(
         networkCall = { remoteDataSource.requestCheckPeriod(typeProposal) }
+    )
+
+    fun observeCheckUser(userId: Int) = resultMutableLiveDataRemote(
+        networkCall = { remoteDataSource.requestCheckUser(userId) }
     )
 }

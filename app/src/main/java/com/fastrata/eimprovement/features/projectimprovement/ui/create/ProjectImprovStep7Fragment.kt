@@ -49,8 +49,9 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
     private lateinit var selectedDepartment: MemberDepartmentItem
     private lateinit var selectedTask: MemberTaskItem
     private var source: String = PI_CREATE
-    private var departmentId: Int? = 0
+    // private var departmentId: Int? = 0
     private var orgId: Int? = 0
+    private var userId: Int? = 0
     private var warehouseId: Int? = 0
 
     override fun onCreateView(
@@ -70,13 +71,14 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
         data = HawkUtils().getTempDataCreatePi(source)
         listTeamMemberViewModel.setSuggestionSystemTeamMember(source)
 
-        departmentId = HawkUtils().getDataLogin().DEPARTMENT_ID
+        // departmentId = HawkUtils().getDataLogin().DEPARTMENT_ID
         orgId = HawkUtils().getDataLogin().ORG_ID
+        userId = HawkUtils().getDataLogin().USER_ID
         warehouseId = HawkUtils().getDataLogin().WAREHOUSE_ID
         val proposalType = PI
 
         masterDataTeamMemberViewModel.setDepartment(
-            departmentId!!, orgId!!, warehouseId!!, proposalType
+            userId!!, proposalType
         )
         masterDataTeamMemberViewModel.setTeamRole()
 
@@ -143,7 +145,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
 
     private fun retrieveDataMemberName(){
         masterDataTeamMemberViewModel.getTeamMemberName.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -156,20 +158,24 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get team member name")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataDepartment(){
         masterDataTeamMemberViewModel.getDepartment.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -182,20 +188,24 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get Department")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
     private fun retrieveDataTeamRole(){
         masterDataTeamMemberViewModel.getTeamRole.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -208,14 +218,18 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get Team role")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
@@ -248,9 +262,9 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                 selectedDepartment = listDepartmentItem!![i]
                 memberName.setText("")
                 masterDataTeamMemberViewModel.setTeamMemberName(
-                    listDepartmentItem!![i].id,
-                    orgId!!,
-                    warehouseId!!
+                    listDepartmentItem!![i].department,
+                    userId!!,
+                    selectedTask.id
                 )
                 hideKeyboard()
             }
@@ -268,6 +282,10 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
             memberTask.setAdapter(adapterMemberTask)
             memberTask.onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
                 selectedTask = listTaskItem!![i]
+                memberDepartment.setText("")
+                memberName.setText("")
+                memberName.setAdapter(null)
+                listMemberItem = listOf()
                 hideKeyboard()
             }
         }
@@ -287,23 +305,23 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             teamMember?.remove(dataMember)
 
                             listTeamMemberViewModel.updateTeamMember(teamMember, source)
-                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+                            listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner) {
                                 if (it != null) {
                                     teamMemberAdapter.setListTeamMember(it)
                                 }
-                            })
+                            }
                         }
                     }
                 }
             }
         })
 
-        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner, {
+        listTeamMemberViewModel.getSuggestionSystemTeamMember().observe(viewLifecycleOwner) {
             if (it != null) {
                 teamMemberAdapter.setListTeamMember(it)
                 Timber.i("### ambil dari getSuggestionSystemTeamMember $it")
             }
-        })
+        }
     }
 
     /*private val onItemClickListener = OnItemClickListener { adapterView, view, i, l ->
@@ -375,7 +393,7 @@ class ProjectImprovStep7Fragment : Fragment(), Injectable {
                             id = selectedMember.id, name = selectedMember.name
                         )
                         val memberDepartmentObj = MemberDepartmentItem(
-                            id = selectedDepartment.id, department = selectedDepartment.department
+                            department = selectedDepartment.department
                         )
                         val memberTaskObj = MemberTaskItem(
                             id = selectedTask.id, task = selectedTask.task

@@ -91,7 +91,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         setData()
         setValidation()
 
-        if ((action == APPROVE) || (action == DETAIL)) {
+        if (conditionDetail()) {
             disableForm()
         }
     }
@@ -110,9 +110,20 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
         }
     }
 
+    private fun conditionDetail(): Boolean {
+        return when (action) {
+            DETAIL, APPROVE -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
     private fun retrieveDataGift(){
         changesRewardViewModel.getAllGift.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
@@ -125,14 +136,18 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error getAllGift")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 
@@ -164,34 +179,34 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
                     reward?.remove(data)
                     changesRewardViewModel.updateReward(reward)
-                    changesRewardViewModel.getChangeRewardPoint().observe(viewLifecycleOwner, {
+                    changesRewardViewModel.getChangeRewardPoint().observe(viewLifecycleOwner) {
                         if (it != null) {
                             rewardAdapter.setListReward(it)
                         }
-                    })
+                    }
 
                     val total = totalBalance()
                     changesRewardViewModel.setTotalReward(total)
-                    changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner, {
-                        binding.totalReward.text = Tools.doubleToRupiah(it.toDouble(),2)
-                    })
+                    changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner) {
+                        binding.totalReward.text = Tools.doubleToRupiah(it.toDouble(), 2)
+                    }
                 }
             }
         })
 
-        changesRewardViewModel.getChangeRewardPoint().observe(viewLifecycleOwner, {
-            if (it != null){
+        changesRewardViewModel.getChangeRewardPoint().observe(viewLifecycleOwner) {
+            if (it != null) {
                 rewardAdapter.setListReward(it)
             }
-        })
+        }
     }
 
     private fun totalBalance(): Int {
-        Timber.e("data_reward : "+ data?.reward)
+        Timber.e("data_reward : ${data?.reward}")
         if(data?.reward != null){
-            val itemCount = data?.reward!!.map { values ->
+            val itemCount = data?.reward!!.sumOf { values ->
                 values!!.nilai
-            }.sum()
+            }
             intTotal = itemCount
             Timber.i("Total : $intTotal")
         }else{
@@ -240,9 +255,9 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
 
                         val total = totalBalance()
                         changesRewardViewModel.setTotalReward(total)
-                        changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner,{
-                            totalReward.text = Tools.doubleToRupiah(it.toDouble(),2)
-                        })
+                        changesRewardViewModel.getTotalReward().observe(viewLifecycleOwner) {
+                            totalReward.text = Tools.doubleToRupiah(it.toDouble(), 2)
+                        }
 
                         hadiahCp.setText("")
                         nilaiCp.setText("")
@@ -269,7 +284,7 @@ class ChangesPointStep2Fragment: Fragment(), Injectable {
                                     R.drawable.ic_close, R.color.red_500)
                                 stat = false
                             }
-                            intSaldo < totalHadiah -> {
+                            !conditionDetail() && (intSaldo < totalHadiah) -> {
                                 SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.saldo_kurang),

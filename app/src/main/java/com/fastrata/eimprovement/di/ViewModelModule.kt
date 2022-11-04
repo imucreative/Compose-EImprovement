@@ -116,6 +116,11 @@ abstract class ViewModelModule {
     @ViewModelKey(AttachmentViewModel::class)
     abstract fun bindAttachmentViewModel(viewModel : AttachmentViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(CheckUserViewModel::class)
+    abstract fun bindCheckUserViewModel(viewModel : CheckUserViewModel): ViewModel
+
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

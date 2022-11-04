@@ -1,8 +1,11 @@
 package com.fastrata.eimprovement.features.projectimprovement.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.databinding.ItemProjectImprovmentBinding
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementModel
 import com.fastrata.eimprovement.features.projectimprovement.callback.ProjectSystemCallback
@@ -47,6 +50,16 @@ class ProjectImprovementAdapter : RecyclerView.Adapter<ProjectImprovementAdapter
                 branchPi.text = data.branch
                 subBranchPi.text = data.subBranch
                 createbyPi.text = data.createdBy
+
+                statusPi.setTextColor(
+                    when (data.status.id) {
+                        5 -> ContextCompat.getColor(binding.root.context, R.color.blue_800)
+                        4, 9 -> ContextCompat.getColor(binding.root.context, R.color.yellow_800)
+                        10 -> ContextCompat.getColor(binding.root.context, R.color.green_800)
+                        12 -> ContextCompat.getColor(binding.root.context, R.color.red_800)
+                        else -> Color.BLACK
+                    }
+                )
             }
         }
     }

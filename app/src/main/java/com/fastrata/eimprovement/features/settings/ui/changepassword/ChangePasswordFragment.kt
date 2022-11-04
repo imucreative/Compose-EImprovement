@@ -33,12 +33,11 @@ class ChangePasswordFragment : Fragment(), Injectable {
     private lateinit var notification: HelperNotification
     private lateinit var viewModel : ChangePasswordCreateViewModel
 
-    private var old_password: String? = ""
-    private var new_password: String? = ""
-    private var conf_password: String? = ""
+    private var oldPasswordVal: String? = ""
+    private var newPasswordVal: String? = ""
+    private var confPasswordVal: String? = ""
     private var userId : Int = 0
     private var userName : String = ""
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,9 +66,9 @@ class ChangePasswordFragment : Fragment(), Injectable {
         notification = HelperNotification()
 
         binding.apply {
-            old_password = oldPassword.text.toString()
-            new_password = newPassword.text.toString()
-            conf_password = confirmPassword.text.toString()
+            oldPasswordVal = oldPassword.text.toString()
+            newPasswordVal = newPassword.text.toString()
+            confPasswordVal = confirmPassword.text.toString()
 
             btnSubmit.setOnClickListener {
                 validateData()
@@ -117,11 +116,11 @@ class ChangePasswordFragment : Fragment(), Injectable {
     }
 
     private fun sendData(oldPassword: String, newPassword: String) {
-        Timber.d("message Req:"+oldPassword+"/"+newPassword+"/"+userId+"/"+userName)
+        Timber.d("message Req: $oldPassword / $newPassword / $userId / $userName")
         try {
             viewModel.setChangePassword(userId, userName, oldPassword, newPassword)
             viewModel.getChangePassword.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -159,7 +158,7 @@ class ChangePasswordFragment : Fragment(), Injectable {
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()

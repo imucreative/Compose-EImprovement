@@ -9,8 +9,10 @@ import android.R.layout.simple_list_item_1
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
@@ -33,7 +35,7 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,14 +59,9 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var listStatusProposalItem: List<StatusProposalItem>? = null
     private var listBranchItem: List<BranchItem>? = null
     private var listSubBranchItem: List<SubBranchItem>? = null
-    private lateinit var selectedStatusProposal: StatusProposalItem
-    private lateinit var selectedBranch: BranchItem
-    private lateinit var selectedSubBranch: SubBranchItem
     private var statusProposalId = 0
     private var branchId = 0
     private var subBranchId = 0
-    lateinit var fromDate: Date
-    lateinit var toDate: Date
     private var userId: Int = 0
     private var userName: String = ""
     private var limit: Int = 10
@@ -72,9 +69,19 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
-    private val sdf = SimpleDateFormat("yyyy-MM-dd")
+    private var jobLevelId: Int = 0
+    private var docId = ""
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var fromDate: Date
+    private lateinit var toDate: Date
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var notification: HelperNotification
+    private lateinit var selectedStatusProposal: StatusProposalItem
+    private lateinit var selectedBranch: BranchItem
+    private lateinit var selectedSubBranch: SubBranchItem
+
+    private val args : ProjectImprovementFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +91,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         _binding = FragmentProjectImprovementBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
+
+        docId = args.docId.toString()
 
         listPiViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
@@ -100,6 +109,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         userId = HawkUtils().getDataLogin().USER_ID
         userName = HawkUtils().getDataLogin().USER_NAME
         roleName = HawkUtils().getDataLogin().ROLE_NAME
+        jobLevelId = HawkUtils().getDataLogin().POSITION_ID!!
 
         try {
             masterDataStatusProposalViewModel.setStatusProposal()
@@ -135,7 +145,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                 userId, limit, page, roleName, PI,
-                userName = userName, piNo = "", statusId = 0, title = "", orgId = 0,
+                userName = userName, piNo = docId, statusId = 0, title = "", orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 
@@ -187,11 +197,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 subBranchId = selectedSubBranch.warehouseId
                             }
 
+                            val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                            val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                             val listProjectImprovementRemoteRequest = ProjectImprovementRemoteRequest(
                                 userId, limit, page, roleName, PI,
                                 userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
-                                startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
+                                startDate = startDate, endDate = endDate
                             )
 
                             listPiViewModel.setListPi(listProjectImprovementRemoteRequest)
@@ -203,13 +216,24 @@ class ProjectImprovementFragment : Fragment(), Injectable{
             })
 
             createPi.setOnClickListener {
-                try{
-                    checkPeriodViewModel.setCheckPeriod(PI)
-                    getStatusCheckPeriod()
-                }catch (err : Exception){
-                    Timber.e("Error setCheckPeriod : $err")
-                    HelperLoading.hideLoading()
-                    Toast.makeText(requireContext(), "Error : $err", Toast.LENGTH_LONG).show()
+                when (jobLevelId) {
+                    3, 5 -> {
+                        try {
+                            checkPeriodViewModel.setCheckPeriod(PI)
+                            getStatusCheckPeriod()
+                        } catch (err: Exception) {
+                            Timber.e("Error setCheckPeriod : $err")
+                            HelperLoading.hideLoading()
+                            Toast.makeText(requireContext(), "Error : $err", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                    else -> {
+                        SnackBarCustom.snackBarIconInfo(
+                            root, layoutInflater, resources, root.context,
+                            resources.getString(R.string.level_not_eligible),
+                            R.drawable.ic_close, R.color.red_500)
+                    }
                 }
             }
 
@@ -271,7 +295,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         isLoading = true
         try {
             listPiViewModel.getListPiItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -313,7 +337,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             HelperLoading.hideLoading()
@@ -330,7 +354,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun retrieveDataStatusProposal(){
         try {
             masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -357,7 +381,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtStatusProposal.isEnabled = false
@@ -374,7 +398,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun getStatusCheckPeriod(){
         try {
             checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -386,14 +410,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 val statusProposal = result.data?.data?.get(0)
                                 Timber.e("Period : $statusProposal")
                                 if (statusProposal?.id == 11) {
-                                    notification.shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(),
                                         requireContext(),
                                         R.color.blue_500,
                                         resources.getString(R.string.title_past_period),
                                         "",
                                         resources.getString(R.string.agree),
-                                        resources.getString(R.string.not_agree),
+                                        resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -402,7 +426,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                             override fun onNotificationYes() {
                                                 val direction =
                                                     ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                                        toolbarTitle = "Create Project Improvement",
+                                                        toolbarTitle = "Buat Project Improvement",
                                                         action = ADD,
                                                         idPi = 0,
                                                         piNo = "",
@@ -417,7 +441,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 } else {
                                     val direction =
                                         ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                            toolbarTitle = "Create Project Improvement",
+                                            toolbarTitle = "Buat Project Improvement",
                                             action = ADD,
                                             idPi = 0,
                                             piNo = "",
@@ -439,7 +463,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err: Exception){
             HelperLoading.hideLoading()
@@ -455,7 +479,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun retrieveDataBranch(){
         try {
             masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -482,7 +506,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtBranch.isEnabled = false
@@ -499,7 +523,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun retrieveDataSubBranch(){
         try {
             masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -526,7 +550,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                     }
-                })
+                }
             }
         }catch (err: Exception){
             binding.edtSubBranch.isEnabled = false
@@ -599,7 +623,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
     private fun initComponent() {
         adapter.setProjectImprovementSystemCallback(object : ProjectSystemCallback {
             override fun onItemClicked(data: ProjectImprovementModel) {
-                notification.showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),
+                    data.piNo, PI,
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -626,26 +651,30 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onSubmit() {
-                            HelperNotification().shownotificationyesno(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Submit Proposal", resources.getString(R.string.submit_desc),
-                                "Submit", resources.getString(R.string.no),
+                            notification.showNotificationYesNo(
+                                requireActivity(), requireContext(), R.color.blue_800,
+                                "Kirim Proposal", resources.getString(R.string.submit_desc),
+                                "Kirim", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalPi(
-                                            listPiViewModel,
-                                            context = requireContext(),
-                                            owner = this@ProjectImprovementFragment
-                                        ).getDetailDataPi(
-                                            id = data.idPi,
-                                            userId = data.userId,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalPi(
+                                                listPiViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataPi(
+                                                id = data.idPi,
+                                                piNo = data.piNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if (it) {
+                                                    //HawkUtils().removeDataCreateProposal(PI_DETAIL_DATA)
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
                                             }
                                         }
                                     }
@@ -662,26 +691,29 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onImplementation() {
-                            HelperNotification().shownotificationyesno(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Implementation Proposal", resources.getString(R.string.submit_desc),
-                                "Implementation", resources.getString(R.string.no),
+                            notification.showNotificationYesNo(
+                                requireActivity(), requireContext(), R.color.blue_800,
+                                "Implementasi Proposal", resources.getString(R.string.implementation_desc),
+                                "Implementasi", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalPi(
-                                            listPiViewModel,
-                                            context = requireContext(),
-                                            owner = this@ProjectImprovementFragment
-                                        ).getDetailDataPi(
-                                            id = data.idPi,
-                                            userId = data.userId,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalPi(
+                                                listPiViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataPi(
+                                                id = data.idPi,
+                                                piNo = data.piNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if (it) {
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
                                             }
                                         }
                                     }
@@ -691,7 +723,12 @@ class ProjectImprovementFragment : Fragment(), Injectable{
 
                         override fun onSubmitLaporan() {
                             val direction = ProjectImprovementFragmentDirections.actionProjectImprovementFragmentToProjectImprovementCreateWizard(
-                                toolbarTitle = "Submit Project Improvement", action = SUBMIT_PROPOSAL, idPi = data.idPi, piNo = data.piNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Kirim Project Improvement",
+                                action = SUBMIT_PROPOSAL,
+                                idPi = data.idPi,
+                                piNo = data.piNo,
+                                type = "",
+                                statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -705,14 +742,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         }
 
                         override fun onDelete() {
-                            notification.shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
-                                R.color.blue_500,
+                                R.color.red_800,
                                 resources.getString(R.string.delete),
                                 resources.getString(R.string.delete_confirmation),
                                 resources.getString(R.string.ok),
-                                resources.getString(R.string.no),
+                                resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
                                     }
@@ -722,7 +759,8 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 }
                             )
                         }
-                    })
+                    }
+                )
             }
         })
 
@@ -733,10 +771,10 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         try{
             listPiViewModel.deletePiList(data.idPi)
             listPiViewModel.doRemovePi.observeEvent(this@ProjectImprovementFragment){ resultObserve ->
-                resultObserve.observe(viewLifecycleOwner,{result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
-                    if (result != null){
-                        when(result.status) {
+                    if (result != null) {
+                        when (result.status) {
                             Result.Status.LOADING -> {
                                 HelperLoading.displayLoadingWithText(
                                     requireContext(),
@@ -745,7 +783,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                                 )
                                 Timber.d("###-- Loading get doRemoveSs loading")
                             }
-                            Result.Status.SUCCESS  -> {
+                            Result.Status.SUCCESS -> {
                                 HelperLoading.hideLoading()
                                 clearFormFilter()
                                 getDataListPi()
@@ -763,7 +801,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             Toast.makeText(requireContext(), "Error doRemove : ${err.message}", Toast.LENGTH_LONG).show()
@@ -775,7 +813,7 @@ class ProjectImprovementFragment : Fragment(), Injectable{
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Project Improvement (PI)")
+        setToolbar(toolbar, "Project Improvement")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -804,8 +842,10 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtFromDate.setText("$year-$monthStr-$dayStr")
-                        fromDate = sdf.parse(edtFromDate.text.toString())
+
+                        fromDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                        edtFromDate.setText(formatDateDisplay.format(fromDate))
+
                         edtToDate.text!!.clear()
                     }
                 })
@@ -817,22 +857,17 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtToDate.setText("$year-$monthStr-$dayStr")
-                        toDate = sdf.parse(edtToDate.text.toString())
-                        if (edtFromDate.text.isNullOrEmpty()){
+
+                        toDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                        if (edtFromDate.text.isNullOrEmpty() || !toDate.after(fromDate)){
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                            edtFromDate.requestFocus()
-                        }else{
-                            if (!toDate.after(fromDate)){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                edtToDate.text!!.clear()
-                            }
+                            edtToDate.text!!.clear()
+                        } else {
+                            edtToDate.setText(formatDateDisplay.format(toDate))
                         }
                     }
                 })
@@ -866,11 +901,14 @@ class ProjectImprovementFragment : Fragment(), Injectable{
                     try {
                         adapter.clear()
 
+                        val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                        val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                         val listPiRemoteRequest = ProjectImprovementRemoteRequest(
                             userId, limit, page, roleName, PI,
                             userName = userName, piNo = edtNoPi.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), orgId = branchId, warehouseId = subBranchId,
-                            startDate = edtFromDate.text.toString(), endDate = edtToDate.text.toString()
+                            startDate = startDate, endDate = endDate
                         )
 
                         listPiViewModel.setListPi(listPiRemoteRequest)

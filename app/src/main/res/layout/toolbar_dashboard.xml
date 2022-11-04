@@ -33,7 +33,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:contentInsetStartWithNavigation="0dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:subtitle="welcome to E-Improvement"
+            app:subtitle="Selamat Datang di E-Improvement"
             app:subtitleTextAppearance="@style/Base.TextAppearance.AppCompat.Caption"
             app:subtitleTextColor="@color/grey_10"
             app:title="@string/hi"/>

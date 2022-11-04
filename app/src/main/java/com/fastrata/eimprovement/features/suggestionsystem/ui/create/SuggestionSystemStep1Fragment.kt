@@ -99,11 +99,11 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
     private fun disableForm() {
         binding.apply {
             titleSuggestion.isEnabled = false
-            //edtLayoutTitle.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+            // edtLayoutTitle.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
             checkboxOther.isEnabled = false
             tvCheckboxOther.isClickable = false
             edtLainLain.isEnabled = false
-            //edtLayoutLainLain.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey_10))
+            // edtLayoutLainLain.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
         }
     }
 
@@ -149,14 +149,18 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
         })
 
         masterDataCategoryViewModel.getCategory.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
-                            categoryAdapter.setListCategoryImprovement(result.data?.data, listCategory, ssAction!!)
+                            categoryAdapter.setListCategoryImprovement(
+                                result.data?.data,
+                                listCategory,
+                                ssAction!!
+                            )
                             listCategory.map { checkList ->
                                 if (checkList?.id == 0) {
                                     binding.apply {
@@ -171,14 +175,18 @@ class SuggestionSystemStep1Fragment: Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get master item getCategory")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 

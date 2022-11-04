@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -74,7 +75,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                 cardViewHasilImplementasi.visibility = View.VISIBLE
                 hasilImplementasiImprovement.setText(data?.implementationResult)
             }*/
-            hasilImplementasiImprovement.setText(data?.implementationResult)
+            hasilImplementasiImprovement.setText(if (data?.implementationResult == "null" || data?.implementationResult == null) "" else data?.implementationResult)
             data?.categoryFixing?.let { category ->
                 listCategory.addAll(category)
             }
@@ -96,13 +97,25 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                             hasilImplementasiImprovement.isEnabled = true
                         }
                     }
-                    else -> disableForm()
+                    else -> {
+                        when (data?.statusProposal?.id) {
+                            1, 11, 4 -> {
+                                binding.apply {
+                                    edtLainLain.isEnabled = true
+                                    cardViewHasilImplementasi.visibility = View.GONE
+                                }
+                            }
+                            else -> disableForm()
+                        }
+                    }
                 }
             }
             SUBMIT_PROPOSAL -> {
                 when {
                     conditionImplementation() -> {
-                        binding.hasilImplementasiImprovement.isEnabled = true
+                        binding.apply {
+                            hasilImplementasiImprovement.isEnabled = true
+                        }
                     }
                     else -> disableForm()
                 }
@@ -135,6 +148,7 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
             edtLainLain.isEnabled = false
 
             hasilImplementasiImprovement.isEnabled = false
+            edtLayoutHasilImplementasiImprovement.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.grey_10)
         }
     }
 
@@ -179,14 +193,18 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
         })
 
         masterDataCategoryViewModel.getCategory.observeEvent(this) { resultObserve ->
-            resultObserve.observe(viewLifecycleOwner, { result ->
+            resultObserve.observe(viewLifecycleOwner) { result ->
                 if (result != null) {
                     when (result.status) {
                         Result.Status.LOADING -> {
                             Timber.d("###-- Loading get SS item getCategory")
                         }
                         Result.Status.SUCCESS -> {
-                            categoryAdapter.setListCategoryImprovement(result.data?.data, listCategory, action!!)
+                            categoryAdapter.setListCategoryImprovement(
+                                result.data?.data,
+                                listCategory,
+                                action!!
+                            )
                             listCategory.map { checkList ->
                                 if (checkList?.id == 0) {
                                     binding.apply {
@@ -201,14 +219,18 @@ class ProjectImprovStep8Fragment : Fragment(), Injectable {
                         }
                         Result.Status.ERROR -> {
                             HelperLoading.hideLoading()
-                            Toast.makeText(requireContext(),"Error : ${result.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error : ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             Timber.d("###-- Error get master item getCategory")
                         }
 
                     }
 
                 }
-            })
+            }
         }
     }
 

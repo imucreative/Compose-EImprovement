@@ -4,6 +4,7 @@ import com.fastrata.eimprovement.features.approval.data.model.ApprovalModel
 import com.fastrata.eimprovement.features.approval.data.model.ApprovalRemoteRequest
 import com.fastrata.eimprovement.features.changespoint.data.model.*
 import com.fastrata.eimprovement.features.dashboard.ui.data.BalanceModel
+import com.fastrata.eimprovement.features.dashboard.ui.data.CalendarDashboardModel
 import com.fastrata.eimprovement.features.login.data.model.LoginEntity
 import com.fastrata.eimprovement.features.login.data.model.LoginRemoteRequest
 import com.fastrata.eimprovement.features.projectimprovement.data.model.ProjectImprovementCreateModel
@@ -26,22 +27,23 @@ interface AppService {
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRemoteRequest): Response<ResultsResponse<LoginEntity>>
 
+    @GET("auth/checkuser/{USER_ID}")
+    suspend fun checkUser(@Path("USER_ID") userId: Int): Response<ResultsResponse<ResponseUserItem>>
+
     // Master
     @GET("master/category")
     suspend fun listCategory(): Response<ResultsResponse<CategoryImprovementItem>>
 
-    @GET("master/teammember/{DEPARTMENT_ID}/{ORG_ID}/{WAREHOUSE_ID}")
+    @GET("master/teammember/{DEPARTMENT_NAME}/{USER_ID}/{ROLE}")
     suspend fun listTeamMember(
-        @Path("DEPARTMENT_ID") departmentId: Int,
-        @Path("ORG_ID") orgId: Int,
-        @Path("WAREHOUSE_ID") warehouseId: Int,
+        @Path("DEPARTMENT_NAME") departmentName: String,
+        @Path("USER_ID") userId: Int,
+        @Path("ROLE") role: Int
     ): Response<ResultsResponse<MemberNameItem>>
 
-    @GET("master/department/{DEPARTMENT_ID}/{ORG_ID}/{WAREHOUSE_ID}/{PROPOSAL_TYPE}")
+    @GET("master/department/{USER_ID}/{PROPOSAL_TYPE}")
     suspend fun listDepartment(
-        @Path("DEPARTMENT_ID") departmentId: Int,
-        @Path("ORG_ID") orgId: Int,
-        @Path("WAREHOUSE_ID") warehouseId: Int,
+        @Path("USER_ID") userId: Int,
         @Path("PROPOSAL_TYPE") proposalType: String
     ): Response<ResultsResponse<MemberDepartmentItem>>
 
@@ -63,6 +65,10 @@ interface AppService {
     @GET("transaction/checkperiod/{TYPE_PROPOSAL}")
     suspend fun checkPeriod(@Path("TYPE_PROPOSAL") typeProposal: String): Response<ResultsResponse<StatusProposalItem>>
 
+    @GET("dashboard/calender/{YEAR}")
+    suspend fun getCalendarDashboard(
+        @Path("YEAR") year: Int
+    ): Response<ResultsResponse<CalendarDashboardModel>>
 
     // Suggestion System
     @POST("ss/list")
@@ -77,9 +83,10 @@ interface AppService {
         @Field("userId") userId: Int
     ): Response<ResultsResponse<SuggestionSystemCreateModel>>
 
-    @POST("ss/create")
+    @POST("ss/create/{ACTIONS}")
     suspend fun submitCreateSs(
-        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel
+        @Body suggestionSystemCreateModel: SuggestionSystemCreateModel,
+        @Path("ACTIONS") action : String
     ): Response<ResultsResponse<SuggestionSystemResponseModel>>
 
     @PUT("ss/remove/{SS_H_ID}")
@@ -106,9 +113,10 @@ interface AppService {
         @Field("userId") userId: Int
     ): Response<ResultsResponse<ProjectImprovementCreateModel>>
 
-    @POST("pi/create")
+    @POST("pi/create/{ACTIONS}")
     suspend fun submitCreatePi(
-        @Body projectImprovementCreateModel: ProjectImprovementCreateModel
+        @Body projectImprovementCreateModel: ProjectImprovementCreateModel,
+        @Path("ACTIONS") action : String
     ): Response<ResultsResponse<ProjectImprovementResponseModel>>
 
 

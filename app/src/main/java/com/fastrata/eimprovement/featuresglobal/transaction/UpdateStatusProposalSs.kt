@@ -2,141 +2,87 @@ package com.fastrata.eimprovement.featuresglobal.transaction
 
 import android.content.Context
 import android.widget.Toast
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
 import com.fastrata.eimprovement.features.suggestionsystem.data.model.SuggestionSystemCreateModel
 import com.fastrata.eimprovement.features.suggestionsystem.ui.SuggestionSystemViewModel
 import com.fastrata.eimprovement.data.Result
+import com.fastrata.eimprovement.features.suggestionsystem.data.model.StatusImplementation
+import com.fastrata.eimprovement.featuresglobal.data.model.StatusProposalItem
 import com.fastrata.eimprovement.utils.*
+import com.fastrata.eimprovement.workers.service
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 class UpdateStatusProposalSs(
     private val listSsViewModel: SuggestionSystemViewModel,
     private val context: Context,
-    private val owner: LifecycleOwner
     ) {
 
-    fun getDetailDataSs(
+    suspend fun getDetailDataSs(
         id: Int,
-        userId: Int,
+        ssNo: String,
+        statusProposal: StatusProposalItem,
         userNameSubmit: Int,
         status: (Boolean) -> Unit
     ) {
-        try {
-            listSsViewModel.setDetailSs(id, userId)
-
-            listSsViewModel.getDetailSsItem.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                Timber.d("###-- Loading getDetailSsItem to submit ")
-                            }
-                            Result.Status.SUCCESS -> {
-
-                                val dataCreateModel = SuggestionSystemCreateModel(
-                                    id = result.data?.data?.get(0)?.id,
-                                    ssNo = result.data?.data?.get(0)?.ssNo,
-                                    date = result.data?.data?.get(0)?.date,
-                                    title = result.data?.data?.get(0)?.title,
-                                    categoryImprovement = result.data?.data?.get(0)?.categoryImprovement,
-                                    name = result.data?.data?.get(0)?.name,
-                                    nik = result.data?.data?.get(0)?.nik,
-                                    branchCode = result.data?.data?.get(0)?.branchCode,
-                                    branch = result.data?.data?.get(0)?.branch,
-                                    subBranch = "",
-                                    department = result.data?.data?.get(0)?.department,
-                                    directMgr = result.data?.data?.get(0)?.directMgr,
-                                    suggestion = result.data?.data?.get(0)?.suggestion?.let {
-                                        HtmlCompat.fromHtml(
-                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                        ).toString()
-                                    },
-                                    problem = result.data?.data?.get(0)?.problem?.let {
-                                        HtmlCompat.fromHtml(
-                                            it, HtmlCompat.FROM_HTML_MODE_LEGACY
-                                        ).toString()
-                                    },
-                                    statusImplementation = result.data?.data?.get(0)?.statusImplementation,
-                                    teamMember = result.data?.data?.get(0)?.teamMember,
-                                    attachment = result.data?.data?.get(0)?.attachment,
-                                    statusProposal = result.data?.data?.get(0)?.statusProposal,
-                                    proses = result.data?.data?.get(0)?.proses,
-                                    result = result.data?.data?.get(0)?.result,
-
-                                    headId = result.data?.data?.get(0)?.headId,
-                                    userId = userNameSubmit,
-                                    orgId = result.data?.data?.get(0)?.orgId,
-                                    warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                    historyApproval = result.data?.data?.get(0)?.historyApproval,
-                                    score = result.data?.data?.get(0)?.score,
-
-                                    activityType = SS,
-                                    submitType = 1,
-                                    comment = ""
-                                )
-
-                                updateSs(dataCreateModel, context, owner) { status(it) }
-
-                                Timber.d("###-- Success getDetailSsItem to submit ")
-                            }
-                            Result.Status.ERROR -> {
-                                status(false)
-
-                                Toast.makeText(context, "Error : ${result.message}", Toast.LENGTH_LONG).show()
-                                Timber.d("###-- Error getDetailSsItem to submit ")
-                            }
-
-                        }
-                    }
-                })
-            }
-        } catch (e: Exception) {
-            status(false)
-            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-            Timber.d("###-- Error onCreate")
-        }
+        val dataCreateModel = SuggestionSystemCreateModel(
+            id = id,
+            ssNo = ssNo,
+            date = "",
+            title = "",
+            categoryImprovement = null,
+            name = "",
+            nik = "",
+            branchCode = "",
+            branch = "",
+            subBranch = "",
+            department = "",
+            directMgr = "",
+            directMgrNik = "",
+            suggestion = "",
+            problem = "",
+            statusImplementation = StatusImplementation(status = 0, from = "", to = ""),
+            teamMember = null,
+            attachment = null,
+            statusProposal = statusProposal,
+            proses = "",
+            result = "",
+            headId = 0,
+            userId = userNameSubmit,
+            orgId = 0,
+            warehouseId = 0,
+            historyApproval = null,
+            score = 0,
+            activityType = SS,
+            submitType = 1,
+            comment = ""
+        )
+        updateSs(dataCreateModel, context) { status(it) }
     }
 
     // update for edit and update proposal
-    fun updateSs(
+    suspend fun updateSs(
         data: SuggestionSystemCreateModel,
         context: Context,
-        owner: LifecycleOwner,
         complete: (Boolean) -> Unit
     ) {
+        HelperLoading.displayLoadingWithText(context, "", false)
+
         try {
-            listSsViewModel.setPostSubmitUpdateSs(data)
-            listSsViewModel.putSubmitUpdateSs.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
-                    if (result != null) {
-                        when (result.status) {
-                            Result.Status.LOADING -> {
-                                HelperLoading.displayLoadingWithText(context, "", false)
-                                Timber.d("###-- Loading putSubmitUpdateSs")
-                            }
-                            Result.Status.SUCCESS -> {
-                                HelperLoading.hideLoading()
+            coroutineScope {
+                service().submitUpdateSs(data).let {
+                    if (it.isSuccessful) {
+                        HelperLoading.hideLoading()
 
-                                Timber.e("${result.data?.message}")
+                        Toast.makeText(context, it.body()?.message, Toast.LENGTH_LONG).show()
+                        complete(true)
+                    } else {
+                        complete(false)
 
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
-
-                                Timber.d("###-- Success putSubmitUpdateSs")
-
-                                complete(true)
-                            }
-                            Result.Status.ERROR -> {
-                                HelperLoading.hideLoading()
-                                Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
-                                Timber.d("###-- Error putSubmitUpdateSs")
-
-                                complete(false)
-                            }
-
-                        }
+                        HelperLoading.hideLoading()
+                        Toast.makeText(context, it.body()?.message, Toast.LENGTH_LONG).show()
                     }
-                })
+                }
             }
 
         } catch (err: Exception) {
@@ -150,14 +96,15 @@ class UpdateStatusProposalSs(
     // submit for create
     fun submitSs(
         data: SuggestionSystemCreateModel,
+        action: String,
         context: Context,
         owner: LifecycleOwner,
         complete: (Boolean) -> Unit
     ){
         try {
-            listSsViewModel.setPostSubmitCreateSs(data)
+            listSsViewModel.setPostSubmitCreateSs(data, action)
             listSsViewModel.postSubmitCreateSs.observeEvent(owner) { resultObserve ->
-                resultObserve.observe(owner, { result ->
+                resultObserve.observe(owner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -169,7 +116,8 @@ class UpdateStatusProposalSs(
 
                                 Timber.e("${result.data?.message}")
 
-                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, result.data?.message, Toast.LENGTH_LONG)
+                                    .show()
 
                                 complete(true)
 
@@ -186,7 +134,7 @@ class UpdateStatusProposalSs(
 
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()

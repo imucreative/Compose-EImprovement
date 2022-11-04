@@ -23,16 +23,29 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private var _binding: FragmentProjectImprovementStep2Binding? = null
     private val binding get() = _binding!!
-    private lateinit var datePickerSudah: DatePickerCustom
-    private lateinit var datePickerAkan: DatePickerCustom
     private var data : ProjectImprovementCreateModel? = null
     private var piNo: String? = ""
     private var action: String? = ""
-    lateinit var fromDate: Date
-    lateinit var toDate: Date
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var source: String = PI_CREATE
     private var edtResult : String = ""
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var fromDate: Date
+    private lateinit var toDate: Date
+    private lateinit var fromIdentifikasi: Date
+    private lateinit var toIdentifikasi: Date
+    private lateinit var fromAnalisa: Date
+    private lateinit var toAnalisa: Date
+    private lateinit var fromAnalisaAkarMasalah: Date
+    private lateinit var toAnalisaAkarMasalah: Date
+    private lateinit var fromMenyusunRencana: Date
+    private lateinit var toMenyusunRencana: Date
+    private lateinit var fromImplementasiRencana: Date
+    private lateinit var toImplementasiRencana: Date
+    private lateinit var fromAnalisaPeriksaEvaluasi: Date
+    private lateinit var toAnalisaPeriksaEvaluasi: Date
+    private lateinit var datePickerSudah: DatePickerCustom
+    private lateinit var datePickerAkan: DatePickerCustom
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +81,11 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
             )
         }!!
         setLogic()
-        getData()
+
+        if (data?.statusImplementationModel != null) {
+            getData()
+        }
+
         initComponent()
         setData()
 
@@ -126,12 +143,13 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun setLogic() {
         binding.run {
-            edtResult = data?.implementationResult.toString()
+            edtResult = if (data?.implementationResult == "null" || data?.implementationResult == null) "" else data?.implementationResult.toString()
 
             etFromStatus1.isEnabled = false
             etToStatus1.isEnabled = false
 
             linearLayoutAkan.visibility = View.GONE
+
             rbStatus1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     etFromStatus1.isEnabled = true
@@ -163,16 +181,19 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
 
     private fun initComponent() {
         binding.apply {
-            etFromStatus1.setOnClickListener {datePickerSudah.showDialog(object : DatePickerCustom.Callback {
-                override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
-                    val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-                    val mon = month + 1
-                    val monthStr = if (mon < 10) "0$mon" else "$mon"
-                    etFromStatus1.setText("$year-$monthStr-$dayStr")
-                    fromDate = sdf.parse(etFromStatus1.text.toString())
-                    etToStatus1.text!!.clear()
-                }
-            })
+            etFromStatus1.setOnClickListener {
+                datePickerSudah.showDialog(object : DatePickerCustom.Callback {
+                    override fun onDateSelected(dayOfMonth: Int, month: Int, year: Int) {
+                        val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                        val mon = month + 1
+                        val monthStr = if (mon < 10) "0$mon" else "$mon"
+
+                        fromDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                        etFromStatus1.setText(formatDateDisplay.format(fromDate))
+
+                        etToStatus1.text!!.clear()
+                    }
+                })
             }
 
             etToStatus1.setOnClickListener {
@@ -182,24 +203,19 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToStatus1.setText("$year-$monthStr-$dayStr")
-                            toDate = sdf.parse(etToStatus1.text.toString())
-                            if(etFromStatus1.text.isNullOrEmpty()){
-                                 SnackBarCustom.snackBarIconInfo(
+
+                            toDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromStatus1.text.isNullOrEmpty() || !toDate.after(fromDate)){
+                                SnackBarCustom.snackBarIconInfo(
                                     root, layoutInflater, resources, root.context,
                                     resources.getString(R.string.wrong_field),
                                     R.drawable.ic_close, R.color.red_500)
-                                etFromStatus1.requestFocus()
+                                etToStatus1.text!!.clear()
                             }else{
-                                fromDate = sdf.parse(etFromStatus1.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToStatus1.text!!.clear()
-                                }
+                                etToStatus1.setText(formatDateDisplay.format(toDate))
                             }
+
                         }
                     })
                 }
@@ -212,8 +228,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromIdentifikasi.setText("$year-$monthStr-$dayStr")
-                            fromDate = sdf.parse(etFromIdentifikasi.text.toString())
+
+                            fromIdentifikasi = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            etFromIdentifikasi.setText(formatDateDisplay.format(fromIdentifikasi))
+
                             etToIdentifikasi.text!!.clear()
                         }
                     })
@@ -227,24 +245,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToIdentifikasi.setText("$year-$monthStr-$dayStr")
-                            toDate= sdf.parse(etToIdentifikasi.text.toString())
-//                            if(etFromIdentifikasi.text.isNullOrEmpty()){
-//                                SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromIdentifikasi.requestFocus()
-//                            }else{
-                                fromDate = sdf.parse(etFromIdentifikasi.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToIdentifikasi.text!!.clear()
-                                }
-//                            }
+
+                            toIdentifikasi = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromIdentifikasi.text.isNullOrEmpty() || !toIdentifikasi.after(fromIdentifikasi)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToIdentifikasi.text!!.clear()
+                            } else {
+                                etToIdentifikasi.setText(formatDateDisplay.format(toIdentifikasi))
+                            }
                         }
                     })
                 }
@@ -257,8 +269,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromAnalisaData.setText("$year-$monthStr-$dayStr")
-                            fromDate = sdf.parse(etFromAnalisaData.text.toString())
+
+                            fromAnalisa = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            etFromAnalisaData.setText(formatDateDisplay.format(fromAnalisa))
+
                             etToAnalisaData.text!!.clear()
                         }
                     })
@@ -272,24 +286,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToAnalisaData.setText("$year-$monthStr-$dayStr")
-                            toDate = sdf.parse(etToAnalisaData.text.toString())
-//                            if(etFromAnalisaData.text.isNullOrEmpty()){
-//                                SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromAnalisaData.requestFocus()
-//                            }else{
-                                fromDate = sdf.parse(etFromAnalisaData.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToAnalisaData.text!!.clear()
-                                }
-//                            }
+
+                            toAnalisa = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromAnalisaData.text.isNullOrEmpty() || !toAnalisa.after(fromAnalisa)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaData.text!!.clear()
+                            } else {
+                                etToAnalisaData.setText(formatDateDisplay.format(toAnalisa))
+                            }
                         }
                     })
                 }
@@ -302,8 +310,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromAnalisaAkarMasalah.setText("$year-$monthStr-$dayStr")
-                            fromDate = sdf.parse(etFromAnalisaAkarMasalah.text.toString())
+
+                            fromAnalisaAkarMasalah = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            etFromAnalisaAkarMasalah.setText(formatDateDisplay.format(fromAnalisaAkarMasalah))
+
                             etToAnalisaAkarMasalah.text!!.clear()
                         }
                     })
@@ -317,24 +327,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToAnalisaAkarMasalah.setText("$year-$monthStr-$dayStr")
-                            toDate = sdf.parse(etToAnalisaAkarMasalah.text.toString())
-//                            if(etFromAnalisaAkarMasalah.text.isNullOrEmpty()){
-//                                SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromAnalisaAkarMasalah.requestFocus()
-//                            }else{
-                                fromDate = sdf.parse(etFromAnalisaAkarMasalah.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToAnalisaAkarMasalah.text!!.clear()
-                                }
-//                            }
+
+                            toAnalisaAkarMasalah = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromAnalisaAkarMasalah.text.isNullOrEmpty() || !toAnalisaAkarMasalah.after(fromAnalisaAkarMasalah)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaAkarMasalah.text!!.clear()
+                            } else {
+                                etToAnalisaAkarMasalah.setText(formatDateDisplay.format(toAnalisaAkarMasalah))
+                            }
                         }
                     })
                 }
@@ -347,8 +351,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromMenyusunRencanaPenanggulanganMasalah.setText("$year-$monthStr-$dayStr")
-                            fromDate = sdf.parse(etFromMenyusunRencanaPenanggulanganMasalah.text.toString())
+
+                            fromMenyusunRencana = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            etFromMenyusunRencanaPenanggulanganMasalah.setText(formatDateDisplay.format(fromMenyusunRencana))
+
                             etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
                         }
                     })
@@ -362,24 +368,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToMenyusunRencanaPenanggulanganMasalah.setText("$year-$monthStr-$dayStr")
-                            toDate= sdf.parse(etToMenyusunRencanaPenanggulanganMasalah.text.toString())
-//                            if(etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty()){
-//                                SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromMenyusunRencanaPenanggulanganMasalah.requestFocus()
-//                            }else{
-                                fromDate = sdf.parse(etFromMenyusunRencanaPenanggulanganMasalah.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
-                                }
-//                            }
+
+                            toMenyusunRencana = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromMenyusunRencanaPenanggulanganMasalah.text.isNullOrEmpty() || !toMenyusunRencana.after(fromMenyusunRencana)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToMenyusunRencanaPenanggulanganMasalah.text!!.clear()
+                            } else {
+                                etToMenyusunRencanaPenanggulanganMasalah.setText(formatDateDisplay.format(toMenyusunRencana))
+                            }
                         }
                     })
                 }
@@ -392,8 +392,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromImplementasiRencanaPerbaikan.setText("$year-$monthStr-$dayStr")
-                            fromDate = sdf.parse(etFromImplementasiRencanaPerbaikan.text.toString())
+
+                            fromImplementasiRencana = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            etFromImplementasiRencanaPerbaikan.setText(formatDateDisplay.format(fromImplementasiRencana))
+
                             etToImplementasiRencanaPerbaikan.text!!.clear()
                         }
                     })
@@ -407,24 +409,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToImplementasiRencanaPerbaikan.setText("$year-$monthStr-$dayStr")
-                            toDate= sdf.parse(etToImplementasiRencanaPerbaikan.text.toString())
-//                            if(etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty()){
-//                                SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromImplementasiRencanaPerbaikan.requestFocus()
-//                            }else{
-                                fromDate = sdf.parse(etFromImplementasiRencanaPerbaikan.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToImplementasiRencanaPerbaikan.text!!.clear()
-                                }
-//                            }
+
+                            toImplementasiRencana = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromImplementasiRencanaPerbaikan.text.isNullOrEmpty() || !toImplementasiRencana.after(fromImplementasiRencana)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToImplementasiRencanaPerbaikan.text!!.clear()
+                            } else {
+                                etToImplementasiRencanaPerbaikan.setText(formatDateDisplay.format(toImplementasiRencana))
+                            }
                         }
                     })
                 }
@@ -437,8 +433,10 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etFromAnalisaPeriksaDanEvaluasi.setText("$year-$monthStr-$dayStr")
-                            fromDate = sdf.parse(etFromAnalisaPeriksaDanEvaluasi.text.toString())
+
+                            fromAnalisaPeriksaEvaluasi = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                            etFromAnalisaPeriksaDanEvaluasi.setText(formatDateDisplay.format(fromAnalisaPeriksaEvaluasi))
+
                             etToAnalisaPeriksaDanEvaluasi.text!!.clear()
                         }
                     })
@@ -452,24 +450,18 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                             val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                             val mon = month + 1
                             val monthStr = if (mon < 10) "0$mon" else "$mon"
-                            etToAnalisaPeriksaDanEvaluasi.setText("$year-$monthStr-$dayStr")
-                            toDate= sdf.parse(etToAnalisaPeriksaDanEvaluasi.text.toString())
-//                            if(etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty()){
-//                                SnackBarCustom.snackBarIconInfo(
-//                                    root, layoutInflater, resources, root.context,
-//                                    resources.getString(R.string.wrong_field),
-//                                    R.drawable.ic_close, R.color.red_500)
-//                                etFromAnalisaPeriksaDanEvaluasi.requestFocus()
-//                            }else{
-                                fromDate = sdf.parse(etFromAnalisaPeriksaDanEvaluasi.text.toString())
-                                if (!toDate.after(fromDate)){
-                                    SnackBarCustom.snackBarIconInfo(
-                                        root, layoutInflater, resources, root.context,
-                                        resources.getString(R.string.wrong_field),
-                                        R.drawable.ic_close, R.color.red_500)
-                                    etToAnalisaPeriksaDanEvaluasi.text!!.clear()
-                                }
-//                            }
+
+                            toAnalisaPeriksaEvaluasi = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                            if (etFromAnalisaPeriksaDanEvaluasi.text.isNullOrEmpty() || !toAnalisaPeriksaEvaluasi.after(fromAnalisaPeriksaEvaluasi)){
+                                SnackBarCustom.snackBarIconInfo(
+                                    root, layoutInflater, resources, root.context,
+                                    resources.getString(R.string.wrong_field),
+                                    R.drawable.ic_close, R.color.red_500)
+                                etToAnalisaPeriksaDanEvaluasi.text!!.clear()
+                            } else {
+                                etToAnalisaPeriksaDanEvaluasi.setText(formatDateDisplay.format(toAnalisaPeriksaEvaluasi))
+                            }
                         }
                     })
                 }
@@ -480,14 +472,105 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
     private fun getData() {
         binding.apply {
             if (data?.statusImplementationModel?.sudah?.from != "") {
+                val dataFromDateToString = data?.statusImplementationModel?.sudah?.from
+                val startDate = if (dataFromDateToString == "") "" else {
+                    fromDate = formatDateOriginalValue.parse(dataFromDateToString)
+                    formatDateDisplay.format(fromDate)
+                }
+
+                val dataToDateToString = data?.statusImplementationModel?.sudah?.to
+                val endDate = if (dataToDateToString == "") "" else {
+                    toDate = formatDateOriginalValue.parse(dataToDateToString)
+                    formatDateDisplay.format(toDate)
+                }
+
                 rbStatus1.isChecked = true
                 rbStatus2.isChecked = false
 
-                etFromStatus1.setText(data?.statusImplementationModel?.sudah?.from)
-                etToStatus1.setText(data?.statusImplementationModel?.sudah?.to)
+                etFromStatus1.setText(startDate)
+                etToStatus1.setText(endDate)
 
                 linearLayoutAkan.visibility = View.GONE
             } else {
+
+                val dataStartIdentifikasiMasalah = data?.statusImplementationModel?.akan?.startIdentifikasiMasalah
+                val startIdentifikasi = if (dataStartIdentifikasiMasalah == "") "" else {
+                    fromIdentifikasi = formatDateOriginalValue.parse(dataStartIdentifikasiMasalah)
+                    formatDateDisplay.format(fromIdentifikasi)
+                }
+
+                val dataEndIdentifikasiMasalah = data?.statusImplementationModel?.akan?.endIdentifikasiMasalah
+                val endIdentifikasi = if (dataEndIdentifikasiMasalah == "") "" else {
+                    toIdentifikasi = formatDateOriginalValue.parse(dataEndIdentifikasiMasalah)
+                    formatDateDisplay.format(toIdentifikasi)
+                }
+                // ==============================================================================================================
+
+                val dataStartAnalisaData = data?.statusImplementationModel?.akan?.startAnalisaData
+                val startAnalisa = if (dataStartAnalisaData == "") "" else {
+                    fromAnalisa = formatDateOriginalValue.parse(dataStartAnalisaData)
+                    formatDateDisplay.format(fromAnalisa)
+                }
+
+                val dataEndAnalisaData = data?.statusImplementationModel?.akan?.endAnalisaData
+                val endAnalisa = if (dataEndAnalisaData == "") "" else {
+                    toAnalisa = formatDateOriginalValue.parse(dataEndAnalisaData)
+                    formatDateDisplay.format(toAnalisa)
+                }
+                // ==============================================================================================================
+
+                val dataStartAnalisaAkarMasalah = data?.statusImplementationModel?.akan?.startAnalisaAkarMasalah
+                val startAnalisaAkarMasalah = if (dataStartAnalisaAkarMasalah == "") "" else {
+                    fromAnalisaAkarMasalah = formatDateOriginalValue.parse(dataStartAnalisaAkarMasalah)
+                    formatDateDisplay.format(fromAnalisaAkarMasalah)
+                }
+
+                val dataEndAnalisaAkarMasalah = data?.statusImplementationModel?.akan?.endAnalisaAkarMasalah
+                val endAnalisaAkarMasalah = if (dataEndAnalisaAkarMasalah == "") "" else {
+                    toAnalisaAkarMasalah = formatDateOriginalValue.parse(dataEndAnalisaAkarMasalah)
+                    formatDateDisplay.format(toAnalisaAkarMasalah)
+                }
+                // ==============================================================================================================
+
+                val dataStartMenyusunRencana = data?.statusImplementationModel?.akan?.startMenyusunRencana
+                val startMenyusunRencana = if (dataStartMenyusunRencana == "") "" else {
+                    fromMenyusunRencana = formatDateOriginalValue.parse(dataStartMenyusunRencana)
+                    formatDateDisplay.format(fromMenyusunRencana)
+                }
+
+                val dataEndMenyusunRencana = data?.statusImplementationModel?.akan?.endMenyusunRencana
+                val endMenyusunRencana = if (dataEndMenyusunRencana == "") "" else {
+                    toMenyusunRencana = formatDateOriginalValue.parse(dataEndMenyusunRencana)
+                    formatDateDisplay.format(toMenyusunRencana)
+                }
+                // ==============================================================================================================
+
+                val dataStartImplementasiRencana = data?.statusImplementationModel?.akan?.startImplementasiRencana
+                val startImplementasiRencana = if (dataStartImplementasiRencana == "") "" else {
+                    fromImplementasiRencana = formatDateOriginalValue.parse(dataStartImplementasiRencana)
+                    formatDateDisplay.format(fromImplementasiRencana)
+                }
+
+                val dataEndImplementasiRencana = data?.statusImplementationModel?.akan?.endImplementasiRencana
+                val endImplementasiRencana = if (dataEndImplementasiRencana == "") "" else {
+                    toImplementasiRencana = formatDateOriginalValue.parse(dataEndImplementasiRencana)
+                    formatDateDisplay.format(toImplementasiRencana)
+                }
+                // ==============================================================================================================
+
+                val dataStartAnalisPeriksaEvaluasi = data?.statusImplementationModel?.akan?.startAnalisPeriksaEvaluasi
+                val startAnalisaPeriksaEvaluasi = if (dataStartAnalisPeriksaEvaluasi == "") "" else {
+                    fromAnalisaPeriksaEvaluasi = formatDateOriginalValue.parse(dataStartAnalisPeriksaEvaluasi)
+                    formatDateDisplay.format(fromAnalisaPeriksaEvaluasi)
+                }
+
+                val dataEndAnalisPeriksaEvaluasi = data?.statusImplementationModel?.akan?.endAnalisPeriksaEvaluasi
+                val endAnalisaPeriksaEvaluasi = if (dataEndAnalisPeriksaEvaluasi == "") "" else {
+                    toAnalisaPeriksaEvaluasi = formatDateOriginalValue.parse(dataEndAnalisPeriksaEvaluasi)
+                    formatDateDisplay.format(toAnalisaPeriksaEvaluasi)
+                }
+                // ==============================================================================================================
+
                 linearLayoutAkan.visibility = View.VISIBLE
 
                 rbStatus1.isChecked = false
@@ -496,23 +579,23 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                 etFromStatus1.setText("")
                 etToStatus1.setText("")
 
-                etFromIdentifikasi.setText(data?.statusImplementationModel?.akan?.startIdentifikasiMasalah)
-                etToIdentifikasi.setText(data?.statusImplementationModel?.akan?.endIdentifikasiMasalah)
+                etFromIdentifikasi.setText(startIdentifikasi)
+                etToIdentifikasi.setText(endIdentifikasi)
 
-                etFromAnalisaData.setText(data?.statusImplementationModel?.akan?.startAnalisaData)
-                etToAnalisaData.setText(data?.statusImplementationModel?.akan?.endAnalisaData)
+                etFromAnalisaData.setText(startAnalisa)
+                etToAnalisaData.setText(endAnalisa)
 
-                etFromAnalisaAkarMasalah.setText(data?.statusImplementationModel?.akan?.startAnalisaAkarMasalah)
-                etToAnalisaAkarMasalah.setText(data?.statusImplementationModel?.akan?.endAnalisaAkarMasalah)
+                etFromAnalisaAkarMasalah.setText(startAnalisaAkarMasalah)
+                etToAnalisaAkarMasalah.setText(endAnalisaAkarMasalah)
 
-                etFromMenyusunRencanaPenanggulanganMasalah.setText(data?.statusImplementationModel?.akan?.startMenyusunRencana)
-                etToMenyusunRencanaPenanggulanganMasalah.setText(data?.statusImplementationModel?.akan?.endMenyusunRencana)
+                etFromMenyusunRencanaPenanggulanganMasalah.setText(startMenyusunRencana)
+                etToMenyusunRencanaPenanggulanganMasalah.setText(endMenyusunRencana)
 
-                etFromImplementasiRencanaPerbaikan.setText(data?.statusImplementationModel?.akan?.startImplementasiRencana)
-                etToImplementasiRencanaPerbaikan.setText(data?.statusImplementationModel?.akan?.endImplementasiRencana)
+                etFromImplementasiRencanaPerbaikan.setText(startImplementasiRencana)
+                etToImplementasiRencanaPerbaikan.setText(endImplementasiRencana)
 
-                etFromAnalisaPeriksaDanEvaluasi.setText(data?.statusImplementationModel?.akan?.startAnalisPeriksaEvaluasi)
-                etToAnalisaPeriksaDanEvaluasi.setText(data?.statusImplementationModel?.akan?.endAnalisPeriksaEvaluasi)
+                etFromAnalisaPeriksaDanEvaluasi.setText(startAnalisaPeriksaEvaluasi)
+                etToAnalisaPeriksaDanEvaluasi.setText(endAnalisaPeriksaEvaluasi)
             }
 
         }
@@ -527,31 +610,32 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
                     var sudah: StatusImplementationPiDoneModel? = null
                     var akan: StatusImplementationPiWantModel? = null
 
-//                    if (rbStatus1.isChecked) {
-                        sudah = StatusImplementationPiDoneModel(
-                            from = etFromStatus1.text.toString(),
-                            to = etToStatus1.text.toString())
-//                    } else {
-                        akan = StatusImplementationPiWantModel(
-                            startIdentifikasiMasalah = etFromIdentifikasi.text.toString(),
-                            endIdentifikasiMasalah = etToIdentifikasi.text.toString(),
+                    //if (rbStatus1.isChecked) {}
 
-                            startAnalisaData = etFromAnalisaData.text.toString(),
-                            endAnalisaData = etToAnalisaData.text.toString(),
+                    sudah = StatusImplementationPiDoneModel(
+                        from = if (etFromStatus1.text.toString() == "") "" else formatDateOriginalValue.format(fromDate),
+                        to = if (etToStatus1.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+                    )
 
-                            startAnalisaAkarMasalah = etFromAnalisaAkarMasalah.text.toString(),
-                            endAnalisaAkarMasalah = etToAnalisaAkarMasalah.text.toString(),
+                    akan = StatusImplementationPiWantModel(
+                        startIdentifikasiMasalah = if (etFromIdentifikasi.text.toString() == "") "" else formatDateOriginalValue.format(fromIdentifikasi),
+                        endIdentifikasiMasalah = if (etToIdentifikasi.text.toString() == "") "" else formatDateOriginalValue.format(toIdentifikasi),
 
-                            startMenyusunRencana = etFromMenyusunRencanaPenanggulanganMasalah.text.toString(),
-                            endMenyusunRencana = etToMenyusunRencanaPenanggulanganMasalah.text.toString(),
+                        startAnalisaData = if (etFromAnalisaData.text.toString() == "") "" else formatDateOriginalValue.format(fromAnalisa),
+                        endAnalisaData = if (etToAnalisaData.text.toString() == "") "" else formatDateOriginalValue.format(toAnalisa),
 
-                            startImplementasiRencana = etFromImplementasiRencanaPerbaikan.text.toString(),
-                            endImplementasiRencana = etToImplementasiRencanaPerbaikan.text.toString(),
+                        startAnalisaAkarMasalah = if (etFromAnalisaAkarMasalah.text.toString() == "") "" else formatDateOriginalValue.format(fromAnalisaAkarMasalah),
+                        endAnalisaAkarMasalah = if (etToAnalisaAkarMasalah.text.toString() == "") "" else formatDateOriginalValue.format(toAnalisaAkarMasalah),
 
-                            startAnalisPeriksaEvaluasi = etFromAnalisaPeriksaDanEvaluasi.text.toString(),
-                            endAnalisPeriksaEvaluasi = etToAnalisaPeriksaDanEvaluasi.text.toString()
-                        )
-//                    }
+                        startMenyusunRencana = if (etFromMenyusunRencanaPenanggulanganMasalah.text.toString() == "") "" else formatDateOriginalValue.format(fromMenyusunRencana),
+                        endMenyusunRencana = if (etToMenyusunRencanaPenanggulanganMasalah.text.toString() == "") "" else formatDateOriginalValue.format(toMenyusunRencana),
+
+                        startImplementasiRencana = if (etFromImplementasiRencanaPerbaikan.text.toString() == "") "" else formatDateOriginalValue.format(fromImplementasiRencana),
+                        endImplementasiRencana = if (etToImplementasiRencanaPerbaikan.text.toString() == "") "" else formatDateOriginalValue.format(toImplementasiRencana),
+
+                        startAnalisPeriksaEvaluasi = if (etFromAnalisaPeriksaDanEvaluasi.text.toString() == "") "" else formatDateOriginalValue.format(fromAnalisaPeriksaEvaluasi),
+                        endAnalisPeriksaEvaluasi = if (etToAnalisaPeriksaDanEvaluasi.text.toString() == "") "" else formatDateOriginalValue.format(toAnalisaPeriksaEvaluasi)
+                    )
 
                     val statusImplementation = StatusImplementationPiModel(
                         sudah = sudah,
@@ -663,5 +747,3 @@ class ProjectImprovStep2Fragment : Fragment(), Injectable {
         })
     }
 }
-
-

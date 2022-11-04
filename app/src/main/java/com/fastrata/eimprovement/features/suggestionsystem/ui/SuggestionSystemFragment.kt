@@ -9,8 +9,10 @@ import android.widget.AdapterView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fastrata.eimprovement.R
@@ -31,7 +33,7 @@ import com.fastrata.eimprovement.featuresglobal.viewmodel.StatusProposalViewMode
 import com.fastrata.eimprovement.ui.setToolbar
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.Tools.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,14 +57,9 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private var listStatusProposalItem: List<StatusProposalItem>? = null
     private var listBranchItem: List<BranchItem>? = null
     private var listSubBranchItem: List<SubBranchItem>? = null
-    private lateinit var selectedStatusProposal: StatusProposalItem
-    private lateinit var selectedBranch: BranchItem
-    private lateinit var selectedSubBranch: SubBranchItem
     private var statusProposalId = 0
     private var branchId = 0
     private var subBranchId = 0
-    lateinit var fromDate: Date
-    lateinit var toDate: Date
     private var userId: Int = 0
     private var userName: String = ""
     private var limit: Int = 10
@@ -70,9 +67,18 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private var totalPage: Int = 1
     private var isLoading = false
     private var roleName: String = ""
-    private val sdf = SimpleDateFormat("yyyy-MM-dd")
+    private var docId = ""
+    private val formatDateDisplay = SimpleDateFormat("dd/MM/yyyy")
+    private val formatDateOriginalValue = SimpleDateFormat("yyyy-MM-dd")
+    private lateinit var fromDate: Date
+    private lateinit var toDate: Date
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var notification: HelperNotification
+    private lateinit var selectedStatusProposal: StatusProposalItem
+    private lateinit var selectedBranch: BranchItem
+    private lateinit var selectedSubBranch: SubBranchItem
+
+    private val args : SuggestionSystemFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,6 +88,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         _binding = FragmentSuggestionSystemBinding.inflate(inflater, container, false)
         toolbarBinding = ToolbarBinding.bind(binding.root)
         context ?: return binding.root
+
+        docId = args.docId.toString()
 
         listSsViewModel = injectViewModel(viewModelFactory)
         masterDataStatusProposalViewModel = injectViewModel(viewModelFactory)
@@ -121,7 +129,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
     override fun onStart() {
         super.onStart()
-       getDataListSs()
+        getDataListSs()
     }
 
     private fun getDataListSs() {
@@ -130,7 +138,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
             page = 1
             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                 userId, limit, page, roleName, SS,
-                userName = userName, ssNo = "", statusId = 0, title = "", category = "",orgId = 0,
+                userName = userName, ssNo = docId, statusId = 0, title = "", category = "",orgId = 0,
                 warehouseId = 0, startDate = "", endDate = ""
             )
 
@@ -143,7 +151,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
 
         _binding = FragmentSuggestionSystemBinding.bind(view)
 
@@ -181,12 +189,14 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 subBranchId = selectedSubBranch.warehouseId
                             }
 
+                            val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                            val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                             val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                                 userId, limit, page, roleName, SS,
                                 userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                                 title = edtTitle.text.toString(), category = edtCategory.text.toString(),
-                                orgId = branchId, warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
-                                endDate = edtToDate.text.toString()
+                                orgId = branchId, warehouseId = subBranchId, startDate = startDate, endDate = endDate
                             )
 
                             listSsViewModel.setListSs(listSsRemoteRequest)
@@ -263,7 +273,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         try {
             isLoading = true
             listSsViewModel.getListSsItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -306,7 +316,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()
@@ -323,7 +333,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun retrieveDataStatusProposal(){
         try {
             masterDataStatusProposalViewModel.getStatusProposalItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -349,7 +359,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtStatusProposal.isEnabled = false
@@ -365,7 +375,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun getStatusCheckPeriod(){
         try {
             checkPeriodViewModel.getCheckPeriodItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -376,14 +386,14 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 HelperLoading.hideLoading()
                                 val statusProposal = result.data?.data?.get(0)
                                 if (statusProposal?.id == 11) {
-                                    notification.shownotificationyesno(
+                                    notification.showNotificationYesNo(
                                         requireActivity(),
                                         requireContext(),
                                         R.color.blue_500,
                                         resources.getString(R.string.title_past_period),
                                         "",
                                         resources.getString(R.string.agree),
-                                        resources.getString(R.string.not_agree),
+                                        resources.getString(R.string.cancel),
                                         object : HelperNotification.CallBackNotificationYesNo {
                                             override fun onNotificationNo() {
 
@@ -392,7 +402,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                             override fun onNotificationYes() {
                                                 val direction =
                                                     SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                                        toolbarTitle = "Create Suggestion System",
+                                                        toolbarTitle = "Buat Sistem Saran",
                                                         action = ADD,
                                                         idSs = 0,
                                                         ssNo = "",
@@ -407,7 +417,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 } else {
                                     val direction =
                                         SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                            toolbarTitle = "Create Suggestion System",
+                                            toolbarTitle = "Buat Sistem Saran",
                                             action = ADD,
                                             idSs = 0,
                                             ssNo = "",
@@ -432,7 +442,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             HelperLoading.hideLoading()
@@ -448,7 +458,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun retrieveDataBranch(){
         try {
             masterBranchViewModel.getBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -474,7 +484,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err : Exception){
             binding.edtBranch.isEnabled = false
@@ -490,7 +500,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
     private fun retrieveDataSubBranch(){
         try {
             masterBranchViewModel.getSubBranchItem.observeEvent(this) { resultObserve ->
-                resultObserve.observe(viewLifecycleOwner, { result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result.status) {
                             Result.Status.LOADING -> {
@@ -516,7 +526,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                     }
-                })
+                }
             }
         }catch (err: Exception){
             binding.edtSubBranch.isEnabled = false
@@ -589,7 +599,8 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         adapter.setSuggestionSystemCallback(object : SuggestionSystemCallback{
             override fun onItemClicked(data: SuggestionSystemModel) {
                 Timber.e("### $data")
-                notification.showListEdit(requireActivity(),resources.getString(R.string.select),
+                notification.showListEdit(requireActivity(),
+                    data.ssNo, SS,
                     view = data.isView,
                     viewEdit = data.isEdit,
                     viewSubmit = data.isSubmit,
@@ -603,39 +614,42 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     listener = object : HelperNotification.CallbackList{
                         override fun onView() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Detail Suggestion System", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Detail Sistem Saran", action = DETAIL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onEdit() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Edit Suggestion System", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Edit Sistem Saran", action = EDIT, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
                             )
                             requireView().findNavController().navigate(direction)
                         }
 
                         override fun onSubmit() {
-                            HelperNotification().shownotificationyesno(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Submit Proposal", resources.getString(R.string.submit_desc),
-                                "Submit", resources.getString(R.string.no),
+                            notification.showNotificationYesNo(
+                                requireActivity(), requireContext(), R.color.yellow_800,
+                                "Kirim Proposal", resources.getString(R.string.submit_desc),
+                                "Kirim", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalSs(
-                                            listSsViewModel,
-                                            context = requireContext(),
-                                            owner = this@SuggestionSystemFragment,
-                                        ).getDetailDataSs(
-                                            id = data.idSs,
-                                            userId = data.userId,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalSs(
+                                                listSsViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataSs(
+                                                id = data.idSs,
+                                                ssNo = data.ssNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if(it){
+                                                    onStart()
+                                                    Timber.e("### $it")
+                                                }
                                             }
                                         }
                                     }
@@ -652,26 +666,29 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onImplementation() {
-                            HelperNotification().shownotificationyesno(
-                                requireActivity(), requireContext(), R.color.blue_500,
-                                "Implementation Proposal", resources.getString(R.string.submit_desc),
-                                "Implementation", resources.getString(R.string.no),
+                            notification.showNotificationYesNo(
+                                requireActivity(), requireContext(), R.color.yellow_800,
+                                "Implementasi Proposal", resources.getString(R.string.implementation_desc),
+                                "Implementasi", resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
 
                                     }
                                     override fun onNotificationYes() {
-                                        UpdateStatusProposalSs(
-                                            listSsViewModel,
-                                            context = requireContext(),
-                                            owner = this@SuggestionSystemFragment,
-                                        ).getDetailDataSs(
-                                            id = data.idSs,
-                                            userId = data.userId,
-                                            userNameSubmit = userId,
-                                        ) {
-                                            if(it){
-                                                onStart()
+                                        lifecycleScope.launch {
+                                            UpdateStatusProposalSs(
+                                                listSsViewModel,
+                                                context = requireContext(),
+                                            ).getDetailDataSs(
+                                                id = data.idSs,
+                                                ssNo = data.ssNo,
+                                                statusProposal = data.status,
+                                                userNameSubmit = userId,
+                                            ) {
+                                                if(it){
+                                                    Timber.e("### $it")
+                                                    onStart()
+                                                }
                                             }
                                         }
                                     }
@@ -681,7 +698,12 @@ class SuggestionSystemFragment : Fragment(), Injectable {
 
                         override fun onSubmitLaporan() {
                             val direction = SuggestionSystemFragmentDirections.actionSuggestionSystemFragmentToSuggestionSystemCreateWizard(
-                                toolbarTitle = "Submit Suggestion System", action = SUBMIT_PROPOSAL, idSs = data.idSs, ssNo = data.ssNo, type = "", statusProposal = data.status
+                                toolbarTitle = "Kirim Sistem Saran",
+                                action = SUBMIT_PROPOSAL,
+                                idSs = data.idSs,
+                                ssNo = data.ssNo,
+                                type = "",
+                                statusProposal = data.status,
                             )
                             requireView().findNavController().navigate(direction)
                         }
@@ -695,14 +717,14 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         }
 
                         override fun onDelete() {
-                            notification.shownotificationyesno(
+                            notification.showNotificationYesNo(
                                 requireActivity(),
                                 requireContext(),
-                                R.color.blue_500,
+                                R.color.red_800,
                                 resources.getString(R.string.delete),
                                 resources.getString(R.string.delete_confirmation),
                                 resources.getString(R.string.ok),
-                                resources.getString(R.string.no),
+                                resources.getString(R.string.cancel),
                                 object : HelperNotification.CallBackNotificationYesNo {
                                     override fun onNotificationNo() {
                                     }
@@ -725,10 +747,10 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         try {
             listSsViewModel.deleteSsList(data.idSs)
             listSsViewModel.doRemoveSs.observeEvent(this@SuggestionSystemFragment){ resultObserve ->
-                resultObserve.observe(viewLifecycleOwner,{result ->
+                resultObserve.observe(viewLifecycleOwner) { result ->
                     Timber.e("### -- $result")
-                    if (result != null){
-                        when(result.status) {
+                    if (result != null) {
+                        when (result.status) {
                             Result.Status.LOADING -> {
                                 HelperLoading.displayLoadingWithText(requireContext(), "", false)
                                 Timber.d("###-- Loading get doRemoveSs loading")
@@ -738,19 +760,24 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                                 getDataListSs()
 
                                 result.data?.let {
-                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                                        .show()
                                     Timber.d("###-- Success get doRemoveSs sukses $it")
                                 }
                             }
                             Result.Status.ERROR -> {
                                 HelperLoading.hideLoading()
 
-                                Toast.makeText(requireContext(), result.data?.message.toString(), Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    result.data?.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 Timber.d("###-- Error get doRemoveSs Error ${result.data}")
                             }
                         }
                     }
-                })
+                }
             }
         }catch (err : Exception){
             Toast.makeText(requireContext(), "Error doRemoveSs : ${err.message}", Toast.LENGTH_LONG).show()
@@ -762,7 +789,7 @@ class SuggestionSystemFragment : Fragment(), Injectable {
         val toolbar = toolbarBinding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left_black)
 
-        setToolbar(toolbar, "Suggestion System (SS)")
+        setToolbar(toolbar, "Sistem Saran")
     }
 
     private fun initNavigationMenu() {
@@ -774,8 +801,10 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtFromDate.setText("$year-$monthStr-$dayStr")
-                        fromDate = sdf.parse(edtFromDate.text.toString())
+
+                        fromDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+                        edtFromDate.setText(formatDateDisplay.format(fromDate))
+
                         edtToDate.text!!.clear()
                     }
                 })
@@ -787,22 +816,17 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                         val dayStr = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                         val mon = month + 1
                         val monthStr = if (mon < 10) "0$mon" else "$mon"
-                        edtToDate.setText("$year-$monthStr-$dayStr")
-                        toDate = sdf.parse(edtToDate.text.toString())
-                        if (edtFromDate.text.isNullOrEmpty()){
+
+                        toDate = formatDateOriginalValue.parse("$year-$monthStr-$dayStr")
+
+                        if (edtFromDate.text.isNullOrEmpty() || !toDate.after(fromDate)){
                             SnackBarCustom.snackBarIconInfo(
                                 root, layoutInflater, resources, root.context,
                                 resources.getString(R.string.wrong_field),
                                 R.drawable.ic_close, R.color.red_500)
-                            edtFromDate.requestFocus()
-                        }else{
-                            if (!toDate.after(fromDate)){
-                                SnackBarCustom.snackBarIconInfo(
-                                    root, layoutInflater, resources, root.context,
-                                    resources.getString(R.string.wrong_field),
-                                    R.drawable.ic_close, R.color.red_500)
-                                edtToDate.text!!.clear()
-                            }
+                            edtToDate.text!!.clear()
+                        } else {
+                            edtToDate.setText(formatDateDisplay.format(toDate))
                         }
                     }
                 })
@@ -836,12 +860,15 @@ class SuggestionSystemFragment : Fragment(), Injectable {
                     try {
                         adapter.clear()
 
+                        val startDate = if(edtFromDate.text.toString() == "") "" else formatDateOriginalValue.format(fromDate)
+                        val endDate = if(edtToDate.text.toString() == "") "" else formatDateOriginalValue.format(toDate)
+
                         val listSsRemoteRequest = SuggestionSystemRemoteRequest(
                             userId, limit, page, roleName, SS,
                             userName = userName, ssNo = edtNoSs.text.toString(), statusId = statusProposalId,
                             title = edtTitle.text.toString(), category = edtCategory.text.toString(), orgId = branchId,
-                            warehouseId = subBranchId, startDate = edtFromDate.text.toString(),
-                            endDate = edtToDate.text.toString()
+                            warehouseId = subBranchId, startDate = startDate,
+                            endDate = endDate
                         )
 
                         listSsViewModel.setListSs(listSsRemoteRequest)

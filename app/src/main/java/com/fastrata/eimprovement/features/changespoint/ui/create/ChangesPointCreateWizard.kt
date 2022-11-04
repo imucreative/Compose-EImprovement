@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.data.Result
@@ -31,6 +32,7 @@ import com.google.gson.Gson
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -96,63 +98,94 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 cpNo = argsCpNo
 
                 source = CP_DETAIL_DATA
-                viewModel.setDetailCp(argsIdCp, userId)
-                viewModel.getDetailCp.observeEvent(this) { resultObserve ->
-                    resultObserve.observe(this, { result ->
-                        if (result != null) {
-                            when (result.status) {
-                                Result.Status.LOADING -> {
-                                    HelperLoading.displayLoadingWithText(this,"",false)
-                                    binding.bottomNavigationBar.visibility = View.GONE
+                initToolbar(argsTitle)
 
-                                    Timber.d("###-- Loading get Branch")
+                try {
+                    viewModel.setDetailCp(argsIdCp, userId)
+
+                    viewModel.getDetailCp.observeEvent(this) { resultObserve ->
+                        resultObserve.observe(this) { result ->
+                            if (result != null) {
+                                when (result.status) {
+                                    Result.Status.LOADING -> {
+                                        HelperLoading.displayLoadingWithText(this, "", false)
+                                        binding.bottomNavigationBar.visibility = View.GONE
+
+                                        Timber.d("###-- Loading get Branch")
+                                    }
+                                    Result.Status.SUCCESS -> {
+                                        HelperLoading.hideLoading()
+
+                                        if (result.data?.data?.isEmpty() == true) {
+                                            SnackBarCustom.snackBarIconInfo(
+                                                binding.root,
+                                                layoutInflater,
+                                                resources,
+                                                binding.root.context,
+                                                result.data.message,
+                                                R.drawable.ic_close,
+                                                R.color.red_500
+                                            )
+
+                                            binding.noDataScreen.root.visibility = View.VISIBLE
+                                        } else {
+                                            binding.bottomNavigationBar.visibility = View.VISIBLE
+
+                                            HawkUtils().setTempDataCreateCp(
+                                                id = result.data?.data?.get(0)?.id,
+                                                cpNo = result.data?.data?.get(0)?.cpNo,
+                                                saldo = result.data?.data?.get(0)?.saldo,
+                                                name = result.data?.data?.get(0)?.name,
+                                                nik = result.data?.data?.get(0)?.nik,
+                                                branch = result.data?.data?.get(0)?.branch,
+                                                subBranch = result.data?.data?.get(0)?.subBranch,
+                                                branchCode = result.data?.data?.get(0)?.branchCode,
+                                                departement = result.data?.data?.get(0)?.department,
+                                                position = result.data?.data?.get(0)?.position,
+                                                date = result.data?.data?.get(0)?.date,
+                                                keterangan = result.data?.data?.get(0)?.description,
+                                                rewardData = result.data?.data?.get(0)?.reward,
+                                                statusProposal = result.data?.data?.get(0)?.statusProposal,
+
+                                                headId = result.data?.data?.get(0)?.headId,
+                                                userId = result.data?.data?.get(0)?.userId,
+                                                orgId = result.data?.data?.get(0)?.orgId,
+                                                warehouseId = result.data?.data?.get(0)?.warehouseId,
+                                                historyApproval = result.data?.data?.get(0)?.historyApproval,
+
+                                                activityType = CP,
+                                                submitType = if (argsAction == EDIT) 2 else 1,
+                                                comment = result.data?.data?.get(0)?.statusProposal?.status,
+                                                source = CP_DETAIL_DATA
+                                            )
+
+                                            initComponent()
+                                            Timber.d("###-- Success get Branch")
+                                        }
+                                    }
+                                    Result.Status.ERROR -> {
+                                        binding.bottomNavigationBar.visibility = View.GONE
+                                        binding.noDataScreen.root.visibility = View.VISIBLE
+                                        HelperLoading.hideLoading()
+
+                                        Toast.makeText(
+                                            this,
+                                            "Error : ${result.message}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        Timber.d("###-- Error get Branch")
+                                    }
+
                                 }
-                                Result.Status.SUCCESS -> {
-                                    HelperLoading.hideLoading()
-                                    binding.bottomNavigationBar.visibility = View.VISIBLE
-
-                                    HawkUtils().setTempDataCreateCp(
-                                        id = result.data?.data?.get(0)?.id,
-                                        cpNo = result.data?.data?.get(0)?.cpNo,
-                                        saldo = result.data?.data?.get(0)?.saldo,
-                                        name = result.data?.data?.get(0)?.name,
-                                        nik = result.data?.data?.get(0)?.nik,
-                                        branch = result.data?.data?.get(0)?.branch,
-                                        subBranch = result.data?.data?.get(0)?.subBranch,
-                                        branchCode = result.data?.data?.get(0)?.branchCode,
-                                        departement = result.data?.data?.get(0)?.department,
-                                        position = result.data?.data?.get(0)?.position,
-                                        date = result.data?.data?.get(0)?.date,
-                                        keterangan = result.data?.data?.get(0)?.description,
-                                        rewardData = result.data?.data?.get(0)?.reward,
-                                        statusProposal = result.data?.data?.get(0)?.statusProposal,
-
-                                        headId = result.data?.data?.get(0)?.headId,
-                                        userId = result.data?.data?.get(0)?.userId,
-                                        orgId = result.data?.data?.get(0)?.orgId,
-                                        warehouseId = result.data?.data?.get(0)?.warehouseId,
-                                        historyApproval = result.data?.data?.get(0)?.historyApproval,
-
-                                        activityType = CP,
-                                        submitType = if (argsAction == EDIT) 2 else 1,
-                                        comment = result.data?.data?.get(0)?.statusProposal?.status,
-                                        source = CP_DETAIL_DATA
-                                    )
-
-                                    initToolbar(argsTitle)
-                                    initComponent()
-                                    Timber.d("###-- Success get Branch")
-                                }
-                                Result.Status.ERROR -> {
-                                    binding.bottomNavigationBar.visibility = View.GONE
-                                    HelperLoading.hideLoading()
-                                    Toast.makeText(this,"Error : ${result.message}", Toast.LENGTH_LONG).show()
-                                    Timber.d("###-- Error get Branch")
-                                }
-
                             }
                         }
-                    })
+                    }
+                } catch (e: Exception) {
+                    binding.bottomNavigationBar.visibility = View.GONE
+                    binding.noDataScreen.root.visibility = View.VISIBLE
+
+                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                    Timber.d("###-- Error onCreate")
                 }
             }
             ADD -> {
@@ -162,7 +195,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                 HawkUtils().setTempDataCreateCp(
                     id = 0,
                     cpNo = "",
-                    name = HawkUtils().getDataLogin().USER_NAME,
+                    name = HawkUtils().getDataLogin().FULL_NAME,
                     nik = HawkUtils().getDataLogin().NIK,
                     branchCode = HawkUtils().getDataLogin().BRANCH_CODE,
                     branch = HawkUtils().getDataLogin().BRANCH,
@@ -271,18 +304,18 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                                 data?.historyApproval, activityType = CP, submitType = key, comment = comment,data?.branchCode
                             )
 
-                            UpdateStatusProposalCp(
-                                viewModel,
-                                context = applicationContext,
-                                owner = this@ChangesPointCreateWizard
-                            ).updateCp(
-                                data = updateProposal,
-                                context = applicationContext,
-                                owner = this@ChangesPointCreateWizard
-                            ) {
-                                if(it){
-                                    finish()
-                                    HawkUtils().removeDataCreateProposal(source)
+                            lifecycleScope.launch {
+                                UpdateStatusProposalCp(
+                                    viewModel,
+                                    context = applicationContext,
+                                ).updateCp(
+                                    data = updateProposal,
+                                    context = applicationContext,
+                                ) {
+                                    if (it) {
+                                        finish()
+                                        HawkUtils().removeDataCreateProposal(source)
+                                    }
                                 }
                             }
                         } else {
@@ -389,12 +422,12 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
                     initialTypeProposal = "Check"
                     buttonInitialTypeProposal = "Check"
                 } else {
-                    initialTypeProposal = "Save"
-                    buttonInitialTypeProposal = "Save"
+                    initialTypeProposal = "Simpan"
+                    buttonInitialTypeProposal = "Simpan"
                 }
                 notification = HelperNotification()
                 binding.apply {
-                    notification.shownotificationyesno(
+                    notification.showNotificationYesNo(
                         this@ChangesPointCreateWizard,
                         applicationContext,
                         R.color.blue_500,
@@ -409,33 +442,34 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
                             override fun onNotificationYes() {
                                 if (data?.cpNo.isNullOrEmpty()){
-                                    UpdateStatusProposalCp(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ).submitCp(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ) {
-                                        if(it){
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalCp(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).submitCp(
+                                            data = data!!,
+                                            context = applicationContext,
+                                            owner = this@ChangesPointCreateWizard
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
                                         }
                                     }
                                 }else{
-                                    UpdateStatusProposalCp(
-                                        viewModel,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ).updateCp(
-                                        data = data!!,
-                                        context = applicationContext,
-                                        owner = this@ChangesPointCreateWizard
-                                    ) {
-                                        if(it){
-                                            finish()
-                                            HawkUtils().removeDataCreateProposal(source)
+                                    lifecycleScope.launch {
+                                        UpdateStatusProposalCp(
+                                            viewModel,
+                                            context = applicationContext,
+                                        ).updateCp(
+                                            data = data!!,
+                                            context = applicationContext,
+                                        ) {
+                                            if (it) {
+                                                finish()
+                                                HawkUtils().removeDataCreateProposal(source)
+                                            }
                                         }
                                     }
                                 }
@@ -459,6 +493,7 @@ class ChangesPointCreateWizard : AppCompatActivity(), HasSupportFragmentInjector
 
             binding.apply {
                 lytNext.visibility = View.VISIBLE
+                actionBottom.visibility = View.GONE
                 if (currentStep == 1) {
                     lytBack.visibility = View.INVISIBLE
                 }

@@ -29,11 +29,20 @@
             app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_projectImprovementFragment"
-            app:destination="@id/projectImprovementFragment"
-             />
+            app:destination="@id/projectImprovementFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_changesPointFragment"
             app:destination="@id/changesPointFragment" />
+
+        <action
+            android:id="@+id/action_listApprovalFragment_to_suggestionSystemCreateWizard"
+            app:destination="@id/suggestionSystemCreateWizard" />
+        <action
+            android:id="@+id/action_listApprovalFragment_to_ProjectImprovementCreateWizard"
+            app:destination="@id/projectImprovementCreateWizard" />
+        <action
+            android:id="@+id/action_listApprovalFragment_to_ChangePointCreateWizard"
+            app:destination="@id/changesPointCreateWizard" />
     </fragment>
 
     <fragment
@@ -46,6 +55,12 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+
+        <argument
+            android:name="docId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_listApprovalFragment_to_suggestionSystemCreateWizard"
             app:destination="@id/suggestionSystemCreateWizard" />
@@ -69,6 +84,11 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="docId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_suggestionSystemFragment_to_suggestionSystemCreateWizard"
             app:destination="@id/suggestionSystemCreateWizard" />
@@ -131,6 +151,11 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="docId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_projectImprovementFragment_to_projectImprovementCreateWizard"
             app:destination="@id/projectImprovementCreateWizard"
@@ -144,6 +169,11 @@
         tools:layout="@layout/fragment_changes_point_system">
         <argument
             android:name="toolbarTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="docId"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
