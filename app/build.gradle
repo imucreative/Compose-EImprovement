@@ -20,6 +20,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'API_DEVELOPER_TOKEN', "\"${api_developer_token}\""
+        buildConfigField 'String', 'AMQP_HOST', "\"${base_url_amqp_host}\""
     }
 
     signingConfigs {

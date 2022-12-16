@@ -15,7 +15,6 @@ import com.google.gson.Gson
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
-import java.net.URL
 import javax.inject.Inject
 import com.fastrata.eimprovement.data.model.MessageItem
 import com.fastrata.eimprovement.utils.*
@@ -86,8 +85,7 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
         private var amqpConsumer: AMQPConsumer? = null
 
         fun startAMQPConsumer(context: Context){
-            val url: URL = URL(BuildConfig.BASE_URL)
-            val amqpHost = "e-improvement.fastratabuana.co.id"
+            val amqpHost = BuildConfig.AMQP_HOST
             val amqpUser = "user"
             val amqpPassword = "user"
             val amqpPort = 81
@@ -107,7 +105,7 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 amqpPassword,
                 amqpVhost,
                 Build.PRODUCT + " " + Build.MODEL, context
-            );
+            )
             amqpConsumer!!.start(queueName)
         }
 
