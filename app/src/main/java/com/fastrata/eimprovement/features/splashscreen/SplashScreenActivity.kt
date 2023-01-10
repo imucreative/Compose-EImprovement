@@ -8,33 +8,54 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.Surface
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.Modifier
 import androidx.core.content.PermissionChecker
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.features.login.ui.LoginActivity
+import com.fastrata.eimprovement.ui.theme.ImprovementTheme
 import com.fastrata.eimprovement.utils.*
 import com.fastrata.eimprovement.utils.HawkUtils
-import com.fastrata.eimprovement.utils.PreferenceUtils
 import timber.log.Timber
 
-class SplashScreenActivity : AppCompatActivity() {
+class SplashScreenActivity : ComponentActivity() {
 
     private val _permissionCode = 1000
     private var parentView: View? = null
-
-    private lateinit var welcomeMessageModel: WelcomeMessageModel
+    //private lateinit var welcomeMessageModel: WelcomeMessageModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        setContent {
+            ImprovementTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    requestAllPermissions()
+
+                    parentView = findViewById(android.R.id.content)
+                    Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
+                    Tools.setSystemBarLight(this)
+
+                    SplashScreenContent()
+                }
+            }
+        }
+
+        /*setContentView(R.layout.activity_splash_screen)
         parentView = findViewById(android.R.id.content)
 
         requestAllPermissions()
         welcomeMessageModel = PreferenceUtils(this).getWelcomeMessage(PREF_WELCOME)
 
         Tools.setSystemBarColor(this, R.color.colorMainEImprovement, this)
-        Tools.setSystemBarLight(this)
+        Tools.setSystemBarLight(this)*/
     }
 
     private fun processSplashScreen() {
@@ -44,11 +65,12 @@ class SplashScreenActivity : AppCompatActivity() {
             if (bool){
                 goToHome()
             }else{
-                if (!welcomeMessageModel.isDisplay) {
+                /*if (!welcomeMessageModel.isDisplay) {
                     goToWelcomeMessage()
                 } else {
                     goToLoginPage()
-                }
+                }*/
+                goToLoginPage()
             }
         }, 2000) //in millisecond
     }
