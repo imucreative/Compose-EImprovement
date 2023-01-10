@@ -13,11 +13,13 @@ import androidx.fragment.app.Fragment
 import com.fastrata.eimprovement.R
 import com.fastrata.eimprovement.ui.setToolbar
 import android.view.MenuInflater
+import android.view.View.GONE
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fastrata.eimprovement.BuildConfig
 import com.fastrata.eimprovement.HomeActivity
 import com.fastrata.eimprovement.data.Result
 import com.fastrata.eimprovement.databinding.DialogListCalendarDashboardBinding
@@ -221,6 +223,13 @@ class DashboardFragment: Fragment(), Injectable, RobotoCalendarListener {
         val checkMenuPi = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "8" }
         val checkMenuSs = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "7" }
         val checkMenuCp = HawkUtils().getDataLogin().ROLES?.filter { code -> code.MENU_CODE == "9" }
+
+        val serverStat = BuildConfig.SERVER_STATE
+        if (serverStat == "DEV"){
+            binding.llDevelopment.visibility = VISIBLE
+        } else {
+            binding.llDevelopment.visibility = GONE
+        }
 
         if (checkMenuApproval?.size == 0) {
             binding.apply {
